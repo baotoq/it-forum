@@ -1,4 +1,20 @@
 @import "variables";
+@import "~bootstrap/scss/bootstrap.scss";
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~ng-snotify/styles/material";
 @import "mat-icon";
+
+.snotify-icon {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-position: center;
+}
+
+.ng-invalid.ng-touched {
+  @extend .is-invalid;
+}
+
+mat-form-field {
+  @extend .w-100;
+}
