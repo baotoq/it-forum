@@ -37,7 +37,7 @@ namespace ItForum.Services
                 new Claim("name", user.Name),
                 new Claim("phone", user.Phone),
                 new Claim("avatar", user.Avatar),
-                new Claim("birthday", user.Birthday.ToString()),
+                new Claim("birthday", user.Birthday.ToString("d")),
                 new Claim("email", user.Email),
                 new Claim("role", user.Role.GetValue())
             };

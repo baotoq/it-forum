@@ -66,8 +66,8 @@ namespace ItForum
 
             services.AddTransient<UserService>();
             services.AddTransient<TopicService>();
+            services.AddTransient<ThreadService>();
             services.AddTransient<PostService>();
-            services.AddTransient<CommentService>();
             services.AddTransient<UnitOfWork>();
 
             services.AddSingleton<HelperService>();

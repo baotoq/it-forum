@@ -7,15 +7,15 @@ namespace ItForum.Data.Dtos
 {
     public class TopicDto : TopicEntity
     {
-        public List<PostDto> Posts { get; set; }
+        public List<ThreadDto> Threads { get; set; }
 
-        public class PostDto : PostEntity
+        public class ThreadDto : ThreadEntity
         {
             public int UserId { get; set; }
 
             public UserDto User { get; set; }
 
-            public int NumberOfComments { get; set; }
+            public int NumberOfPosts { get; set; }
         }
 
         public class UserDto : UserEntity
@@ -29,8 +29,8 @@ namespace ItForum.Data.Dtos
         {
             CreateMap<Topic, TopicDto>();
             CreateMap<User, TopicDto.UserDto>();
-            CreateMap<Post, TopicDto.PostDto>()
-                .ForMember(d => d.NumberOfComments, s => s.MapFrom(x => x.Comments.Count));
+            CreateMap<Thread, TopicDto.ThreadDto>()
+                .ForMember(d => d.NumberOfPosts, s => s.MapFrom(x => x.Posts.Count));
         }
     }
 }

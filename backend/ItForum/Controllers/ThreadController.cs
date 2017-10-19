@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using ItForum.Data;
@@ -14,20 +15,17 @@ namespace ItForum.Controllers
     [Authorize]
     [Route("api/[controller]/[action]")]
     [Produces("application/json")]
-    public class PostController : Controller
+    public class ThreadController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly PostService _postService;
         private readonly ThreadService _threadService;
         private readonly UnitOfWork _unitOfWork;
 
-        public PostController(IMapper mapper, PostService postService, ThreadService threadService,
-            UnitOfWork unitOfWork)
+        public ThreadController(ThreadService threadService, UnitOfWork unitOfWork, IMapper mapper)
         {
-            _mapper = mapper;
-            _postService = postService;
             _threadService = threadService;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
@@ -35,34 +33,40 @@ namespace ItForum.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var comments = _postService.GetAll();
-            var dto = _mapper.Map<List<PostDto>>(comments);
+            var threads = _threadService.GetAll().ToList();
+            var dto = _mapper.Map<List<ThreadDto>>(threads);
             return Ok(dto);
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var comment = _postService.FindById(id);
-            var dto = _mapper.Map<PostDto>(comment);
+            var thread = _threadService.FindById(id);
+            var dto = _mapper.Map<ThreadDto>(thread);
             return Ok(dto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Post post)
+        public async Task<IActionResult> Create([FromBody] Thread thread)
         {
-            if (post == null)
-                return BadRequest();
+            if (thread == null) return BadRequest();
 
-            post.UserId = CurrentUserId;
-            await _postService.AddAsync(post);
-            var thread = _threadService.FindById(post.ThreadId);
+            thread.UserId = CurrentUserId;
             thread.LastActivity = DateTime.Now;
+            await _threadService.AddAsync(thread);
             await _unitOfWork.SaveChangesAsync();
 
-            post = _postService.FindById(post.Id);
-            var dto = _mapper.Map<PostDto>(post);
-            return StatusCode(201, dto);
+            return StatusCode(201, thread);
+        }
+
+        [HttpPost("{id}")]
+        public async Task<IActionResult> View(int id)
+        {
+            var thread = _threadService.FindById(id);
+            if (thread == null) return BadRequest();
+            thread.Views += 1;
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
         }
     }
 }

@@ -5,15 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ItForum.Services
 {
-    public class PostService : Service<Post>
+    public class ThreadService : Service<Thread>
     {
-        public PostService(NeptuneContext context) : base(context)
+        public ThreadService(NeptuneContext context) : base(context)
         {
         }
 
-        public override Post FindById(object id)
+        public override Thread FindById(object id)
         {
             return DbSet.Include(x => x.User)
+                .Include(x => x.Posts).ThenInclude(x => x.User)
                 .SingleOrDefault(x => x.Id == (int) id);
         }
     }
