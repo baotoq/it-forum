@@ -12,10 +12,14 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AuthModule } from './modules/auth/auth.module';
 import { CoreModule } from './modules/core/core.module';
+import { SharedModule } from './modules/shared/shared.module';
 
 import { AppComponent } from './app.component';
+import { LoadingComponent } from './shared/loading/loading.component';
+
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
+import { LoadingService } from './shared/loading/loading.service';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig(), http, options);
@@ -24,6 +28,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
 @NgModule({
   declarations: [
     AppComponent,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,6 +40,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     AppRoutingModule,
     AuthModule,
     CoreModule,
+    SharedModule,
   ],
   providers: [
     {
@@ -45,6 +51,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true},
     {provide: 'SnotifyToastConfig', useValue: ToastDefaults},
     SnotifyService,
+    LoadingService,
     AuthGuard,
     AdminGuard,
   ],
