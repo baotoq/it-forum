@@ -2,8 +2,16 @@
 {
     public enum Role
     {
-        Admin,
-        Mod,
+        Administrator,
+        Moderator,
         User
+    }
+
+    public static class RoleExtensions
+    {
+        public static string GetValue(this Role role)
+        {
+            return role.ToString("d");
+        }
     }
 }

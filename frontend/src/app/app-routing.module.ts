@@ -6,6 +6,10 @@ const routes: Routes = [
     path: 'auth',
     loadChildren: 'app/modules/auth/auth.module#AuthModule',
   },
+  {
+    path: 'topic',
+    loadChildren: 'app/modules/topic/topic.module#TopicModule',
+  },
 ];
 
 @NgModule({

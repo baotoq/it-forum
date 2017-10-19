@@ -28,7 +28,7 @@ namespace ItForum.Data.Seeds
 
             var admin = userFaker.Generate();
             admin.Email = "admin@gmail.com";
-            admin.Role = Role.Admin;
+            admin.Role = Role.Administrator;
             context.Add(admin);
             await context.SaveChangesAsync();
             admin.ConfirmedBy = admin;

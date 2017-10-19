@@ -54,13 +54,14 @@ namespace ItForum
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(Policy.Admin,
-                    policy => policy.RequireClaim(ClaimTypes.Role, Role.Admin.ToString("d")));
-                options.AddPolicy(Policy.Mod,
-                    policy => policy.RequireClaim(ClaimTypes.Role, Role.Mod.ToString("d"), Role.Admin.ToString("d")));
+                options.AddPolicy(Policy.Administrator,
+                    policy => policy.RequireClaim(ClaimTypes.Role, Role.Administrator.GetValue()));
+                options.AddPolicy(Policy.Moderator,
+                    policy => policy.RequireClaim(ClaimTypes.Role, Role.Moderator.GetValue(),
+                        Role.Administrator.GetValue()));
                 options.AddPolicy(Policy.User,
-                    policy => policy.RequireClaim(ClaimTypes.Role, Role.User.ToString("d"), Role.Mod.ToString("d"),
-                        Role.Admin.ToString("d")));
+                    policy => policy.RequireClaim(ClaimTypes.Role, Role.User.GetValue(), Role.Moderator.GetValue(),
+                        Role.Administrator.GetValue()));
             });
 
             services.AddTransient<UserService>();

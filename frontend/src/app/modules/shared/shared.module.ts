@@ -9,15 +9,19 @@ const COMPONENTS = [
   SpinnerComponent,
 ];
 
+const PIPES = [
+  HasErrorPipe,
+];
+
 @NgModule({
   imports: [
     CommonModule,
     MaterialModule,
   ],
-  declarations: [COMPONENTS],
-  exports: [COMPONENTS, MaterialModule],
+  declarations: [COMPONENTS, PIPES],
+  exports: [COMPONENTS, PIPES, MaterialModule],
   providers: [
-    HasErrorPipe,
+    PIPES,
     RequestService,
   ],
 })

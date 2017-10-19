@@ -78,14 +78,14 @@ namespace ItForum.Controllers
             return _userService.HasEmail(email);
         }
 
-        [Authorize(nameof(Policy.Admin))]
+        [Authorize(nameof(Policy.Administrator))]
         [HttpGet]
         public IActionResult GetUnconfirmed()
         {
             return Ok(_userService.GetUnconfirmed());
         }
 
-        [Authorize(nameof(Policy.Admin))]
+        [Authorize(nameof(Policy.Administrator))]
         [HttpPost("{id}")]
         public async Task<IActionResult> Confirm(int id)
         {

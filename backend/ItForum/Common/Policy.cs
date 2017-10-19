@@ -2,9 +2,9 @@ namespace ItForum.Common
 {
     public static class Policy
     {
-        public static string Admin = "Admin";
+        public static string Administrator = "Administrator";
 
-        public static string Mod = "Mod";
+        public static string Moderator = "Moderator";
 
         public static string User = "User";
     }
