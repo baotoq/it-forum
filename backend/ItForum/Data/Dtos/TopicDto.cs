@@ -11,8 +11,6 @@ namespace ItForum.Data.Dtos
 
         public class ThreadDto : ThreadEntity
         {
-            public int UserId { get; set; }
-
             public UserDto User { get; set; }
 
             public int NumberOfPosts { get; set; }
