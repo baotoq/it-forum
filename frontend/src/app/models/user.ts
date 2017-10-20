@@ -1,6 +1,7 @@
 import { Role } from './role';
+import { Timestamp } from './timestamp';
 
-export class User {
+export class User extends Timestamp {
   id: number;
   name: string;
   phone: string;
@@ -10,10 +11,9 @@ export class User {
   password: string;
   role: Role;
   confirmedBy: User;
-  createdDate: Date;
-  updatedDate: Date;
 
-  constructor(obj: User) {
+  constructor(obj?: User) {
+    super(obj);
     if (obj) {
       this.id = obj.id;
       this.name = obj.name;
@@ -24,8 +24,6 @@ export class User {
       this.password = obj.password;
       this.role = obj.role;
       this.confirmedBy = obj.confirmedBy;
-      this.createdDate = obj.createdDate;
-      this.updatedDate = obj.updatedDate;
     }
   }
 }

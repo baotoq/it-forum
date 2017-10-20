@@ -57,7 +57,7 @@ namespace ItForum.Data.Seeds
                 o.LastActivity = o.Posts.OrderByDescending(x => x.CreatedDate).FirstOrDefault().CreatedDate.Value;
             });
 
-            var topicFaker = new Faker<Topic>().Rules((f, o) =>
+            var discussionFaker = new Faker<Discussion>().Rules((f, o) =>
             {
                 o.Name = f.Commerce.ProductName();
                 o.Description = f.Lorem.Sentences(3);
@@ -66,17 +66,17 @@ namespace ItForum.Data.Seeds
                 o.UpdatedDate = o.CreatedDate;
             });
 
-            var categoryFaker = new Faker<Category>().Rules((f, o) =>
+            var topicFaker = new Faker<Topic>().Rules((f, o) =>
             {
                 o.Name = f.Commerce.ProductName();
                 o.Description = f.Lorem.Sentences(3);
-                o.Topics = topicFaker.Generate(f.Random.Number(2, 6)).ToList();
+                o.Discussions = discussionFaker.Generate(f.Random.Number(2, 6)).ToList();
                 o.CreatedDate = f.Date.Past(4);
                 o.UpdatedDate = o.CreatedDate;
             });
 
-            var categories = categoryFaker.Generate(10);
-            context.AddRange(categories);
+            var topics = topicFaker.Generate(10);
+            context.AddRange(topics);
 
             users = userFaker.Generate(50);
             var index = 1;

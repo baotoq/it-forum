@@ -14,6 +14,6 @@ namespace ItForum.Data.Entities
 
         public int UserId { get; set; }
 
-        public int TopicId { get; set; }
+        public int DiscussionId { get; set; }
     }
 }

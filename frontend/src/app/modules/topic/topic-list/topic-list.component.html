@@ -5,7 +5,9 @@
         {{topic.name}}
       </div>
       <div class="card-body">
-
+        <div *ngFor="let discussion of topic.discussions">
+          {{discussion.name}}
+        </div>
       </div>
     </div>
   </div>

@@ -5,8 +5,6 @@ namespace ItForum.Data.Domains
 {
     public class Topic : TopicEntity
     {
-        public List<Thread> Threads { get; set; }
-
-        public Category Category { get; set; }
+        public List<Discussion> Discussions { get; set; }
     }
 }
