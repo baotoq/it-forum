@@ -5,8 +5,9 @@ export class Discussion extends Timestamp {
   id: number;
   name: string;
   description: string;
+  numberOfThreads = 0;
   topicId: number;
-  thread: Thread[];
+  threads: Thread[];
 
   constructor(obj?) {
     super(obj);
@@ -14,8 +15,9 @@ export class Discussion extends Timestamp {
       this.id = obj.id;
       this.name = obj.name;
       this.description = obj.description;
+      this.numberOfThreads = obj.numberOfThreads;
       this.topicId = obj.topicId;
-      this.thread = obj.thread;
+      this.threads = obj.threads;
     }
   }
 }

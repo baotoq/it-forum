@@ -13,7 +13,7 @@ export class Thread extends Timestamp {
   userId: number;
   discussionId: number;
   user: User;
-  post: Post[];
+  posts: Post[];
 
   constructor(obj?) {
     super(obj);
@@ -28,7 +28,7 @@ export class Thread extends Timestamp {
       this.userId = obj.userId;
       this.discussionId = obj.discussionId;
       this.user = obj.user;
-      this.post = obj.post;
+      this.posts = obj.posts;
     }
   }
 }

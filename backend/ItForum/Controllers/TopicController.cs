@@ -4,12 +4,10 @@ using AutoMapper;
 using ItForum.Data;
 using ItForum.Data.Dtos;
 using ItForum.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ItForum.Controllers
 {
-    [Authorize]
     [Route("api/[controller]/[action]")]
     [Produces("application/json")]
     public class TopicController : Controller

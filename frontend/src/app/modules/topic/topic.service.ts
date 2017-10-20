@@ -12,7 +12,7 @@ export class TopicService {
   }
 
   getAll(): Observable<Topic[]> {
-    return this.requestService.authGet(API.TOPIC.GET_ALL);
+    return this.requestService.get(API.TOPIC.GET_ALL);
   }
 
   get(id: number): Observable<Topic> {

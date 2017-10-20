@@ -11,6 +11,13 @@ namespace ItForum.Data.Dtos
 
         public class DiscussionDto : DiscussionEntity
         {
+            public List<ThreadDto> Threads { get; set; }
+
+            public int NumberOfThreads { get; set; }
+        }
+
+        public class ThreadDto : ThreadEntity
+        {
         }
     }
 
@@ -19,7 +26,9 @@ namespace ItForum.Data.Dtos
         public CategoryMapperProfile()
         {
             CreateMap<Topic, TopicDto>();
-            CreateMap<Discussion, TopicDto.DiscussionDto>();
+            CreateMap<Discussion, TopicDto.DiscussionDto>()
+                .ForMember(d => d.NumberOfThreads, s => s.MapFrom(x => x.Threads.Count));
+            CreateMap<Thread, TopicDto.ThreadDto>();
         }
     }
 }

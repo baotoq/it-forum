@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ItForum.Controllers
 {
-    [Authorize]
     [Route("api/[controller]/[action]")]
     [Produces("application/json")]
     public class DiscussionController : Controller
@@ -43,6 +42,7 @@ namespace ItForum.Controllers
             return Ok(dto);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Discussion discussion)
         {
