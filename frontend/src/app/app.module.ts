@@ -33,7 +33,7 @@ export const firebaseConfig = {
   databaseURL: 'https://tdt-game.firebaseio.com',
   projectId: 'tdt-game',
   storageBucket: 'tdt-game.appspot.com',
-  messagingSenderId: '670949218812'
+  messagingSenderId: '670949218812',
 };
 
 @NgModule({

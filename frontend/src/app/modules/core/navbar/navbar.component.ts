@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
 
@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
+  @Output() sidenavToggle = new EventEmitter<any>();
 
   constructor(private router: Router,
               private authService: AuthService) {

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { NavbarComponent } from './navbar/navbar.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
 import { CoreService } from './core.service';
 
 @NgModule({
@@ -13,9 +14,11 @@ import { CoreService } from './core.service';
   ],
   declarations: [
     NavbarComponent,
+    SidenavComponent,
   ],
   exports: [
     NavbarComponent,
+    SidenavComponent,
   ],
   providers: [
     CoreService,

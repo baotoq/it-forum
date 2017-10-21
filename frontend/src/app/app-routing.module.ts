@@ -15,6 +15,10 @@ const routes: Routes = [
     path: 'topic',
     loadChildren: 'app/modules/topic/topic.module#TopicModule',
   },
+  {
+    path: 'admin',
+    loadChildren: 'app/modules/admin/admin.module#AdminModule',
+  },
 ];
 
 @NgModule({

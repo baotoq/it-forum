@@ -1,4 +1,7 @@
 <mat-toolbar color="primary">
+  <button mat-icon-button (click)="sidenavToggle.emit()">
+    <mat-icon>menu</mat-icon>
+  </button>
   <a mat-button [routerLink]="['/']" routerLinkActive="active">
     <h1>TDT GAME</h1>
   </a>
