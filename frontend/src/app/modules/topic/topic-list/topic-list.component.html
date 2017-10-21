@@ -18,7 +18,7 @@
             </div>
           </div>
           <div class="col-md-4" style="font-size: 70%">
-            <div *ngFor="let thread of discussion.threads | orderBy:'-createdDate' | slice: 0:2">
+            <div *ngFor="let thread of discussion.threads | orderBy:'-lastActivity' | slice: 0:2">
               <a href="#">
                 {{thread.title | shorten: 45:'...'}}
               </a>
