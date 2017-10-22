@@ -3,9 +3,9 @@ import { Component, HostListener } from '@angular/core';
 @Component({
   selector: 'app-root',
   template: `
+    <app-loading class="fixed-top" style="z-index: 9999"></app-loading>
     <app-navbar (sidenavToggle)="sidenav.toggle()" class="fixed-top"></app-navbar>
     <div class="main">
-      <app-loading></app-loading>
       <mat-sidenav-container>
         <mat-sidenav #sidenav [mode]="smallScreen ? 'over' : 'side'">
           <app-sidenav></app-sidenav>

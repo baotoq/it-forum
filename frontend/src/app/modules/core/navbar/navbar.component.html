@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" class="shadow">
+<mat-toolbar color="primary" class="shadow" style="background-color: #24292e">
   <button mat-icon-button (click)="sidenavToggle.emit()">
     <mat-icon>menu</mat-icon>
   </button>
@@ -8,10 +8,10 @@
 
   <div class="ml-auto">
     <ng-container *ngIf="!authenticated">
-      <button mat-raised-button color="accent" [routerLink]="['auth/register']" class="d-none d-sm-inline-block">
+      <button mat-raised-button color="primary" [routerLink]="['auth/register']" class="d-none d-sm-inline-block">
         Register
       </button>
-      <button mat-raised-button color="accent" [routerLink]="['auth/login']" class="d-none d-sm-inline-block">
+      <button mat-raised-button color="primary" [routerLink]="['auth/login']" class="d-none d-sm-inline-block">
         Login
       </button>
     </ng-container>
