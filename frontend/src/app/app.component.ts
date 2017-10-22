@@ -5,16 +5,14 @@ import { Component, HostListener } from '@angular/core';
   template: `
     <app-loading class="fixed-top" style="z-index: 9999"></app-loading>
     <app-navbar (sidenavToggle)="sidenav.toggle()" class="fixed-top"></app-navbar>
-    <div class="main">
-      <mat-sidenav-container>
-        <mat-sidenav #sidenav [mode]="smallScreen ? 'over' : 'side'">
-          <app-sidenav></app-sidenav>
-        </mat-sidenav>
-        <div class="container-fluid">
-          <router-outlet></router-outlet>
-        </div>
-      </mat-sidenav-container>
-    </div>
+    <mat-sidenav-container fullscreen>
+      <mat-sidenav #sidenav [mode]="smallScreen ? 'over' : 'side'">
+        <app-sidenav></app-sidenav>
+      </mat-sidenav>
+      <div class="container-fluid">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-container>
     <ng-snotify></ng-snotify>
   `,
   styleUrls: ['./app.component.scss'],

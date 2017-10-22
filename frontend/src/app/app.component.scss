@@ -1,25 +1,14 @@
-mat-sidenav {
-  background-color: #F5F5F5;
-  position: fixed;
-  left: 0;
-  top: 64px;
-  bottom: 0;
-  min-width: 200px;
-}
+mat-sidenav-container {
+  top: 64px !important;
 
-.main {
-  margin-top: 64px;
+  mat-sidenav {
+    min-width: 200px;
+    background-color: #F5F5F5;
+  }
 }
 
 @media (max-width: 600px) {
-  mat-sidenav {
-    top: 56px;
+  mat-sidenav-container {
+    top: 56px !important;
   }
-  .main {
-    margin-top: 56px;
-  }
-}
-
-.container-fluid {
-  min-height: 700px;
 }
