@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Http, HttpModule, RequestOptions } from '@angular/http';
 
 import { AuthConfig, AuthHttp } from 'angular2-jwt';
-import { MATERIAL_COMPATIBILITY_MODE } from '@angular/material';
+
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { SnotifyModule, SnotifyService, SnotifyToastConfig, ToastDefaults } from 'ng-snotify';
 
@@ -60,7 +60,6 @@ export const firebaseConfig = {
       useFactory: authHttpServiceFactory,
       deps: [Http, RequestOptions],
     },
-    {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true},
     {provide: 'SnotifyToastConfig', useValue: ToastDefaults},
     SnotifyService,
     LoadingService,

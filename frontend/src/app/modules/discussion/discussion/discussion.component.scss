@@ -1,0 +1,39 @@
+mat-row {
+  cursor: pointer;
+
+  &:hover {
+    background-color: #EEEEEE;
+  }
+
+  mat-cell {
+    font-size: 12px;
+  }
+}
+
+.mat-column-title {
+  width: 900px;
+}
+
+.mat-column-user {
+  width: 60px;
+}
+
+.mat-column-views {
+  width: 80px;
+}
+
+.mat-column-numberOfPosts {
+  width: 80px;
+}
+
+.mat-column-lastActivity {
+  width: 130px;
+}
+
+mat-header-row {
+  background-color: rgb(245, 245, 245);
+}
+
+mat-paginator {
+  background-color: rgb(245, 245, 245);
+}

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from './modules/material/material.module';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { HasErrorPipe } from './pipes/has-error.pipe';
+import { OrderByPipe } from 'ngx-pipes/esm';
 import { RequestService } from './services/request.service';
 
 const COMPONENTS = [
@@ -23,6 +24,7 @@ const PIPES = [
   providers: [
     PIPES,
     RequestService,
+    OrderByPipe,
   ],
 })
 export class SharedModule {

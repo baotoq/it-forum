@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="shadow">
   <button mat-icon-button (click)="sidenavToggle.emit()">
     <mat-icon>menu</mat-icon>
   </button>
@@ -20,12 +20,12 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #appMenu y-position="below">
-      <button mat-menu-item class="px-4" style="min-width: 200px; margin-top: 50px">
+      <button mat-menu-item class="px-4" style="min-width: 200px">
         <mat-icon class="mr-2">account_circle</mat-icon>
         Profile
       </button>
       <div class="divider"></div>
-      <button mat-menu-item (click)="logout()">
+      <button mat-menu-item class="px-4" (click)="logout()">
         <mat-icon class="mr-2">exit_to_app</mat-icon>
         Log out
       </button>
