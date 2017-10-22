@@ -1,0 +1,21 @@
+mat-sidenav {
+  background-color: #F5F5F5;
+  position: fixed;
+  left: 0;
+  top: 64px;
+  bottom: 0;
+  min-width: 200px;
+}
+
+.main {
+  margin-top: 64px;
+}
+
+@media (max-width: 600px) {
+  mat-sidenav {
+    top: 56px;
+  }
+  .main {
+    margin-top: 56px;
+  }
+}

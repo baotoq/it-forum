@@ -26,32 +26,49 @@ namespace ItForum.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Entity>().HasQueryFilter(x => x.DeletedDate == null);
         }
 
         public override int SaveChanges()
         {
-            AddTimestamps();
+            OnBeforeSaving();
             return base.SaveChanges();
         }
 
         public async Task<int> SaveChangesAsync()
         {
-            AddTimestamps();
+            OnBeforeSaving();
             return await base.SaveChangesAsync();
         }
 
-        private void AddTimestamps()
+        private void OnBeforeSaving()
         {
-            var entities = ChangeTracker.Entries().Where(x =>
-                x.Entity is Entity && (x.State == EntityState.Added || x.State == EntityState.Modified));
-
-            foreach (var entity in entities)
+            foreach (var entry in ChangeTracker.Entries().Where(x => x.Entity is Entity))
             {
-                var e = (Entity) entity.Entity;
-                if (entity.State == EntityState.Added && e.CreatedDate == null)
-                    e.CreatedDate = DateTime.Now;
-                if (e.UpdatedDate == null)
-                    e.UpdatedDate = DateTime.Now;
+                var entity = (Entity) entry.Entity;
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        if (entity.CreatedDate == null)
+                            entity.CreatedDate = DateTime.Now;
+                        if (entity.UpdatedDate == null)
+                            entity.UpdatedDate = DateTime.Now;
+                        break;
+                    case EntityState.Modified:
+                        if (entity.UpdatedDate == null)
+                            entity.UpdatedDate = DateTime.Now;
+                        break;
+                    case EntityState.Deleted:
+                        entry.State = EntityState.Modified;
+                        entity.DeletedDate = DateTime.Now;
+                        break;
+                    case EntityState.Detached:
+                        break;
+                    case EntityState.Unchanged:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
         }
     }
