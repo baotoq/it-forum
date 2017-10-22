@@ -20,6 +20,14 @@ export module API {
     public static readonly CREATE = `${TOPIC.URL}/create`;
   }
 
+  export class DISCUSSION {
+    public static readonly URL = `${BASE_URL}/discussion`;
+
+    public static readonly GET_ALL = `${DISCUSSION.URL}/getAll`;
+    public static readonly GET = `${DISCUSSION.URL}/get`;
+    public static readonly CREATE = `${DISCUSSION.URL}/create`;
+  }
+
   export class POST {
     public static readonly URL = `${BASE_URL}/post`;
 

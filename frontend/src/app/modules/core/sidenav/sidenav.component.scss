@@ -8,5 +8,7 @@ mat-list-item {
 }
 
 .active {
-  color: #0D47A1 !important;
+  a {
+    color: #0D47A1 !important;
+  }
 }

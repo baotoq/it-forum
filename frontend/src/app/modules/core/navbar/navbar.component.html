@@ -6,10 +6,6 @@
     <h1>TDT GAME</h1>
   </a>
 
-  <div class="mr-auto d-none d-sm-block">
-    <a mat-button [routerLink]="['/topic']" routerLinkActive="active">Topics</a>
-  </div>
-
   <div class="ml-auto">
     <ng-container *ngIf="!authenticated">
       <button mat-raised-button color="accent" [routerLink]="['auth/register']" class="d-none d-sm-inline-block">
@@ -24,12 +20,12 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #appMenu y-position="below">
-      <button mat-menu-item class="px-4" style="min-width: 200px">
+      <button mat-menu-item class="px-4" style="min-width: 200px; margin-top: 50px">
         <mat-icon class="mr-2">account_circle</mat-icon>
         Profile
       </button>
       <div class="divider"></div>
-      <button mat-menu-item class="px-4" (click)="logout()">
+      <button mat-menu-item (click)="logout()">
         <mat-icon class="mr-2">exit_to_app</mat-icon>
         Log out
       </button>

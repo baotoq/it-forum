@@ -1,3 +1,5 @@
-<p>
-  discussion works!
-</p>
+<div class="mt-2">
+  <div *ngFor="let thread of discussion?.threads">
+    {{thread.title}}
+  </div>
+</div>

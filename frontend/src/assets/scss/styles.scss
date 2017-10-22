@@ -11,6 +11,10 @@
   object-position: center;
 }
 
+body {
+  background-color: $app-back-ground-color;
+}
+
 .ng-invalid.ng-touched {
   @extend .is-invalid;
 }
