@@ -7,7 +7,7 @@ mat-sidenav-container {
   }
 }
 
-@media (max-width: 600px) {
+@media screen and (max-width: 600px) {
   mat-sidenav-container {
     top: 56px !important;
   }

@@ -1,3 +1,5 @@
+@import "../../../../assets/scss/variables";
+
 mat-row {
   cursor: pointer;
 
@@ -30,10 +32,23 @@ mat-row {
   width: 130px;
 }
 
+$table-secondary-color: rgb(245, 245, 245);
+
 mat-header-row {
-  background-color: rgb(245, 245, 245);
+  background-color: $table-secondary-color;
 }
 
 mat-paginator {
-  background-color: rgb(245, 245, 245);
+  background-color: $table-secondary-color;
+}
+
+mat-toolbar {
+  cursor: pointer;
+  border-bottom: 1px solid $border-color;
+}
+
+.search {
+  &:focus {
+    outline: none;
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatPaginator } from '@angular/material';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
@@ -25,10 +25,13 @@ export class DiscussionComponent implements OnInit {
   behavior = new BehaviorSubject<Thread[]>([]);
   dataSource: ThreadDataSource;
 
+  search = false;
+  @ViewChild('searchInput') searchInput: ElementRef;
+
   constructor(private route: ActivatedRoute,
               private loadingService: LoadingService,
               private discussionService: DiscussionService,
-              private orderByPipe: OrderByPipe) {
+              private orderByPipe: OrderByPipe,) {
   }
 
   ngOnInit() {
@@ -44,6 +47,15 @@ export class DiscussionComponent implements OnInit {
         this.behavior.next(this.orderByPipe.transform(this.discussion.threads, '-lastActivity'));
         this.dataSource = new ThreadDataSource(this.behavior, this.paginator);
       });
+  }
+
+  onSearch() {
+    this.search = !this.search;
+    this.searchInput.nativeElement.focus();
+  }
+
+  onSearchOut() {
+    this.search = !this.search;
   }
 }
 

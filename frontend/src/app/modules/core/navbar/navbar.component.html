@@ -8,12 +8,14 @@
 
   <div class="ml-auto">
     <ng-container *ngIf="!authenticated">
-      <button mat-raised-button color="primary" [routerLink]="['auth/register']" class="d-none d-sm-inline-block">
+      <a mat-raised-button color="primary" [routerLink]="['auth/register']" routerLinkActive="active"
+         class="d-none d-sm-inline-block">
         Register
-      </button>
-      <button mat-raised-button color="primary" [routerLink]="['auth/login']" class="d-none d-sm-inline-block">
+      </a>
+      <a mat-raised-button color="primary" [routerLink]="['auth/login']" routerLinkActive="active"
+         class="d-none d-sm-inline-block">
         Login
-      </button>
+      </a>
     </ng-container>
 
     <button *ngIf="authenticated" mat-icon-button [mat-menu-trigger-for]="appMenu">

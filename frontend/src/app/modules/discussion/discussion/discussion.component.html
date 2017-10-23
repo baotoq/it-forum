@@ -1,4 +1,23 @@
 <div class="mt-3">
+
+  <div style="position: relative">
+    <mat-toolbar *ngIf="!search" (click)="onSearch()"
+                 class="mat-toolbar-56" style="position: absolute">
+      <mat-icon class="mr-2">search</mat-icon>
+      <span class="text-muted">Search</span>
+      <a [routerLink]="['/thread/create']" mat-raised-button class="ml-auto"
+         color="primary" clickStopPropagation>
+        <i class="fa fa-plus"></i>
+        Thread
+      </a>
+    </mat-toolbar>
+    <mat-toolbar [class.shadow]="search"
+                 class="bg-white mat-toolbar-56" style="position: static">
+      <mat-icon class="mr-2">search</mat-icon>
+      <input class="w-100 border-0 search" #searchInput placeholder="Search" (focusout)="onSearchOut()">
+    </mat-toolbar>
+  </div>
+
   <mat-table #table [dataSource]="dataSource">
 
     <ng-container matColumnDef="title">

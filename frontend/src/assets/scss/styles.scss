@@ -3,6 +3,9 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~ng-snotify/styles/material";
 @import "mat-icon";
+@import "mat-table";
+@import "mat-toolbar";
+@import "mat-button";
 
 .snotify-icon {
   object-fit: cover;
@@ -10,12 +13,9 @@
   height: 100%;
   object-position: center;
 }
+
 .cdk-overlay-container {
   z-index: 999999;
-
-  .mat-menu-content {
-    padding: 0 0 0 0;
-  }
 }
 
 body {
@@ -24,25 +24,6 @@ body {
 
 .ng-invalid.ng-touched {
   @extend .is-invalid;
-}
-
-.mat-table {
-  display: table !important;
-  width: 100%;
-
-  .mat-header-row, .mat-row {
-    display: table-row;
-    padding: 0;
-    border: none;
-
-    .mat-header-cell, .mat-cell {
-      display: table-cell;
-      height: 48px;
-      vertical-align: middle;
-      padding: 0 1.5%;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-    }
-  }
 }
 
 .divider {

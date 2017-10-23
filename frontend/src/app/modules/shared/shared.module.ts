@@ -5,6 +5,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { HasErrorPipe } from './pipes/has-error.pipe';
 import { OrderByPipe } from 'ngx-pipes/esm';
 import { RequestService } from './services/request.service';
+import { ClickStopPropagationDirective } from './directives/click-stop-propagation/click-stop-propagation.directive';
 
 const COMPONENTS = [
   SpinnerComponent,
@@ -14,13 +15,17 @@ const PIPES = [
   HasErrorPipe,
 ];
 
+const DIRECTIVES = [
+  ClickStopPropagationDirective,
+];
+
 @NgModule({
   imports: [
     CommonModule,
     MaterialModule,
   ],
-  declarations: [COMPONENTS, PIPES],
-  exports: [COMPONENTS, PIPES, MaterialModule],
+  declarations: [COMPONENTS, PIPES, DIRECTIVES],
+  exports: [COMPONENTS, PIPES, DIRECTIVES, MaterialModule],
   providers: [
     PIPES,
     RequestService,
