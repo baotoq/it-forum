@@ -7,6 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { TopicRoutingModule } from './topic-routing.module';
 import { TopicListComponent } from './topic-list/topic-list.component';
 import { TopicService } from './topic.service';
+import { TopicComponent } from './topic/topic.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,7 @@ import { TopicService } from './topic.service';
     SharedModule,
     TopicRoutingModule,
   ],
-  declarations: [TopicListComponent],
+  declarations: [TopicListComponent, TopicComponent],
   providers: [TopicService],
 })
 export class TopicModule {

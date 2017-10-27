@@ -9,9 +9,7 @@ import { Component, HostListener } from '@angular/core';
       <mat-sidenav #sidenav [mode]="smallScreen ? 'over' : 'side'" [opened]="!smallScreen">
         <app-sidenav></app-sidenav>
       </mat-sidenav>
-      <div class="container-fluid">
-        <router-outlet></router-outlet>
-      </div>
+      <router-outlet></router-outlet>
     </mat-sidenav-container>
     <ng-snotify></ng-snotify>
   `,
