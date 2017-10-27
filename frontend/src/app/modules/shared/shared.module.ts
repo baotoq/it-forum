@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from './modules/material/material.module';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { HasErrorPipe } from './pipes/has-error.pipe';
-import { OrderByPipe } from 'ngx-pipes/esm';
+import { FilterByPipe, OrderByPipe } from 'ngx-pipes/esm';
 import { RequestService } from './services/request.service';
 import { ClickStopPropagationDirective } from './directives/click-stop-propagation/click-stop-propagation.directive';
 
@@ -30,6 +30,7 @@ const DIRECTIVES = [
     PIPES,
     RequestService,
     OrderByPipe,
+    FilterByPipe,
   ],
 })
 export class SharedModule {

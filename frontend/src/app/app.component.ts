@@ -6,7 +6,7 @@ import { Component, HostListener } from '@angular/core';
     <app-loading class="fixed-top" style="z-index: 9999"></app-loading>
     <app-navbar (sidenavToggle)="sidenav.toggle()" class="fixed-top"></app-navbar>
     <mat-sidenav-container fullscreen>
-      <mat-sidenav #sidenav [mode]="smallScreen ? 'over' : 'side'">
+      <mat-sidenav #sidenav [mode]="smallScreen ? 'over' : 'side'" [opened]="!smallScreen">
         <app-sidenav></app-sidenav>
       </mat-sidenav>
       <div class="container-fluid">
@@ -22,7 +22,7 @@ export class AppComponent {
 
   @HostListener('window:resize')
   onResize() {
-    this.smallScreen = window.innerWidth < 576;
+    this.smallScreen = window.innerWidth < 960;
   }
 
   constructor() {
