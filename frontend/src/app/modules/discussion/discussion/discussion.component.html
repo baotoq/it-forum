@@ -18,10 +18,9 @@
     </mat-toolbar>
   </div>
 
-  <mat-table #table [dataSource]="dataSource">
-
+  <mat-table #table [dataSource]="dataSource" matSort matSortStart="desc" [matSortDisableClear]="true">
     <ng-container matColumnDef="title">
-      <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header start="asc">Title</mat-header-cell>
       <mat-cell *matCellDef="let row" [title]="row.title">
         <strong>{{row.title | shorten: 100:'...'}}</strong>
       </mat-cell>
@@ -39,21 +38,21 @@
     </ng-container>
 
     <ng-container matColumnDef="numberOfPosts">
-      <mat-header-cell *matHeaderCellDef>Posts</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Posts</mat-header-cell>
       <mat-cell *matCellDef="let row">
         {{row.numberOfPosts}}
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="views">
-      <mat-header-cell *matHeaderCellDef>Views</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Views</mat-header-cell>
       <mat-cell *matCellDef="let row">
         {{row.views}}
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="lastActivity">
-      <mat-header-cell *matHeaderCellDef>Activity</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Activity</mat-header-cell>
       <mat-cell *matCellDef="let row">
         {{row.lastActivity | amTimeAgo}}
       </mat-cell>
