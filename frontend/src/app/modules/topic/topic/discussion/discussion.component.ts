@@ -32,6 +32,7 @@ export class DiscussionComponent implements OnInit {
   @ViewChild('searchInput') searchInput: ElementRef;
 
   subscription: any;
+  loading = false;
 
   constructor(private route: ActivatedRoute,
               private loadingService: LoadingService,
@@ -52,9 +53,9 @@ export class DiscussionComponent implements OnInit {
   }
 
   loadDiscussion(id: number) {
-    this.loadingService.start();
+    this.loading = true;
     this.subscription = this.discussionService.get(id)
-      .finally(() => this.loadingService.stop())
+      .finally(() => this.loading = false)
       .subscribe(resp => {
         this.discussion = resp;
         this.behavior.next(this.discussion.threads);
