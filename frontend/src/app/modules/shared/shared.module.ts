@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from './modules/material/material.module';
-import { SpinnerComponent } from './components/spinner/spinner.component';
+import { FontAwesomeSpinnerComponent } from './components/font-awesome-spinner/font-awesome-spinner.component';
 import { HasErrorPipe } from './pipes/has-error.pipe';
 import { FilterByPipe, OrderByPipe } from 'ngx-pipes/esm';
 import { RequestService } from './services/request.service';
 import { ClickStopPropagationDirective } from './directives/click-stop-propagation/click-stop-propagation.directive';
+import { MaterialSpinnerComponent } from './components/material-spinner/material-spinner.component';
 
 const COMPONENTS = [
-  SpinnerComponent,
+  FontAwesomeSpinnerComponent,
+  MaterialSpinnerComponent,
 ];
 
 const PIPES = [

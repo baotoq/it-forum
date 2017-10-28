@@ -4,7 +4,6 @@ import { FormControl } from '@angular/forms';
 import { MatPaginator, MatSort } from '@angular/material';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { DiscussionService } from '../../../discussion/discussion.service';
-import { LoadingService } from '../../../../shared/loading/loading.service';
 import { Thread } from '../../../../models/thread';
 import { Discussion } from '../../../../models/discussion';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -35,7 +34,6 @@ export class DiscussionComponent implements OnInit {
   loading = false;
 
   constructor(private route: ActivatedRoute,
-              private loadingService: LoadingService,
               private discussionService: DiscussionService,
               private orderByPipe: OrderByPipe,
               private filterByPipe: FilterByPipe) {
@@ -54,7 +52,7 @@ export class DiscussionComponent implements OnInit {
 
   loadDiscussion(id: number) {
     this.loading = true;
-    this.subscription = this.discussionService.get(id)
+    this.subscription = this.discussionService.get(id).delay(1000)
       .finally(() => this.loading = false)
       .subscribe(resp => {
         this.discussion = resp;

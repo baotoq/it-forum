@@ -1,8 +1,6 @@
 <div class="container-fluid position-relative mt-3">
-  <div *ngIf="!loading" class="overlay" style="left: 15px; width: calc(100% - 30px)">
-    <div class="overlay-content">
-      <mat-spinner [diameter]="50" [strokeWidth]="4"></mat-spinner>
-    </div>
+  <div *ngIf="loading">
+    <app-material-spinner [padding]="15"></app-material-spinner>
   </div>
 
   <div>
@@ -11,7 +9,7 @@
                    class="mat-toolbar-56 text-muted position-absolute" style="background-color: #EEEEEE">
         <mat-icon class="mr-2">search</mat-icon>
         <span *ngIf="!searchControl.value">
-        Search
+        Search by title
       </span>
         <mat-chip-list *ngIf="searchControl.value">
           <mat-chip class="bg-primary text-white" (remove)="searchControl.setValue(''); onSearchOut()">
@@ -28,7 +26,7 @@
       <mat-toolbar [class.shadow]="search"
                    class="bg-white mat-toolbar-56" style="position: static">
         <mat-icon class="mr-2">search</mat-icon>
-        <input class="w-100 border-0 search" #searchInput placeholder="Search"
+        <input class="w-100 border-0 search" #searchInput placeholder="Search by title"
                (focusout)="onSearchOut()" (keyup.enter)="onSearchOut()"
                [formControl]="searchControl">
       </mat-toolbar>
@@ -78,7 +76,14 @@
       <mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="['/thread', row.id]"></mat-row>
     </mat-table>
 
-    <mat-paginator #paginator class="shadow"
+    <mat-card *ngIf="!behavior.value.length && !loading">
+      <mat-card-content class="justify-content-center d-flex py-5">
+        We couldn't find any thread.
+      </mat-card-content>
+    </mat-card>
+
+    <mat-paginator [hidden]="!behavior.value.length && !loading"
+                   #paginator class="shadow"
                    [length]="behavior.value.length"
                    [pageIndex]="0"
                    [pageSizeOptions]="[10, 15, 20]">
