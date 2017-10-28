@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { TopicService } from '../topic.service';
 
 @Component({
   selector: 'app-topic',
@@ -8,7 +8,13 @@ import { Router } from '@angular/router';
 })
 export class TopicComponent implements OnInit {
 
-  constructor(private router: Router) {
+  tabLinks = [
+    {label: 'Discussion1', link: '/topic/discussion/162'},
+    {label: 'Discussion2', link: '/topic/discussion/187'},
+    {label: 'Discussion3', link: '/topic/discussion/186'},
+  ];
+
+  constructor(private topicService: TopicService) {
   }
 
   ngOnInit() {

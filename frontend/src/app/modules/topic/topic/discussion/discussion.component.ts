@@ -3,10 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { MatPaginator, MatSort } from '@angular/material';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
-import { DiscussionService } from '../discussion.service';
-import { LoadingService } from '../../../shared/loading/loading.service';
-import { Thread } from '../../../models/thread';
-import { Discussion } from '../../../models/discussion';
+import { DiscussionService } from '../../../discussion/discussion.service';
+import { LoadingService } from '../../../../shared/loading/loading.service';
+import { Thread } from '../../../../models/thread';
+import { Discussion } from '../../../../models/discussion';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/merge';
@@ -39,22 +39,28 @@ export class DiscussionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadDiscussion();
+    this.route.params.subscribe(params => {
+      this.searchControl.setValue('');
+      this.loadDiscussion(+params['discussionId']);
+    });
+    this.matSort.sortChange.subscribe(() => this.filter());
   }
 
-  loadDiscussion() {
+  loadDiscussion(id: number) {
     this.loadingService.start();
-    this.discussionService.get(this.route.snapshot.params['discussionId'])
+    this.discussionService.get(id)
       .finally(() => this.loadingService.stop())
       .subscribe(resp => {
         this.discussion = resp;
         this.behavior.next(this.discussion.threads);
-        this.onSort();
-        this.matSort.sort({
-          id: 'lastActivity',
-          start: 'desc',
-          disableClear: true,
-        });
+        if (this.matSort.active !== 'lastActivity') {
+          this.matSort.sort({
+            id: 'lastActivity',
+            start: 'desc',
+            disableClear: true,
+          });
+        }
+        this.filter();
         this.dataSource = new ThreadDataSource(this.behavior, this.paginator);
       });
   }
@@ -67,10 +73,6 @@ export class DiscussionComponent implements OnInit {
   onSearchOut() {
     this.search = false;
     this.filter();
-  }
-
-  onSort() {
-    this.matSort.sortChange.subscribe(() => this.filter());
   }
 
   filter() {

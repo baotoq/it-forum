@@ -1,4 +1,4 @@
-.mat-toolbar.mat-toolbar-56 {
+.mat-toolbar.mat-toolbar-48 {
   min-height: 48px !important;
   height: 48px !important;
 
@@ -6,6 +6,10 @@
     min-height: 48px !important;
     height: 48px !important;
   }
+}
+
+.mat-toolbar.mat-toolbar-56 {
+  @extend .mat-toolbar.mat-toolbar-48;
 }
 
 @media screen and (min-width: 600px) {

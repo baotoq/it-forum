@@ -16,10 +16,6 @@ const routes: Routes = [
     loadChildren: 'app/modules/topic/topic.module#TopicModule',
   },
   {
-    path: 'discussion',
-    loadChildren: 'app/modules/discussion/discussion.module#DiscussionModule',
-  },
-  {
     path: 'admin',
     loadChildren: 'app/modules/admin/admin.module#AdminModule',
   },

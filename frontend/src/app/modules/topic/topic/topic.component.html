@@ -1,24 +1,13 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="mat-toolbar-48">
   <span class="m-auto">Topic</span>
 </mat-toolbar>
 <nav mat-tab-nav-bar>
-  <a mat-tab-link style="text-decoration: none"
-     [routerLink]="['/discussion', 162]"
+  <a mat-tab-link
+     *ngFor="let tabLink of tabLinks; let i = index"
+     [routerLink]="tabLink.link"
      routerLinkActive #rla="routerLinkActive"
      [active]="rla.isActive">
-    Discussion 1
-  </a>
-  <a mat-tab-link style="text-decoration: none"
-     [routerLink]="['/discussion', 186]"
-     routerLinkActive #rla="routerLinkActive"
-     [active]="rla.isActive">
-    Discussion 2
-  </a>
-  <a mat-tab-link style="text-decoration: none"
-     [routerLink]="['/discussion', 187]"
-     routerLinkActive #rla="routerLinkActive"
-     [active]="rla.isActive">
-    Discussion 3
+    {{tabLink.label}}
   </a>
 </nav>
-<router-outlet name="discussion"></router-outlet>
+<router-outlet></router-outlet>
