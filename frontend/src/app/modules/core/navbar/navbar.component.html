@@ -12,7 +12,9 @@
          class="d-none d-sm-inline-block">
         Register
       </a>
-      <a mat-raised-button color="primary" [routerLink]="['auth/login']" routerLinkActive="active"
+      <a mat-raised-button color="primary" [routerLink]="['auth/login']"
+         [queryParams]="{returnUrl: router.routerState.snapshot.url}"
+         routerLinkActive="active"
          class="d-none d-sm-inline-block">
         Login
       </a>

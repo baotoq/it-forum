@@ -9,7 +9,6 @@ import 'rxjs/add/operator/finally';
 
 @Injectable()
 export class AuthService {
-
   constructor(private requestService: RequestService) {
   }
 
