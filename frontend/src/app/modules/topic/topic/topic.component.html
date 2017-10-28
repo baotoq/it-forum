@@ -1,9 +1,9 @@
-<mat-toolbar color="primary" class="mat-toolbar-48">
-  <span class="m-auto">Topic</span>
+<mat-toolbar *ngIf="topic" color="primary" class="mat-toolbar-48">
+  <span class="m-auto">{{topic.name}}</span>
 </mat-toolbar>
 <nav mat-tab-nav-bar>
   <a mat-tab-link
-     *ngFor="let tabLink of tabLinks; let i = index"
+     *ngFor="let tabLink of tabLinks"
      [routerLink]="tabLink.link"
      routerLinkActive #rla="routerLinkActive"
      [active]="rla.isActive">

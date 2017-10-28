@@ -41,7 +41,7 @@ export class DiscussionComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.searchControl.setValue('');
-      this.loadDiscussion(+params['discussionId']);
+      this.loadDiscussion(params['discussionId']);
     });
     this.matSort.sortChange.subscribe(() => this.filter());
   }

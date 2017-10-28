@@ -43,6 +43,8 @@ namespace ItForum.Controllers
         public IActionResult Get(int id)
         {
             var comment = _postService.FindById(id);
+            if (comment == null)
+                return NotFound();
             var dto = _mapper.Map<PostDto>(comment);
             return Ok(dto);
         }

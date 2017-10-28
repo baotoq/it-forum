@@ -38,6 +38,8 @@ namespace ItForum.Controllers
         public IActionResult Get(int id)
         {
             var discussion = _discussionService.FindById(id);
+            if (discussion == null)
+                return NotFound();
             var dto = _mapper.Map<DiscussionDto>(discussion);
             return Ok(dto);
         }

@@ -10,11 +10,11 @@ const routes: Routes = [
     component: TopicListComponent,
   },
   {
-    path: 'discussion',
+    path: ':topicId',
     component: TopicComponent,
     children: [
       {
-        path: ':discussionId',
+        path: 'discussion/:discussionId',
         component: DiscussionComponent,
       },
     ],

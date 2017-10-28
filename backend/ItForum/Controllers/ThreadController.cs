@@ -41,6 +41,8 @@ namespace ItForum.Controllers
         public IActionResult Get(int id)
         {
             var thread = _threadService.FindById(id);
+            if (thread == null)
+                return NotFound();
             var dto = _mapper.Map<ThreadDto>(thread);
             return Ok(dto);
         }

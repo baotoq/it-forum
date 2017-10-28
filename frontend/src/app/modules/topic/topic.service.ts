@@ -16,6 +16,6 @@ export class TopicService {
   }
 
   get(id: number): Observable<Topic> {
-    return this.requestService.authGet(`${API.TOPIC.GET}/${id}`);
+    return this.requestService.get(`${API.TOPIC.GET}/${id}`);
   }
 }

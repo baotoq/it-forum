@@ -30,5 +30,15 @@ namespace ItForum.Controllers
             var dto = _mapper.Map<List<TopicDto>>(topics);
             return Ok(dto);
         }
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var topic = _topicService.FindById(id);
+            if (topic == null)
+                return NotFound();
+            var dto = _mapper.Map<TopicDto>(topic);
+            return Ok(dto);
+        }
     }
 }
