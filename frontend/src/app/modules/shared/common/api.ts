@@ -28,20 +28,20 @@ export module API {
     public static readonly CREATE = `${DISCUSSION.URL}/create`;
   }
 
+  export class THREAD {
+    public static readonly URL = `${BASE_URL}/thread`;
+
+    public static readonly GET_ALL = `${THREAD.URL}/getAll`;
+    public static readonly GET = `${THREAD.URL}/get`;
+    public static readonly CREATE = `${THREAD.URL}/create`;
+    public static readonly VIEW = `${THREAD.URL}/view`;
+    public static readonly VOTE = `${THREAD.URL}/vote`;
+  }
+
   export class POST {
     public static readonly URL = `${BASE_URL}/post`;
 
-    public static readonly GET_ALL = `${POST.URL}/getAll`;
-    public static readonly GET = `${POST.URL}/get`;
     public static readonly CREATE = `${POST.URL}/create`;
-    public static readonly VIEW = `${POST.URL}/view`;
     public static readonly VOTE = `${POST.URL}/vote`;
-  }
-
-  export class COMMENT {
-    public static readonly URL = `${BASE_URL}/comment`;
-
-    public static readonly CREATE = `${COMMENT.URL}/create`;
-    public static readonly VOTE = `${COMMENT.URL}/vote`;
   }
 }

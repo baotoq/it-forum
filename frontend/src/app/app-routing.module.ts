@@ -16,6 +16,10 @@ const routes: Routes = [
     loadChildren: 'app/modules/topic/topic.module#TopicModule',
   },
   {
+    path: 'thread',
+    loadChildren: 'app/modules/thread/thread.module#ThreadModule',
+  },
+  {
     path: 'admin',
     loadChildren: 'app/modules/admin/admin.module#AdminModule',
   },

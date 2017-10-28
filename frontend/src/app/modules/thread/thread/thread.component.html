@@ -1,0 +1,7 @@
+<div *ngIf="thread">
+  {{thread.title}}
+
+  <div *ngFor="let post of thread.posts">
+    {{post.content}}
+  </div>
+</div>

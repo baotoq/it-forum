@@ -21,17 +21,15 @@ export class TopicComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.topicService.get(params['topicId'])
-        .subscribe(resp => {
-          this.topic = resp;
-          this.topic.discussions.forEach(item => {
-            this.tabLinks.push(`/topic/${this.topic.id}/discussion/${item.id}`);
-          });
-          const discussionId = +this.route.firstChild.snapshot.params['discussionId'];
-          this.matTabGroup.selectedIndex = this.topic.discussions.findIndex(x => x.id === discussionId);
+    this.topicService.get(this.route.snapshot.params['topicId'])
+      .subscribe(resp => {
+        this.topic = resp;
+        this.topic.discussions.forEach(item => {
+          this.tabLinks.push(`/topic/${this.topic.id}/discussion/${item.id}`);
         });
-    });
+        const discussionId = +this.route.firstChild.snapshot.params['discussionId'];
+        this.matTabGroup.selectedIndex = this.topic.discussions.findIndex(x => x.id === discussionId);
+      });
   }
 
   focusChange($event) {
