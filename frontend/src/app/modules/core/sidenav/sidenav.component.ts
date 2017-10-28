@@ -1,4 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AuthService } from '../../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidenav',
@@ -8,10 +10,19 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 export class SidenavComponent implements OnInit {
   @Output() selectChange = new EventEmitter<any>();
 
-  constructor() {
+  navLinks = [
+    {label: 'Dashboard', link: '/admin/dashboard', icon: 'dashboard'},
+    {label: 'Topic', link: '/topic', icon: 'list'},
+  ];
+
+  constructor(private router: Router,
+              private authService: AuthService) {
   }
 
   ngOnInit() {
   }
 
+  get authenticated(): boolean {
+    return this.authService.isAuthenticated();
+  }
 }

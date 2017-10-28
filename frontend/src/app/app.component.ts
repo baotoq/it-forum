@@ -10,6 +10,7 @@ import { Component, HostListener, ViewChild } from '@angular/core';
         <app-sidenav (selectChange)="sidenavSelectChange()"></app-sidenav>
       </mat-sidenav>
       <router-outlet></router-outlet>
+      <div [style.height.px]="60"></div>
     </mat-sidenav-container>
     <ng-snotify></ng-snotify>
   `,
