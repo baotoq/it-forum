@@ -52,7 +52,7 @@ export class DiscussionComponent implements OnInit {
 
   loadDiscussion(id: number) {
     this.loading = true;
-    this.subscription = this.discussionService.get(id).delay(1000)
+    this.subscription = this.discussionService.get(id).delay(500)
       .finally(() => this.loading = false)
       .subscribe(resp => {
         this.discussion = resp;

@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +7,7 @@ import { Component, HostListener } from '@angular/core';
     <app-navbar (sidenavToggle)="sidenav.toggle()" class="fixed-top"></app-navbar>
     <mat-sidenav-container fullscreen>
       <mat-sidenav #sidenav [mode]="smallScreen ? 'over' : 'side'" [opened]="!smallScreen">
-        <app-sidenav></app-sidenav>
+        <app-sidenav (selectChange)="sidenavSelectChange()"></app-sidenav>
       </mat-sidenav>
       <router-outlet></router-outlet>
     </mat-sidenav-container>
@@ -18,6 +18,8 @@ import { Component, HostListener } from '@angular/core';
 export class AppComponent {
   smallScreen = false;
 
+  @ViewChild('sidenav') sidenav;
+
   @HostListener('window:resize')
   onResize() {
     this.smallScreen = window.innerWidth < 960;
@@ -25,5 +27,11 @@ export class AppComponent {
 
   constructor() {
     this.onResize();
+  }
+
+  sidenavSelectChange() {
+    if (this.smallScreen) {
+      this.sidenav.close();
+    }
   }
 }

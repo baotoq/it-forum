@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { LoadingService } from '../../../shared/loading/loading.service';
 import { TopicService } from '../topic.service';
 import { Topic } from '../../../models/topic';
 
@@ -11,9 +10,9 @@ import { Topic } from '../../../models/topic';
 export class TopicListComponent implements OnInit, OnDestroy {
   topics: Topic[];
   subscription: any;
+  loading = false;
 
-  constructor(private topicService: TopicService,
-              private loadingService: LoadingService) {
+  constructor(private topicService: TopicService) {
   }
 
   ngOnInit() {
@@ -25,9 +24,9 @@ export class TopicListComponent implements OnInit, OnDestroy {
   }
 
   getTopic() {
-    this.loadingService.start();
+    this.loading = true;
     this.subscription = this.topicService.getAll()
-      .finally(() => this.loadingService.stop())
+      .finally(() => this.loading = false)
       .subscribe(resp => this.topics = resp);
   }
 }
