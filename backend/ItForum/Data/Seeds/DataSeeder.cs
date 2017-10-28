@@ -59,7 +59,7 @@ namespace ItForum.Data.Seeds
 
             var discussionFaker = new Faker<Discussion>().Rules((f, o) =>
             {
-                o.Name = f.Name.FirstName();
+                o.Name = f.Commerce.ProductName();
                 o.Description = f.Lorem.Sentences(3);
                 o.Threads = postFaker.Generate(f.Random.Number(20, 50)).ToList();
                 o.CreatedDate = f.Date.Past(4);

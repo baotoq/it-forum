@@ -1,13 +1,9 @@
 <mat-toolbar *ngIf="topic" color="primary" class="mat-toolbar-48">
-  <span class="m-auto">{{topic.name}}</span>
+  <span class="m-auto">{{topic.name | uppercase}}</span>
 </mat-toolbar>
-<nav mat-tab-nav-bar>
-  <a mat-tab-link
-     *ngFor="let tabLink of tabLinks"
-     [routerLink]="tabLink.link"
-     routerLinkActive #rla="routerLinkActive"
-     [active]="rla.isActive">
-    {{tabLink.label}}
-  </a>
-</nav>
+<mat-tab-group #tabs (focusChange)="focusChange($event)">
+  <mat-tab *ngFor="let discussion of topic?.discussions"
+           [label]="discussion.name">
+  </mat-tab>
+</mat-tab-group>
 <router-outlet></router-outlet>

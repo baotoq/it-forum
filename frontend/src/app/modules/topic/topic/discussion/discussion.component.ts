@@ -31,6 +31,8 @@ export class DiscussionComponent implements OnInit {
   searchControl = new FormControl();
   @ViewChild('searchInput') searchInput: ElementRef;
 
+  subscription: any;
+
   constructor(private route: ActivatedRoute,
               private loadingService: LoadingService,
               private discussionService: DiscussionService,
@@ -41,6 +43,9 @@ export class DiscussionComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.searchControl.setValue('');
+      if (this.subscription) {
+        this.subscription.unsubscribe();
+      }
       this.loadDiscussion(params['discussionId']);
     });
     this.matSort.sortChange.subscribe(() => this.filter());
@@ -48,7 +53,7 @@ export class DiscussionComponent implements OnInit {
 
   loadDiscussion(id: number) {
     this.loadingService.start();
-    this.discussionService.get(id)
+    this.subscription = this.discussionService.get(id)
       .finally(() => this.loadingService.stop())
       .subscribe(resp => {
         this.discussion = resp;
