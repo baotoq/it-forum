@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { CoreService } from '../../core/core.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +16,8 @@ export class LoginComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private authService: AuthService,
               private coreService: CoreService,
-              private router: Router) {
+              private router: Router,
+              private route: ActivatedRoute) {
     this.createForm();
   }
 
@@ -46,7 +47,7 @@ export class LoginComponent implements OnInit {
         if (resp.token) {
           this.authService.setToken(resp.token);
           this.coreService.notifySuccess('Login successful!');
-          this.router.navigate(['/']);
+          this.router.navigateByUrl(this.route.snapshot.queryParams['returnUrl'] || '/');
         }
       }, error => {
         if (error.status === 401) {
