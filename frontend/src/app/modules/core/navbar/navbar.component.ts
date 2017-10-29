@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -9,8 +9,10 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   @Output() sidenavToggle = new EventEmitter<any>();
+  returnUrl = '/';
 
   constructor(private router: Router,
+              private route: ActivatedRoute,
               private authService: AuthService) {
   }
 

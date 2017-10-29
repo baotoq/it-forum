@@ -1,0 +1,73 @@
+<div class="container-fluid px-5 mt-3">
+  <div class="form-group">
+    <button mat-raised-button color="primary" [disabled]="!editorContent || !title" (click)="onCreate()">
+      <app-fa-spinner *ngIf="loading"></app-fa-spinner>
+      <span *ngIf="!loading">
+        <i class="fa fa-reply"></i>
+        Submit
+      </span>
+    </button>
+    <button mat-raised-button color="accent" (click)="displayReview = !displayReview">
+      <i class="fa fa-eye"></i>
+      Review
+    </button>
+  </div>
+  <div *ngIf="displayReview" class="form-group">
+    <mat-card>
+      <mat-card-content>
+        <h1>{{title}}</h1>
+        <i class="fa fa-calendar"></i> a few seconds ago
+        <i class="fa fa-eye"></i> 0
+        <i class="fa fa-comments"></i> 0
+        <span>by <a href="#">{{currentUser.name}}</a></span>
+        <hr>
+        <div [froalaView]="editorContent"></div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <mat-card>
+    <div>
+      <mat-form-field class="w-100" floatPlaceholder="always">
+        <input matInput placeholder="Title" [(ngModel)]="title" required>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field class="w-100" floatPlaceholder="always">
+          <mat-select placeholder="Topic" [(ngModel)]="topicId">
+            <mat-option *ngFor="let value of [0, 1, 2, 3]" [value]="value">
+              {{ value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field class="w-100" floatPlaceholder="always">
+          <mat-select placeholder="Discussion" [(ngModel)]="discussionId">
+            <mat-option *ngFor="let value of [0, 1, 2, 3]" [value]="value">
+              {{ value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div>
+      <mat-form-field class="w-100" floatPlaceholder="always">
+        <mat-chip-list #chipList [selectable]="false">
+          <mat-chip *ngFor="let tag of tags" class="bg-primary text-white" (remove)="remove(tag)">
+            {{tag.name}}
+            <mat-icon matChipRemove class="text-white">cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="Tags"
+                 [matChipInputFor]="chipList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="true"
+                 (matChipInputTokenEnd)="add($event)"/>
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
+  </mat-card>
+  <div class="form-group">
+    <div [froalaEditor]="{height: 500}" [(froalaModel)]="editorContent"></div>
+  </div>
+</div>

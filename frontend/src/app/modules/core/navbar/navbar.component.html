@@ -13,7 +13,7 @@
         Register
       </a>
       <a mat-raised-button color="primary" [routerLink]="['auth/login']"
-         [queryParams]="{returnUrl: router.routerState.snapshot.url}"
+         [queryParams]="{returnUrl: route.snapshot.queryParams['returnUrl'] ? route.snapshot.queryParams['returnUrl'] : router.routerState.snapshot.url}"
          routerLinkActive="active"
          class="d-none d-sm-inline-block">
         Login
