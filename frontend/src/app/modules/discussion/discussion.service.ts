@@ -13,4 +13,8 @@ export class DiscussionService {
   get(id: number): Observable<Discussion> {
     return this.requestService.get(`${API.DISCUSSION.GET}/${id}`);
   }
+
+  getSelectOptions(topicId: number): Observable<any> {
+    return this.requestService.get(`${API.DISCUSSION.GET_OPTIONS}/${topicId}`);
+  }
 }

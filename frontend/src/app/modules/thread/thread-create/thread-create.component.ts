@@ -7,6 +7,8 @@ import { ThreadService } from '../thread.service';
 
 import { ENTER } from '@angular/cdk/keycodes';
 import { Thread } from '../../../models/thread';
+import { TopicService } from '../../topic/topic.service';
+import { DiscussionService } from '../../discussion/discussion.service';
 
 const COMMA = 188;
 
@@ -17,8 +19,12 @@ const COMMA = 188;
 })
 export class ThreadCreateComponent implements OnInit {
   tags = [];
-  topicId: number;
-  discussionId: number;
+  selectedTopic: number;
+  selectedDiscussion: number;
+  selected = false;
+
+  topicOptions = [];
+  discussionOptions = [];
 
   loading = false;
   title: string;
@@ -31,12 +37,18 @@ export class ThreadCreateComponent implements OnInit {
               private route: ActivatedRoute,
               private authService: AuthService,
               private coreService: CoreService,
+              private topicService: TopicService,
+              private discussionService: DiscussionService,
               private threadService: ThreadService) {
   }
 
   ngOnInit() {
-    this.topicId = +this.route.snapshot.queryParams['topicId'] || 0;
-    this.discussionId = +this.route.snapshot.queryParams['discussionId'] || 0;
+    this.topicService.getSelectOptions().subscribe(topicResp => {
+      this.topicOptions = topicResp;
+      this.selectedTopic = +this.route.snapshot.queryParams['topicId'] || this.topicOptions[0].value;
+
+      this.getDiscussionOptions();
+    });
   }
 
   onCreate() {
@@ -44,7 +56,7 @@ export class ThreadCreateComponent implements OnInit {
     const thread = new Thread({
       title: this.title,
       content: this.editorContent,
-      discussionId: this.discussionId,
+      discussionId: this.selectedDiscussion,
     });
     this.threadService.create(thread)
       .finally(() => this.loading = false)
@@ -52,6 +64,18 @@ export class ThreadCreateComponent implements OnInit {
         this.router.navigate(['/thread', resp.id]);
         this.coreService.notifySuccess();
       });
+  }
+
+  getDiscussionOptions() {
+    this.discussionService.getSelectOptions(this.selectedTopic).subscribe(discussionResp => {
+      this.discussionOptions = discussionResp;
+      if (this.selected) {
+        this.selectedDiscussion = this.discussionOptions[0].value;
+      } else {
+        this.selectedDiscussion = +this.route.snapshot.queryParams['discussionId'] || this.discussionOptions[0].value;
+        ;
+      }
+    });
   }
 
   add($event: MatChipInputEvent): void {

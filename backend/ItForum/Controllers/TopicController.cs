@@ -40,5 +40,17 @@ namespace ItForum.Controllers
             var dto = _mapper.Map<TopicDto>(topic);
             return Ok(dto);
         }
+
+        [HttpGet]
+        public IActionResult GetSelectOptions()
+        {
+            var topics = _topicService.GetAll().ToList();
+            return Ok(topics.Select(x => new
+            {
+                value = x.Id,
+                text = x.Name,
+                title = x.Description
+            }));
+        }
     }
 }

@@ -23,5 +23,10 @@ namespace ItForum.Services
         {
             return DbSet.Include(x => x.Threads).ThenInclude(x => x.User);
         }
+
+        public List<Discussion> FinByTopic(int topicId)
+        {
+            return DbSet.Where(x => x.Topic.Id == topicId).ToList();
+        }
     }
 }

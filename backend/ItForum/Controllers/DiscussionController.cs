@@ -44,6 +44,18 @@ namespace ItForum.Controllers
             return Ok(dto);
         }
 
+        [HttpGet("{topicId}")]
+        public IActionResult GetSelectOptions(int topicId)
+        {
+            var discussions = _discussionService.FinByTopic(topicId);
+            return Ok(discussions.Select(x => new
+            {
+                value = x.Id,
+                text = x.Name,
+                title = x.Description
+            }));
+        }
+
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Discussion discussion)

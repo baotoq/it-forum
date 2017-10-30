@@ -17,6 +17,7 @@ export module API {
 
     public static readonly GET_ALL = `${TOPIC.URL}/getAll`;
     public static readonly GET = `${TOPIC.URL}/get`;
+    public static readonly GET_OPTIONS = `${TOPIC.URL}/getSelectOptions`;
     public static readonly CREATE = `${TOPIC.URL}/create`;
   }
 
@@ -25,6 +26,7 @@ export module API {
 
     public static readonly GET_ALL = `${DISCUSSION.URL}/getAll`;
     public static readonly GET = `${DISCUSSION.URL}/get`;
+    public static readonly GET_OPTIONS = `${DISCUSSION.URL}/getSelectOptions`;
     public static readonly CREATE = `${DISCUSSION.URL}/create`;
   }
 

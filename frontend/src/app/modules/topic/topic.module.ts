@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgPipesModule } from 'ngx-pipes';
 import { MomentModule } from 'angular2-moment';
-import { DiscussionModule } from '../discussion/discussion.module';
 import { SharedModule } from '../shared/shared.module';
 
 import { TopicRoutingModule } from './topic-routing.module';
@@ -19,7 +18,6 @@ import { TopicService } from './topic.service';
     ReactiveFormsModule,
     NgPipesModule,
     MomentModule,
-    DiscussionModule,
     SharedModule,
     TopicRoutingModule,
   ],

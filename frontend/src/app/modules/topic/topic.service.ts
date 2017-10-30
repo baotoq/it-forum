@@ -18,4 +18,8 @@ export class TopicService {
   get(id: number): Observable<Topic> {
     return this.requestService.get(`${API.TOPIC.GET}/${id}`);
   }
+
+  getSelectOptions(): Observable<any> {
+    return this.requestService.get(`${API.TOPIC.GET_OPTIONS}`);
+  }
 }
