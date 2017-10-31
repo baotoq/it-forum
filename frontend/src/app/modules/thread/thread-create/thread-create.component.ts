@@ -55,9 +55,10 @@ export class ThreadCreateComponent implements OnInit {
     this.loading = true;
     const thread = new Thread({
       title: this.title,
-      content: this.editorContent,
       discussionId: this.selectedDiscussion,
+      posts: [{content: this.editorContent}],
     });
+
     this.threadService.create(thread)
       .finally(() => this.loading = false)
       .subscribe(resp => {
@@ -73,7 +74,6 @@ export class ThreadCreateComponent implements OnInit {
         this.selectedDiscussion = this.discussionOptions[0].value;
       } else {
         this.selectedDiscussion = +this.route.snapshot.queryParams['discussionId'] || this.discussionOptions[0].value;
-        ;
       }
     });
   }

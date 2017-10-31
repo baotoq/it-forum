@@ -5,7 +5,6 @@ import { Post } from './post';
 export class Thread extends Timestamp {
   id: number;
   title: string;
-  content: string;
   views = 0;
   point = 0;
   numberOfPosts = 0;
@@ -20,7 +19,6 @@ export class Thread extends Timestamp {
     if (obj) {
       this.id = obj.id;
       this.title = obj.title;
-      this.content = obj.content;
       this.views = obj.views;
       this.point = obj.point;
       this.numberOfPosts = obj.numberOfPosts;

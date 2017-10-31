@@ -20,11 +20,12 @@ import { ThreadModule } from './modules/thread/thread.module';
 import { SharedModule } from './modules/shared/shared.module';
 
 import { AppComponent } from './app.component';
-import { LoadingComponent } from './shared/loading/loading.component';
+import { SpinnerComponent } from './components/loading/spinner/spinner.component';
+import { ProgressBarComponent } from './components/loading/progress-bar/progress-bar.component';
 
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
-import { LoadingService } from './shared/loading/loading.service';
+import { LoadingService } from './components/loading/loading.service';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig(), http, options);
@@ -42,7 +43,8 @@ export const firebaseConfig = {
 @NgModule({
   declarations: [
     AppComponent,
-    LoadingComponent,
+    SpinnerComponent,
+    ProgressBarComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,14 +1,15 @@
-import { Component, HostListener, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   template: `
-    <app-loading class="fixed-top" style="z-index: 9999"></app-loading>
+    <app-progress-bar></app-progress-bar>
     <app-navbar (sidenavToggle)="sidenav.toggle()" class="fixed-top"></app-navbar>
     <mat-sidenav-container fullscreen>
       <mat-sidenav #sidenav [mode]="smallScreen ? 'over' : 'side'" [opened]="!smallScreen">
         <app-sidenav (selectChange)="sidenavSelectChange()"></app-sidenav>
       </mat-sidenav>
+      <app-spinner></app-spinner>
       <router-outlet></router-outlet>
       <div [style.height.px]="60"></div>
     </mat-sidenav-container>
@@ -16,7 +17,7 @@ import { Component, HostListener, ViewChild } from '@angular/core';
   `,
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   smallScreen = false;
 
   @ViewChild('sidenav') sidenav;
@@ -28,6 +29,9 @@ export class AppComponent {
 
   constructor() {
     this.onResize();
+  }
+
+  ngOnInit() {
   }
 
   sidenavSelectChange() {

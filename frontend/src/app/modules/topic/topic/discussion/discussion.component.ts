@@ -11,6 +11,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
 import { FilterByPipe, OrderByPipe } from 'ngx-pipes/esm';
+import { LoadingService } from '../../../../components/loading/loading.service';
 
 @Component({
   selector: 'app-discussion',
@@ -31,10 +32,10 @@ export class DiscussionComponent implements OnInit {
   @ViewChild('searchInput') searchInput: ElementRef;
 
   subscription: any;
-  loading = false;
 
   constructor(private route: ActivatedRoute,
               private discussionService: DiscussionService,
+              private loadingService: LoadingService,
               private orderByPipe: OrderByPipe,
               private filterByPipe: FilterByPipe) {
   }
@@ -51,9 +52,9 @@ export class DiscussionComponent implements OnInit {
   }
 
   loadDiscussion(id: number) {
-    this.loading = true;
+    this.loadingService.spinnerStart();
     this.subscription = this.discussionService.get(id).delay(500)
-      .finally(() => this.loading = false)
+      .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.discussion = resp;
         this.behavior.next(this.discussion.threads);

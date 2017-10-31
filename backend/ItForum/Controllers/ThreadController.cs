@@ -52,8 +52,10 @@ namespace ItForum.Controllers
         public async Task<IActionResult> Create([FromBody] Thread thread)
         {
             if (thread == null) return BadRequest();
-
+            if (thread.Posts[0] == null) return BadRequest();
+            
             thread.UserId = CurrentUserId;
+            thread.Posts[0].UserId = CurrentUserId;
             thread.LastActivity = DateTime.Now;
             await _threadService.AddAsync(thread);
             await _unitOfWork.SaveChangesAsync();
