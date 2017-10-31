@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatChipInputEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { CoreService } from '../../core/core.service';
@@ -9,6 +8,8 @@ import { ENTER } from '@angular/cdk/keycodes';
 import { Thread } from '../../../models/thread';
 import { TopicService } from '../../topic/topic.service';
 import { DiscussionService } from '../../discussion/discussion.service';
+import { LoadingService } from '../../../components/loading/loading.service';
+import { TagService } from '../../tag/tag.service';
 
 const COMMA = 188;
 
@@ -35,19 +36,28 @@ export class ThreadCreateComponent implements OnInit {
 
   constructor(private router: Router,
               private route: ActivatedRoute,
+              private loadingService: LoadingService,
               private authService: AuthService,
               private coreService: CoreService,
               private topicService: TopicService,
               private discussionService: DiscussionService,
-              private threadService: ThreadService) {
+              private threadService: ThreadService,
+              private tagService: TagService) {
   }
 
   ngOnInit() {
-    this.topicService.getSelectOptions().subscribe(topicResp => {
-      this.topicOptions = topicResp;
-      this.selectedTopic = +this.route.snapshot.queryParams['topicId'] || this.topicOptions[0].value;
+    this.loadingService.spinnerStart();
+    this.topicService.getSelectOptions()
+      .finally(() => this.loadingService.spinnerStop())
+      .subscribe(topicResp => {
+        this.topicOptions = topicResp;
+        this.selectedTopic = +this.route.snapshot.queryParams['topicId'] || this.topicOptions[0].value;
 
-      this.getDiscussionOptions();
+        this.getDiscussionOptions();
+      });
+
+    this.tagService.getAll().subscribe(resp => {
+      console.log(resp);
     });
   }
 
@@ -68,17 +78,18 @@ export class ThreadCreateComponent implements OnInit {
   }
 
   getDiscussionOptions() {
-    this.discussionService.getSelectOptions(this.selectedTopic).subscribe(discussionResp => {
-      this.discussionOptions = discussionResp;
-      if (this.selected) {
-        this.selectedDiscussion = this.discussionOptions[0].value;
-      } else {
-        this.selectedDiscussion = +this.route.snapshot.queryParams['discussionId'] || this.discussionOptions[0].value;
-      }
-    });
+    this.discussionService.getSelectOptions(this.selectedTopic)
+      .subscribe(discussionResp => {
+        this.discussionOptions = discussionResp;
+        if (this.selected) {
+          this.selectedDiscussion = this.discussionOptions[0].value;
+        } else {
+          this.selectedDiscussion = +this.route.snapshot.queryParams['discussionId'] || this.discussionOptions[0].value;
+        }
+      });
   }
 
-  add($event: MatChipInputEvent): void {
+  add($event): void {
     const input = $event.input;
     const value = $event.value;
 

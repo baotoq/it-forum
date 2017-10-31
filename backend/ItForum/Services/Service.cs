@@ -103,7 +103,7 @@ namespace ItForum.Services
 
         public virtual List<TEntity> ToList()
         {
-            return DbSet.ToList();
+            return GetAll().ToList();
         }
     }
 }

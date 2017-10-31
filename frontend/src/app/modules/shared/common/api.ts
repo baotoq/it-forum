@@ -46,4 +46,11 @@ export module API {
     public static readonly CREATE = `${POST.URL}/create`;
     public static readonly VOTE = `${POST.URL}/vote`;
   }
+
+  export class TAG {
+    public static readonly URL = `${BASE_URL}/tag`;
+
+    public static readonly GET_ALL = `${TAG.URL}/getAll`;
+    public static readonly GET = `${TAG.URL}/get`;
+  }
 }

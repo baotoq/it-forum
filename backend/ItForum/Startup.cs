@@ -69,6 +69,7 @@ namespace ItForum
             services.AddTransient<DiscussionService>();
             services.AddTransient<ThreadService>();
             services.AddTransient<PostService>();
+            services.AddTransient<TagService>();
             services.AddTransient<UnitOfWork>();
 
             services.AddSingleton<HelperService>();
