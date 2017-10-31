@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using ItForum.Data;
-using ItForum.Data.Dtos;
 using ItForum.Services;
 using Microsoft.AspNetCore.Mvc;
 

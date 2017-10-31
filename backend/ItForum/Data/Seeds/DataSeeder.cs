@@ -15,12 +15,12 @@ namespace ItForum.Data.Seeds
 
             var tagFaker = new Faker<Tag>().Rules((f, o) =>
             {
-                o.Name = f.Commerce.Product();
+                o.Name = f.Name.JobArea();
                 o.CreatedDate = f.Date.Past(3);
                 o.UpdatedDate = o.CreatedDate;
             });
 
-            var tags = tagFaker.Generate(100);
+            var tags = tagFaker.Generate(10);
 
             var userFaker = new Faker<User>().Rules((f, o) =>
             {
@@ -79,7 +79,7 @@ namespace ItForum.Data.Seeds
 
             var discussionFaker = new Faker<Discussion>().Rules((f, o) =>
             {
-                o.Name = f.Commerce.ProductName();
+                o.Name = f.Name.JobType();
                 o.Description = f.Lorem.Sentences(3);
                 o.Threads = threadFaker.Generate(f.Random.Number(20, 50)).ToList();
                 o.CreatedDate = f.Date.Past(4);

@@ -1,3 +1,6 @@
+<mat-toolbar color="primary" class="mat-toolbar-48">
+  <span class="m-auto">New thread</span>
+</mat-toolbar>
 <div class="container-fluid px-5 mt-3">
   <div class="form-group">
     <button mat-raised-button color="primary" [disabled]="!editorContent || !title" (click)="onCreate()">
@@ -25,7 +28,7 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <mat-card>
+  <mat-card class="form-group">
     <div>
       <mat-form-field class="w-100" floatPlaceholder="always">
         <input matInput placeholder="Title" [(ngModel)]="title" required>
@@ -57,18 +60,23 @@
     <div>
       <mat-form-field class="w-100" floatPlaceholder="always">
         <mat-chip-list #chipList [selectable]="false">
-          <mat-chip *ngFor="let tag of tags" class="bg-primary text-white" (remove)="remove(tag)">
+          <mat-chip *ngFor="let tag of selectedTags" class="bg-primary text-white" (remove)="tagRemove(tag)">
             {{tag.name}}
             <mat-icon matChipRemove class="text-white">cancel</mat-icon>
           </mat-chip>
-          <input placeholder="Tags"
-                 [matChipInputFor]="chipList"
-                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                 [matChipInputAddOnBlur]="true"
-                 (matChipInputTokenEnd)="add($event)"/>
+          <input matInput placeholder="Tags" #input [formControl]="tagsControl"
+                 [matAutocomplete]="auto" (click)="trigger.openPanel()"
+                 [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="[]"/>
+
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="tagSelected(); input.value = ''">
+            <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+              <span>{{ tag.name }}</span>
+            </mat-option>
+          </mat-autocomplete>
         </mat-chip-list>
       </mat-form-field>
     </div>
+
   </mat-card>
   <div class="form-group">
     <div [froalaEditor]="{height: 500}" [(froalaModel)]="editorContent"></div>

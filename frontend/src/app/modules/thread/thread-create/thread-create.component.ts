@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { CoreService } from '../../core/core.service';
 import { ThreadService } from '../thread.service';
-
-import { ENTER } from '@angular/cdk/keycodes';
 import { Thread } from '../../../models/thread';
 import { TopicService } from '../../topic/topic.service';
 import { DiscussionService } from '../../discussion/discussion.service';
 import { LoadingService } from '../../../components/loading/loading.service';
 import { TagService } from '../../tag/tag.service';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/startWith';
+import { Tag } from '../../../models/tag';
+import { FilterByPipe, OrderByPipe } from 'ngx-pipes/esm';
+import { MatAutocompleteTrigger } from '@angular/material';
 
-const COMMA = 188;
 
 @Component({
   selector: 'app-thread-create',
@@ -19,7 +22,6 @@ const COMMA = 188;
   styleUrls: ['./thread-create.component.scss'],
 })
 export class ThreadCreateComponent implements OnInit {
-  tags = [];
   selectedTopic: number;
   selectedDiscussion: number;
   selected = false;
@@ -27,12 +29,16 @@ export class ThreadCreateComponent implements OnInit {
   topicOptions = [];
   discussionOptions = [];
 
+  tagsControl = new FormControl();
+  filteredTags: Observable<Tag[]>;
+  selectedTags = [];
+  tags: Tag[];
+  @ViewChild(MatAutocompleteTrigger) trigger;
+
   loading = false;
   title: string;
   editorContent = '';
   displayReview = false;
-
-  separatorKeysCodes = [ENTER, COMMA];
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -42,23 +48,14 @@ export class ThreadCreateComponent implements OnInit {
               private topicService: TopicService,
               private discussionService: DiscussionService,
               private threadService: ThreadService,
-              private tagService: TagService) {
+              private tagService: TagService,
+              private filterByPipe: FilterByPipe,
+              private orderByPipe: OrderByPipe) {
   }
 
   ngOnInit() {
-    this.loadingService.spinnerStart();
-    this.topicService.getSelectOptions()
-      .finally(() => this.loadingService.spinnerStop())
-      .subscribe(topicResp => {
-        this.topicOptions = topicResp;
-        this.selectedTopic = +this.route.snapshot.queryParams['topicId'] || this.topicOptions[0].value;
-
-        this.getDiscussionOptions();
-      });
-
-    this.tagService.getAll().subscribe(resp => {
-      console.log(resp);
-    });
+    this.getTopicOptions();
+    this.getTags();
   }
 
   onCreate() {
@@ -77,8 +74,22 @@ export class ThreadCreateComponent implements OnInit {
       });
   }
 
+  getTopicOptions() {
+    this.loadingService.spinnerStart();
+    this.topicService.getSelectOptions()
+      .finally(() => this.loadingService.spinnerStop())
+      .subscribe(topicResp => {
+        this.topicOptions = topicResp;
+        this.selectedTopic = +this.route.snapshot.queryParams['topicId'] || this.topicOptions[0].value;
+
+        this.getDiscussionOptions();
+      });
+  }
+
   getDiscussionOptions() {
+    this.loadingService.progressBarStart();
     this.discussionService.getSelectOptions(this.selectedTopic)
+      .finally(() => this.loadingService.progressBarStop())
       .subscribe(discussionResp => {
         this.discussionOptions = discussionResp;
         if (this.selected) {
@@ -89,17 +100,38 @@ export class ThreadCreateComponent implements OnInit {
       });
   }
 
-  add($event): void {
-    const input = $event.input;
-    const value = $event.value;
-
-    if ((value || '').trim()) this.tags.push({name: value.trim()});
-    if (input) input.value = '';
+  getTags() {
+    this.loadingService.spinnerStart();
+    this.tagService.getAll()
+      .finally(() => this.loadingService.spinnerStop())
+      .subscribe(resp => {
+        this.tags = resp;
+        this.filterTags();
+      });
   }
 
-  remove(tag: any): void {
-    const index = this.tags.indexOf(tag);
+  tagSelected() {
+    const value = this.tagsControl.value;
+    this.tagsControl.setValue('');
+    this.selectedTags.push(value);
+
+    const index = this.tags.indexOf(value);
     this.tags.splice(index, 1);
+    this.filterTags();
+  }
+
+  tagRemove(tag: any) {
+    const index = this.selectedTags.indexOf(tag);
+    this.selectedTags.splice(index, 1);
+
+    this.tags.push(tag);
+    this.filterTags();
+  }
+
+  filterTags() {
+    this.tags = this.orderByPipe.transform(this.tags, ['name']);
+    this.filteredTags = this.tagsControl.valueChanges.startWith(null)
+      .map(val => this.filterByPipe.transform(this.tags, ['name'], val));
   }
 
   get currentUser() {
