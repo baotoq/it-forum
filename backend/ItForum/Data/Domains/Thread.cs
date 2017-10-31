@@ -10,5 +10,7 @@ namespace ItForum.Data.Domains
         public Discussion Discussion { get; set; }
 
         public List<Post> Posts { get; set; }
+
+        public List<ThreadTag> ThreadTags { get; set; }
     }
 }

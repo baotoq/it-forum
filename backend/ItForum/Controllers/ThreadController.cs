@@ -53,7 +53,7 @@ namespace ItForum.Controllers
         {
             if (thread == null) return BadRequest();
             if (thread.Posts[0] == null) return BadRequest();
-            
+
             thread.UserId = CurrentUserId;
             thread.Posts[0].UserId = CurrentUserId;
             thread.LastActivity = DateTime.Now;

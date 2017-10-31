@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
 using ItForum.Data.Domains;
@@ -11,6 +12,15 @@ namespace ItForum.Data.Seeds
         {
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
+
+            var tagFaker = new Faker<Tag>().Rules((f, o) =>
+            {
+                o.Name = f.Commerce.Product();
+                o.CreatedDate = f.Date.Past(3);
+                o.UpdatedDate = o.CreatedDate;
+            });
+
+            var tags = tagFaker.Generate(100);
 
             var userFaker = new Faker<User>().Rules((f, o) =>
             {
@@ -55,6 +65,16 @@ namespace ItForum.Data.Seeds
                 o.CreatedDate = f.Date.Past(4);
                 o.UpdatedDate = o.CreatedDate;
                 o.LastActivity = o.Posts.OrderByDescending(x => x.CreatedDate).FirstOrDefault().CreatedDate.Value;
+
+                var temp = new List<Tag>(tags);
+                var threadTags = new List<ThreadTag>();
+                for (var i = 0; i < f.Random.Number(2, 5); i++)
+                {
+                    var t = f.PickRandom(temp);
+                    temp.Remove(t);
+                    threadTags.Add(new ThreadTag {Tag = t});
+                }
+                o.ThreadTags = threadTags.ToList();
             });
 
             var discussionFaker = new Faker<Discussion>().Rules((f, o) =>

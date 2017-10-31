@@ -1,15 +1,7 @@
-﻿using System;
-
-namespace ItForum.Data.Entities
+﻿namespace ItForum.Data.Entities
 {
-    public class Entity
+    public abstract class Entity : TimeStampEntity
     {
         public int Id { get; set; }
-
-        public DateTime? CreatedDate { get; set; }
-
-        public DateTime? UpdatedDate { get; set; }
-
-        public DateTime? DeletedDate { get; set; }
     }
 }

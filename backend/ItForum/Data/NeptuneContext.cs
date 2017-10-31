@@ -24,9 +24,24 @@ namespace ItForum.Data
 
         public DbSet<Post> Posts { get; set; }
 
+        public DbSet<Tag> Tags { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Entity>().HasQueryFilter(x => x.DeletedDate == null);
+
+            modelBuilder.Entity<ThreadTag>()
+                .HasKey(x => new {x.ThreadId, x.TagId});
+
+            modelBuilder.Entity<ThreadTag>()
+                .HasOne(x => x.Thread)
+                .WithMany(x => x.ThreadTags)
+                .HasForeignKey(x => x.ThreadId);
+
+            modelBuilder.Entity<ThreadTag>()
+                .HasOne(x => x.Tag)
+                .WithMany(x => x.ThreadTags)
+                .HasForeignKey(x => x.TagId);
         }
 
         public override int SaveChanges()
@@ -43,9 +58,9 @@ namespace ItForum.Data
 
         private void OnBeforeSaving()
         {
-            foreach (var entry in ChangeTracker.Entries().Where(x => x.Entity is Entity))
+            foreach (var entry in ChangeTracker.Entries().Where(x => x.Entity is TimeStampEntity))
             {
-                var entity = (Entity) entry.Entity;
+                var entity = (TimeStampEntity) entry.Entity;
                 switch (entry.State)
                 {
                     case EntityState.Added:
