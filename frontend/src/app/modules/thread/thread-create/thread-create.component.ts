@@ -38,7 +38,7 @@ export class ThreadCreateComponent implements OnInit {
   loading = false;
   title: string;
   editorContent = '';
-  displayReview = false;
+  displayPreview = false;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -72,6 +72,17 @@ export class ThreadCreateComponent implements OnInit {
         this.router.navigate(['/thread', resp.id]);
         this.coreService.notifySuccess();
       });
+  }
+
+  getPreviewThread(): Thread {
+    return new Thread({
+      title: this.title,
+      discussionId: this.selectedDiscussion,
+      posts: [{content: this.editorContent}],
+      user: this.currentUser,
+      tags: this.selectedTags,
+      createdDate: Date.now(),
+    });
   }
 
   getTopicOptions() {

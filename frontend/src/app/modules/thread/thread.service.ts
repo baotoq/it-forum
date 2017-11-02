@@ -18,7 +18,7 @@ export class ThreadService {
     return this.requestService.authPost(API.THREAD.CREATE, thread);
   }
 
-  increaseView(id: number): Observable<Thread> {
-    return this.requestService.get(`${API.THREAD.VIEW}/${id}`);
+  increaseView(id: number): Observable<any> {
+    return this.requestService.post(`${API.THREAD.VIEW}/${id}`);
   }
 }

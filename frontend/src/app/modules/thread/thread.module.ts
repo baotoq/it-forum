@@ -8,8 +8,12 @@ import { SharedModule } from '../shared/shared.module';
 
 import { ThreadRoutingModule } from './thread-routing.module';
 import { ThreadComponent } from './thread/thread.component';
-import { ThreadService } from './thread.service';
+import { PostComponent } from './thread/post/post.component';
+import { ThreadDetailComponent } from './thread/thread-detail/thread-detail.component';
 import { ThreadCreateComponent } from './thread-create/thread-create.component';
+
+import { ThreadService } from './thread.service';
+
 
 @NgModule({
   imports: [
@@ -26,6 +30,8 @@ import { ThreadCreateComponent } from './thread-create/thread-create.component';
   declarations: [
     ThreadComponent,
     ThreadCreateComponent,
+    PostComponent,
+    ThreadDetailComponent,
   ],
   providers: [
     ThreadService,

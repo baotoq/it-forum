@@ -15,6 +15,7 @@ namespace ItForum.Services
         {
             return DbSet.Include(x => x.User)
                 .Include(x => x.Posts).ThenInclude(x => x.User)
+                .Include(x => x.ThreadTags).ThenInclude(x => x.Tag)
                 .SingleOrDefault(x => x.Id == (int) id);
         }
     }

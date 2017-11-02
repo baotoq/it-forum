@@ -49,7 +49,7 @@ namespace ItForum.Data.Seeds
 
             var postFaker = new Faker<Post>().Rules((f, o) =>
             {
-                o.Content = string.Join(" ", f.Rant.Reviews(lines: f.Random.Number(1, 5)));
+                o.Content = f.Lorem.Paragraphs(f.Random.Number(1, 4), "<div></div>");
                 o.User = f.PickRandom(users);
                 o.CreatedDate = f.Date.Past(3);
                 o.UpdatedDate = o.CreatedDate;
@@ -58,7 +58,6 @@ namespace ItForum.Data.Seeds
             var threadFaker = new Faker<Thread>().Rules((f, o) =>
             {
                 o.Title = f.Lorem.Sentence();
-                o.Content = f.Lorem.Paragraphs(f.Random.Number(10, 50), "<div></div>");
                 o.User = f.PickRandom(users);
                 o.Views = f.Random.Number(1, 10000);
                 o.Posts = postFaker.Generate(f.Random.Number(4, 20)).ToList();

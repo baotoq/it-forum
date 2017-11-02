@@ -13,6 +13,8 @@ namespace ItForum.Data.Dtos
 
         public List<PostDto> Posts { get; set; }
 
+        public List<TagDto> Tags { get; set; }
+
         public class PostDto : PostEntity
         {
             public int Point { get; set; }
@@ -23,15 +25,28 @@ namespace ItForum.Data.Dtos
         public class UserDto : UserEntity
         {
         }
+
+        public class TagDto : TagEntity
+        {
+        }
     }
 
     public class ThreadMapperProfile : Profile
     {
         public ThreadMapperProfile()
         {
-            CreateMap<Thread, ThreadDto>();
+            CreateMap<Thread, ThreadDto>()
+                .ForMember(d => d.Tags, s => s.MapFrom(c => CreateTags(c.ThreadTags)));
             CreateMap<User, ThreadDto.UserDto>();
             CreateMap<Post, ThreadDto.PostDto>();
+            CreateMap<Tag, ThreadDto.TagDto>();
+        }
+
+        private List<Tag> CreateTags(List<ThreadTag> threadTags)
+        {
+            var tags = new List<Tag>();
+            threadTags.ForEach(x => tags.Add(x.Tag));
+            return tags;
         }
     }
 }

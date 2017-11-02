@@ -10,23 +10,13 @@
         Submit
       </span>
     </button>
-    <button mat-raised-button color="accent" (click)="displayReview = !displayReview">
+    <button mat-raised-button color="accent" (click)="displayPreview = !displayPreview">
       <i class="fa fa-eye"></i>
-      Review
+      Preview
     </button>
   </div>
-  <div *ngIf="displayReview" class="form-group">
-    <mat-card>
-      <mat-card-content>
-        <h1>{{title}}</h1>
-        <i class="fa fa-calendar"></i> a few seconds ago
-        <i class="fa fa-eye"></i> 0
-        <i class="fa fa-comments"></i> 0
-        <span>by <a href="#">{{currentUser.name}}</a></span>
-        <hr>
-        <div [froalaView]="editorContent"></div>
-      </mat-card-content>
-    </mat-card>
+  <div *ngIf="displayPreview" class="form-group">
+    <app-thread-detail [thread]="getPreviewThread()"></app-thread-detail>
   </div>
   <mat-card class="form-group">
     <div>
@@ -76,7 +66,6 @@
         </mat-chip-list>
       </mat-form-field>
     </div>
-
   </mat-card>
   <div class="form-group">
     <div [froalaEditor]="{height: 500}" [(froalaModel)]="editorContent"></div>

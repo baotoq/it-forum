@@ -1,0 +1,43 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar [style.background-image]="'url(' + thread.user.avatar + ')'"></div>
+    <mat-card-title class="mb-1">
+      <strong style="font-size: 15px">
+        {{thread.title || 'Your thread title here'}}
+      </strong>
+    </mat-card-title>
+    <mat-card-subtitle class="mb-1">
+      by <a href="#">{{thread.user.name}}</a> {{thread.createdDate | amTimeAgo}}
+    </mat-card-subtitle>
+    <div class="ml-auto">
+      <mat-icon [mat-menu-trigger-for]="threadMenu" style="cursor: pointer;">more_vert</mat-icon>
+    </div>
+  </mat-card-header>
+  <div>
+    <mat-chip-list>
+      <mat-chip *ngFor="let tag of thread.tags" class="bg-primary text-white">
+        {{tag.name}}
+      </mat-chip>
+    </mat-chip-list>
+  </div>
+  <hr class="mt-2">
+  <mat-card-content>
+    <div [froalaView]="thread.posts[0].content"></div>
+  </mat-card-content>
+</mat-card>
+
+<mat-menu #threadMenu>
+  <button mat-menu-item class="px-4" style="min-width: 200px">
+    <mat-icon class="mr-2">close</mat-icon>
+    <span>Close</span>
+  </button>
+  <button mat-menu-item class="px-4">
+    <mat-icon class="mr-2">delete_forever</mat-icon>
+    <span>Delete</span>
+  </button>
+  <div class="divider"></div>
+  <button mat-menu-item class="px-4">
+    <mat-icon class="mr-2">report_problem</mat-icon>
+    <span>Report</span>
+  </button>
+</mat-menu>
