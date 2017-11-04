@@ -12,7 +12,7 @@ export class SidenavComponent implements OnInit {
 
   navLinks = [
     {label: 'Dashboard', link: '/admin/dashboard', icon: 'dashboard'},
-    {label: 'Topic', link: '/topic', icon: 'list'},
+    {label: 'Confirm', link: '/admin/confirm', icon: 'check'},
   ];
 
   constructor(private router: Router,

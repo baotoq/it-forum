@@ -8,6 +8,10 @@ import { SharedModule } from '../shared/shared.module';
 import { AdminRoutingModule } from './admin-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { WidgetComponent } from './dashboard/widget/widget.component';
+import { ConfirmComponent } from './confirm/confirm.component';
+import { UserConfirmComponent } from './confirm/user-confirm/user-confirm.component';
+import { ThreadConfirmComponent } from './confirm/thread-confirm/thread-confirm.component';
+import { PostConfirmComponent } from './confirm/post-confirm/post-confirm.component';
 
 @NgModule({
   imports: [
@@ -21,6 +25,10 @@ import { WidgetComponent } from './dashboard/widget/widget.component';
   declarations: [
     DashboardComponent,
     WidgetComponent,
+    ConfirmComponent,
+    UserConfirmComponent,
+    ThreadConfirmComponent,
+    PostConfirmComponent,
   ],
 })
 export class AdminModule {

@@ -1,7 +1,7 @@
 <mat-toolbar *ngIf="topic" color="primary" class="mat-toolbar-48">
   <span class="m-auto">{{topic.name | uppercase}}</span>
 </mat-toolbar>
-<mat-tab-group #tabs (focusChange)="focusChange($event)">
+<mat-tab-group (focusChange)="focusChange($event)">
   <mat-tab *ngFor="let discussion of topic?.discussions" [label]="discussion.name"></mat-tab>
 </mat-tab-group>
 <router-outlet></router-outlet>
