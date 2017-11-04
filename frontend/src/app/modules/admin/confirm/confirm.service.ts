@@ -17,5 +17,4 @@ export class ConfirmService {
   confirmUser(id: number): Observable<any> {
     return this.requestService.authPost(`${API.USER.CONFIRM}/${id}`);
   }
-
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
-import { User } from '../../../../models/user';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { MatPaginator } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
@@ -14,13 +13,13 @@ import { OrderByPipe } from 'ngx-pipes/esm';
   styleUrls: ['./user-confirm.component.scss'],
 })
 export class UserConfirmComponent implements OnInit {
-  users: User[];
+  unconfirmed = [];
   checkedAll = false;
 
-  displayedColumns = ['checked', 'name', 'email'];
+  displayedColumns = ['check', 'item.name', 'item.email', 'item.createdDate'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  behavior = new BehaviorSubject<User[]>([]);
-  dataSource: UnconfirmedUserDataSource;
+  behavior = new BehaviorSubject<any[]>([]);
+  dataSource: UnconfirmedDataSource;
 
   constructor(private loadingService: LoadingService,
               private confirmService: ConfirmService,
@@ -32,22 +31,23 @@ export class UserConfirmComponent implements OnInit {
     this.confirmService.getUnconfirmedUser()
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
-        this.users = resp;
-        this.users.forEach(item => (item as any).checked = false);
-        this.users = this.orderByPipe.transform(this.users, 'name');
-        this.behavior.next(this.users);
-        this.dataSource = new UnconfirmedUserDataSource(this.behavior, this.paginator);
+        resp.forEach(item => {
+          this.unconfirmed.push({checked: false, item: item});
+        });
+        this.unconfirmed = this.orderByPipe.transform(this.unconfirmed, '-item.createdDate');
+        this.behavior.next(this.unconfirmed);
+        this.dataSource = new UnconfirmedDataSource(this.behavior, this.paginator);
       });
   }
 }
 
-export class UnconfirmedUserDataSource extends DataSource<any> {
-  constructor(private behavior: BehaviorSubject<User[]>,
+export class UnconfirmedDataSource extends DataSource<any> {
+  constructor(private behavior: BehaviorSubject<any[]>,
               private paginator: MatPaginator) {
     super();
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<User[]> {
+  connect(collectionViewer: CollectionViewer): Observable<any[]> {
     const displayDataChanges = [
       this.behavior,
       this.paginator.page,

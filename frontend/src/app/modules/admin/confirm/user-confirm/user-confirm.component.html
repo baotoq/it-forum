@@ -1,7 +1,7 @@
 <div class="container-fluid mt-3">
   <mat-table #table [dataSource]="dataSource" matSort matSortStart="desc" [matSortDisableClear]="true">
 
-    <ng-container matColumnDef="checked">
+    <ng-container matColumnDef="check">
       <mat-header-cell *matHeaderCellDef>
         <mat-checkbox [(ngModel)]="checkedAll"></mat-checkbox>
       </mat-header-cell>
@@ -10,17 +10,24 @@
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="name">
+    <ng-container matColumnDef="item.name">
       <mat-header-cell *matHeaderCellDef mat-sort-header start="asc">Name</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        {{row.name}}
+        {{row.item.name}}
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="email">
+    <ng-container matColumnDef="item.email">
       <mat-header-cell *matHeaderCellDef mat-sort-header start="asc">Email</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        {{row.email}}
+        {{row.item.email}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="item.createdDate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header start="asc">Register</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{row.item.createdDate | amTimeAgo}}
       </mat-cell>
     </ng-container>
 

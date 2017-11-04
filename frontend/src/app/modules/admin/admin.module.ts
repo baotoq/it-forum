@@ -12,6 +12,7 @@ import { ConfirmComponent } from './confirm/confirm.component';
 import { UserConfirmComponent } from './confirm/user-confirm/user-confirm.component';
 import { ThreadConfirmComponent } from './confirm/thread-confirm/thread-confirm.component';
 import { PostConfirmComponent } from './confirm/post-confirm/post-confirm.component';
+import { ConfirmSearchInputComponent } from './confirm/confirm-search-input/confirm-search-input.component';
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { PostConfirmComponent } from './confirm/post-confirm/post-confirm.compon
     UserConfirmComponent,
     ThreadConfirmComponent,
     PostConfirmComponent,
+    ConfirmSearchInputComponent,
   ],
 })
 export class AdminModule {
