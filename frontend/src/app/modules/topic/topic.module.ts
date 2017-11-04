@@ -10,6 +10,7 @@ import { TopicListComponent } from './topic-list/topic-list.component';
 import { TopicComponent } from './topic/topic.component';
 import { DiscussionComponent } from './topic/discussion/discussion.component';
 import { TopicService } from './topic.service';
+import { ThreadSearchInputComponent } from './topic/discussion/thread-search-input/thread-search-input.component';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { TopicService } from './topic.service';
     TopicListComponent,
     TopicComponent,
     DiscussionComponent,
+    ThreadSearchInputComponent,
   ],
   providers: [TopicService],
 })

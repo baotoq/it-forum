@@ -1,6 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormControl } from '@angular/forms';
 import { MatPaginator, MatSort } from '@angular/material';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { DiscussionService } from '../../../discussion/discussion.service';
@@ -20,18 +19,13 @@ import { LoadingService } from '../../../../components/loading/loading.service';
 })
 export class DiscussionComponent implements OnInit {
   discussion: Discussion;
+  searchString: string;
 
   displayedColumns = ['title', 'user.name', 'numberOfPosts', 'views', 'lastActivity'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) matSort: MatSort;
   behavior = new BehaviorSubject<Thread[]>([]);
   dataSource: ThreadDataSource;
-
-  search = false;
-  searchControl = new FormControl();
-  @ViewChild('searchInput') searchInput: ElementRef;
-
-  subscription: any;
 
   constructor(private route: ActivatedRoute,
               private discussionService: DiscussionService,
@@ -42,10 +36,6 @@ export class DiscussionComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.searchControl.setValue('');
-      if (this.subscription) {
-        this.subscription.unsubscribe();
-      }
       this.loadDiscussion(params['discussionId']);
     });
     this.matSort.sortChange.subscribe(() => this.filter());
@@ -53,7 +43,7 @@ export class DiscussionComponent implements OnInit {
 
   loadDiscussion(id: number) {
     this.loadingService.spinnerStart();
-    this.subscription = this.discussionService.get(id).delay(500)
+    this.discussionService.get(id).delay(500)
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.discussion = resp;
@@ -70,18 +60,13 @@ export class DiscussionComponent implements OnInit {
       });
   }
 
-  onSearchFocus() {
-    this.search = true;
-    this.searchInput.nativeElement.focus();
-  }
-
-  onSearchOut() {
-    this.search = false;
+  onSearchOut($event) {
+    this.searchString = $event;
     this.filter();
   }
 
   filter() {
-    const data = this.filterByPipe.transform(this.discussion.threads, ['title'], this.searchControl.value);
+    const data = this.filterByPipe.transform(this.discussion.threads, ['title'], this.searchString);
     let config = '';
     if (this.matSort.active) {
       config = this.matSort.direction === 'asc' ? '+' : '-';

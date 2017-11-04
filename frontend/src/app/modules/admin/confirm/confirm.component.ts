@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTabGroup } from '@angular/material';
+import { ConfirmService } from './confirm.service';
 
 @Component({
   selector: 'app-confirm',
   templateUrl: './confirm.component.html',
   styleUrls: ['./confirm.component.scss'],
+  providers: [ConfirmService],
 })
 export class ConfirmComponent implements OnInit {
   tabs = [
