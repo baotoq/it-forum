@@ -39,7 +39,7 @@ namespace ItForum.Controllers
         {
             var discussion = _discussionService.FindById(id);
             if (discussion == null)
-                return NotFound();
+                return BadRequest();
             var dto = _mapper.Map<DiscussionDto>(discussion);
             return Ok(dto);
         }
