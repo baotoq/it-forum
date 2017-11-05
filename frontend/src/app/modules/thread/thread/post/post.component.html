@@ -8,7 +8,9 @@
       {{post.createdDate | amTimeAgo}}
     </mat-card-title>
     <div class="ml-auto">
-      <mat-icon [mat-menu-trigger-for]="postMenu" style="cursor: pointer;">more_vert</mat-icon>
+      <button mat-icon-button [matMenuTriggerFor]="postMenu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
     </div>
   </mat-card-header>
   <hr class="mt-2">

@@ -10,7 +10,9 @@
       by <a href="#">{{thread.user.name}}</a> {{thread.createdDate | amTimeAgo}}
     </mat-card-subtitle>
     <div class="ml-auto">
-      <mat-icon [mat-menu-trigger-for]="threadMenu" style="cursor: pointer;">more_vert</mat-icon>
+      <button mat-icon-button [matMenuTriggerFor]="threadMenu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
     </div>
   </mat-card-header>
   <div>

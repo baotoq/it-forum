@@ -20,7 +20,7 @@
       </a>
     </ng-container>
 
-    <button *ngIf="authenticated" mat-icon-button [mat-menu-trigger-for]="appMenu">
+    <button *ngIf="authenticated" mat-icon-button [matMenuTriggerFor]="appMenu">
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #appMenu y-position="below">
