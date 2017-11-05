@@ -20,7 +20,6 @@ export class ThreadSearchInputComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(() => {
       this.searchControl.setValue('');
-      this.searchOut.emit(this.searchControl.value);
     });
   }
 

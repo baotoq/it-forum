@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using ItForum.Common;
 using ItForum.Data;
 using ItForum.Data.Domains;
@@ -86,14 +89,37 @@ namespace ItForum.Controllers
         }
 
         [Authorize(nameof(Policy.Administrator))]
-        [HttpPost("{id}")]
-        public async Task<IActionResult> Confirm(int id)
+        public async Task<IActionResult> Confirm([FromBody] Payload payload)
         {
-            var user = _userService.FindById(id);
-            if (user == null) return BadRequest();
-            user.ConfirmedById = CurrentUserId;
+            var response = new List<int>();
+            foreach (var id in ((IEnumerable) payload.Data).Cast<object>().Select(x => int.Parse(x.ToString())))
+            {
+                var user = _userService.FindById(id);
+                if (user != null && user.ConfirmedBy == null)
+                {
+                    user.ConfirmedById = CurrentUserId;
+                    response.Add(id);
+                }
+            }
             await _unitOfWork.SaveChangesAsync();
-            return Ok();
+            return Ok(response);
+        }
+
+        [Authorize(nameof(Policy.Administrator))]
+        public async Task<IActionResult> Deny([FromBody] Payload payload)
+        {
+            var response = new List<int>();
+            foreach (var id in ((IEnumerable) payload.Data).Cast<object>().Select(x => int.Parse(x.ToString())))
+            {
+                var user = _userService.FindById(id);
+                if (user != null && user.ConfirmedBy == null)
+                {
+                    _userService.Remove(user);
+                    response.Add(id);
+                }
+            }
+            await _unitOfWork.SaveChangesAsync();
+            return Ok(response);
         }
     }
 }

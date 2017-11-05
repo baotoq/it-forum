@@ -1,14 +1,18 @@
 <div class="container-fluid mt-3">
-  <app-user-confirm-search-input></app-user-confirm-search-input>
+  <app-user-confirm-search-input (searchOut)="onSearchOut($event)"
+                                 (confirm)="onConfirm()"
+                                 (confirmAll)="onConfirmAll()"
+                                 (deny)="onDeny()"
+                                 (denyAll)="onDenyAll()"></app-user-confirm-search-input>
 
   <mat-table #table [dataSource]="dataSource" matSort matSortStart="desc" [matSortDisableClear]="true">
 
     <ng-container matColumnDef="check">
       <mat-header-cell *matHeaderCellDef>
-        <mat-checkbox [(ngModel)]="checkedAll"></mat-checkbox>
+        <mat-checkbox [formControl]="checkedAllControl" (change)="checkAllClick()"></mat-checkbox>
       </mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <mat-checkbox [(ngModel)]="row.checked" clickStopPropagation></mat-checkbox>
+        <mat-checkbox [ngModel]="row.checked" clickStopPropagation></mat-checkbox>
       </mat-cell>
     </ng-container>
 
@@ -27,7 +31,7 @@
     </ng-container>
 
     <ng-container matColumnDef="item.createdDate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header start="asc">Register</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header start="desc">Register</mat-header-cell>
       <mat-cell *matCellDef="let row">
         {{row.item.createdDate | amTimeAgo}}
       </mat-cell>
@@ -37,6 +41,13 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="row.checked = !row.checked"></mat-row>
 
   </mat-table>
+
+  <mat-card *ngIf="!behavior.value.length">
+    <mat-card-content class="justify-content-center d-flex py-5">
+      <span *ngIf="searchString">We couldn't find any user.</span>
+      <span *ngIf="!searchString">We don't have any user to confirm yet.</span>
+    </mat-card-content>
+  </mat-card>
 
   <mat-paginator [hidden]="!behavior.value.length"
                  #paginator class="shadow"

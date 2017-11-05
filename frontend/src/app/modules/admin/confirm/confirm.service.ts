@@ -14,7 +14,15 @@ export class ConfirmService {
     return this.requestService.authGet(API.USER.GET_UNCONFIRMED);
   }
 
-  confirmUser(id: number): Observable<any> {
-    return this.requestService.authPost(`${API.USER.CONFIRM}/${id}`);
+  confirmUsers(payload: number[]): Observable<any> {
+    return this.requestService.authPost(API.USER.CONFIRM, {
+      data: payload,
+    });
+  }
+
+  denyUsers(payload: number[]): Observable<any> {
+    return this.requestService.authPost(API.USER.DENY, {
+      data: payload,
+    });
   }
 }
