@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import { LoadingService } from '../../../components/loading/loading.service';
 import { OrderByPipe } from 'ngx-pipes';
@@ -29,6 +29,7 @@ export class DashboardComponent implements OnInit {
       legend: {position: 'top', maxLines: 3},
     },
   };
+  @ViewChild('chart') chart;
 
   constructor(private loadingService: LoadingService,
               private orderByPipe: OrderByPipe,
@@ -37,10 +38,10 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
+    this.loadingService.spinnerStart();
     this.dashboardService.getThreadChartData()
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
-        console.log(resp);
         this.chartData.dataTable = this.prepareDataTable(resp);
         this.loading = false;
       });
@@ -54,5 +55,14 @@ export class DashboardComponent implements OnInit {
       ['Title', 'Number of threads'],
       ...data.slice(0, 12)
     ];
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.redraw();
+  }
+
+  redraw() {
+    if (this.chart) this.chart.redraw();
   }
 }

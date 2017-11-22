@@ -6,4 +6,4 @@
   <app-widget></app-widget>
 </div>
 
-<google-chart *ngIf="!loading" [data]="chartData" class="w-100"></google-chart>
+<google-chart #chart *ngIf="!loading" [data]="chartData" class="w-100"></google-chart>
