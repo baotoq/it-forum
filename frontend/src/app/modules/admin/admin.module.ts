@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgPipesModule } from 'ngx-pipes';
 import { MomentModule } from 'angular2-moment';
+import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 import { SharedModule } from '../shared/shared.module';
 
 import { AdminRoutingModule } from './admin-routing.module';
@@ -20,6 +21,7 @@ import { UserConfirmSearchInputComponent } from './confirm/user-confirm/user-con
     FormsModule, ReactiveFormsModule,
     NgPipesModule,
     MomentModule,
+    Ng2GoogleChartsModule,
     SharedModule,
     AdminRoutingModule,
   ],

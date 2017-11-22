@@ -20,6 +20,7 @@ export module API {
     public static readonly GET = `${TOPIC.URL}/get`;
     public static readonly GET_OPTIONS = `${TOPIC.URL}/getSelectOptions`;
     public static readonly CREATE = `${TOPIC.URL}/create`;
+    public static readonly GET_NUMBER_OF_THREADS = `${TOPIC.URL}/GetNumberOfThreads`;
   }
 
   export class DISCUSSION {

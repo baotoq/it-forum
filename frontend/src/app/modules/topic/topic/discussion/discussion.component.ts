@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
-import { FilterByPipe, OrderByPipe } from 'ngx-pipes/esm';
+import { FilterByPipe, OrderByPipe } from 'ngx-pipes';
 import { LoadingService } from '../../../../components/loading/loading.service';
 
 @Component({

@@ -12,7 +12,7 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
 import { Tag } from '../../../models/tag';
-import { FilterByPipe, OrderByPipe } from 'ngx-pipes/esm';
+import { FilterByPipe, OrderByPipe } from 'ngx-pipes';
 import { MatAutocompleteTrigger } from '@angular/material';
 
 

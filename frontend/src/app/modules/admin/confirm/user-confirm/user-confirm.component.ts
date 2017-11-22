@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { LoadingService } from '../../../../components/loading/loading.service';
 import { ConfirmService } from '../confirm.service';
-import { FilterByPipe, OrderByPipe } from 'ngx-pipes/esm';
+import { FilterByPipe, OrderByPipe } from 'ngx-pipes';
 import { FormControl } from '@angular/forms';
 
 @Component({

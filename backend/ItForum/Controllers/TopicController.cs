@@ -52,5 +52,16 @@ namespace ItForum.Controllers
                 title = x.Description
             }));
         }
+
+        [HttpGet]
+        public IActionResult GetNumberOfThreads()
+        {
+            var topics = _topicService.GetAll().ToList();
+            return Ok(topics.Select(x => new
+            {
+                name = x.Name,
+                numberOfThreads = x.Discussions.Sum(y => y.Threads.Count)
+            }));
+        }
     }
 }

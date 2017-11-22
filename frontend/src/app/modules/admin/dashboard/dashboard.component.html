@@ -5,3 +5,5 @@
 <div class="container-fluid mt-3">
   <app-widget></app-widget>
 </div>
+
+<google-chart *ngIf="!loading" [data]="chartData" class="w-100"></google-chart>
