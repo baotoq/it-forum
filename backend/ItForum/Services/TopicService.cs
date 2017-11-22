@@ -22,5 +22,11 @@ namespace ItForum.Services
         {
             return DbSet.Include(x => x.Discussions).ThenInclude(x => x.Threads);
         }
+
+        public List<Topic> GetAllWithPost()
+        {
+            return DbSet.Include(x => x.Discussions).ThenInclude(x => x.Threads)
+                .Include("Discussions.Threads.Posts").ToList();
+        }
     }
 }

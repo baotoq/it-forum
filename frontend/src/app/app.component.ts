@@ -55,6 +55,9 @@ export class AppComponent implements OnInit {
   }
 
   redraw() {
-    if (this.dashboardComponent) this.dashboardComponent.redraw();
+    if (this.dashboardComponent) {
+      this.dashboardComponent.postChart.redraw();
+      this.dashboardComponent.threadChart.redraw();
+    }
   }
 }

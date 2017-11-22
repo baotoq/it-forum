@@ -6,4 +6,12 @@
   <app-widget></app-widget>
 </div>
 
-<google-chart #chart *ngIf="!loading" [data]="chartData" class="w-100"></google-chart>
+<app-column-chart #threadChart class="w-100" *ngIf="!loading"
+                  hAxis="Threads count"
+                  position="top"
+                  [dataTable]="threadsDataTable"></app-column-chart>
+<app-column-chart #postChart class="w-100" *ngIf="!loading"
+                  hAxis="Posts count"
+                  position="top"
+                  [colors]="['#dc3912']"
+                  [dataTable]="postsDataTable"></app-column-chart>

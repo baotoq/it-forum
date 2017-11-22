@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import { LoadingService } from '../../../components/loading/loading.service';
 import { OrderByPipe } from 'ngx-pipes';
@@ -7,29 +7,16 @@ import { OrderByPipe } from 'ngx-pipes';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  providers: [DashboardService]
+  providers: [DashboardService],
 })
 export class DashboardComponent implements OnInit {
   loading = false;
-  chartData = {
-    chartType: 'ColumnChart',
-    dataTable: [],
-    options: {
-      isStacked: true,
-      hAxis: {title: 'Threads'},
-      height: '500',
-      chartArea: {
-        width: '90%',
-      },
-      animation: {
-        startup: true,
-        easing: 'inAndOut',
-        duration: 1000,
-      },
-      legend: {position: 'top', maxLines: 3},
-    },
-  };
-  @ViewChild('chart') chart;
+
+  @ViewChild('threadChart') threadChart;
+  @ViewChild('postChart') postChart;
+
+  threadsDataTable = [];
+  postsDataTable = [];
 
   constructor(private loadingService: LoadingService,
               private orderByPipe: OrderByPipe,
@@ -39,30 +26,32 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.loadingService.spinnerStart();
-    this.dashboardService.getThreadChartData()
+    this.dashboardService.getChartData()
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
-        this.chartData.dataTable = this.prepareDataTable(resp);
+        this.threadsDataTable = this.prepareThreadsDataTable(resp);
+        this.postsDataTable = this.preparePostsDataTable(resp);
         this.loading = false;
       });
   }
 
-  private prepareDataTable(topics: any) {
+  private prepareThreadsDataTable(topics: any) {
     let data = this.orderByPipe.transform(topics, ['-numberOfThreads']);
     data = data.map(topic => [topic.name, topic.numberOfThreads]);
 
     return [
       ['Title', 'Number of threads'],
-      ...data.slice(0, 12)
+      ...data.slice(0, 10)
     ];
   }
 
-  @HostListener('window:resize')
-  onResize() {
-    this.redraw();
-  }
+  private preparePostsDataTable(topics: any) {
+    let data = this.orderByPipe.transform(topics, ['-numberOfPosts']);
+    data = data.map(topic => [topic.name, topic.numberOfPosts]);
 
-  redraw() {
-    if (this.chart) this.chart.redraw();
+    return [
+      ['Title', 'Number of posts'],
+      ...data.slice(0, 10)
+    ];
   }
 }

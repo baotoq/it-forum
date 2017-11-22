@@ -54,13 +54,14 @@ namespace ItForum.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetNumberOfThreads()
+        public IActionResult GetChartData()
         {
-            var topics = _topicService.GetAll().ToList();
+            var topics = _topicService.GetAllWithPost();
             return Ok(topics.Select(x => new
             {
                 name = x.Name,
-                numberOfThreads = x.Discussions.Sum(y => y.Threads.Count)
+                numberOfThreads = x.Discussions.Sum(y => y.Threads.Count),
+                numberOfPosts = x.Discussions.Sum(z => z.Threads.Sum(v => v.Posts.Count))
             }));
         }
     }
