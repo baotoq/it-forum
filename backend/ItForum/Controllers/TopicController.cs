@@ -5,6 +5,7 @@ using ItForum.Data;
 using ItForum.Data.Dtos;
 using ItForum.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace ItForum.Controllers
 {
@@ -54,15 +55,25 @@ namespace ItForum.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetChartData()
+        public IActionResult GetThreadStatistic()
+        {
+            var topics = _topicService.GetAll();
+            return Ok(topics.Select(t => new
+            {
+                name = t.Name,
+                numberOfThreads = t.Discussions.Sum(d => d.Threads.Count),
+            }).OrderByDescending(x => x.numberOfThreads).Take(10));
+        }
+
+        [HttpGet]
+        public IActionResult GetPostStatistic()
         {
             var topics = _topicService.GetAllWithPost();
             return Ok(topics.Select(t => new
             {
                 name = t.Name,
-                numberOfThreads = t.Discussions.Sum(d => d.Threads.Count),
                 numberOfPosts = t.Discussions.Sum(d => d.Threads.Sum(th => th.Posts.Count))
-            }));
+            }).OrderByDescending(x => x.numberOfPosts).Take(10));
         }
     }
 }

@@ -20,7 +20,8 @@ export module API {
     public static readonly GET = `${TOPIC.URL}/get`;
     public static readonly GET_OPTIONS = `${TOPIC.URL}/getSelectOptions`;
     public static readonly CREATE = `${TOPIC.URL}/create`;
-    public static readonly GET_CHART_DATA = `${TOPIC.URL}/getChartData`;
+    public static readonly GET_THREAD_STATISTIC = `${TOPIC.URL}/getThreadStatistic`;
+    public static readonly GET_POST_STATISTIC = `${TOPIC.URL}/getPostStatistic`;
   }
 
   export class DISCUSSION {

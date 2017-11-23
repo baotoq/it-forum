@@ -9,7 +9,11 @@ export class DashboardService {
   constructor(private requestService: RequestService) {
   }
 
-  getChartData(): Observable<any> {
-    return this.requestService.get(API.TOPIC.GET_CHART_DATA);
+  getThreadStatistic(): Observable<any> {
+    return this.requestService.get(API.TOPIC.GET_THREAD_STATISTIC);
+  }
+
+  getPostStatistic(): Observable<any> {
+    return this.requestService.get(API.TOPIC.GET_POST_STATISTIC);
   }
 }

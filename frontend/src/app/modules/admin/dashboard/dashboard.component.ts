@@ -26,32 +26,22 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.loadingService.spinnerStart();
-    this.dashboardService.getChartData()
+    this.dashboardService.getThreadStatistic()
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
-        this.threadsDataTable = this.prepareThreadsDataTable(resp);
-        this.postsDataTable = this.preparePostsDataTable(resp);
+        this.threadsDataTable = [
+          ['Title', 'Number of threads'],
+          ...resp.map(item => [item.name, item.numberOfThreads])
+        ];
+      });
+    this.dashboardService.getPostStatistic()
+      .finally(() => this.loadingService.spinnerStop())
+      .subscribe(resp => {
+        this.postsDataTable = [
+          ['Title', 'Number of posts'],
+          ...resp.map(item => [item.name, item.numberOfPosts])
+        ];
         this.loading = false;
       });
-  }
-
-  private prepareThreadsDataTable(topics: any) {
-    let data = this.orderByPipe.transform(topics, ['-numberOfThreads']);
-    data = data.map(topic => [topic.name, topic.numberOfThreads]);
-
-    return [
-      ['Title', 'Number of threads'],
-      ...data.slice(0, 10)
-    ];
-  }
-
-  private preparePostsDataTable(topics: any) {
-    let data = this.orderByPipe.transform(topics, ['-numberOfPosts']);
-    data = data.map(topic => [topic.name, topic.numberOfPosts]);
-
-    return [
-      ['Title', 'Number of posts'],
-      ...data.slice(0, 10)
-    ];
   }
 }
