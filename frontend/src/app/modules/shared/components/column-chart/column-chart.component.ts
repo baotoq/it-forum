@@ -3,7 +3,7 @@ import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewC
 @Component({
   selector: 'app-column-chart',
   template: `
-    <google-chart #chart [data]="bindData"></google-chart>
+    <google-chart #chart *ngIf="dataTable" [data]="bindData"></google-chart>
   `,
 })
 export class ColumnChartComponent implements OnInit, OnChanges {
@@ -22,15 +22,7 @@ export class ColumnChartComponent implements OnInit, OnChanges {
   @Input() height = 500;
 
   @Input()
-  dataTable: any = [
-    ['Title', 'Number of'],
-    ['Column 6', 6],
-    ['Column 5', 5],
-    ['Column 4', 4],
-    ['Column 3', 3],
-    ['Column 2', 2],
-    ['Column 1', 1],
-  ];
+  dataTable: any;
 
   bindData: any;
 

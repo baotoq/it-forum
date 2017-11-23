@@ -16,15 +16,19 @@
       <div class="card-body py-1 px-0">
         <div *ngFor="let discussion of topic.discussions; let i = index">
           <div class="row px-2 py-1">
-            <div class="col-md-8" style="font-weight: bold">
+            <div class="col-12 col-md-8" style="font-weight: bold">
+              <span>
+                <i class="fa fa-comments fa-fw text-primary" style="font-size: 25px"></i>
+              </span>
               <a [routerLink]="['/topic', topic.id, 'discussion', discussion.id]">
                 {{discussion.name}}
               </a>
+              <span class="badge badge-danger">5</span>
               <div style="font-size: 60%">
                 {{discussion.description}}
               </div>
             </div>
-            <div class="col-md-4" style="font-size: 70%">
+            <div class="d-none d-md-block col-md-4" style="font-size: 70%">
               <div *ngFor="let thread of discussion.threads | orderBy:'-lastActivity' | slice: 0:2">
                 <a [routerLink]="['/thread', thread.id]">
                   {{thread.title | shorten: 45:'...'}}

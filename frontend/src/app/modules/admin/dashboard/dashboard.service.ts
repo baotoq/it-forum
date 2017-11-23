@@ -10,10 +10,18 @@ export class DashboardService {
   }
 
   getThreadStatistic(): Observable<any> {
-    return this.requestService.get(API.TOPIC.GET_THREAD_STATISTIC);
+    return this.requestService.get(API.STATISTIC.THREADS_PER_TOPIC);
   }
 
   getPostStatistic(): Observable<any> {
-    return this.requestService.get(API.TOPIC.GET_POST_STATISTIC);
+    return this.requestService.get(API.STATISTIC.POSTS_PER_TOPIC);
+  }
+
+  getThreadsPerMonthStatistic(): Observable<any> {
+    return this.requestService.get(API.STATISTIC.URL + '/threads-per-month');
+  }
+
+  getPostsPerMonthStatistic(): Observable<any> {
+    return this.requestService.get(API.STATISTIC.URL + '/posts-per-month');
   }
 }

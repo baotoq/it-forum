@@ -1,12 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using System.Threading.Tasks;
 using ItForum.Data;
-using ItForum.Data.Dtos;
-using ItForum.Services;
-using Microsoft.AspNetCore.Mvc;
 using ItForum.Data.Seeds;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ItForum.Controllers
 {
@@ -14,17 +9,17 @@ namespace ItForum.Controllers
     [Produces("application/json")]
     public class SeedController : Controller
     {
-        private readonly NeptuneContext context;
+        private readonly NeptuneContext _context;
 
         public SeedController(NeptuneContext context)
         {
-            this.context = context;
+            _context = context;
         }
 
         [HttpGet]
         public async Task<IActionResult> Init()
         {
-            await DataSeeder.InitializeAsync(context);
+            await DataSeeder.InitializeAsync(_context);
             return Ok();
         }
     }

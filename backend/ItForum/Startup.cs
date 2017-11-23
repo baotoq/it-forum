@@ -4,7 +4,6 @@ using AutoMapper;
 using ItForum.Common;
 using ItForum.Data;
 using ItForum.Data.Domains;
-using ItForum.Data.Seeds;
 using ItForum.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -80,9 +79,7 @@ namespace ItForum
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();                
-            }
+                app.UseDeveloperExceptionPage();
 
             app.UseCors(builder =>
             {

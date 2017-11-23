@@ -20,8 +20,6 @@ export module API {
     public static readonly GET = `${TOPIC.URL}/get`;
     public static readonly GET_OPTIONS = `${TOPIC.URL}/getSelectOptions`;
     public static readonly CREATE = `${TOPIC.URL}/create`;
-    public static readonly GET_THREAD_STATISTIC = `${TOPIC.URL}/getThreadStatistic`;
-    public static readonly GET_POST_STATISTIC = `${TOPIC.URL}/getPostStatistic`;
   }
 
   export class DISCUSSION {
@@ -55,5 +53,12 @@ export module API {
 
     public static readonly GET_ALL = `${TAG.URL}/getAll`;
     public static readonly GET = `${TAG.URL}/get`;
+  }
+
+  export class STATISTIC {
+    public static readonly URL = `${BASE_URL}/statistic`;
+
+    public static readonly THREADS_PER_TOPIC = `${STATISTIC.URL}/threads-per-topic`;
+    public static readonly POSTS_PER_TOPIC = `${STATISTIC.URL}/posts-per-topic`;
   }
 }

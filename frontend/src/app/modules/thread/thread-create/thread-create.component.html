@@ -3,7 +3,7 @@
 </mat-toolbar>
 <div class="container-fluid px-5 mt-3">
   <div class="form-group">
-    <button mat-raised-button color="primary" [disabled]="!editorContent || !title" (click)="onCreate()">
+    <button mat-raised-button color="primary" [disabled]="loading|| !editorContent || !title" (click)="onCreate()">
       <app-fa-spinner *ngIf="loading"></app-fa-spinner>
       <span *ngIf="!loading">
         <i class="fa fa-reply"></i>

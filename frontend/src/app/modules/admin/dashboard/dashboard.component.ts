@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import { LoadingService } from '../../../components/loading/loading.service';
-import { OrderByPipe } from 'ngx-pipes';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,14 +9,17 @@ import { OrderByPipe } from 'ngx-pipes';
   providers: [DashboardService],
 })
 export class DashboardComponent implements OnInit {
-  @ViewChild('threadChart') threadChart;
-  @ViewChild('postChart') postChart;
+  @ViewChild('chart1') chart1;
+  @ViewChild('chart2') chart2;
+  @ViewChild('chart3') chart3;
+  @ViewChild('chart4') chart4;
 
   threadsDataTable;
   postsDataTable;
+  threadsPerMonthDataTable;
+  postsPerMonthDataTable;
 
   constructor(private loadingService: LoadingService,
-              private orderByPipe: OrderByPipe,
               private dashboardService: DashboardService) {
   }
 
@@ -25,19 +27,22 @@ export class DashboardComponent implements OnInit {
     this.loadingService.spinnerStart();
     this.dashboardService.getThreadStatistic()
       .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => {
-        this.threadsDataTable = [
-          ['Title', 'Number of threads'],
-          ...resp.map(item => [item.name, item.numberOfThreads])
-        ];
-      });
+      .subscribe(resp => this.threadsDataTable = this.prepareDataTable('Number of threads', resp));
     this.dashboardService.getPostStatistic()
       .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => {
-        this.postsDataTable = [
-          ['Title', 'Number of posts'],
-          ...resp.map(item => [item.name, item.numberOfPosts])
-        ];
-      });
+      .subscribe(resp => this.postsDataTable = this.prepareDataTable('Number of posts', resp));
+    this.dashboardService.getThreadsPerMonthStatistic()
+      .finally(() => this.loadingService.spinnerStop())
+      .subscribe(resp => this.threadsPerMonthDataTable = this.prepareDataTable('Number of threads', resp));
+    this.dashboardService.getPostsPerMonthStatistic()
+      .finally(() => this.loadingService.spinnerStop())
+      .subscribe(resp => this.postsPerMonthDataTable = this.prepareDataTable('Number of posts', resp));
+  }
+
+  private prepareDataTable(title: string, data: any, take: number = 10) {
+    return [
+      ['Title', title],
+      ...data.map(item => [item.key, item.value]).slice(0, take)
+    ];
   }
 }
