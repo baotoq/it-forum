@@ -5,6 +5,7 @@ import { AuthHttp } from 'angular2-jwt';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/do';
 
 @Injectable()
 export class RequestService {

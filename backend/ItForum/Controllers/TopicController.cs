@@ -57,11 +57,11 @@ namespace ItForum.Controllers
         public IActionResult GetChartData()
         {
             var topics = _topicService.GetAllWithPost();
-            return Ok(topics.Select(x => new
+            return Ok(topics.Select(t => new
             {
-                name = x.Name,
-                numberOfThreads = x.Discussions.Sum(y => y.Threads.Count),
-                numberOfPosts = x.Discussions.Sum(z => z.Threads.Sum(v => v.Posts.Count))
+                name = t.Name,
+                numberOfThreads = t.Discussions.Sum(d => d.Threads.Count),
+                numberOfPosts = t.Discussions.Sum(d => d.Threads.Sum(th => th.Posts.Count))
             }));
         }
     }

@@ -12,6 +12,8 @@ export class User extends Timestamp {
   role: Role;
   confirmedBy: User;
 
+  selected = false;
+
   constructor(obj?: User) {
     super(obj);
     if (obj) {

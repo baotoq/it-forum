@@ -3,7 +3,8 @@
                                  (confirm)="onConfirm()"
                                  (confirmAll)="onConfirmAll()"
                                  (deny)="onDeny()"
-                                 (denyAll)="onDenyAll()"></app-user-confirm-search-input>
+                                 (denyAll)="onDenyAll()"
+                                 [confirmLoading]="confirmLoading"></app-user-confirm-search-input>
 
   <mat-table #table [dataSource]="dataSource" matSort matSortStart="desc" [matSortDisableClear]="true">
 
@@ -12,33 +13,33 @@
         <mat-checkbox [formControl]="checkedAllControl" (change)="checkAllClick()"></mat-checkbox>
       </mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <mat-checkbox [ngModel]="row.checked" clickStopPropagation></mat-checkbox>
+        <mat-checkbox [(ngModel)]="row.selected" clickStopPropagation></mat-checkbox>
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="item.name">
+    <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header start="asc">Name</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        {{row.item.name}}
+        {{row.name}}
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="item.email">
+    <ng-container matColumnDef="email">
       <mat-header-cell *matHeaderCellDef mat-sort-header start="asc">Email</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        {{row.item.email}}
+        {{row.email}}
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="item.createdDate">
+    <ng-container matColumnDef="createdDate">
       <mat-header-cell *matHeaderCellDef mat-sort-header start="desc">Register</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        {{row.item.createdDate | amTimeAgo}}
+        {{row.createdDate | amTimeAgo}}
       </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="row.checked = !row.checked"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="row.selected = !row.selected"></mat-row>
 
   </mat-table>
 

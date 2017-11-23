@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-column-chart',

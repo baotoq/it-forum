@@ -18,10 +18,12 @@ export class UserConfirmComponent implements OnInit {
   checkedAllControl = new FormControl(false);
   searchString: string;
 
-  displayedColumns = ['check', 'item.name', 'item.email', 'item.createdDate'];
+  displayedColumns = ['check', 'name', 'email', 'createdDate'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   behavior = new BehaviorSubject<any[]>([]);
   dataSource: UnconfirmedDataSource;
+
+  confirmLoading = false;
 
   constructor(private loadingService: LoadingService,
               private confirmService: ConfirmService,
@@ -34,29 +36,12 @@ export class UserConfirmComponent implements OnInit {
     this.confirmService.getUnconfirmedUser()
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
-        resp.forEach(item => this.unconfirmed.push({checked: false, item: item}));
-        this.unconfirmed = this.orderByPipe.transform(this.unconfirmed, '-item.createdDate');
+        this.unconfirmed = this.orderByPipe.transform(resp, '-createdDate');
         this.behavior.next(this.unconfirmed);
         this.dataSource = new UnconfirmedDataSource(this.behavior, this.paginator);
       });
 
-    this.paginator.page.subscribe(() => this.setCheckedAllControl());
-  }
-
-  setCheckedAllControl() {
-    let checked = true;
-    const data = this.behavior.value;
-    const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-    for (let i = startIndex; i < startIndex + this.paginator.pageSize; i++) {
-      if (data[i]) {
-        if (data[i].checked === false) {
-          checked = false;
-          break;
-        }
-      }
-    }
-    if (!data.length) checked = false;
-    this.checkedAllControl.setValue(checked);
+    this.paginator.page.subscribe(() => this.checkedAllControl.setValue(false));
   }
 
   checkAllClick() {
@@ -64,7 +49,7 @@ export class UserConfirmComponent implements OnInit {
     const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
     for (let i = startIndex; i < startIndex + this.paginator.pageSize; i++) {
       if (data[i]) {
-        data[i].checked = this.checkedAllControl.value;
+        data[i].selected = this.checkedAllControl.value;
       }
     }
   }
@@ -74,69 +59,40 @@ export class UserConfirmComponent implements OnInit {
     this.filter();
   }
 
-  reload(resp) {
-    resp.forEach(item => {
-      this.unconfirmed = this.unconfirmed.filter(x => x.item.id !== item);
-    });
-    this.behavior.next(this.unconfirmed);
-    this.checkedAllControl.setValue(false);
-  }
-
   getSelected() {
     this.searchString = '';
-    const selected = [];
-    this.unconfirmed.forEach(item => {
-      if (item.checked === true) selected.push(item.item.id);
-    });
-    return selected;
+    const selected = this.unconfirmed.filter(item => item.selected === true);
+    return selected.map(item => item.id);
   }
 
   onConfirm() {
-    this.loadingService.progressBarStart();
+    this.confirmLoading = true;
     this.confirmService.confirmUsers(this.getSelected())
-      .finally(() => this.loadingService.progressBarStop())
-      .subscribe(resp => this.reload(resp));
+      .finally(() => this.confirmLoading = false)
+      .subscribe(resp => this.ngOnInit());
   }
 
   onDeny() {
-    this.loadingService.progressBarStart();
+    this.confirmLoading = true;
     this.confirmService.denyUsers(this.getSelected())
-      .finally(() => this.loadingService.progressBarStop())
-      .subscribe(resp => this.reload(resp));
-  }
-
-  getSelectedAll() {
-    this.searchString = '';
-    const selected = [];
-    this.unconfirmed.forEach(item => selected.push(item.item.id));
-    return selected;
-  }
-
-  reloadAll() {
-    this.unconfirmed = [];
-    this.behavior.next(this.unconfirmed);
-    this.checkedAllControl.setValue(false);
+      .finally(() => this.confirmLoading = false)
+      .subscribe(resp => this.ngOnInit());
   }
 
   onConfirmAll() {
-    this.loadingService.progressBarStart();
-    this.confirmService.confirmUsers(this.getSelectedAll())
-      .finally(() => this.loadingService.progressBarStop())
-      .subscribe(() => this.reloadAll());
+    this.unconfirmed.forEach(item => item.selected = true);
+    this.onConfirm();
   }
 
   onDenyAll() {
-    this.loadingService.progressBarStart();
-    this.confirmService.denyUsers(this.getSelectedAll())
-      .finally(() => this.loadingService.progressBarStop())
-      .subscribe(() => this.reloadAll());
+    this.unconfirmed.forEach(item => item.selected = true);
+    this.onDeny();
   }
 
   filter() {
-    const data = this.filterByPipe.transform(this.unconfirmed, ['item.name', 'item.email'], this.searchString);
+    const data = this.filterByPipe.transform(this.unconfirmed, ['name', 'email'], this.searchString);
     this.paginator.pageIndex = 0;
     this.behavior.next(data);
-    this.setCheckedAllControl();
   }
 }
 

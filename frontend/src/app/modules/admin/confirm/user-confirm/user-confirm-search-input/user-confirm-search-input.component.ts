@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
@@ -17,6 +17,8 @@ export class UserConfirmSearchInputComponent implements OnInit {
   @Output() deny = new EventEmitter<any>();
   @Output() confirmAll = new EventEmitter<any>();
   @Output() denyAll = new EventEmitter<any>();
+
+  @Input() confirmLoading = false;
 
   constructor(private route: ActivatedRoute) {
   }
