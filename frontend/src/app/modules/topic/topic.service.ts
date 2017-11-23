@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '../shared/services/request.service';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/finally';
 import { API } from '../shared/common/api';
 import { Topic } from '../../models/topic';
 

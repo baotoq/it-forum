@@ -5,7 +5,6 @@ import { JWT } from '../shared/common/constant';
 import { API } from '../shared/common/api';
 import { User } from '../../models/user';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/finally';
 
 @Injectable()
 export class AuthService {

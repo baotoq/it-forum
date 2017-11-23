@@ -6,11 +6,11 @@
   <app-widget></app-widget>
 </div>
 
-<app-column-chart #threadChart class="w-100" *ngIf="!loading"
+<app-column-chart #threadChart class="w-100" *ngIf="threadsDataTable"
                   hAxis="Threads count"
                   position="top"
                   [dataTable]="threadsDataTable"></app-column-chart>
-<app-column-chart #postChart class="w-100" *ngIf="!loading"
+<app-column-chart #postChart class="w-100" *ngIf="postsDataTable"
                   hAxis="Posts count"
                   position="top"
                   [colors]="['#dc3912']"

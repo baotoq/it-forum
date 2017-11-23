@@ -10,13 +10,11 @@ import { OrderByPipe } from 'ngx-pipes';
   providers: [DashboardService],
 })
 export class DashboardComponent implements OnInit {
-  loading = false;
-
   @ViewChild('threadChart') threadChart;
   @ViewChild('postChart') postChart;
 
-  threadsDataTable = [];
-  postsDataTable = [];
+  threadsDataTable;
+  postsDataTable;
 
   constructor(private loadingService: LoadingService,
               private orderByPipe: OrderByPipe,
@@ -24,7 +22,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loading = true;
     this.loadingService.spinnerStart();
     this.dashboardService.getThreadStatistic()
       .finally(() => this.loadingService.spinnerStop())
@@ -41,7 +38,6 @@ export class DashboardComponent implements OnInit {
           ['Title', 'Number of posts'],
           ...resp.map(item => [item.name, item.numberOfPosts])
         ];
-        this.loading = false;
       });
   }
 }
