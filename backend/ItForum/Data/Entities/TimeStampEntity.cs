@@ -4,10 +4,10 @@ namespace ItForum.Data.Entities
 {
     public abstract class TimeStampEntity
     {
-        public DateTime? CreatedDate { get; set; }
+        public DateTime? DateCreated { get; set; }
 
-        public DateTime? UpdatedDate { get; set; }
+        public DateTime? DateModified { get; set; }
 
-        public DateTime? DeletedDate { get; set; }
+        public DateTime? DateDeleted { get; set; }
     }
 }

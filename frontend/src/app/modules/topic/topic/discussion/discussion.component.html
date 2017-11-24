@@ -7,6 +7,12 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header start="asc">Title</mat-header-cell>
       <mat-cell *matCellDef="let row" [title]="row.title">
         <strong>{{row.title | shorten: 100:'...'}}</strong>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="pinned">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row">
         <i class="fa fa-thumb-tack text-danger float-right" *ngIf="row.pinned" title="Pinned"></i>
       </mat-cell>
     </ng-container>
@@ -14,7 +20,7 @@
     <ng-container matColumnDef="user.name">
       <mat-header-cell *matHeaderCellDef mat-sort-header start="asc">Poster</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <a matTooltip="by {{row.user.name}} {{row.createdDate | amTimeAgo}}" matTooltipPosition="above"
+        <a matTooltip="by {{row.user.name}} {{row.dateCreated | amTimeAgo}}" matTooltipPosition="above"
            [routerLink]="['/']">
           <img [src]="row.user.avatar" [alt]="row.user.name" class="img-fluid"
                style="border-radius: 50%; width:30px;height: 30px">

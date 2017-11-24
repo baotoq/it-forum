@@ -21,7 +21,7 @@ export class DiscussionComponent implements OnInit {
   discussion: Discussion;
   searchString: string;
 
-  displayedColumns = ['title', 'user.name', 'numberOfPosts', 'views', 'lastActivity'];
+  displayedColumns;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) matSort: MatSort;
   behavior = new BehaviorSubject<Thread[]>([]);
@@ -81,8 +81,8 @@ export class DiscussionComponent implements OnInit {
   @HostListener('window:resize')
   onResize() {
     const smallScreen = window.innerWidth < 960;
-    if (smallScreen) this.displayedColumns = ['title', 'user.name'];
-    else this.displayedColumns = ['title', 'user.name', 'numberOfPosts', 'views', 'lastActivity'];
+    if (smallScreen) this.displayedColumns = ['title', 'pinned', 'user.name'];
+    else this.displayedColumns = ['title', 'pinned', 'user.name', 'numberOfPosts', 'views', 'lastActivity'];
   }
 }
 

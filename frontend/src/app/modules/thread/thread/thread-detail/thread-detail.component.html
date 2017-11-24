@@ -5,10 +5,10 @@
       <strong style="font-size: 15px">
         {{thread.title || 'Your thread title here'}}
       </strong>
-      <i class="fa fa-thumb-tack fa-fw text-danger"></i>
+      <i *ngIf="thread.pinned" class="fa fa-thumb-tack fa-fw text-danger"></i>
     </mat-card-title>
     <mat-card-subtitle class="mb-1">
-      by <a href="#">{{thread.user.name}}</a> {{thread.createdDate | amTimeAgo}}
+      by <a href="#">{{thread.user.name}}</a> {{thread.dateCreated | amTimeAgo}}
     </mat-card-subtitle>
     <div class="ml-auto" *ngIf="authenticated">
       <button mat-icon-button [matMenuTriggerFor]="threadMenu">

@@ -49,7 +49,7 @@ namespace ItForum.Controllers
         public IActionResult ThreadsPerMonth()
         {
             var threads = _threadService.GetAll();
-            var group = threads.GroupBy(x => new DateTime(x.CreatedDate.Value.Year, x.CreatedDate.Value.Month, 1))
+            var group = threads.GroupBy(x => new DateTime(x.DateCreated.Value.Year, x.DateCreated.Value.Month, 1))
                 .Select(x => new
                 {
                     x.Key,
@@ -67,7 +67,7 @@ namespace ItForum.Controllers
         public IActionResult PostsPerMonth()
         {
             var posts = _postService.GetAll();
-            var group = posts.GroupBy(x => new DateTime(x.CreatedDate.Value.Year, x.CreatedDate.Value.Month, 1))
+            var group = posts.GroupBy(x => new DateTime(x.DateCreated.Value.Year, x.DateCreated.Value.Month, 1))
                 .Select(x => new
                 {
                     x.Key,

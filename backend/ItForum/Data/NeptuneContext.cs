@@ -28,7 +28,7 @@ namespace ItForum.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Entity>().HasQueryFilter(x => x.DeletedDate == null);
+            modelBuilder.Entity<Entity>().HasQueryFilter(x => x.DateDeleted == null);
 
             modelBuilder.Entity<ThreadTag>()
                 .HasKey(x => new {x.ThreadId, x.TagId});
@@ -64,18 +64,18 @@ namespace ItForum.Data
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        if (entity.CreatedDate == null)
-                            entity.CreatedDate = DateTime.Now;
-                        if (entity.UpdatedDate == null)
-                            entity.UpdatedDate = DateTime.Now;
+                        if (entity.DateCreated == null)
+                            entity.DateCreated = DateTime.Now;
+                        if (entity.DateModified == null)
+                            entity.DateModified = DateTime.Now;
                         break;
                     case EntityState.Modified:
-                        if (entity.UpdatedDate == null)
-                            entity.UpdatedDate = DateTime.Now;
+                        if (entity.DateModified == null)
+                            entity.DateModified = DateTime.Now;
                         break;
                     case EntityState.Deleted:
                         entry.State = EntityState.Modified;
-                        entity.DeletedDate = DateTime.Now;
+                        entity.DateDeleted = DateTime.Now;
                         break;
                     case EntityState.Detached:
                         break;

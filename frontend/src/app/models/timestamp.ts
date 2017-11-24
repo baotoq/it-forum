@@ -1,11 +1,13 @@
 export class Timestamp {
-  createdDate: Date;
-  updatedDate: Date;
+  dateCreated: Date;
+  dateModified: Date;
+  dateDeleted: Date;
 
   constructor(obj) {
     if (obj) {
-      this.createdDate = obj.createdDate;
-      this.updatedDate = obj.updatedDate;
+      this.dateCreated = obj.dateCreated;
+      this.dateModified = obj.dateModified;
+      this.dateDeleted = obj.dateDeleted;
     }
   }
 }

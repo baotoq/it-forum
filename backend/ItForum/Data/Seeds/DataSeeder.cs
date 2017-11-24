@@ -16,8 +16,8 @@ namespace ItForum.Data.Seeds
             var tagFaker = new Faker<Tag>().Rules((f, o) =>
             {
                 o.Name = f.Name.JobArea();
-                o.CreatedDate = f.Date.Past(3);
-                o.UpdatedDate = o.CreatedDate;
+                o.DateCreated = f.Date.Past(3);
+                o.DateModified = o.DateCreated;
             });
 
             var tags = tagFaker.Generate(10);
@@ -31,8 +31,8 @@ namespace ItForum.Data.Seeds
                 o.Email = f.Person.Email;
                 o.Password = "123";
                 o.Role = f.PickRandom(o.Role);
-                o.CreatedDate = f.Date.Past(4);
-                o.UpdatedDate = o.CreatedDate;
+                o.DateCreated = f.Date.Past(4);
+                o.DateModified = o.DateCreated;
             });
 
             var admin = userFaker.Generate();
@@ -51,8 +51,8 @@ namespace ItForum.Data.Seeds
             {
                 o.Content = f.Lorem.Paragraphs(f.Random.Number(1, 4), "<div></div>");
                 o.User = f.PickRandom(users);
-                o.CreatedDate = f.Date.Past(3);
-                o.UpdatedDate = o.CreatedDate;
+                o.DateCreated = f.Date.Past(3);
+                o.DateModified = o.DateCreated;
             });
 
             var threadFaker = new Faker<Thread>().Rules((f, o) =>
@@ -62,9 +62,9 @@ namespace ItForum.Data.Seeds
                 o.Views = f.Random.Number(1, 10000);
                 o.Pinned = false;
                 o.Posts = postFaker.Generate(f.Random.Number(4, 20)).ToList();
-                o.CreatedDate = f.Date.Past(4);
-                o.UpdatedDate = o.CreatedDate;
-                o.LastActivity = o.Posts.OrderByDescending(x => x.CreatedDate).FirstOrDefault().CreatedDate.Value;
+                o.DateCreated = f.Date.Past(4);
+                o.DateModified = o.DateCreated;
+                o.LastActivity = o.Posts.OrderByDescending(x => x.DateCreated).FirstOrDefault().DateCreated.Value;
 
                 var temp = new List<Tag>(tags);
                 var threadTags = new List<ThreadTag>();
@@ -82,8 +82,8 @@ namespace ItForum.Data.Seeds
                 o.Name = f.Name.JobType();
                 o.Description = f.Lorem.Sentences(3);
                 o.Threads = threadFaker.Generate(f.Random.Number(20, 50)).ToList();
-                o.CreatedDate = f.Date.Past(4);
-                o.UpdatedDate = o.CreatedDate;
+                o.DateCreated = f.Date.Past(4);
+                o.DateModified = o.DateCreated;
                 for (var i = 0; i < f.Random.Number(1, 5); i++)
                 {
                     var t = f.PickRandom(o.Threads);
@@ -98,8 +98,8 @@ namespace ItForum.Data.Seeds
                 o.Name = f.Commerce.ProductName();
                 o.Description = f.Lorem.Sentences(3);
                 o.Discussions = discussionFaker.Generate(f.Random.Number(2, 6)).ToList();
-                o.CreatedDate = f.Date.Past(4);
-                o.UpdatedDate = o.CreatedDate;
+                o.DateCreated = f.Date.Past(4);
+                o.DateModified = o.DateCreated;
             });
 
             var topics = topicFaker.Generate(10);

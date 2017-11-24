@@ -5,7 +5,7 @@
       <a href="#">{{post.user.name}}</a>
     </mat-card-subtitle>
     <mat-card-title class="mb-1 text-muted">
-      {{post.createdDate | amTimeAgo}}
+      {{post.dateCreated | amTimeAgo}}
     </mat-card-title>
     <div class="ml-auto">
       <button mat-icon-button [matMenuTriggerFor]="postMenu">

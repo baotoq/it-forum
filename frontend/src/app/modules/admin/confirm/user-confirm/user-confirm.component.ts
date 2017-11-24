@@ -18,7 +18,7 @@ export class UserConfirmComponent implements OnInit {
   checkedAllControl = new FormControl(false);
   searchString: string;
 
-  displayedColumns = ['check', 'name', 'email', 'createdDate'];
+  displayedColumns = ['check', 'name', 'email', 'dateCreated'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   behavior = new BehaviorSubject<any[]>([]);
   dataSource: UnconfirmedDataSource;
@@ -36,7 +36,7 @@ export class UserConfirmComponent implements OnInit {
     this.confirmService.getUnconfirmedUser()
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
-        this.unconfirmed = this.orderByPipe.transform(resp, '-createdDate');
+        this.unconfirmed = this.orderByPipe.transform(resp, '-dateCreated');
         this.behavior.next(this.unconfirmed);
         this.dataSource = new UnconfirmedDataSource(this.behavior, this.paginator);
       });

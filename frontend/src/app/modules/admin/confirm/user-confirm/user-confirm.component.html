@@ -31,10 +31,10 @@
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="createdDate">
+    <ng-container matColumnDef="dateCreated">
       <mat-header-cell *matHeaderCellDef mat-sort-header start="desc">Register</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        {{row.createdDate | amTimeAgo}}
+        {{row.dateCreated | amTimeAgo}}
       </mat-cell>
     </ng-container>
 
