@@ -60,6 +60,7 @@ namespace ItForum.Data.Seeds
                 o.Title = f.Lorem.Sentence();
                 o.User = f.PickRandom(users);
                 o.Views = f.Random.Number(1, 10000);
+                o.Pinned = false;
                 o.Posts = postFaker.Generate(f.Random.Number(4, 20)).ToList();
                 o.CreatedDate = f.Date.Past(4);
                 o.UpdatedDate = o.CreatedDate;
@@ -83,6 +84,13 @@ namespace ItForum.Data.Seeds
                 o.Threads = threadFaker.Generate(f.Random.Number(20, 50)).ToList();
                 o.CreatedDate = f.Date.Past(4);
                 o.UpdatedDate = o.CreatedDate;
+                for (var i = 0; i < f.Random.Number(1, 5); i++)
+                {
+                    var t = f.PickRandom(o.Threads);
+                    o.Threads.Remove(t);
+                    t.Pinned = true;
+                    o.Threads.Add(t);
+                }
             });
 
             var topicFaker = new Faker<Topic>().Rules((f, o) =>

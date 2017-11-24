@@ -33,7 +33,10 @@ namespace ItForum
             services.AddCors();
 
             services.AddMvc().AddJsonOptions(options =>
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+            });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {

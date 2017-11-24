@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatPaginator, MatSort } from '@angular/material';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
@@ -32,6 +32,7 @@ export class DiscussionComponent implements OnInit {
               private loadingService: LoadingService,
               private orderByPipe: OrderByPipe,
               private filterByPipe: FilterByPipe) {
+    this.onResize();
   }
 
   ngOnInit() {
@@ -74,7 +75,14 @@ export class DiscussionComponent implements OnInit {
       config += this.matSort.active;
     }
     this.paginator.pageIndex = 0;
-    this.behavior.next(this.orderByPipe.transform(data, config));
+    this.behavior.next(this.orderByPipe.transform(data, ['-pinned', config]));
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    const smallScreen = window.innerWidth < 960;
+    if (smallScreen) this.displayedColumns = ['title', 'user.name'];
+    else this.displayedColumns = ['title', 'user.name', 'numberOfPosts', 'views', 'lastActivity'];
   }
 }
 

@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Thread } from '../../../../models/thread';
+import { AuthService } from '../../../auth/auth.service';
+import { Role } from '../../../../models/role';
 
 @Component({
   selector: 'app-thread-detail',
@@ -9,10 +11,19 @@ import { Thread } from '../../../../models/thread';
 export class ThreadDetailComponent implements OnInit {
   @Input() thread: Thread;
 
-  constructor() {
+  role = Role;
+
+  constructor(private authService: AuthService) {
   }
 
   ngOnInit() {
   }
 
+  get currentUser() {
+    return this.authService.currentUser();
+  }
+
+  get authenticated() {
+    return this.authService.isAuthenticated();
+  }
 }

@@ -7,6 +7,7 @@ export class Thread extends Timestamp {
   id: number;
   title: string;
   views = 0;
+  pinned = false;
   point = 0;
   numberOfPosts = 0;
   lastActivity: Date;

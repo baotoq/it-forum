@@ -8,6 +8,8 @@ namespace ItForum.Data.Entities
 
         public int Views { get; set; }
 
+        public bool Pinned { get; set; }
+
         public DateTime LastActivity { get; set; }
 
         public int UserId { get; set; }
