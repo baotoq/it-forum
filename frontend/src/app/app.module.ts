@@ -25,6 +25,8 @@ import { ProgressBarComponent } from './components/loading/progress-bar/progress
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { LoadingService } from './components/loading/loading.service';
+import { AdminLayoutComponent } from './layouts/admin-layout.component';
+import { ClientLayoutComponent } from './layouts/client-layout.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig(), http, options);
@@ -44,6 +46,8 @@ export const firebaseConfig = {
     AppComponent,
     SpinnerComponent,
     ProgressBarComponent,
+    AdminLayoutComponent,
+    ClientLayoutComponent,
   ],
   imports: [
     BrowserModule,

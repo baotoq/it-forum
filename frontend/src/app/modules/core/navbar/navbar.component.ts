@@ -9,7 +9,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   @Output() sidenavToggle = new EventEmitter<any>();
-  returnUrl = '/';
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -19,9 +18,14 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
   }
 
+  get returnUrl() {
+    const query = this.route.snapshot.queryParams['returnUrl'];
+    return query ? query : this.router.routerState.snapshot.url;
+  }
+
   logout() {
     this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 
   get authenticated(): boolean {

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { CoreService } from '../../core/core.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Role } from '../../../models/role';
 
 @Component({
   selector: 'app-login',
@@ -47,12 +48,24 @@ export class LoginComponent implements OnInit {
         if (resp.token) {
           this.authService.setToken(resp.token);
           this.coreService.notifySuccess('Login successful!');
-          this.router.navigateByUrl(this.route.snapshot.queryParams['returnUrl'] || '/');
+          this.navigate();
         }
       }, error => {
         if (error.status === 401) {
           this.coreService.notifyError(error.json());
         }
       });
+  }
+
+  navigate() {
+    const query = this.route.snapshot.queryParams['returnUrl'];
+    let returnUrl = '/';
+    if (!query) {
+      if (this.authService.currentUser().role == Role.Administrator)
+        returnUrl = '/admin';
+    } else {
+      returnUrl = query === '/auth/login' ? '/' : query;
+    }
+    this.router.navigateByUrl(returnUrl);
   }
 }
