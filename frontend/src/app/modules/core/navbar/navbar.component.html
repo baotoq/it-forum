@@ -1,18 +1,18 @@
 <mat-toolbar color="primary" class="shadow" style="background-color: #24292e">
-  <button mat-icon-button (click)="sidenavToggle.emit()">
+  <button mat-icon-button (click)="sidenavToggle.emit()" *ngIf="showSidenavToggle">
     <mat-icon>menu</mat-icon>
   </button>
-  <a mat-button [routerLink]="['/']" routerLinkActive="active">
+  <a mat-button [routerLink]="[showSidenavToggle ? '/admin' : '/']" routerLinkActive="active">
     <h1>TDT GAME</h1>
   </a>
 
   <div class="ml-auto">
     <ng-container *ngIf="!authenticated">
-      <a mat-raised-button color="primary" [routerLink]="['auth/register']" routerLinkActive="active"
+      <a mat-raised-button color="primary" [routerLink]="['/auth/register']" routerLinkActive="active"
          class="d-none d-sm-inline-block">
         Register
       </a>
-      <a mat-raised-button color="primary" [routerLink]="['auth/login']"
+      <a mat-raised-button color="primary" [routerLink]="['/auth/login']"
          [queryParams]="{returnUrl: returnUrl}"
          routerLinkActive="active"
          class="d-none d-sm-inline-block">

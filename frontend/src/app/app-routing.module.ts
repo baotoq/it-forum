@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
-import { AdminLayoutComponent } from './layouts/admin-layout.component';
-import { ClientLayoutComponent } from './layouts/client-layout.component';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { ClientLayoutComponent } from './layouts/client-layout/client-layout.component';
 import { AdminGuard } from './guards/admin.guard';
 
 const CLIENT_ROUTES: Routes = [

@@ -19,14 +19,14 @@ import { TagModule } from './modules/tag/tag.module';
 import { SharedModule } from './modules/shared/shared.module';
 
 import { AppComponent } from './app.component';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { ClientLayoutComponent } from './layouts/client-layout/client-layout.component';
 import { SpinnerComponent } from './components/loading/spinner/spinner.component';
 import { ProgressBarComponent } from './components/loading/progress-bar/progress-bar.component';
 
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { LoadingService } from './components/loading/loading.service';
-import { AdminLayoutComponent } from './layouts/admin-layout.component';
-import { ClientLayoutComponent } from './layouts/client-layout.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig(), http, options);
@@ -44,10 +44,10 @@ export const firebaseConfig = {
 @NgModule({
   declarations: [
     AppComponent,
-    SpinnerComponent,
-    ProgressBarComponent,
     AdminLayoutComponent,
     ClientLayoutComponent,
+    SpinnerComponent,
+    ProgressBarComponent,
   ],
   imports: [
     BrowserModule,
