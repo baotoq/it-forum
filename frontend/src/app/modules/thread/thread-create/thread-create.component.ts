@@ -24,7 +24,6 @@ import { MatAutocompleteTrigger } from '@angular/material';
 export class ThreadCreateComponent implements OnInit {
   selectedTopic: number;
   selectedDiscussion: number;
-  selected = false;
 
   topicOptions = [];
   discussionOptions = [];
@@ -88,13 +87,15 @@ export class ThreadCreateComponent implements OnInit {
   getTopicOptions() {
     this.loadingService.spinnerStart();
     this.topicService.getSelectOptions()
-      .finally(() => this.loadingService.spinnerStop())
-      .subscribe(topicResp => {
-        this.topicOptions = topicResp;
+      .flatMap(resp => {
+        this.topicOptions = resp;
         this.selectedTopic = +this.route.snapshot.queryParams['topicId'] || this.topicOptions[0].value;
-
-        this.getDiscussionOptions();
-      });
+        return this.discussionService.getSelectOptions(this.selectedTopic);
+      }).subscribe(resp => {
+      this.discussionOptions = resp;
+      this.selectedDiscussion = +this.route.snapshot.queryParams['discussionId'] || this.discussionOptions[0].value;
+      this.loadingService.spinnerStop();
+    });
   }
 
   getDiscussionOptions() {
@@ -103,22 +104,15 @@ export class ThreadCreateComponent implements OnInit {
       .finally(() => this.loadingService.progressBarStop())
       .subscribe(discussionResp => {
         this.discussionOptions = discussionResp;
-        if (this.selected) {
-          this.selectedDiscussion = this.discussionOptions[0].value;
-        } else {
-          this.selectedDiscussion = +this.route.snapshot.queryParams['discussionId'] || this.discussionOptions[0].value;
-        }
+        this.selectedDiscussion = this.discussionOptions[0].value;
       });
   }
 
   getTags() {
-    this.loadingService.spinnerStart();
-    this.tagService.getAll()
-      .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => {
-        this.tags = resp;
-        this.filterTags();
-      });
+    this.tagService.getAll().subscribe(resp => {
+      this.tags = resp;
+      this.filterTags();
+    });
   }
 
   tagSelected() {

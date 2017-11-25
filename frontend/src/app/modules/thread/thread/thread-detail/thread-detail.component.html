@@ -15,7 +15,7 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #threadMenu>
-        <ng-container *ngIf="currentUser.role == role.Administrator || currentUser.role == role.Moderator">
+        <ng-container *ngIf="currentUser.role === role.Administrator || currentUser.role === role.Moderator">
           <button mat-menu-item class="px-4" style="min-width: 200px">
             <mat-icon class="mr-2">close</mat-icon>
             <span>Close</span>

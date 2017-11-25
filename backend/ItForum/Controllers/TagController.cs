@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ItForum.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [Produces("application/json")]
     public class TagController : Controller
     {

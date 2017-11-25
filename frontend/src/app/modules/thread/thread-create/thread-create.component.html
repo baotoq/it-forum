@@ -28,7 +28,7 @@
       <div class="col-md-6">
         <mat-form-field class="w-100" floatPlaceholder="always">
           <mat-select placeholder="Topic" [(ngModel)]="selectedTopic" required
-                      (change)="getDiscussionOptions(); selected = true">
+                      (change)="getDiscussionOptions()">
             <mat-option *ngFor="let topic of topicOptions"
                         [value]="topic.value" [title]="topic.title">
               {{ topic.text }}

@@ -35,11 +35,9 @@ namespace ItForum.Services
             {
                 new Claim("id", user.Id.ToString()),
                 new Claim("name", user.Name),
-                new Claim("phone", user.Phone),
-                new Claim("avatar", user.Avatar),
-                new Claim("birthday", user.Birthday.ToString("d")),
+                new Claim("avatar", string.IsNullOrEmpty(user.Avatar) ? "null" : user.Avatar),
                 new Claim("email", user.Email),
-                new Claim("role", user.Role.GetValue())
+                new Claim("role", user.Role.ToString())
             };
 
             var token = new JwtSecurityToken(

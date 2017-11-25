@@ -1,9 +1,7 @@
-﻿using System.Security.Claims;
-using System.Text;
+﻿using System.Text;
 using AutoMapper;
 using ItForum.Common;
 using ItForum.Data;
-using ItForum.Data.Domains;
 using ItForum.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -13,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace ItForum
 {
@@ -36,6 +35,7 @@ namespace ItForum
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                options.SerializerSettings.Converters.Add(new StringEnumConverter());
             });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -54,17 +54,7 @@ namespace ItForum
                 };
             });
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy(Policy.Administrator,
-                    policy => policy.RequireClaim(ClaimTypes.Role, Role.Administrator.GetValue()));
-                options.AddPolicy(Policy.Moderator,
-                    policy => policy.RequireClaim(ClaimTypes.Role, Role.Moderator.GetValue(),
-                        Role.Administrator.GetValue()));
-                options.AddPolicy(Policy.User,
-                    policy => policy.RequireClaim(ClaimTypes.Role, Role.User.GetValue(), Role.Moderator.GetValue(),
-                        Role.Administrator.GetValue()));
-            });
+            services.AddAuthorization();
 
             services.AddTransient<UserService>();
             services.AddTransient<TopicService>();

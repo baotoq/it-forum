@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Linq;
+using ItForum.Data.Domains;
 using ItForum.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ItForum.Controllers
 {
     [Route("api/[controller]")]
     [Produces("application/json")]
+    [Authorize(Roles = nameof(Role.Administrator))]
     public class StatisticController : Controller
     {
         private readonly PostService _postService;

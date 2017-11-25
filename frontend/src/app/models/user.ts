@@ -14,7 +14,7 @@ export class User extends Timestamp {
 
   selected = false;
 
-  constructor(obj?: User) {
+  constructor(obj?) {
     super(obj);
     if (obj) {
       this.id = obj.id;

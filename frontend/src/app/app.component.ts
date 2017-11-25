@@ -1,10 +1,9 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { DashboardComponent } from './modules/admin/dashboard/dashboard.component';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   template: `
-    <app-progress-bar></app-progress-bar>
+    <app-progress-bar class="fixed-top" style="z-index: 10000"></app-progress-bar>
     <router-outlet></router-outlet>
     <ng-snotify></ng-snotify>
   `,

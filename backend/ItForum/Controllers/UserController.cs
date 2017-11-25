@@ -50,6 +50,7 @@ namespace ItForum.Controllers
 
             if (_userService.HasEmail(user.Email)) return Ok(new {error = "Existed"});
 
+            user.Role = Role.User;
             await _userService.AddAsync(user);
             await _unitOfWork.SaveChangesAsync();
 
@@ -78,17 +79,18 @@ namespace ItForum.Controllers
         [HttpPost]
         public bool HasEmail(string email)
         {
-            return _userService.HasEmail(email);
+            return !string.IsNullOrEmpty(email) && _userService.HasEmail(email);
         }
 
-        [Authorize(nameof(Policy.Administrator))]
+        [Authorize(Roles = nameof(Role.Administrator))]
         [HttpGet]
         public IActionResult GetUnconfirmed()
         {
             return Ok(_userService.GetUnconfirmed());
         }
 
-        [Authorize(nameof(Policy.Administrator))]
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpPost]
         public async Task<IActionResult> Confirm([FromBody] Payload payload)
         {
             var response = new List<int>();
@@ -105,7 +107,8 @@ namespace ItForum.Controllers
             return Ok(response);
         }
 
-        [Authorize(nameof(Policy.Administrator))]
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpPost]
         public async Task<IActionResult> Deny([FromBody] Payload payload)
         {
             var response = new List<int>();

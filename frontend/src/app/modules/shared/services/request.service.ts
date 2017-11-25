@@ -6,8 +6,11 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/do';
-import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/finally';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/forkJoin';
 
 @Injectable()
 export class RequestService {
