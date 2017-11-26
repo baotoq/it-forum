@@ -4,6 +4,7 @@ import { AuthService } from '../auth.service';
 import { CoreService } from '../../core/core.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Role } from '../../../models/role';
+import { StatusCodes } from '../../../models/status-codes';
 
 @Component({
   selector: 'app-login',
@@ -51,7 +52,7 @@ export class LoginComponent implements OnInit {
           this.navigate();
         }
       }, error => {
-        if (error.status === 401) {
+        if (error.status === StatusCodes.UNAUTHORIZED) {
           this.coreService.notifyError(error.json());
         }
       });
@@ -61,7 +62,7 @@ export class LoginComponent implements OnInit {
     const query = this.route.snapshot.queryParams['returnUrl'];
     let returnUrl = '/';
     if (!query) {
-      if (this.authService.currentUser().role == Role.Administrator)
+      if (this.authService.currentUser().role === Role.Administrator)
         returnUrl = '/admin';
     } else {
       returnUrl = query === '/auth/login' ? '/' : query;
