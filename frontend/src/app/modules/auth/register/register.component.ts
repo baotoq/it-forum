@@ -34,7 +34,7 @@ export class RegisterComponent implements OnInit {
       .flatMap(value => {
         this.loading = true;
         if (!value) return Observable.of(null);
-        return this.authService.hasEmail(value);
+        return this.authService.isExistEmail(value);
       })
       .subscribe(resp => {
         if (resp === true) this.email.setErrors({'unique': true});
@@ -74,7 +74,7 @@ export class RegisterComponent implements OnInit {
       password: this.password.value,
     });
 
-    this.authService.create(user)
+    this.authService.register(user)
       .finally(() => this.loading = false)
       .subscribe(() => {
         this.coreService.notifySuccess('Register Success!');

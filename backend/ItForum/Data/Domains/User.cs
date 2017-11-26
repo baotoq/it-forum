@@ -9,6 +9,6 @@ namespace ItForum.Data.Domains
 
         public List<Post> Posts { get; set; }
 
-        public User ConfirmedBy { get; set; }
+        public User ApprovedBy { get; set; }
     }
 }

@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ConfirmComponent } from './confirm/confirm.component';
-import { UserConfirmComponent } from './confirm/user-confirm/user-confirm.component';
-import { ThreadConfirmComponent } from './confirm/thread-confirm/thread-confirm.component';
-import { PostConfirmComponent } from './confirm/post-confirm/post-confirm.component';
+import { ApproveComponent } from './approve/approve/approve.component';
+import { ApproveUserComponent } from './approve/approve/approve-user/approve-user.component';
+import { ApproveThreadComponent } from './approve/approve/approve-thread/approve-thread.component';
 
 const routes: Routes = [
   {
@@ -17,25 +16,19 @@ const routes: Routes = [
     component: DashboardComponent,
   },
   {
-    path: 'confirm',
-    component: ConfirmComponent,
+    path: 'approve',
+    component: ApproveComponent,
     children: [
       {
-        path: '',
-        redirectTo: 'user',
-        pathMatch: 'full',
+        path: '', redirectTo: 'user', pathMatch: 'full',
       },
       {
         path: 'user',
-        component: UserConfirmComponent,
+        component: ApproveUserComponent,
       },
       {
         path: 'thread',
-        component: ThreadConfirmComponent,
-      },
-      {
-        path: 'post',
-        component: PostConfirmComponent,
+        component: ApproveThreadComponent,
       },
     ],
   },

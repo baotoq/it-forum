@@ -1,47 +1,47 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CollectionViewer, DataSource } from '@angular/cdk/collections';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { MatPaginator } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
-import { LoadingService } from '../../../../components/loading/loading.service';
-import { ConfirmService } from '../confirm.service';
-import { FilterByPipe, OrderByPipe } from 'ngx-pipes';
 import { FormControl } from '@angular/forms';
+import { MatPaginator } from '@angular/material';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { CollectionViewer, DataSource } from '@angular/cdk/collections';
+import { Observable } from 'rxjs/Observable';
+import { User } from '../../../../../models/user';
+import { LoadingService } from '../../../../../components/loading/loading.service';
+import { ApproveService } from '../../approve.service';
+import { FilterByPipe, OrderByPipe } from 'ngx-pipes';
 
 @Component({
-  selector: 'app-user-confirm',
-  templateUrl: './user-confirm.component.html',
-  styleUrls: ['./user-confirm.component.scss'],
+  selector: 'app-approve-user',
+  templateUrl: './approve-user.component.html',
+  styleUrls: ['./approve-user.component.scss'],
 })
-export class UserConfirmComponent implements OnInit {
-  unconfirmed = [];
+export class ApproveUserComponent implements OnInit {
+  unapprove: User[];
   checkedAllControl = new FormControl(false);
   searchString: string;
 
   displayedColumns = ['check', 'name', 'email', 'dateCreated'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   behavior = new BehaviorSubject<any[]>([]);
-  dataSource: UnconfirmedDataSource;
+  dataSource: UnapproveDataSource;
 
-  confirmLoading = false;
+  approveLoading = false;
 
   constructor(private loadingService: LoadingService,
-              private confirmService: ConfirmService,
+              private approveService: ApproveService,
               private filterByPipe: FilterByPipe,
               private orderByPipe: OrderByPipe) {
   }
 
   ngOnInit() {
     this.loadingService.spinnerStart();
-    this.confirmService.getUnconfirmedUser()
+    this.approveService.getUnapprove()
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
-        this.unconfirmed = this.orderByPipe.transform(resp, '-dateCreated');
-        this.behavior.next(this.unconfirmed);
-        this.dataSource = new UnconfirmedDataSource(this.behavior, this.paginator);
+        this.unapprove = this.orderByPipe.transform(resp, '-dateCreated');
+        this.behavior.next(this.unapprove);
+        this.dataSource = new UnapproveDataSource(this.behavior, this.paginator);
       });
 
-    this.paginator.page.subscribe(() => this.checkedAllControl.setValue(false));
   }
 
   checkAllClick() {
@@ -61,42 +61,42 @@ export class UserConfirmComponent implements OnInit {
 
   getSelected() {
     this.searchString = '';
-    const selected = this.unconfirmed.filter(item => item.selected === true);
+    const selected = this.unapprove.filter(item => item.selected === true);
     return selected.map(item => item.id);
   }
 
-  onConfirm() {
-    this.confirmLoading = true;
-    this.confirmService.confirmUsers(this.getSelected())
-      .finally(() => this.confirmLoading = false)
+  onApprove() {
+    this.approveLoading = true;
+    this.approveService.approve(this.getSelected())
+      .finally(() => this.approveLoading = false)
       .subscribe(resp => this.ngOnInit());
   }
 
-  onDeny() {
-    this.confirmLoading = true;
-    this.confirmService.denyUsers(this.getSelected())
-      .finally(() => this.confirmLoading = false)
+  onDecline() {
+    this.approveLoading = true;
+    this.approveService.decline(this.getSelected())
+      .finally(() => this.approveLoading = false)
       .subscribe(resp => this.ngOnInit());
   }
 
-  onConfirmAll() {
-    this.unconfirmed.forEach(item => item.selected = true);
-    this.onConfirm();
+  onApproveAll() {
+    this.unapprove.forEach(item => item.selected = true);
+    this.onApprove();
   }
 
-  onDenyAll() {
-    this.unconfirmed.forEach(item => item.selected = true);
-    this.onDeny();
+  onDeclineAll() {
+    this.unapprove.forEach(item => item.selected = true);
+    this.onDecline();
   }
 
   filter() {
-    const data = this.filterByPipe.transform(this.unconfirmed, ['name', 'email'], this.searchString);
+    const data = this.filterByPipe.transform(this.unapprove, ['name', 'email'], this.searchString);
     this.paginator.pageIndex = 0;
     this.behavior.next(data);
   }
 }
 
-export class UnconfirmedDataSource extends DataSource<any> {
+export class UnapproveDataSource extends DataSource<any> {
   constructor(private behavior: BehaviorSubject<any[]>,
               private paginator: MatPaginator) {
     super();

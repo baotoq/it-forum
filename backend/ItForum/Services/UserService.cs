@@ -19,14 +19,14 @@ namespace ItForum.Services
             return SingleOrDefault(x => x.Email == email && x.Password == password);
         }
 
-        public bool HasEmail(string email)
+        public bool IsExistEmail(string email)
         {
             return Any(x => x.Email.ToLower() == email.ToLower());
         }
 
-        public List<User> GetUnconfirmed()
+        public List<User> GetUnapprove()
         {
-            return DbSet.Where(x => x.ConfirmedBy == null).ToList();
+            return DbSet.Where(x => x.ApprovedBy == null).ToList();
         }
 
         public string GenerateJwt(User user)

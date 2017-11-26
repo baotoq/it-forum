@@ -1,19 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { MatTabGroup } from '@angular/material';
-import { ConfirmService } from './confirm.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-confirm',
-  templateUrl: './confirm.component.html',
-  styleUrls: ['./confirm.component.scss'],
-  providers: [ConfirmService],
+  selector: 'app-approve',
+  templateUrl: './approve.component.html',
+  styleUrls: ['./approve.component.scss'],
 })
-export class ConfirmComponent implements OnInit {
+export class ApproveComponent implements OnInit {
   tabs = [
-    {label: 'User', link: '/admin/confirm/user'},
-    {label: 'Thread', link: '/admin/confirm/thread'},
-    {label: 'Post', link: '/admin/confirm/post'},
+    {label: 'User', link: '/admin/approve/user'},
+    {label: 'Thread', link: '/admin/approve/thread'},
+    {label: 'Post', link: '/admin/approve/post'},
   ];
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
 

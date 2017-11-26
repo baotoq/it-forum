@@ -7,12 +7,12 @@ using ItForum.Data;
 using ItForum.Data.Domains;
 using ItForum.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ItForum.Controllers
 {
-    [Authorize]
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [Produces("application/json")]
     public class UserController : Controller
     {
@@ -27,28 +27,29 @@ namespace ItForum.Controllers
 
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
 
-        [AllowAnonymous]
         [HttpPost]
+        [Route("login")]
         public IActionResult Login([FromBody] User user)
         {
             if (user == null) return BadRequest();
 
             var innerUser = _userService.FindBy(user.Email, user.Password);
-            if (innerUser == null) return StatusCode(401, "Invalid email or password!");
-            if (innerUser.ConfirmedById == null) return StatusCode(401, "Confirmation is required!");
+            if (innerUser == null) return StatusCode(StatusCodes.Status401Unauthorized, "Invalid email or password!");
+            if (innerUser.ApprovedById == null)
+                return StatusCode(StatusCodes.Status401Unauthorized, "You need to be approve by admin!");
 
             var token = _userService.GenerateJwt(innerUser);
 
             return Ok(new {token});
         }
 
-        [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] User user)
+        [Route("register")]
+        public async Task<IActionResult> Register([FromBody] User user)
         {
             if (user == null) return BadRequest();
 
-            if (_userService.HasEmail(user.Email)) return Ok(new {error = "Existed"});
+            if (_userService.IsExistEmail(user.Email)) return BadRequest();
 
             user.Role = Role.User;
             await _userService.AddAsync(user);
@@ -75,31 +76,34 @@ namespace ItForum.Controllers
             return NoContent();
         }
 
-        [AllowAnonymous]
         [HttpPost]
-        public bool HasEmail(string email)
+        [Route("exist-email")]
+        public IActionResult IsExistEmail(string email)
         {
-            return !string.IsNullOrEmpty(email) && _userService.HasEmail(email);
+            if (string.IsNullOrEmpty(email)) return BadRequest();
+            return Ok(_userService.IsExistEmail(email));
         }
 
         [Authorize(Roles = nameof(Role.Administrator))]
         [HttpGet]
-        public IActionResult GetUnconfirmed()
+        [Route("unapprove")]
+        public IActionResult GetUnapprove()
         {
-            return Ok(_userService.GetUnconfirmed());
+            return Ok(_userService.GetUnapprove());
         }
 
         [Authorize(Roles = nameof(Role.Administrator))]
         [HttpPost]
-        public async Task<IActionResult> Confirm([FromBody] Payload payload)
+        [Route("approve")]
+        public async Task<IActionResult> Approve([FromBody] Payload payload)
         {
             var response = new List<int>();
             foreach (var id in ((IEnumerable) payload.Data).Cast<object>().Select(x => int.Parse(x.ToString())))
             {
                 var user = _userService.FindById(id);
-                if (user != null && user.ConfirmedBy == null)
+                if (user != null && user.ApprovedBy == null)
                 {
-                    user.ConfirmedById = CurrentUserId;
+                    user.ApprovedById = CurrentUserId;
                     response.Add(id);
                 }
             }
@@ -109,13 +113,14 @@ namespace ItForum.Controllers
 
         [Authorize(Roles = nameof(Role.Administrator))]
         [HttpPost]
-        public async Task<IActionResult> Deny([FromBody] Payload payload)
+        [Route("decline")]
+        public async Task<IActionResult> Decline([FromBody] Payload payload)
         {
             var response = new List<int>();
             foreach (var id in ((IEnumerable) payload.Data).Cast<object>().Select(x => int.Parse(x.ToString())))
             {
                 var user = _userService.FindById(id);
-                if (user != null && user.ConfirmedBy == null)
+                if (user != null && user.ApprovedBy == null)
                 {
                     _userService.Remove(user);
                     response.Add(id);

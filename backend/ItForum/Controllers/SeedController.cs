@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using ItForum.Data;
 using ItForum.Data.Seeds;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,17 +8,17 @@ namespace ItForum.Controllers
     [Produces("application/json")]
     public class SeedController : Controller
     {
-        private readonly NeptuneContext _context;
+        private readonly DataSeeder _dataSeeder;
 
-        public SeedController(NeptuneContext context)
+        public SeedController(DataSeeder dataSeeder)
         {
-            _context = context;
+            _dataSeeder = dataSeeder;
         }
 
         [HttpGet]
         public async Task<IActionResult> Init()
         {
-            await DataSeeder.InitializeAsync(_context);
+            await _dataSeeder.InitializeAsync();
             return Ok();
         }
     }

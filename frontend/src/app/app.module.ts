@@ -16,6 +16,7 @@ import { TopicModule } from './modules/topic/topic.module';
 import { DiscussionModule } from './modules/discussion/discussion.module';
 import { ThreadModule } from './modules/thread/thread.module';
 import { TagModule } from './modules/tag/tag.module';
+import { AdminModule } from './modules/admin/admin.module';
 import { SharedModule } from './modules/shared/shared.module';
 
 import { AppComponent } from './app.component';
@@ -63,6 +64,7 @@ export const firebaseConfig = {
     DiscussionModule,
     ThreadModule,
     TagModule,
+    AdminModule,
     SharedModule,
   ],
   providers: [

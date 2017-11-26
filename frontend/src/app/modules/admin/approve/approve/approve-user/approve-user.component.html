@@ -1,10 +1,11 @@
 <div class="container-fluid mt-3">
-  <app-user-confirm-search-input (searchOut)="onSearchOut($event)"
-                                 (confirm)="onConfirm()"
-                                 (confirmAll)="onConfirmAll()"
-                                 (deny)="onDeny()"
-                                 (denyAll)="onDenyAll()"
-                                 [confirmLoading]="confirmLoading"></app-user-confirm-search-input>
+
+  <app-approve-user-search-input (searchOut)="onSearchOut($event)"
+                                 (approve)="onApprove()"
+                                 (approveAll)="onApproveAll()"
+                                 (decline)="onDecline()"
+                                 (declineAll)="onDeclineAll()"
+                                 [approveLoading]="approveLoading"></app-approve-user-search-input>
 
   <mat-table #table [dataSource]="dataSource" matSort matSortStart="desc" [matSortDisableClear]="true">
 
@@ -54,6 +55,6 @@
                  #paginator class="shadow"
                  [length]="behavior.value.length"
                  [pageIndex]="0"
-                 [pageSizeOptions]="[10, 15, 20]">
+                 [pageSizeOptions]="[10, 20, 30]">
   </mat-paginator>
 </div>

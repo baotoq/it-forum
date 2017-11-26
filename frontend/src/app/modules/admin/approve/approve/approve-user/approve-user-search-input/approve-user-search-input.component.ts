@@ -3,22 +3,22 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-user-confirm-search-input',
-  templateUrl: './user-confirm-search-input.component.html',
-  styleUrls: ['./user-confirm-search-input.component.scss'],
+  selector: 'app-approve-user-search-input',
+  templateUrl: './approve-user-search-input.component.html',
+  styleUrls: ['./approve-user-search-input.component.scss'],
 })
-export class UserConfirmSearchInputComponent implements OnInit {
+export class ApproveUserSearchInputComponent implements OnInit {
   search = false;
   searchControl = new FormControl();
   @ViewChild('searchInput') searchInput: ElementRef;
 
   @Output() searchOut = new EventEmitter<any>();
-  @Output() confirm = new EventEmitter<any>();
-  @Output() deny = new EventEmitter<any>();
-  @Output() confirmAll = new EventEmitter<any>();
-  @Output() denyAll = new EventEmitter<any>();
+  @Output() approve = new EventEmitter<any>();
+  @Output() decline = new EventEmitter<any>();
+  @Output() approveAll = new EventEmitter<any>();
+  @Output() declineAll = new EventEmitter<any>();
 
-  @Input() confirmLoading = false;
+  @Input() approveLoading = false;
 
   constructor(private route: ActivatedRoute) {
   }
@@ -39,23 +39,23 @@ export class UserConfirmSearchInputComponent implements OnInit {
     this.searchOut.emit(this.searchControl.value);
   }
 
-  onConfirm() {
+  onApprove() {
     this.searchControl.setValue('');
-    this.confirm.emit();
+    this.approve.emit();
   }
 
-  onDeny() {
+  onDecline() {
     this.searchControl.setValue('');
-    this.deny.emit();
+    this.decline.emit();
   }
 
-  onConfirmAll() {
+  onApproveAll() {
     this.searchControl.setValue('');
-    this.confirmAll.emit();
+    this.approveAll.emit();
   }
 
-  onDenyAll() {
+  onDeclineAll() {
     this.searchControl.setValue('');
-    this.denyAll.emit();
+    this.declineAll.emit();
   }
 }

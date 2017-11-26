@@ -8,10 +8,17 @@ namespace ItForum.Data.Seeds
 {
     public class DataSeeder
     {
-        public static async Task InitializeAsync(NeptuneContext context)
+        private readonly NeptuneContext _context;
+
+        public DataSeeder(NeptuneContext context)
         {
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+            _context = context;
+        }
+
+        public async Task InitializeAsync()
+        {
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
 
             var tagFaker = new Faker<Tag>().Rules((f, o) =>
             {
@@ -38,14 +45,14 @@ namespace ItForum.Data.Seeds
             var admin = userFaker.Generate();
             admin.Email = "admin@gmail.com";
             admin.Role = Role.Administrator;
-            context.Add(admin);
-            await context.SaveChangesAsync();
-            admin.ConfirmedBy = admin;
+            _context.Add(admin);
+            await _context.SaveChangesAsync();
+            admin.ApprovedBy = admin;
 
             var users = userFaker.Generate(100);
-            users.ToList().ForEach(x => x.ConfirmedBy = admin);
-            context.Users.AddRange(users);
-            await context.SaveChangesAsync();
+            users.ToList().ForEach(x => x.ApprovedBy = admin);
+            _context.Users.AddRange(users);
+            await _context.SaveChangesAsync();
 
             var postFaker = new Faker<Post>().Rules((f, o) =>
             {
@@ -103,7 +110,7 @@ namespace ItForum.Data.Seeds
             });
 
             var topics = topicFaker.Generate(10);
-            context.AddRange(topics);
+            _context.AddRange(topics);
 
             users = userFaker.Generate(50);
             var index = 1;
@@ -112,9 +119,9 @@ namespace ItForum.Data.Seeds
                 x.Role = Role.User;
                 x.Email = $"user{index++}@gmail.com";
             });
-            context.AddRange(users);
+            _context.AddRange(users);
 
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
     }
 }

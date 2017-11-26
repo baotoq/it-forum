@@ -18,12 +18,12 @@ export class AuthService {
     });
   }
 
-  create(user: User): Observable<any> {
-    return this.requestService.post(API.USER.CREATE, user);
+  register(user: User): Observable<any> {
+    return this.requestService.post(API.USER.REGISTER, user);
   }
 
-  hasEmail(email: string): Observable<boolean> {
-    return this.requestService.post(API.USER.HAS_EMAIL + `?email=${email}`);
+  isExistEmail(email: string): Observable<boolean> {
+    return this.requestService.post(API.USER.EXIST_EMAIL + `?email=${email}`);
   }
 
   setToken(token: string) {

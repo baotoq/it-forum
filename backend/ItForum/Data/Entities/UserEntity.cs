@@ -19,6 +19,6 @@ namespace ItForum.Data.Entities
 
         public Role Role { get; set; }
 
-        public int? ConfirmedById { get; set; }
+        public int? ApprovedById { get; set; }
     }
 }

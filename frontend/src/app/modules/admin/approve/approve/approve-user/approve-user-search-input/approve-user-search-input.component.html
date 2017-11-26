@@ -11,12 +11,12 @@
         <mat-icon matChipRemove class="text-white" clickStopPropagation>cancel</mat-icon>
       </mat-chip>
     </mat-chip-list>
-    <button mat-raised-button class="ml-auto mr-1" color="primary" clickStopPropagation (click)="onConfirm()"
-            [disabled]="confirmLoading">
-      <app-fa-spinner *ngIf="confirmLoading"></app-fa-spinner>
-      <span *ngIf="!confirmLoading">
+    <button mat-raised-button class="ml-auto mr-1" color="primary" clickStopPropagation (click)="onApprove()"
+            [disabled]="approveLoading">
+      <app-fa-spinner *ngIf="approveLoading"></app-fa-spinner>
+      <span *ngIf="!approveLoading">
         <i class="fa fa-check"></i>
-        Confirm
+        Approve
       </span>
     </button>
     <button id="more" mat-icon-button clickStopPropagation [matMenuTriggerFor]="menu">
@@ -33,13 +33,13 @@
 </div>
 
 <mat-menu #menu>
-  <button mat-menu-item (click)="onDeny()">
-    <span>Deny</span>
+  <button mat-menu-item (click)="onDecline()">
+    <span>Decline</span>
   </button>
-  <button mat-menu-item (click)="onConfirmAll()">
-    <span>Confirm All</span>
+  <button mat-menu-item (click)="onApproveAll()">
+    <span>Approve All</span>
   </button>
-  <button mat-menu-item (click)="onDenyAll()">
-    <span>Deny All</span>
+  <button mat-menu-item (click)="onDeclineAll()">
+    <span>Decline All</span>
   </button>
 </mat-menu>
