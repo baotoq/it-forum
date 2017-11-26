@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { DashboardComponent } from '../../modules/admin/dashboard/dashboard.component';
+import { DashboardComponent } from '../../modules/admin/dashboard/dashboard/dashboard.component';
 
 @Component({
   template: `

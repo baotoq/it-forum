@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DashboardService } from './dashboard.service';
-import { LoadingService } from '../../../components/loading/loading.service';
+import { DashboardService } from '../dashboard.service';
+import { LoadingService } from '../../../../components/loading/loading.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  providers: [DashboardService],
 })
 export class DashboardComponent implements OnInit {
   @ViewChild('chart1') chart1;
