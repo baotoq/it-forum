@@ -4,12 +4,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using ItForum.Data;
-using ItForum.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ItForum.Services
 {
-    public class Service<TEntity> where TEntity : Entity
+    public class Service<TEntity> where TEntity : class
     {
         protected readonly NeptuneContext Context;
 

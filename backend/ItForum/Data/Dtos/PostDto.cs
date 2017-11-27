@@ -8,7 +8,7 @@ namespace ItForum.Data.Dtos
     {
         public int Point { get; set; }
 
-        public UserDto User { get; set; }
+        public UserDto CreatedBy { get; set; }
 
         public class UserDto : UserEntity
         {

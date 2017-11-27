@@ -1,9 +1,10 @@
 ﻿using System;
 using ItForum.Data.Domains;
+using ItForum.Data.Entities.Core;
 
 namespace ItForum.Data.Entities
 {
-    public abstract class UserEntity : Entity
+    public abstract class UserEntity : IEntity
     {
         public string Name { get; set; }
 
@@ -20,5 +21,13 @@ namespace ItForum.Data.Entities
         public Role Role { get; set; }
 
         public int? ApprovedById { get; set; }
+
+        public int Id { get; set; }
+
+        public DateTime? DateCreated { get; set; }
+
+        public DateTime? DateModified { get; set; }
+
+        public DateTime? DateDeleted { get; set; }
     }
 }

@@ -57,7 +57,7 @@ namespace ItForum.Controllers
             if (post == null)
                 return BadRequest();
 
-            post.UserId = CurrentUserId;
+            post.CreatedById = CurrentUserId;
             await _postService.AddAsync(post);
             var thread = _threadService.FindById(post.ThreadId);
             thread.LastActivity = DateTime.Now;

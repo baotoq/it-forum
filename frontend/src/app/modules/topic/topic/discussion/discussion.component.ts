@@ -81,8 +81,8 @@ export class DiscussionComponent implements OnInit {
   @HostListener('window:resize')
   onResize() {
     const smallScreen = window.innerWidth < 960;
-    if (smallScreen) this.displayedColumns = ['title', 'pinned', 'user.name'];
-    else this.displayedColumns = ['title', 'pinned', 'user.name', 'numberOfPosts', 'views', 'lastActivity'];
+    if (smallScreen) this.displayedColumns = ['title', 'pinned', 'createdBy.name'];
+    else this.displayedColumns = ['title', 'pinned', 'createdBy.name', 'numberOfPosts', 'views', 'lastActivity'];
   }
 }
 

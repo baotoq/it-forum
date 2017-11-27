@@ -79,7 +79,7 @@ export class ThreadCreateComponent implements OnInit {
       title: this.title,
       discussionId: this.selectedDiscussion,
       posts: [{content: this.editorContent}],
-      user: this.currentUser,
+      createdBy: this.currentUser,
       tags: this.selectedTags,
       createdDate: Date.now(),
     });

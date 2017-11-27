@@ -3,17 +3,21 @@
 </mat-toolbar>
 <div class="container-fluid px-5 mt-3">
   <div class="form-group">
-    <button mat-raised-button color="primary" [disabled]="loading|| !editorContent || !title" (click)="onCreate()">
-      <app-fa-spinner *ngIf="loading"></app-fa-spinner>
-      <span *ngIf="!loading">
-        <i class="fa fa-reply"></i>
-        Submit
-      </span>
-    </button>
-    <button mat-raised-button color="accent" (click)="displayPreview = !displayPreview">
-      <i class="fa fa-eye"></i>
-      Preview
-    </button>
+    <div class="clearfix">
+      <div class="float-right">
+        <button mat-raised-button color="accent" (click)="displayPreview = !displayPreview">
+          <i class="fa fa-eye"></i>
+          Preview
+        </button>
+        <button mat-raised-button color="primary" [disabled]="loading|| !editorContent || !title" (click)="onCreate()">
+          <app-fa-spinner *ngIf="loading"></app-fa-spinner>
+          <span *ngIf="!loading">
+            <i class="fa fa-reply"></i>
+            Submit
+          </span>
+        </button>
+      </div>
+    </div>
   </div>
   <div *ngIf="displayPreview" class="form-group">
     <app-thread-detail [thread]="getPreviewThread()"></app-thread-detail>
@@ -31,7 +35,7 @@
                       (change)="getDiscussionOptions()">
             <mat-option *ngFor="let topic of topicOptions"
                         [value]="topic.value" [title]="topic.title">
-              {{ topic.text }}
+              {{topic.text}}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -41,7 +45,7 @@
           <mat-select placeholder="Discussion" [(ngModel)]="selectedDiscussion" required>
             <mat-option *ngFor="let discussion of discussionOptions"
                         [value]="discussion.value" [title]="discussion.title">
-              {{ discussion.text }}
+              {{discussion.text}}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -60,7 +64,7 @@
 
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="tagSelected(); input.value = ''">
             <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
-              <span>{{ tag.name }}</span>
+              <span>{{tag.name}}</span>
             </mat-option>
           </mat-autocomplete>
         </mat-chip-list>

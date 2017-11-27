@@ -9,7 +9,7 @@ namespace ItForum.Data.Dtos
     {
         public int Point { get; set; }
 
-        public UserDto User { get; set; }
+        public UserDto CreatedBy { get; set; }
 
         public List<PostDto> Posts { get; set; }
 
@@ -19,7 +19,7 @@ namespace ItForum.Data.Dtos
         {
             public int Point { get; set; }
 
-            public UserDto User { get; set; }
+            public UserDto CreatedBy { get; set; }
         }
 
         public class UserDto : UserEntity

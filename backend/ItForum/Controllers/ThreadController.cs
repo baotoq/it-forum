@@ -10,7 +10,6 @@ using ItForum.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 
 namespace ItForum.Controllers
 {
@@ -57,8 +56,8 @@ namespace ItForum.Controllers
             if (thread == null) return BadRequest();
             if (thread.Posts[0] == null) return BadRequest();
 
-            thread.UserId = CurrentUserId;
-            thread.Posts[0].UserId = CurrentUserId;
+            thread.CreatedById = CurrentUserId;
+            thread.Posts[0].CreatedById = CurrentUserId;
             thread.LastActivity = DateTime.Now;
             thread.ThreadTags = new List<ThreadTag>();
             threadDto.Tags.ForEach(t => thread.ThreadTags.Add(new ThreadTag {TagId = t.Id}));

@@ -5,7 +5,7 @@ namespace ItForum.Data.Domains
 {
     public class Thread : ThreadEntity
     {
-        public User User { get; set; }
+        public User CreatedBy { get; set; }
 
         public Discussion Discussion { get; set; }
 

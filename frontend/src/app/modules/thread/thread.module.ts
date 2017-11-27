@@ -13,6 +13,7 @@ import { ThreadDetailComponent } from './thread/thread-detail/thread-detail.comp
 import { ThreadCreateComponent } from './thread-create/thread-create.component';
 
 import { ThreadService } from './thread.service';
+import { ReplyComponent } from './thread/reply/reply.component';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { ThreadService } from './thread.service';
     ThreadCreateComponent,
     PostComponent,
     ThreadDetailComponent,
+    ReplyComponent,
   ],
   providers: [
     ThreadService,

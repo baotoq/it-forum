@@ -1,6 +1,6 @@
 <mat-card>
   <mat-card-header>
-    <div mat-card-avatar [style.background-image]="'url(' + thread.user.avatar + ')'"></div>
+    <div mat-card-avatar [style.background-image]="'url(' + thread.createdBy.avatar + ')'"></div>
     <mat-card-title class="mb-1">
       <strong style="font-size: 15px">
         {{thread.title || 'Your thread title here'}}
@@ -8,7 +8,7 @@
       <i *ngIf="thread.pinned" class="fa fa-thumb-tack fa-fw text-danger"></i>
     </mat-card-title>
     <mat-card-subtitle class="mb-1">
-      by <strong><a href="#" class="text-bold">{{thread.user.name}}</a></strong> {{thread.dateCreated | amTimeAgo}}
+      by <strong><a href="#" class="text-bold">{{thread.createdBy.name}}</a></strong> {{thread.dateCreated | amTimeAgo}}
     </mat-card-subtitle>
     <div class="ml-auto" *ngIf="authenticated">
       <button mat-icon-button [matMenuTriggerFor]="threadMenu">

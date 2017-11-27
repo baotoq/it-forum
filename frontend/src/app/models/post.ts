@@ -7,7 +7,7 @@ export class Post extends Timestamp {
   content: string;
   threadId: number;
   userId: number;
-  user: User;
+  createdBy: User;
 
   constructor(obj?) {
     super(obj);
@@ -16,7 +16,7 @@ export class Post extends Timestamp {
       this.content = obj.content;
       this.threadId = obj.threadId;
       this.userId = obj.userId;
-      this.user = obj.user;
+      this.createdBy = obj.createdBy;
     }
   }
 }

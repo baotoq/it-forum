@@ -1,6 +1,8 @@
-﻿namespace ItForum.Data.Domains
+﻿using ItForum.Data.Entities;
+
+namespace ItForum.Data.Domains
 {
-    public class ThreadTag
+    public class ThreadTag : ThreadTagEntity
     {
         public int ThreadId { get; set; }
 

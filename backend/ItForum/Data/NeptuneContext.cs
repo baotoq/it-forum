@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using ItForum.Data.Domains;
-using ItForum.Data.Entities;
+using ItForum.Data.Entities.Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace ItForum.Data
@@ -28,7 +28,13 @@ namespace ItForum.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Entity>().HasQueryFilter(x => x.DateDeleted == null);
+            modelBuilder.Entity<User>().HasQueryFilter(x => x.DateDeleted == null);
+            modelBuilder.Entity<Topic>().HasQueryFilter(x => x.DateDeleted == null);
+            modelBuilder.Entity<Discussion>().HasQueryFilter(x => x.DateDeleted == null);
+            modelBuilder.Entity<Thread>().HasQueryFilter(x => x.DateDeleted == null);
+            modelBuilder.Entity<Post>().HasQueryFilter(x => x.DateDeleted == null);
+            modelBuilder.Entity<Tag>().HasQueryFilter(x => x.DateDeleted == null);
+            modelBuilder.Entity<ThreadTag>().HasQueryFilter(x => x.DateDeleted == null);
 
             modelBuilder.Entity<ThreadTag>()
                 .HasKey(x => new {x.ThreadId, x.TagId});
@@ -58,9 +64,9 @@ namespace ItForum.Data
 
         private void OnBeforeSaving()
         {
-            foreach (var entry in ChangeTracker.Entries().Where(x => x.Entity is TimeStampEntity))
+            foreach (var entry in ChangeTracker.Entries().Where(x => x.Entity is ITimeStampEntity))
             {
-                var entity = (TimeStampEntity) entry.Entity;
+                var entity = (ITimeStampEntity) entry.Entity;
                 switch (entry.State)
                 {
                     case EntityState.Added:

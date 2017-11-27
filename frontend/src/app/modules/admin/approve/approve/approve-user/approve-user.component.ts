@@ -41,7 +41,7 @@ export class ApproveUserComponent implements OnInit {
         this.behavior.next(this.unapprove);
         this.dataSource = new UnapproveDataSource(this.behavior, this.paginator);
       });
-
+    this.checkedAllControl.setValue(false);
   }
 
   checkAllClick() {

@@ -6,6 +6,6 @@ namespace ItForum.Data.Domains
     {
         public Thread Thread { get; set; }
 
-        public User User { get; set; }
+        public User CreatedBy { get; set; }
     }
 }

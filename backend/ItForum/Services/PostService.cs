@@ -13,7 +13,7 @@ namespace ItForum.Services
 
         public override Post FindById(object id)
         {
-            return DbSet.Include(x => x.User)
+            return DbSet.Include(x => x.CreatedBy)
                 .SingleOrDefault(x => x.Id == (int) id);
         }
     }

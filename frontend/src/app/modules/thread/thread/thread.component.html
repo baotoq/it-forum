@@ -1,9 +1,8 @@
 <div class="position-relative">
   <mat-toolbar color="primary" class="position-absolute">
-    <mat-toolbar-row>
-    </mat-toolbar-row>
+    <mat-toolbar-row></mat-toolbar-row>
   </mat-toolbar>
-  <div class="container-fluid mt-4 position-absolute">
+  <div class="container pt-4">
     <div *ngIf="thread">
       <app-thread-detail [thread]="thread"></app-thread-detail>
       <div *ngFor="let post of thread.posts | slice: 1" class="mt-3">

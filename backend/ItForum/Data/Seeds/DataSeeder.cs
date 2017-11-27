@@ -57,7 +57,7 @@ namespace ItForum.Data.Seeds
             var postFaker = new Faker<Post>().Rules((f, o) =>
             {
                 o.Content = f.Lorem.Paragraphs(f.Random.Number(1, 4), "<div></div>");
-                o.User = f.PickRandom(users);
+                o.CreatedBy = f.PickRandom(users);
                 o.DateCreated = f.Date.Past(3);
                 o.DateModified = o.DateCreated;
             });
@@ -65,7 +65,7 @@ namespace ItForum.Data.Seeds
             var threadFaker = new Faker<Thread>().Rules((f, o) =>
             {
                 o.Title = f.Lorem.Sentence();
-                o.User = f.PickRandom(users);
+                o.CreatedBy = f.PickRandom(users);
                 o.Views = f.Random.Number(1, 10000);
                 o.Pinned = false;
                 o.Posts = postFaker.Generate(f.Random.Number(4, 20)).ToList();
@@ -88,6 +88,7 @@ namespace ItForum.Data.Seeds
             {
                 o.Name = f.Name.JobType();
                 o.Description = f.Lorem.Sentences(3);
+                o.CreatedBy = admin;
                 o.Threads = threadFaker.Generate(f.Random.Number(20, 50)).ToList();
                 o.DateCreated = f.Date.Past(4);
                 o.DateModified = o.DateCreated;
@@ -104,6 +105,7 @@ namespace ItForum.Data.Seeds
             {
                 o.Name = f.Commerce.ProductName();
                 o.Description = f.Lorem.Sentences(3);
+                o.CreatedBy = admin;
                 o.Discussions = discussionFaker.Generate(f.Random.Number(2, 6)).ToList();
                 o.DateCreated = f.Date.Past(4);
                 o.DateModified = o.DateCreated;

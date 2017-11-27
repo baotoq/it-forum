@@ -15,4 +15,7 @@ export class PostComponent implements OnInit {
   ngOnInit() {
   }
 
+  onReply() {
+    alert();
+  }
 }

@@ -1,8 +1,9 @@
 ﻿using System;
+using ItForum.Data.Entities.Core;
 
 namespace ItForum.Data.Entities
 {
-    public abstract class TimeStampEntity
+    public class ThreadTagEntity : ITimeStampEntity
     {
         public DateTime? DateCreated { get; set; }
 

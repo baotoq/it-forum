@@ -14,14 +14,14 @@ namespace ItForum.Services
 
         public override Discussion FindById(object id)
         {
-            return DbSet.Include(x => x.Threads).ThenInclude(x => x.User)
+            return DbSet.Include(x => x.Threads).ThenInclude(x => x.CreatedBy)
                 .Include(x => x.Threads).ThenInclude(x => x.Posts)
                 .SingleOrDefault(x => x.Id == (int) id);
         }
 
         public override IEnumerable<Discussion> GetAll()
         {
-            return DbSet.Include(x => x.Threads).ThenInclude(x => x.User);
+            return DbSet.Include(x => x.Threads).ThenInclude(x => x.CreatedBy);
         }
 
         public List<Discussion> FinByTopic(int topicId)
