@@ -40,6 +40,11 @@ namespace ItForum.Data.Dtos
             CreateMap<User, ThreadDto.UserDto>();
             CreateMap<Post, ThreadDto.PostDto>();
             CreateMap<Tag, ThreadDto.TagDto>();
+
+            CreateMap<ThreadDto, Thread>();
+            CreateMap<ThreadDto.UserDto, User>();
+            CreateMap<ThreadDto.PostDto, Post>();
+            CreateMap<ThreadDto.TagDto, Tag>();
         }
 
         private List<Tag> CreateTags(List<ThreadTag> threadTags)

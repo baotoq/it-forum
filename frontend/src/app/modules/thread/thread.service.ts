@@ -11,11 +11,11 @@ export class ThreadService {
   }
 
   get(id: number): Observable<Thread> {
-    return this.requestService.get(`${API.THREAD.GET}/${id}`);
+    return this.requestService.get(`${API.THREAD.URL}/${id}`);
   }
 
   create(thread: Thread): Observable<Thread> {
-    return this.requestService.authPost(API.THREAD.CREATE, thread);
+    return this.requestService.authPost(API.THREAD.URL, thread);
   }
 
   increaseView(id: number): Observable<any> {

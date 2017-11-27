@@ -33,9 +33,6 @@ export module API {
   export class THREAD {
     public static readonly URL = `${BASE_URL}/thread`;
 
-    public static readonly GET_ALL = `${THREAD.URL}/getAll`;
-    public static readonly GET = `${THREAD.URL}/get`;
-    public static readonly CREATE = `${THREAD.URL}/create`;
     public static readonly VIEW = `${THREAD.URL}/view`;
     public static readonly VOTE = `${THREAD.URL}/vote`;
   }

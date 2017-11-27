@@ -7,6 +7,7 @@ using ItForum.Data.Domains;
 using ItForum.Data.Dtos;
 using ItForum.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ItForum.Controllers
@@ -66,7 +67,7 @@ namespace ItForum.Controllers
             await _discussionService.AddAsync(discussion);
             await _unitOfWork.SaveChangesAsync();
 
-            return StatusCode(201, discussion);
+            return StatusCode(StatusCodes.Status201Created, discussion);
         }
     }
 }

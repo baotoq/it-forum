@@ -7,6 +7,7 @@ using ItForum.Data.Domains;
 using ItForum.Data.Dtos;
 using ItForum.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ItForum.Controllers
@@ -64,7 +65,7 @@ namespace ItForum.Controllers
 
             post = _postService.FindById(post.Id);
             var dto = _mapper.Map<PostDto>(post);
-            return StatusCode(201, dto);
+            return StatusCode(StatusCodes.Status201Created, dto);
         }
     }
 }

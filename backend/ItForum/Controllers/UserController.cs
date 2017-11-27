@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ItForum.Common;
 using ItForum.Data;
@@ -36,7 +34,7 @@ namespace ItForum.Controllers
             var innerUser = _userService.FindBy(user.Email, user.Password);
             if (innerUser == null) return StatusCode(StatusCodes.Status401Unauthorized, "Invalid email or password!");
             if (innerUser.ApprovedById == null)
-                return StatusCode(StatusCodes.Status401Unauthorized, "You need to be approve by admin!");
+                return StatusCode(StatusCodes.Status401Unauthorized, "You need to be approved by admin!");
 
             var token = _userService.GenerateJwt(innerUser);
 
@@ -55,7 +53,7 @@ namespace ItForum.Controllers
             await _userService.AddAsync(user);
             await _unitOfWork.SaveChangesAsync();
 
-            return StatusCode(201, user);
+            return StatusCode(StatusCodes.Status201Created, user);
         }
 
         [HttpGet]
@@ -98,7 +96,7 @@ namespace ItForum.Controllers
         public async Task<IActionResult> Approve([FromBody] Payload payload)
         {
             var response = new List<int>();
-            foreach (var id in ((IEnumerable) payload.Data).Cast<object>().Select(x => int.Parse(x.ToString())))
+            foreach (int id in payload.Data)
             {
                 var user = _userService.FindById(id);
                 if (user != null && user.ApprovedBy == null)
@@ -117,7 +115,7 @@ namespace ItForum.Controllers
         public async Task<IActionResult> Decline([FromBody] Payload payload)
         {
             var response = new List<int>();
-            foreach (var id in ((IEnumerable) payload.Data).Cast<object>().Select(x => int.Parse(x.ToString())))
+            foreach (int id in payload.Data)
             {
                 var user = _userService.FindById(id);
                 if (user != null && user.ApprovedBy == null)

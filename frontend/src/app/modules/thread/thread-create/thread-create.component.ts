@@ -63,6 +63,7 @@ export class ThreadCreateComponent implements OnInit {
       title: this.title,
       discussionId: this.selectedDiscussion,
       posts: [{content: this.editorContent}],
+      tags: this.selectedTags,
     });
 
     this.threadService.create(thread)
