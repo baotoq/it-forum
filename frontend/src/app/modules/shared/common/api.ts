@@ -24,10 +24,7 @@ export module API {
   export class DISCUSSION {
     public static readonly URL = `${BASE_URL}/discussion`;
 
-    public static readonly GET_ALL = `${DISCUSSION.URL}/getAll`;
-    public static readonly GET = `${DISCUSSION.URL}/get`;
-    public static readonly GET_OPTIONS = `${DISCUSSION.URL}/getSelectOptions`;
-    public static readonly CREATE = `${DISCUSSION.URL}/create`;
+    public static readonly SELECT_OPTIONS = `${DISCUSSION.URL}/select-options`;
   }
 
   export class THREAD {

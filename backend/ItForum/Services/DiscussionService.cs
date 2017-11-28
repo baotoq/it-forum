@@ -19,7 +19,7 @@ namespace ItForum.Services
                 .SingleOrDefault(x => x.Id == (int) id);
         }
 
-        public override IEnumerable<Discussion> GetAll()
+        public override IEnumerable<Discussion> FindAll()
         {
             return DbSet.Include(x => x.Threads).ThenInclude(x => x.CreatedBy);
         }

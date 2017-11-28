@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ItForum.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [Produces("application/json")]
     public class DiscussionController : Controller
     {
@@ -30,7 +30,7 @@ namespace ItForum.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var discussions = _discussionService.GetAll().ToList();
+            var discussions = _discussionService.FindAll().ToList();
             var dto = _mapper.Map<List<DiscussionDto>>(discussions);
             return Ok(dto);
         }
@@ -39,13 +39,12 @@ namespace ItForum.Controllers
         public IActionResult Get(int id)
         {
             var discussion = _discussionService.FindById(id);
-            if (discussion == null)
-                return BadRequest();
+            if (discussion == null) return BadRequest();
             var dto = _mapper.Map<DiscussionDto>(discussion);
             return Ok(dto);
         }
 
-        [HttpGet("{topicId}")]
+        [HttpGet("select-options/{topicId}")]
         public IActionResult GetSelectOptions(int topicId)
         {
             var discussions = _discussionService.FinByTopic(topicId);
@@ -61,8 +60,7 @@ namespace ItForum.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Discussion discussion)
         {
-            if (discussion == null)
-                return BadRequest();
+            if (discussion == null) return BadRequest();
 
             await _discussionService.AddAsync(discussion);
             await _unitOfWork.SaveChangesAsync();

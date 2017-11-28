@@ -75,9 +75,14 @@ namespace ItForum.Services
             DbSet.Attach(entity);
         }
 
-        public virtual IEnumerable<TEntity> GetAll()
+        public virtual IEnumerable<TEntity> FindAll()
         {
             return DbSet.AsEnumerable();
+        }
+
+        public virtual IEnumerable<TEntity> FindAll(string navigationPropertyPath)
+        {
+            return DbSet.Include(navigationPropertyPath);
         }
 
         public int Count()
@@ -102,7 +107,7 @@ namespace ItForum.Services
 
         public virtual List<TEntity> ToList()
         {
-            return GetAll().ToList();
+            return FindAll().ToList();
         }
     }
 }

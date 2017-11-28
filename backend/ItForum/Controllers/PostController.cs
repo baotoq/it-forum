@@ -35,7 +35,7 @@ namespace ItForum.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var comments = _postService.GetAll();
+            var comments = _postService.FindAll();
             var dto = _mapper.Map<List<PostDto>>(comments);
             return Ok(dto);
         }
@@ -43,10 +43,9 @@ namespace ItForum.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var comment = _postService.FindById(id);
-            if (comment == null)
-                return NotFound();
-            var dto = _mapper.Map<PostDto>(comment);
+            var post = _postService.FindById(id);
+            if (post == null) return BadRequest();
+            var dto = _mapper.Map<PostDto>(post);
             return Ok(dto);
         }
 
@@ -54,8 +53,7 @@ namespace ItForum.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Post post)
         {
-            if (post == null)
-                return BadRequest();
+            if (post == null) return BadRequest();
 
             post.CreatedById = CurrentUserId;
             await _postService.AddAsync(post);

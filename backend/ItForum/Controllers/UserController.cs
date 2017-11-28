@@ -57,7 +57,7 @@ namespace ItForum.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(_userService.GetAll());
+            return Ok(_userService.FindAll());
         }
 
         [HttpGet("{id}")]

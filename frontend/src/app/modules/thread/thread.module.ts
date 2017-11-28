@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
-import { MomentModule } from 'angular2-moment';
-import { NgPipesModule } from 'ngx-pipes';
 import { SharedModule } from '../shared/shared.module';
 
 import { ThreadRoutingModule } from './thread-routing.module';
@@ -23,8 +21,6 @@ import { ReplyComponent } from './thread/reply/reply.component';
     ReactiveFormsModule,
     FroalaEditorModule,
     FroalaViewModule,
-    MomentModule,
-    NgPipesModule,
     SharedModule,
     ThreadRoutingModule,
   ],

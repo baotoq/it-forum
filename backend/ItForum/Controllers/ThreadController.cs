@@ -33,7 +33,7 @@ namespace ItForum.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var threads = _threadService.GetAll().ToList();
+            var threads = _threadService.FindAll().ToList();
             var dto = _mapper.Map<List<ThreadDto>>(threads);
             return Ok(dto);
         }

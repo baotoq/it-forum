@@ -4,7 +4,7 @@ import { AuthService } from '../auth.service';
 import { CoreService } from '../../core/core.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Role } from '../../../models/role';
-import { StatusCodes } from '../../../models/status-codes';
+import { StatusCodes } from '../../shared/common/status-codes';
 
 @Component({
   selector: 'app-login',

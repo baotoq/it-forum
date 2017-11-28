@@ -26,7 +26,7 @@ namespace ItForum.Controllers
         [HttpGet("threads-per-topic")]
         public IActionResult ThreadsPerTopic()
         {
-            var topics = _topicService.GetAll();
+            var topics = _topicService.FindAll();
             return Ok(topics.Select(t => new
             {
                 Key = t.Name,
@@ -37,18 +37,18 @@ namespace ItForum.Controllers
         [HttpGet("posts-per-topic")]
         public IActionResult PostsPerTopic()
         {
-            var topics = _topicService.GetAllWithPost();
+            var topics = _topicService.FindAll("Discussions.Threads.Posts.Replies");
             return Ok(topics.Select(t => new
             {
                 Key = t.Name,
-                Value = t.Discussions.Sum(d => d.Threads.Sum(th => th.Posts.Count))
+                Value = t.Discussions.Sum(d => d.Threads.Sum(th => th.Posts.Count + th.Posts.Sum(p => p.Replies.Count)))
             }).OrderByDescending(x => x.Value));
         }
 
         [HttpGet("threads-per-month")]
         public IActionResult ThreadsPerMonth()
         {
-            var threads = _threadService.GetAll();
+            var threads = _threadService.FindAll();
             var group = threads.GroupBy(x => new DateTime(x.DateCreated.Value.Year, x.DateCreated.Value.Month, 1))
                 .Select(x => new
                 {
@@ -65,7 +65,7 @@ namespace ItForum.Controllers
         [HttpGet("posts-per-month")]
         public IActionResult PostsPerMonth()
         {
-            var posts = _postService.GetAll();
+            var posts = _postService.FindAll();
             var group = posts.GroupBy(x => new DateTime(x.DateCreated.Value.Year, x.DateCreated.Value.Month, 1))
                 .Select(x => new
                 {

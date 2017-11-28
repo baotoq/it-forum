@@ -26,7 +26,7 @@ namespace ItForum.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var topics = _topicService.GetAll().ToList();
+            var topics = _topicService.FindAll().ToList();
             var dto = _mapper.Map<List<TopicDto>>(topics);
             return Ok(dto);
         }
@@ -36,7 +36,7 @@ namespace ItForum.Controllers
         {
             var topic = _topicService.FindById(id);
             if (topic == null)
-                return NotFound();
+                return BadRequest();
             var dto = _mapper.Map<TopicDto>(topic);
             return Ok(dto);
         }
@@ -44,7 +44,7 @@ namespace ItForum.Controllers
         [HttpGet]
         public IActionResult GetSelectOptions()
         {
-            var topics = _topicService.GetAll().ToList();
+            var topics = _topicService.FindAll().ToList();
             return Ok(topics.Select(x => new
             {
                 value = x.Id,

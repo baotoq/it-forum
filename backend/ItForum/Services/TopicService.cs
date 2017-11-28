@@ -18,14 +18,9 @@ namespace ItForum.Services
                 .SingleOrDefault(x => x.Id == (int) id);
         }
 
-        public override IEnumerable<Topic> GetAll()
+        public override IEnumerable<Topic> FindAll()
         {
             return DbSet.Include(x => x.Discussions).ThenInclude(x => x.Threads);
-        }
-
-        public List<Topic> GetAllWithPost()
-        {
-            return DbSet.Include("Discussions.Threads.Posts").ToList();
         }
     }
 }
