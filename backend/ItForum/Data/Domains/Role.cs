@@ -2,8 +2,8 @@
 {
     public enum Role
     {
+        None,
         Administrator,
-        Moderator,
-        User
+        Moderator
     }
 }

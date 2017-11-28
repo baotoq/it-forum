@@ -20,6 +20,12 @@ namespace ItForum.Data.Entities
 
         public Role Role { get; set; }
 
+        public int AccessFailedCount { get; set; }
+
+        public bool LockoutEnabled { get; set; }
+
+        public DateTime LockoutEnd { get; set; }
+
         public int? ApprovedById { get; set; }
 
         public int Id { get; set; }

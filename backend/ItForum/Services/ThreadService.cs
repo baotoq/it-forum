@@ -16,6 +16,7 @@ namespace ItForum.Services
             return DbSet.Include(x => x.CreatedBy)
                 .Include(x => x.Posts).ThenInclude(x => x.CreatedBy)
                 .Include(x => x.ThreadTags).ThenInclude(x => x.Tag)
+                .Include("Posts.Replies.CreatedBy")
                 .SingleOrDefault(x => x.Id == (int) id);
         }
     }

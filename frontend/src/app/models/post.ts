@@ -8,6 +8,7 @@ export class Post extends Timestamp {
   threadId: number;
   userId: number;
   createdBy: User;
+  replies: Post[];
 
   constructor(obj?) {
     super(obj);

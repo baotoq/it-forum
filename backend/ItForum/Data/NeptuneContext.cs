@@ -34,20 +34,21 @@ namespace ItForum.Data
             modelBuilder.Entity<Thread>().HasQueryFilter(x => x.DateDeleted == null);
             modelBuilder.Entity<Post>().HasQueryFilter(x => x.DateDeleted == null);
             modelBuilder.Entity<Tag>().HasQueryFilter(x => x.DateDeleted == null);
-            modelBuilder.Entity<ThreadTag>().HasQueryFilter(x => x.DateDeleted == null);
 
-            modelBuilder.Entity<ThreadTag>()
-                .HasKey(x => new {x.ThreadId, x.TagId});
+            modelBuilder.Entity<ThreadTag>(buildAction =>
+            {
+                buildAction.HasKey(x => new {x.ThreadId, x.TagId});
 
-            modelBuilder.Entity<ThreadTag>()
-                .HasOne(x => x.Thread)
-                .WithMany(x => x.ThreadTags)
-                .HasForeignKey(x => x.ThreadId);
+                buildAction.HasOne(x => x.Thread)
+                    .WithMany(x => x.ThreadTags)
+                    .HasForeignKey(x => x.ThreadId)
+                    .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<ThreadTag>()
-                .HasOne(x => x.Tag)
-                .WithMany(x => x.ThreadTags)
-                .HasForeignKey(x => x.TagId);
+                buildAction.HasOne(x => x.Tag)
+                    .WithMany(x => x.ThreadTags)
+                    .HasForeignKey(x => x.TagId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
         }
 
         public override int SaveChanges()

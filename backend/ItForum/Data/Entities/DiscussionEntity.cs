@@ -9,9 +9,9 @@ namespace ItForum.Data.Entities
 
         public string Description { get; set; }
 
-        public int CreatedById { get; set; }
+        public int? CreatedById { get; set; }
 
-        public int TopicId { get; set; }
+        public int? TopicId { get; set; }
 
         public int Id { get; set; }
 

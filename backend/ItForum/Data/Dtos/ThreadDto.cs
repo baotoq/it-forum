@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using ItForum.Data.Domains;
 using ItForum.Data.Entities;
@@ -20,6 +21,8 @@ namespace ItForum.Data.Dtos
             public int Point { get; set; }
 
             public UserDto CreatedBy { get; set; }
+
+            public List<Post> Replies { get; set; }
         }
 
         public class UserDto : UserEntity
@@ -36,7 +39,7 @@ namespace ItForum.Data.Dtos
         public ThreadMapperProfile()
         {
             CreateMap<Thread, ThreadDto>()
-                .ForMember(d => d.Tags, s => s.MapFrom(c => CreateTags(c.ThreadTags)));
+                .ForMember(d => d.Tags, s => s.MapFrom(c => c.ThreadTags.Select(t => t.Tag)));
             CreateMap<User, ThreadDto.UserDto>();
             CreateMap<Post, ThreadDto.PostDto>();
             CreateMap<Tag, ThreadDto.TagDto>();
@@ -45,13 +48,6 @@ namespace ItForum.Data.Dtos
             CreateMap<ThreadDto.UserDto, User>();
             CreateMap<ThreadDto.PostDto, Post>();
             CreateMap<ThreadDto.TagDto, Tag>();
-        }
-
-        private List<Tag> CreateTags(List<ThreadTag> threadTags)
-        {
-            var tags = new List<Tag>();
-            threadTags.ForEach(x => tags.Add(x.Tag));
-            return tags;
         }
     }
 }

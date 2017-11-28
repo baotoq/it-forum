@@ -28,7 +28,9 @@ namespace ItForum
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<NeptuneContext>(options => options.UseSqlite("Data Source=neptune.db"));
+            //services.AddDbContext<NeptuneContext>(options => options.UseSqlite("Data Source=neptune.db"));
+            services.AddDbContext<NeptuneContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddCors();
 
@@ -51,7 +53,8 @@ namespace ItForum
                     ValidAudience = Jwt.Audience,
                     ValidateAudience = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Jwt.Secret)),
-                    ValidateIssuerSigningKey = true
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
                 };
             });
 
@@ -77,9 +80,9 @@ namespace ItForum
 
             app.UseCors(builder =>
             {
-                builder.AllowAnyHeader();
-                builder.AllowAnyMethod();
-                builder.AllowAnyOrigin();
+                builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
             });
 
             app.UseAuthentication();

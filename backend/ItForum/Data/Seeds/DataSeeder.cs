@@ -68,7 +68,8 @@ namespace ItForum.Data.Seeds
                 o.CreatedBy = f.PickRandom(users);
                 o.Views = f.Random.Number(1, 10000);
                 o.Pinned = false;
-                o.Posts = postFaker.Generate(f.Random.Number(4, 20)).ToList();
+                o.Posts = postFaker.Generate(f.Random.Number(4, 10)).ToList();
+                o.Posts.ForEach(x => x.Replies = postFaker.Generate(f.Random.Number(1, 5)).ToList());
                 o.DateCreated = f.Date.Past(4);
                 o.DateModified = o.DateCreated;
                 o.LastActivity = o.Posts.OrderByDescending(x => x.DateCreated).FirstOrDefault().DateCreated.Value;
@@ -89,7 +90,7 @@ namespace ItForum.Data.Seeds
                 o.Name = f.Name.JobType();
                 o.Description = f.Lorem.Sentences(3);
                 o.CreatedBy = admin;
-                o.Threads = threadFaker.Generate(f.Random.Number(20, 50)).ToList();
+                o.Threads = threadFaker.Generate(f.Random.Number(10, 30)).ToList();
                 o.DateCreated = f.Date.Past(4);
                 o.DateModified = o.DateCreated;
                 for (var i = 0; i < f.Random.Number(1, 5); i++)
@@ -106,19 +107,19 @@ namespace ItForum.Data.Seeds
                 o.Name = f.Commerce.ProductName();
                 o.Description = f.Lorem.Sentences(3);
                 o.CreatedBy = admin;
-                o.Discussions = discussionFaker.Generate(f.Random.Number(2, 6)).ToList();
+                o.Discussions = discussionFaker.Generate(f.Random.Number(2, 5)).ToList();
                 o.DateCreated = f.Date.Past(4);
                 o.DateModified = o.DateCreated;
             });
 
-            var topics = topicFaker.Generate(10);
+            var topics = topicFaker.Generate(5);
             _context.AddRange(topics);
 
             users = userFaker.Generate(50);
             var index = 1;
             users.ToList().ForEach(x =>
             {
-                x.Role = Role.User;
+                x.Role = Role.None;
                 x.Email = $"user{index++}@gmail.com";
             });
             _context.AddRange(users);

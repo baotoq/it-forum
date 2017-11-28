@@ -22,7 +22,9 @@
   <hr class="mb-2">
   <div class="pl-2 pr-2">
     <mat-chip-list>
-      <app-reply class="mt-2" [reply]="post"></app-reply>
+      <div *ngFor="let reply of post.replies | orderBy:['-dateCreated']" class="mt-2">
+        <app-reply [reply]="reply"></app-reply>
+      </div>
     </mat-chip-list>
   </div>
 </mat-card>

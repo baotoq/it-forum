@@ -25,8 +25,7 @@ namespace ItForum.Controllers
 
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
 
-        [HttpPost]
-        [Route("login")]
+        [HttpPost("login")]
         public IActionResult Login([FromBody] User user)
         {
             if (user == null) return BadRequest();
@@ -41,15 +40,14 @@ namespace ItForum.Controllers
             return Ok(new {token});
         }
 
-        [HttpPost]
-        [Route("register")]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] User user)
         {
             if (user == null) return BadRequest();
 
             if (_userService.IsExistEmail(user.Email)) return BadRequest();
 
-            user.Role = Role.User;
+            user.Role = Role.None;
             await _userService.AddAsync(user);
             await _unitOfWork.SaveChangesAsync();
 
@@ -74,8 +72,7 @@ namespace ItForum.Controllers
             return NoContent();
         }
 
-        [HttpPost]
-        [Route("exist-email")]
+        [HttpPost("exist-email")]
         public IActionResult IsExistEmail(string email)
         {
             if (string.IsNullOrEmpty(email)) return BadRequest();
@@ -83,16 +80,14 @@ namespace ItForum.Controllers
         }
 
         [Authorize(Roles = nameof(Role.Administrator))]
-        [HttpGet]
-        [Route("unapprove")]
+        [HttpGet("unapprove")]
         public IActionResult GetUnapprove()
         {
             return Ok(_userService.GetUnapprove());
         }
 
         [Authorize(Roles = nameof(Role.Administrator))]
-        [HttpPost]
-        [Route("approve")]
+        [HttpPost("approve")]
         public async Task<IActionResult> Approve([FromBody] Payload payload)
         {
             var response = new List<int>();
@@ -110,8 +105,7 @@ namespace ItForum.Controllers
         }
 
         [Authorize(Roles = nameof(Role.Administrator))]
-        [HttpPost]
-        [Route("decline")]
+        [HttpPost("decline")]
         public async Task<IActionResult> Decline([FromBody] Payload payload)
         {
             var response = new List<int>();

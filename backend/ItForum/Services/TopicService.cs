@@ -25,8 +25,7 @@ namespace ItForum.Services
 
         public List<Topic> GetAllWithPost()
         {
-            return DbSet.Include(x => x.Discussions).ThenInclude(x => x.Threads)
-                .Include("Discussions.Threads.Posts").ToList();
+            return DbSet.Include("Discussions.Threads.Posts").ToList();
         }
     }
 }

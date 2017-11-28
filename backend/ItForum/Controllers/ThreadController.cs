@@ -68,8 +68,7 @@ namespace ItForum.Controllers
             return StatusCode(StatusCodes.Status201Created, thread);
         }
 
-        [HttpPost("{id}")]
-        [Route("view")]
+        [HttpPost("view/{id}")]
         public async Task<IActionResult> View(int id)
         {
             var thread = _threadService.FindById(id);

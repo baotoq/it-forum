@@ -23,8 +23,7 @@ namespace ItForum.Controllers
             _postService = postService;
         }
 
-        [HttpGet]
-        [Route("threads-per-topic")]
+        [HttpGet("threads-per-topic")]
         public IActionResult ThreadsPerTopic()
         {
             var topics = _topicService.GetAll();
@@ -35,8 +34,7 @@ namespace ItForum.Controllers
             }).OrderByDescending(x => x.Value));
         }
 
-        [HttpGet]
-        [Route("posts-per-topic")]
+        [HttpGet("posts-per-topic")]
         public IActionResult PostsPerTopic()
         {
             var topics = _topicService.GetAllWithPost();
@@ -47,8 +45,7 @@ namespace ItForum.Controllers
             }).OrderByDescending(x => x.Value));
         }
 
-        [HttpGet]
-        [Route("threads-per-month")]
+        [HttpGet("threads-per-month")]
         public IActionResult ThreadsPerMonth()
         {
             var threads = _threadService.GetAll();
@@ -65,8 +62,7 @@ namespace ItForum.Controllers
             }));
         }
 
-        [HttpGet]
-        [Route("posts-per-month")]
+        [HttpGet("posts-per-month")]
         public IActionResult PostsPerMonth()
         {
             var posts = _postService.GetAll();

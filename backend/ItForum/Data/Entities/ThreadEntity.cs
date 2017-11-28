@@ -13,9 +13,9 @@ namespace ItForum.Data.Entities
 
         public DateTime LastActivity { get; set; }
 
-        public int CreatedById { get; set; }
+        public int? CreatedById { get; set; }
 
-        public int DiscussionId { get; set; }
+        public int? DiscussionId { get; set; }
 
         public int Id { get; set; }
 
