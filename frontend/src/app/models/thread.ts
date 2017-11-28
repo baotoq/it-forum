@@ -12,7 +12,7 @@ export class Thread extends Timestamp {
   numberOfPosts = 0;
   lastActivity: Date;
   userId: number;
-  discussionId: number;
+  topicId: number;
   createdBy: User;
   posts: Post[];
   tags: Tag[];
@@ -27,7 +27,7 @@ export class Thread extends Timestamp {
       this.numberOfPosts = obj.numberOfPosts;
       this.lastActivity = obj.lastActivity;
       this.userId = obj.userId;
-      this.discussionId = obj.discussionId;
+      this.topicId = obj.topicId;
       this.createdBy = obj.createdBy;
       this.posts = obj.posts;
       this.tags = obj.tags;

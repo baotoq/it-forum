@@ -15,10 +15,7 @@ export module API {
   export class TOPIC {
     public static readonly URL = `${BASE_URL}/topic`;
 
-    public static readonly GET_ALL = `${TOPIC.URL}/getAll`;
-    public static readonly GET = `${TOPIC.URL}/get`;
-    public static readonly GET_OPTIONS = `${TOPIC.URL}/getSelectOptions`;
-    public static readonly CREATE = `${TOPIC.URL}/create`;
+    public static readonly GET_OPTIONS = `${TOPIC.URL}/select-options`;
   }
 
   export class DISCUSSION {

@@ -1,11 +1,13 @@
 import { Timestamp } from './timestamp';
-import { Discussion } from './discussion';
+import { Thread } from './thread';
 
 export class Topic extends Timestamp {
   id: number;
   name: string;
   description: string;
-  discussions: Discussion[];
+  subTopics: Topic[];
+  numberOfThreads = 0;
+  threads: Thread[];
 
   constructor(obj?) {
     super(obj);
@@ -13,7 +15,6 @@ export class Topic extends Timestamp {
       this.id = obj.id;
       this.name = obj.name;
       this.description = obj.description;
-      this.discussions = obj.discussion;
     }
   }
 }

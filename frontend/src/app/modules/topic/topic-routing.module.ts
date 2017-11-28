@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TopicListComponent } from './topic-list/topic-list.component';
 import { TopicComponent } from './topic/topic.component';
-import { DiscussionComponent } from './topic/discussion/discussion.component';
+import { SubTopicComponent } from './topic/sub-topic/sub-topic.component';
 
 const routes: Routes = [
   {
@@ -14,8 +14,8 @@ const routes: Routes = [
     component: TopicComponent,
     children: [
       {
-        path: 'discussion/:discussionId',
-        component: DiscussionComponent,
+        path: 'sub/:subTopicId',
+        component: SubTopicComponent,
       },
     ],
   },

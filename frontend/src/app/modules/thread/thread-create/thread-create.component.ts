@@ -5,7 +5,6 @@ import { CoreService } from '../../core/core.service';
 import { ThreadService } from '../thread.service';
 import { Thread } from '../../../models/thread';
 import { TopicService } from '../../topic/topic.service';
-import { DiscussionService } from '../../discussion/discussion.service';
 import { LoadingService } from '../../../components/loading/loading.service';
 import { TagService } from '../../tag/tag.service';
 import { FormControl } from '@angular/forms';
@@ -23,10 +22,10 @@ import { MatAutocompleteTrigger } from '@angular/material';
 })
 export class ThreadCreateComponent implements OnInit {
   selectedTopic: number;
-  selectedDiscussion: number;
+  selectedSubTopic: number;
 
   topicOptions = [];
-  discussionOptions = [];
+  subTopicOptions = [];
 
   tagsControl = new FormControl();
   filteredTags: Observable<Tag[]>;
@@ -45,7 +44,6 @@ export class ThreadCreateComponent implements OnInit {
               private authService: AuthService,
               private coreService: CoreService,
               private topicService: TopicService,
-              private discussionService: DiscussionService,
               private threadService: ThreadService,
               private tagService: TagService,
               private filterByPipe: FilterByPipe,
@@ -53,7 +51,7 @@ export class ThreadCreateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getTopicOptions();
+    this.getParentOptions();
     this.getTags();
   }
 
@@ -61,7 +59,7 @@ export class ThreadCreateComponent implements OnInit {
     this.loading = true;
     const thread = new Thread({
       title: this.title,
-      discussionId: this.selectedDiscussion,
+      topicId: this.selectedSubTopic,
       posts: [{content: this.editorContent}],
       tags: this.selectedTags,
     });
@@ -77,7 +75,7 @@ export class ThreadCreateComponent implements OnInit {
   getPreviewThread(): Thread {
     return new Thread({
       title: this.title,
-      discussionId: this.selectedDiscussion,
+      topicId: this.selectedSubTopic,
       posts: [{content: this.editorContent}],
       createdBy: this.currentUser,
       tags: this.selectedTags,
@@ -85,27 +83,27 @@ export class ThreadCreateComponent implements OnInit {
     });
   }
 
-  getTopicOptions() {
+  getParentOptions() {
     this.loadingService.spinnerStart();
-    this.topicService.getSelectOptions()
+    this.topicService.getParentOptions()
       .flatMap(resp => {
         this.topicOptions = resp;
         this.selectedTopic = +this.route.snapshot.queryParams['topicId'] || this.topicOptions[0].value;
-        return this.discussionService.getSelectOptions(this.selectedTopic);
+        return this.topicService.getSubOptions(this.selectedTopic);
       }).subscribe(resp => {
-      this.discussionOptions = resp;
-      this.selectedDiscussion = +this.route.snapshot.queryParams['discussionId'] || this.discussionOptions[0].value;
+      this.subTopicOptions = resp;
+      this.selectedSubTopic = +this.route.snapshot.queryParams['subTopicId'] || this.subTopicOptions[0].value;
       this.loadingService.spinnerStop();
     });
   }
 
-  getDiscussionOptions() {
+  getSubOptions() {
     this.loadingService.progressBarStart();
-    this.discussionService.getSelectOptions(this.selectedTopic)
+    this.topicService.getSubOptions(this.selectedTopic)
       .finally(() => this.loadingService.progressBarStop())
       .subscribe(discussionResp => {
-        this.discussionOptions = discussionResp;
-        this.selectedDiscussion = this.discussionOptions[0].value;
+        this.subTopicOptions = discussionResp;
+        this.selectedSubTopic = this.subTopicOptions[0].value;
       });
   }
 

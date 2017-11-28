@@ -32,7 +32,7 @@
       <div class="col-md-6">
         <mat-form-field class="w-100" floatPlaceholder="always">
           <mat-select placeholder="Topic" [(ngModel)]="selectedTopic" required
-                      (change)="getDiscussionOptions()">
+                      (change)="getSubOptions()">
             <mat-option *ngFor="let topic of topicOptions"
                         [value]="topic.value" [title]="topic.title">
               {{topic.text}}
@@ -42,10 +42,10 @@
       </div>
       <div class="col-md-6">
         <mat-form-field class="w-100" floatPlaceholder="always">
-          <mat-select placeholder="Discussion" [(ngModel)]="selectedDiscussion" required>
-            <mat-option *ngFor="let discussion of discussionOptions"
-                        [value]="discussion.value" [title]="discussion.title">
-              {{discussion.text}}
+          <mat-select placeholder="Sub Topic" [(ngModel)]="selectedSubTopic" required>
+            <mat-option *ngFor="let subTopic of subTopicOptions"
+                        [value]="subTopic.value" [title]="subTopic.title">
+              {{subTopic.text}}
             </mat-option>
           </mat-select>
         </mat-form-field>

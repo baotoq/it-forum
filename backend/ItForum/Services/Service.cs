@@ -30,6 +30,14 @@ namespace ItForum.Services
             return DbSet.Where(predicate);
         }
 
+        public virtual IEnumerable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate,
+            string navigationPropertyPath)
+        {
+            if (string.IsNullOrEmpty(navigationPropertyPath)) throw new ArgumentNullException();
+
+            return DbSet.Include(navigationPropertyPath).Where(predicate);
+        }
+
         public virtual TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.SingleOrDefault(predicate);
@@ -82,6 +90,8 @@ namespace ItForum.Services
 
         public virtual IEnumerable<TEntity> FindAll(string navigationPropertyPath)
         {
+            if (string.IsNullOrEmpty(navigationPropertyPath)) throw new ArgumentNullException();
+
             return DbSet.Include(navigationPropertyPath);
         }
 

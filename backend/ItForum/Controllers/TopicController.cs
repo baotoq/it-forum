@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ItForum.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [Produces("application/json")]
     public class TopicController : Controller
     {
@@ -24,28 +24,50 @@ namespace ItForum.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAllParent()
         {
-            var topics = _topicService.FindAll().ToList();
+            var topics = _topicService.FindParentWithSubTopicsAndThreads().ToList();
             var dto = _mapper.Map<List<TopicDto>>(topics);
             return Ok(dto);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        [HttpGet("sub-topics/{id}")]
+        public IActionResult GetWithSubTopics(int id)
         {
-            var topic = _topicService.FindById(id);
+            var topic = _topicService.FindWithSubTopics(id);
             if (topic == null)
                 return BadRequest();
             var dto = _mapper.Map<TopicDto>(topic);
             return Ok(dto);
         }
 
-        [HttpGet]
-        public IActionResult GetSelectOptions()
+        [HttpGet("threads-created/{id}")]
+        public IActionResult GetWithThreadsAndCreatedBy(int id)
         {
-            var topics = _topicService.FindAll().ToList();
+            var topic = _topicService.FindWithThreadsAndCreatedBy(id);
+            if (topic == null)
+                return BadRequest();
+            var dto = _mapper.Map<TopicDto>(topic);
+            return Ok(dto);
+        }
+
+        [HttpGet("parent-options")]
+        public IActionResult GetParentOptions()
+        {
+            var topics = _topicService.FindParent();
             return Ok(topics.Select(x => new
+            {
+                value = x.Id,
+                text = x.Name,
+                title = x.Description
+            }));
+        }
+
+        [HttpGet("sub-options/{id}")]
+        public IActionResult GetSubOptions(int id)
+        {
+            var topics = _topicService.FindWithSubTopics(id);
+            return Ok(topics.SubTopics.Select(x => new
             {
                 value = x.Id,
                 text = x.Name,

@@ -11,14 +11,22 @@ export class TopicService {
   }
 
   getAll(): Observable<Topic[]> {
-    return this.requestService.get(API.TOPIC.GET_ALL);
+    return this.requestService.get(API.TOPIC.URL);
   }
 
-  get(id: number): Observable<Topic> {
-    return this.requestService.get(`${API.TOPIC.GET}/${id}`);
+  getWithSubTopics(id: number): Observable<Topic> {
+    return this.requestService.get(`${API.TOPIC.URL}/sub-topics/${id}`);
   }
 
-  getSelectOptions(): Observable<any> {
-    return this.requestService.get(`${API.TOPIC.GET_OPTIONS}`);
+  getWithThreads(id: number): Observable<Topic> {
+    return this.requestService.get(`${API.TOPIC.URL}/threads-created/${id}`);
+  }
+
+  getParentOptions(): Observable<any> {
+    return this.requestService.get(`${API.TOPIC.URL}/parent-options`);
+  }
+
+  getSubOptions(id: number): Observable<any> {
+    return this.requestService.get(`${API.TOPIC.URL}/sub-options/${id}`);
   }
 }

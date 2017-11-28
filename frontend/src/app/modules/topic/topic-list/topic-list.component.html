@@ -14,22 +14,22 @@
     </div>
     <div class="card border-top-0" style="border-top-left-radius: 0; border-top-right-radius: 0">
       <div class="card-body py-1 px-0">
-        <div *ngFor="let discussion of topic.discussions; let i = index">
+        <div *ngFor="let subTopic of topic.subTopics; let i = index">
           <div class="row px-2 py-1">
             <div class="col-12 col-md-8" style="font-weight: bold">
               <span>
                 <i class="fa fa-comments fa-fw text-primary" style="font-size: 25px"></i>
               </span>
-              <a [routerLink]="['/topic', topic.id, 'discussion', discussion.id]">
-                {{discussion.name}}
+              <a [routerLink]="['/topic', topic.id, 'sub', subTopic.id]">
+                {{subTopic.name}}
               </a>
               <span class="ml-1 badge badge-danger">5</span>
               <div style="font-size: 60%">
-                {{discussion.description}}
+                {{subTopic.description}}
               </div>
             </div>
             <div class="d-none d-md-block col-md-4" style="font-size: 70%">
-              <div *ngFor="let thread of discussion.threads | orderBy:'-lastActivity' | slice: 0:2">
+              <div *ngFor="let thread of subTopic.threads | orderBy:'-lastActivity' | slice: 0:2">
                 <a [routerLink]="['/thread', thread.id]">
                   {{thread.title | shorten: 45:'...'}}
                 </a>

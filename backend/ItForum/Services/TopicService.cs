@@ -14,13 +14,41 @@ namespace ItForum.Services
 
         public override Topic FindById(object id)
         {
-            return DbSet.Include(x => x.Discussions).ThenInclude(x => x.Threads)
+            return DbSet.Include(x => x.Threads)
                 .SingleOrDefault(x => x.Id == (int) id);
         }
 
         public override IEnumerable<Topic> FindAll()
         {
-            return DbSet.Include(x => x.Discussions).ThenInclude(x => x.Threads);
+            return DbSet.Include(x => x.Threads);
+        }
+
+        public IEnumerable<Topic> FindParent()
+        {
+            return DbSet.Where(x => x.ParentId == null);
+        }
+
+        public IEnumerable<Topic> FindWithThreads()
+        {
+            return DbSet.Include(x => x.Threads);
+        }
+
+        public IEnumerable<Topic> FindParentWithSubTopicsAndThreads()
+        {
+            return DbSet.Include(x => x.SubTopics).ThenInclude(x => x.Threads)
+                .Where(x => x.ParentId == null);
+        }
+
+        public Topic FindWithSubTopics(int id)
+        {
+            return DbSet.Include(x => x.SubTopics)
+                .SingleOrDefault(x => x.Id == id);
+        }
+
+        public Topic FindWithThreadsAndCreatedBy(int id)
+        {
+            return DbSet.Include(x => x.Threads).ThenInclude(x => x.CreatedBy)
+                .SingleOrDefault(x => x.Id == id);
         }
     }
 }

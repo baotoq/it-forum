@@ -15,7 +15,7 @@ namespace ItForum.Data.Entities
 
         public int? CreatedById { get; set; }
 
-        public int? DiscussionId { get; set; }
+        public int? TopicId { get; set; }
 
         public int Id { get; set; }
 

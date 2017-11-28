@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
 using ItForum.Data.Domains;
+using MoreLinq;
 
 namespace ItForum.Data.Seeds
 {
@@ -85,34 +86,32 @@ namespace ItForum.Data.Seeds
                 o.ThreadTags = threadTags.ToList();
             });
 
-            var discussionFaker = new Faker<Discussion>().Rules((f, o) =>
-            {
-                o.Name = f.Name.JobType();
-                o.Description = f.Lorem.Sentences(3);
-                o.CreatedBy = admin;
-                o.Threads = threadFaker.Generate(f.Random.Number(10, 30)).ToList();
-                o.DateCreated = f.Date.Past(4);
-                o.DateModified = o.DateCreated;
-                for (var i = 0; i < f.Random.Number(1, 5); i++)
-                {
-                    var t = f.PickRandom(o.Threads);
-                    o.Threads.Remove(t);
-                    t.Pinned = true;
-                    o.Threads.Add(t);
-                }
-            });
-
             var topicFaker = new Faker<Topic>().Rules((f, o) =>
             {
                 o.Name = f.Commerce.ProductName();
                 o.Description = f.Lorem.Sentences(3);
                 o.CreatedBy = admin;
-                o.Discussions = discussionFaker.Generate(f.Random.Number(2, 5)).ToList();
                 o.DateCreated = f.Date.Past(4);
                 o.DateModified = o.DateCreated;
             });
 
-            var topics = topicFaker.Generate(5);
+            var topics = topicFaker.Generate(3);
+            topics.ForEach(x =>
+            {
+                var f = new Faker();
+                x.SubTopics = topicFaker.Generate(f.Random.Number(2, 3)).ToList();
+                x.SubTopics.ForEach(s =>
+                {
+                    s.Threads = threadFaker.Generate(f.Random.Number(10, 30)).ToList();
+                    for (var i = 0; i < f.Random.Number(1, 5); i++)
+                    {
+                        var t = f.PickRandom(s.Threads);
+                        s.Threads.Remove(t);
+                        t.Pinned = true;
+                        s.Threads.Add(t);
+                    }
+                });
+            });
             _context.AddRange(topics);
 
             users = userFaker.Generate(50);

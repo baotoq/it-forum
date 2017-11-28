@@ -7,8 +7,6 @@ namespace ItForum.Data.Domains
     {
         public List<Topic> Topics { get; set; }
 
-        public List<Discussion> Discussions { get; set; }
-
         public List<Thread> Threads { get; set; }
 
         public List<Post> Posts { get; set; }

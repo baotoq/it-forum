@@ -1,24 +1,22 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MatPaginator, MatSort } from '@angular/material';
-import { CollectionViewer, DataSource } from '@angular/cdk/collections';
-import { DiscussionService } from '../../../discussion/discussion.service';
-import { Thread } from '../../../../models/thread';
-import { Discussion } from '../../../../models/discussion';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/map';
 import { FilterByPipe, OrderByPipe } from 'ngx-pipes';
 import { LoadingService } from '../../../../components/loading/loading.service';
+import { Thread } from '../../../../models/thread';
+import { MatPaginator, MatSort } from '@angular/material';
+import { Topic } from '../../../../models/topic';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { TopicService } from '../../topic.service';
+import { CollectionViewer, DataSource } from '@angular/cdk/collections';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
-  selector: 'app-discussion',
-  templateUrl: './discussion.component.html',
-  styleUrls: ['./discussion.component.scss'],
+  selector: 'app-sub-topic',
+  templateUrl: './sub-topic.component.html',
+  styleUrls: ['./sub-topic.component.scss'],
 })
-export class DiscussionComponent implements OnInit {
-  discussion: Discussion;
+export class SubTopicComponent implements OnInit {
+  subTopic: Topic;
   searchString: string;
 
   displayedColumns;
@@ -28,28 +26,28 @@ export class DiscussionComponent implements OnInit {
   dataSource: ThreadDataSource;
 
   constructor(private route: ActivatedRoute,
-              private discussionService: DiscussionService,
+              private topicService: TopicService,
               private loadingService: LoadingService,
               private orderByPipe: OrderByPipe,
               private filterByPipe: FilterByPipe) {
-    this.onResize();
   }
 
   ngOnInit() {
+    this.onResize();
     this.route.params.subscribe(params => {
       this.searchString = '';
-      this.loadDiscussion(params['discussionId']);
+      this.getSubTopic(params['subTopicId']);
     });
     this.matSort.sortChange.subscribe(() => this.filter());
   }
 
-  loadDiscussion(id: number) {
+  getSubTopic(id: number) {
     this.loadingService.spinnerStart();
-    this.discussionService.get(id).delay(500)
+    this.topicService.getWithThreads(id)
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
-        this.discussion = resp;
-        this.behavior.next(this.discussion.threads);
+        this.subTopic = resp;
+        this.behavior.next(this.subTopic.threads);
         if (this.matSort.active !== 'lastActivity') {
           this.matSort.sort({
             id: 'lastActivity',
@@ -68,7 +66,7 @@ export class DiscussionComponent implements OnInit {
   }
 
   filter() {
-    const data = this.filterByPipe.transform(this.discussion.threads, ['title'], this.searchString);
+    const data = this.filterByPipe.transform(this.subTopic.threads, ['title'], this.searchString);
     let config = '';
     if (this.matSort.active) {
       config = this.matSort.direction === 'asc' ? '+' : '-';
@@ -109,3 +107,4 @@ export class ThreadDataSource extends DataSource<any> {
   disconnect(collectionViewer: CollectionViewer) {
   }
 }
+

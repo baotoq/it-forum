@@ -18,8 +18,6 @@ namespace ItForum.Data
 
         public DbSet<Topic> Topics { get; set; }
 
-        public DbSet<Discussion> Discussions { get; set; }
-
         public DbSet<Thread> Threads { get; set; }
 
         public DbSet<Post> Posts { get; set; }
@@ -30,7 +28,6 @@ namespace ItForum.Data
         {
             modelBuilder.Entity<User>().HasQueryFilter(x => x.DateDeleted == null);
             modelBuilder.Entity<Topic>().HasQueryFilter(x => x.DateDeleted == null);
-            modelBuilder.Entity<Discussion>().HasQueryFilter(x => x.DateDeleted == null);
             modelBuilder.Entity<Thread>().HasQueryFilter(x => x.DateDeleted == null);
             modelBuilder.Entity<Post>().HasQueryFilter(x => x.DateDeleted == null);
             modelBuilder.Entity<Tag>().HasQueryFilter(x => x.DateDeleted == null);

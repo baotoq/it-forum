@@ -21,14 +21,12 @@ export class TopicComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.topicService.get(this.route.snapshot.params['topicId'])
+    this.topicService.getWithSubTopics(this.route.snapshot.params['topicId'])
       .subscribe(resp => {
         this.topic = resp;
-        this.topic.discussions.forEach(item => {
-          this.tabLinks.push(`/topic/${this.topic.id}/discussion/${item.id}`);
-        });
-        const discussionId = +this.route.firstChild.snapshot.params['discussionId'];
-        this.matTabGroup.selectedIndex = this.topic.discussions.findIndex(x => x.id === discussionId);
+        this.topic.subTopics.forEach(item => this.tabLinks.push(`/topic/${this.topic.id}/sub/${item.id}`));
+        const subTopicId = +this.route.firstChild.snapshot.params['subTopicId'];
+        this.matTabGroup.selectedIndex = this.topic.subTopics.findIndex(x => x.id === subTopicId);
       });
   }
 

@@ -7,7 +7,7 @@ namespace ItForum.Data.Domains
     {
         public User CreatedBy { get; set; }
 
-        public Discussion Discussion { get; set; }
+        public Topic Topic { get; set; }
 
         public List<Post> Posts { get; set; }
 

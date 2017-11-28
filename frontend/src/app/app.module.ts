@@ -13,7 +13,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CoreModule } from './modules/core/core.module';
 import { TopicModule } from './modules/topic/topic.module';
-import { DiscussionModule } from './modules/discussion/discussion.module';
 import { ThreadModule } from './modules/thread/thread.module';
 import { TagModule } from './modules/tag/tag.module';
 import { AdminModule } from './modules/admin/admin.module';
@@ -61,7 +60,6 @@ export const firebaseConfig = {
     AuthModule,
     CoreModule,
     TopicModule,
-    DiscussionModule,
     ThreadModule,
     TagModule,
     AdminModule,

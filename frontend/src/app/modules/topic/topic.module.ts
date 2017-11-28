@@ -6,9 +6,9 @@ import { SharedModule } from '../shared/shared.module';
 import { TopicRoutingModule } from './topic-routing.module';
 import { TopicListComponent } from './topic-list/topic-list.component';
 import { TopicComponent } from './topic/topic.component';
-import { DiscussionComponent } from './topic/discussion/discussion.component';
 import { TopicService } from './topic.service';
-import { ThreadSearchInputComponent } from './topic/discussion/thread-search-input/thread-search-input.component';
+import { ThreadSearchInputComponent } from './topic/sub-topic/thread-search-input/thread-search-input.component';
+import { SubTopicComponent } from './topic/sub-topic/sub-topic.component';
 
 @NgModule({
   imports: [
@@ -21,8 +21,8 @@ import { ThreadSearchInputComponent } from './topic/discussion/thread-search-inp
   declarations: [
     TopicListComponent,
     TopicComponent,
-    DiscussionComponent,
     ThreadSearchInputComponent,
+    SubTopicComponent,
   ],
   providers: [TopicService],
 })

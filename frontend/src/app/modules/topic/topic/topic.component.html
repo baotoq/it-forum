@@ -2,7 +2,7 @@
   <span class="m-auto">{{topic.name | uppercase}}</span>
 </mat-toolbar>
 <mat-tab-group (focusChange)="focusChange($event)">
-  <mat-tab *ngFor="let discussion of topic?.discussions" [label]="discussion.name"></mat-tab>
+  <mat-tab *ngFor="let subTopic of topic?.subTopics" [label]="subTopic.name"></mat-tab>
 </mat-tab-group>
 <router-outlet></router-outlet>
 
