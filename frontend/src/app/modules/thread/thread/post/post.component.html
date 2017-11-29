@@ -20,7 +20,7 @@
     <div [froalaView]="post.content"></div>
   </mat-card-content>
   <hr>
-  <button mat-button (click)="onReply()">
+  <button mat-button (click)="replyClick()">
     <i class="fa fa-reply fa-fw"></i>
     Reply
   </button>
@@ -28,7 +28,7 @@
     <i class="fa fa-thumbs-up fa-fw"></i>
     5 Likes
   </button>
-  <ng-container *ngIf="reply && authenticated">
+  <ng-container *ngIf="onReply && authenticated">
     <hr>
     <div>
       <button mat-raised-button color="primary" class="mb-2"
@@ -39,14 +39,12 @@
       <div [froalaEditor]="{height: 150}" [(froalaModel)]="editorContent"></div>
     </div>
   </ng-container>
-  <ng-container *ngIf="post.replies?.length">
-    <hr class="mb-2">
-    <div class="pl-2 pr-2">
-      <div *ngFor="let reply of post.replies | orderBy:['-dateCreated']" class="mt-2">
-        <app-reply [reply]="reply"></app-reply>
-      </div>
+  <hr class="mb-2">
+  <div class="pl-2 pr-2">
+    <div *ngFor="let reply of post.replies" class="mt-2">
+      <app-reply [reply]="reply"></app-reply>
     </div>
-  </ng-container>
+  </div>
 </mat-card>
 
 <mat-menu #postMenu>

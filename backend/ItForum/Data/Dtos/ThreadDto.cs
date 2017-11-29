@@ -39,8 +39,9 @@ namespace ItForum.Data.Dtos
         public ThreadMapperProfile()
         {
             CreateMap<Thread, ThreadDto>()
-                .ForMember(d => d.Tags, s => s.MapFrom(c => c.ThreadTags.Select(t => t.Tag)));
-            CreateMap<User, ThreadDto.UserDto>();
+                .ForMember(d => d.Tags, s => s.MapFrom(t => t.ThreadTags.Select(tt => tt.Tag)));
+            CreateMap<User, ThreadDto.UserDto>()
+                .ForMember(d => d.Password, s => s.Ignore());
             CreateMap<Post, ThreadDto.PostDto>();
             CreateMap<Tag, ThreadDto.TagDto>();
 

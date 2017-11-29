@@ -28,9 +28,10 @@ namespace ItForum.Data.Dtos
         public CategoryMapperProfile()
         {
             CreateMap<Topic, TopicDto>()
-                .ForMember(d => d.NumberOfThreads, s => s.MapFrom(x => x.Threads.Count));
+                .ForMember(d => d.NumberOfThreads, s => s.MapFrom(t => t.Threads.Count));
             CreateMap<Thread, TopicDto.ThreadDto>();
-            CreateMap<User, TopicDto.UserDto>();
+            CreateMap<User, TopicDto.UserDto>()
+                .ForMember(d => d.Password, s => s.Ignore());
         }
     }
 }
