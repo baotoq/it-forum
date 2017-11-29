@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ThreadService } from '../thread.service';
 import { Thread } from '../../../models/thread';
 import { LoadingService } from '../../../components/loading/loading.service';
+import { OrderByPipe } from 'ngx-pipes';
 
 @Component({
   selector: 'app-thread',
@@ -14,15 +15,18 @@ export class ThreadComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private loadingService: LoadingService,
-              private threadService: ThreadService) {
+              private threadService: ThreadService,
+              private orderByPipe: OrderByPipe) {
   }
 
   ngOnInit() {
     this.loadingService.spinnerStart();
-    this.threadService.get(this.route.snapshot.params['threadId'])
+    const threadId = this.route.snapshot.params['threadId'];
+    this.threadService.getWithCreatedByTagsAndReplies(threadId)
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.thread = resp;
+        this.thread.posts = this.orderByPipe.transform(this.thread.posts, ['dateCreated']);
         this.threadService.increaseView(this.thread.id).subscribe();
       });
   }

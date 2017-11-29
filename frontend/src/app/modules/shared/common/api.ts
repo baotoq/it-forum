@@ -34,7 +34,7 @@ export module API {
   export class POST {
     public static readonly URL = `${BASE_URL}/post`;
 
-    public static readonly VOTE = `${POST.URL}/vote`;
+    public static readonly LIKE = `${POST.URL}/like`;
   }
 
   export class TAG {

@@ -41,16 +41,6 @@ namespace ItForum.Controllers
             return Ok(dto);
         }
 
-        [HttpGet("threads-created/{id}")]
-        public IActionResult GetWithThreadsAndCreatedBy(int id)
-        {
-            var topic = _topicService.FindWithThreadsAndCreatedBy(id);
-            if (topic == null)
-                return BadRequest();
-            var dto = _mapper.Map<TopicDto>(topic);
-            return Ok(dto);
-        }
-
         [HttpGet("parent-options")]
         public IActionResult GetParentOptions()
         {
@@ -73,6 +63,16 @@ namespace ItForum.Controllers
                 text = x.Name,
                 title = x.Description
             }));
+        }
+
+        [HttpGet("threads-created/{id}")]
+        public IActionResult GetWithThreadsAndCreatedBy(int id)
+        {
+            var topic = _topicService.FindWithThreadsAndCreatedBy(id);
+            if (topic == null)
+                return BadRequest();
+            var dto = _mapper.Map<TopicDto>(topic);
+            return Ok(dto);
         }
     }
 }

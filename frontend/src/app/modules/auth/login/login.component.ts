@@ -59,13 +59,12 @@ export class LoginComponent implements OnInit {
   }
 
   navigate() {
-    const query = this.route.snapshot.queryParams['returnUrl'];
-    let returnUrl = '/';
-    if (!query) {
+    let returnUrl = this.route.snapshot.queryParams['returnUrl'];
+    if (!returnUrl) {
       if (this.authService.currentUser().role === Role.Administrator)
         returnUrl = '/admin';
     } else {
-      returnUrl = query === '/auth/login' ? '/' : query;
+      returnUrl = returnUrl === '/auth/login' ? '/' : returnUrl;
     }
     this.router.navigateByUrl(returnUrl);
   }

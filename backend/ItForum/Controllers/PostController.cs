@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using ItForum.Data;
@@ -12,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ItForum.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [Produces("application/json")]
     public class PostController : Controller
     {
@@ -32,28 +31,12 @@ namespace ItForum.Controllers
 
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
 
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var comments = _postService.FindAll();
-            var dto = _mapper.Map<List<PostDto>>(comments);
-            return Ok(dto);
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            var post = _postService.FindById(id);
-            if (post == null) return BadRequest();
-            var dto = _mapper.Map<PostDto>(post);
-            return Ok(dto);
-        }
-
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Post post)
         {
             if (post == null) return BadRequest();
+            if (post.ThreadId == null) return BadRequest();
 
             post.CreatedById = CurrentUserId;
             await _postService.AddAsync(post);

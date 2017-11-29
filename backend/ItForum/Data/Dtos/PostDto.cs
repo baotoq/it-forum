@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AutoMapper;
 using ItForum.Data.Domains;
 using ItForum.Data.Entities;
@@ -9,6 +10,8 @@ namespace ItForum.Data.Dtos
         public int Point { get; set; }
 
         public UserDto CreatedBy { get; set; }
+
+        public List<PostDto> Replies { get; set; }
 
         public class UserDto : UserEntity
         {

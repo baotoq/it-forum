@@ -12,6 +12,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/merge';
+import 'rxjs/add/observable/combineLatest';
 
 @Injectable()
 export class RequestService {
