@@ -1,0 +1,28 @@
+<mat-card-content>
+  <div class="px-5 mb-2">
+    <div *ngFor="let quote of post.quotes">
+      <app-quote [quote]="quote"></app-quote>
+    </div>
+  </div>
+  <div [froalaView]="post.content"></div>
+</mat-card-content>
+<hr>
+<button mat-button (click)="replyClick()">
+  <i class="fa fa-reply fa-fw"></i>
+  Reply
+</button>
+<button mat-button>
+  <i class="fa fa-thumbs-up fa-fw"></i>
+  5 Likes
+</button>
+<ng-container *ngIf="onReply && authenticated">
+  <hr>
+  <div>
+    <button mat-raised-button color="primary" class="mb-2"
+            (click)="onSubmit()" [disabled]="!editorContent || loading">
+      <app-fa-spinner *ngIf="loading"></app-fa-spinner>
+      <span *ngIf="!loading">Submit</span>
+    </button>
+    <div [froalaEditor]="{height: 150}" [(froalaModel)]="editorContent"></div>
+  </div>
+</ng-container>

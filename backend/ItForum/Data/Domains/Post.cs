@@ -12,7 +12,6 @@ namespace ItForum.Data.Domains
         [ForeignKey(nameof(CreatedById))]
         public User CreatedBy { get; set; }
 
-        [ForeignKey(nameof(PostId))]
-        public List<Post> Replies { get; set; }
+        public List<Post> Quotes { get; set; }
     }
 }

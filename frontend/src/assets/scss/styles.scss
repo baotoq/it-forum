@@ -23,8 +23,11 @@ mat-sidenav-content {
 .fr-view {
   p {
     margin-bottom: 0;
-    display: inline;
   }
+}
+
+.mat-expansion-panel:not([class*=mat-elevation-z]) {
+  box-shadow: none !important;
 }
 
 app-approve-user {

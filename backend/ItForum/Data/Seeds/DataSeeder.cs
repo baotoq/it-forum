@@ -70,7 +70,7 @@ namespace ItForum.Data.Seeds
                 o.Views = f.Random.Number(1, 10000);
                 o.Pinned = false;
                 o.Posts = postFaker.Generate(f.Random.Number(4, 10)).ToList();
-                o.Posts.ForEach(x => x.Replies = postFaker.Generate(f.Random.Number(1, 5)).ToList());
+                o.Posts.ForEach(x => x.Quotes = postFaker.Generate(f.Random.Number(0, 2)).ToList());
                 o.DateCreated = f.Date.Past(4);
                 o.DateModified = o.DateCreated;
                 o.LastActivity = o.Posts.OrderByDescending(x => x.DateCreated).FirstOrDefault().DateCreated.Value;

@@ -11,7 +11,10 @@ import { ThreadDetailComponent } from './thread/thread-detail/thread-detail.comp
 import { ThreadCreateComponent } from './thread-create/thread-create.component';
 
 import { ThreadService } from './thread.service';
-import { ReplyComponent } from './thread/reply/reply.component';
+import { QuoteComponent } from './thread/quote/quote.component';
+import { PostContentComponent } from './thread/post-content/post-content.component';
+import { PostHeaderComponent } from './thread/post/post-header/post-header.component';
+import { ThreadHeaderComponent } from './thread/thread-detail/thread-header/thread-header.component';
 
 
 @NgModule({
@@ -29,7 +32,10 @@ import { ReplyComponent } from './thread/reply/reply.component';
     ThreadCreateComponent,
     PostComponent,
     ThreadDetailComponent,
-    ReplyComponent,
+    QuoteComponent,
+    PostContentComponent,
+    PostHeaderComponent,
+    ThreadHeaderComponent,
   ],
   providers: [
     ThreadService,

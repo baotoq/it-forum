@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Thread } from '../../../../models/thread';
 import { AuthService } from '../../../auth/auth.service';
 import { Role } from '../../../../models/role';
@@ -10,6 +10,7 @@ import { Role } from '../../../../models/role';
 })
 export class ThreadDetailComponent implements OnInit {
   @Input() thread: Thread;
+  @Output() replySuccess = new EventEmitter<any>();
 
   role = Role;
 

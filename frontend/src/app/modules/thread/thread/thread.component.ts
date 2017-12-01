@@ -30,4 +30,8 @@ export class ThreadComponent implements OnInit {
         this.threadService.increaseView(this.thread.id).subscribe();
       });
   }
+
+  replySuccess($event) {
+    this.thread.posts.push($event);
+  }
 }

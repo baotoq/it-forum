@@ -9,8 +9,6 @@ namespace ItForum.Data.Entities
 
         public int? ThreadId { get; set; }
 
-        public int? PostId { get; set; }
-
         public int? CreatedById { get; set; }
 
         public int Id { get; set; }

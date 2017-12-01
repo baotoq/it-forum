@@ -9,7 +9,7 @@ export class Post extends Timestamp {
   userId: number;
   createdBy: User;
   postId: number;
-  replies: Post[];
+  quotes: Post[];
 
   constructor(obj?) {
     super(obj);
@@ -19,7 +19,7 @@ export class Post extends Timestamp {
       this.threadId = obj.threadId;
       this.userId = obj.userId;
       this.postId = obj.postId;
-      this.replies = obj.replies;
+      this.quotes = obj.quotes;
       this.createdBy = obj.createdBy;
     }
   }

@@ -1,0 +1,32 @@
+<mat-card-header>
+  <div mat-card-avatar [style.background-image]="'url(' + post.createdBy.avatar + ')'"></div>
+  <mat-card-subtitle class="mb-1">
+    <strong>
+      <a href="#">{{post.createdBy.name}}</a>
+    </strong>
+    <span class="badge badge-danger" *ngIf="post.createdBy.role !== role.None">
+        <i class="fa fa-user-circle"></i>
+        {{post.createdBy.role}}
+      </span>
+  </mat-card-subtitle>
+  <mat-card-title class="mb-1 text-muted">
+    {{post.dateCreated | amTimeAgo}}
+  </mat-card-title>
+  <div class="ml-auto">
+    <button mat-icon-button [matMenuTriggerFor]="postMenu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </div>
+</mat-card-header>
+
+<mat-menu #postMenu>
+  <button mat-menu-item class="px-4" style="min-width: 200px">
+    <mat-icon class="mr-2">delete_forever</mat-icon>
+    <span>Delete</span>
+  </button>
+  <div class="divider"></div>
+  <button mat-menu-item class="px-4">
+    <mat-icon class="mr-2">report</mat-icon>
+    <span>Report</span>
+  </button>
+</mat-menu>

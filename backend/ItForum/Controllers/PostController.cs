@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using ItForum.Data;
@@ -39,12 +40,15 @@ namespace ItForum.Controllers
             if (post.ThreadId == null) return BadRequest();
 
             post.CreatedById = CurrentUserId;
+            post.Quotes = post.Quotes?.Select(item => _postService.FindById(item.Id)).Where(p => p != null).ToList();
             await _postService.AddAsync(post);
+
             var thread = _threadService.FindById(post.ThreadId);
             thread.LastActivity = DateTime.Now;
+
             await _unitOfWork.SaveChangesAsync();
 
-            post = _postService.FindById(post.Id);
+            post = _postService.FindWithCreatedByAndQuotes(post.Id);
             var dto = _mapper.Map<PostDto>(post);
             return StatusCode(StatusCodes.Status201Created, dto);
         }

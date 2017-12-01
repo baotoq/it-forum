@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using ItForum.Data;
@@ -30,12 +29,11 @@ namespace ItForum.Controllers
 
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
 
-        [HttpGet("created-tags-replies/{id}")]
+        [HttpGet("created-tags-quotes/{id}")]
         public IActionResult GetWithCreatedByTagsAndReplies(int id)
         {
-            var thread = _threadService.FindWithCreatedByTagsAndReplies(id);
+            var thread = _threadService.FindWithCreatedByTagsAndQuotes(id);
             if (thread == null) return BadRequest();
-            thread.Posts = thread.Posts.Where(p => p.PostId == null).ToList();
             var dto = _mapper.Map<ThreadDto>(thread);
             return Ok(dto);
         }

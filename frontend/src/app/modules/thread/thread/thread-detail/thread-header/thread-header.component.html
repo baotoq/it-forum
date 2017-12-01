@@ -1,0 +1,59 @@
+<mat-card-header>
+  <div mat-card-avatar [style.background-image]="'url(' + thread.createdBy.avatar + ')'"></div>
+  <mat-card-title class="mb-1">
+    <strong style="font-size: 15px">
+      {{thread.title || 'Your thread title here'}}
+    </strong>
+    <ng-container *ngIf="thread.pinned">
+          <span class="badge badge-primary">
+            <i class="fa fa-thumb-tack"></i>
+            Pinned
+          </span>
+    </ng-container>
+  </mat-card-title>
+  <mat-card-subtitle class="mb-1">
+    by
+    <strong>
+      <a href="#" class="text-bold">
+        {{thread.createdBy.name}}
+      </a>
+    </strong>
+    <span class="badge badge-danger" *ngIf="thread.createdBy.role !== role.None">
+        <i class="fa fa-user-circle"></i>
+        {{thread.createdBy.role}}
+      </span>
+    {{thread.dateCreated | amTimeAgo}}
+  </mat-card-subtitle>
+  <div class="ml-auto" *ngIf="authenticated">
+    <button mat-icon-button [matMenuTriggerFor]="threadMenu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </div>
+</mat-card-header>
+
+<mat-menu #threadMenu>
+  <ng-container *ngIf="authenticated">
+    <ng-container *ngIf="currentUser.role === role.Administrator || currentUser.role === role.Moderator">
+      <button mat-menu-item class="px-4" style="min-width: 200px">
+        <mat-icon class="mr-2">close</mat-icon>
+        <span>Close</span>
+      </button>
+      <button mat-menu-item class="px-4">
+        <mat-icon class="mr-2">delete_forever</mat-icon>
+        <span>Delete</span>
+      </button>
+      <div class="divider"></div>
+      <button mat-menu-item class="px-4">
+        <i class="fa fa-thumb-tack mr-2"
+           style="display: inline-flex; vertical-align: middle; color: rgba(0, 0, 0, 0.54); padding: 0 6px 0 6px; font-size: 18px"
+           [class.text-primary]="thread.pinned"></i>
+        <span *ngIf="thread.pinned">Unpin</span>
+        <span *ngIf="!thread.pinned">Pin</span>
+      </button>
+    </ng-container>
+    <button mat-menu-item class="px-4">
+      <mat-icon class="mr-2">report</mat-icon>
+      <span>Report</span>
+    </button>
+  </ng-container>
+</mat-menu>

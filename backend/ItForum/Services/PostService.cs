@@ -16,5 +16,12 @@ namespace ItForum.Services
             return DbSet.Include(x => x.CreatedBy)
                 .SingleOrDefault(x => x.Id == (int) id);
         }
+
+        public Post FindWithCreatedByAndQuotes(object id)
+        {
+            return DbSet.Include(x => x.CreatedBy)
+                .Include(x => x.Quotes).ThenInclude(x => x.CreatedBy)
+                .SingleOrDefault(x => x.Id == (int) id);
+        }
     }
 }
