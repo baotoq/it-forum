@@ -15,6 +15,8 @@ namespace ItForum.Data.Dtos
 
         public class ThreadDto : ThreadEntity
         {
+            public int NumberOfPosts { get; set; }
+
             public UserDto CreatedBy { get; set; }
         }
 
@@ -29,7 +31,8 @@ namespace ItForum.Data.Dtos
         {
             CreateMap<Topic, TopicDto>()
                 .ForMember(d => d.NumberOfThreads, s => s.MapFrom(t => t.Threads.Count));
-            CreateMap<Thread, TopicDto.ThreadDto>();
+            CreateMap<Thread, TopicDto.ThreadDto>()
+                .ForMember(d => d.NumberOfPosts, s => s.MapFrom(t => t.Posts.Count));
             CreateMap<User, TopicDto.UserDto>()
                 .ForMember(d => d.Password, s => s.Ignore());
         }

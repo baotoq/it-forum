@@ -65,10 +65,10 @@ namespace ItForum.Controllers
             }));
         }
 
-        [HttpGet("threads-created/{id}")]
-        public IActionResult GetWithThreadsAndCreatedBy(int id)
+        [HttpGet("threads-created-posts/{id}")]
+        public IActionResult GetWithThreadsCreatedByAndPosts(int id)
         {
-            var topic = _topicService.FindWithThreadsAndCreatedBy(id);
+            var topic = _topicService.FindWithThreadsCreatedByAndPosts(id);
             if (topic == null)
                 return BadRequest();
             var dto = _mapper.Map<TopicDto>(topic);

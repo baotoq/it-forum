@@ -79,8 +79,8 @@ export class SubTopicComponent implements OnInit {
   @HostListener('window:resize')
   onResize() {
     const smallScreen = window.innerWidth < 960;
-    if (smallScreen) this.displayedColumns = ['title', 'pinned', 'createdBy.name'];
-    else this.displayedColumns = ['title', 'pinned', 'createdBy.name', 'numberOfPosts', 'views', 'lastActivity'];
+    if (smallScreen) this.displayedColumns = ['title'];
+    else this.displayedColumns = ['title', 'numberOfPosts', 'views', 'lastActivity'];
   }
 }
 

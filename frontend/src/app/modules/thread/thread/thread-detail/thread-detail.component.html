@@ -5,10 +5,25 @@
       <strong style="font-size: 15px">
         {{thread.title || 'Your thread title here'}}
       </strong>
-      <i *ngIf="thread.pinned" class="fa fa-thumb-tack fa-fw text-danger"></i>
+      <ng-container *ngIf="thread.pinned">
+          <span class="badge badge-primary">
+            <i class="fa fa-thumb-tack"></i>
+            Pinned
+          </span>
+      </ng-container>
     </mat-card-title>
     <mat-card-subtitle class="mb-1">
-      by <strong><a href="#" class="text-bold">{{thread.createdBy.name}}</a></strong> {{thread.dateCreated | amTimeAgo}}
+      by
+      <strong>
+        <a href="#" class="text-bold">
+          {{thread.createdBy.name}}
+        </a>
+      </strong>
+      <span class="badge badge-danger" *ngIf="thread.createdBy.role !== role.None">
+        <i class="fa fa-user-circle"></i>
+        {{role.Administrator}}
+      </span>
+      {{thread.dateCreated | amTimeAgo}}
     </mat-card-subtitle>
     <div class="ml-auto" *ngIf="authenticated">
       <button mat-icon-button [matMenuTriggerFor]="threadMenu">
@@ -52,7 +67,7 @@
       <button mat-menu-item class="px-4">
         <i class="fa fa-thumb-tack mr-2"
            style="display: inline-flex; vertical-align: middle; color: rgba(0, 0, 0, 0.54); padding: 0 6px 0 6px; font-size: 18px"
-           [class.text-danger]="thread.pinned"></i>
+           [class.text-primary]="thread.pinned"></i>
         <span *ngIf="thread.pinned">Unpin</span>
         <span *ngIf="!thread.pinned">Pin</span>
       </button>
