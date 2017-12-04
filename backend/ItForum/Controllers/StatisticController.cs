@@ -26,7 +26,7 @@ namespace ItForum.Controllers
         [HttpGet("threads-per-topic")]
         public IActionResult ThreadsPerTopic()
         {
-            var topics = _topicService.FindAll("Threads");
+            var topics = _topicService.FindAll("Threads").Where(x => x.ParentId != null);
             return Ok(topics.Select(t => new
             {
                 Key = t.Name,
@@ -37,7 +37,7 @@ namespace ItForum.Controllers
         [HttpGet("posts-per-topic")]
         public IActionResult PostsPerTopic()
         {
-            var topics = _topicService.FindAll("Threads.Posts");
+            var topics = _topicService.FindAll("Threads.Posts").Where(x => x.ParentId != null);
             return Ok(topics.Select(t => new
             {
                 Key = t.Name,

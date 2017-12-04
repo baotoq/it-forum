@@ -1,4 +1,3 @@
-///<reference path="../../../../../../node_modules/@angular/core/src/metadata/lifecycle_hooks.d.ts"/>
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Post } from '../../../../models/post';
 import { OrderByPipe } from 'ngx-pipes';

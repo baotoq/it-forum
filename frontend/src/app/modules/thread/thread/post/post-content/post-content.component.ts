@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Post } from '../../../../models/post';
+import { Post } from '../../../../../models/post';
 import { Router } from '@angular/router';
-import { LoadingService } from '../../../../components/loading/loading.service';
-import { CoreService } from '../../../core/core.service';
-import { AuthService } from '../../../auth/auth.service';
-import { ThreadService } from '../../thread.service';
+import { LoadingService } from '../../../../../components/loading/loading.service';
+import { CoreService } from '../../../../core/core.service';
+import { AuthService } from '../../../../auth/auth.service';
+import { ThreadService } from '../../../thread.service';
 import { OrderByPipe } from 'ngx-pipes';
 
 @Component({

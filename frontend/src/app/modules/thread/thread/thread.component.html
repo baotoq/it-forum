@@ -1,13 +1,80 @@
-<div class="position-relative">
-  <mat-toolbar color="primary" class="position-absolute">
-    <mat-toolbar-row></mat-toolbar-row>
-  </mat-toolbar>
-  <div class="container pt-4">
-    <div *ngIf="thread">
-      <app-thread-detail [thread]="thread" (replySuccess)="replySuccess($event)"></app-thread-detail>
-      <div *ngFor="let post of thread.posts | slice:1" class="mt-3">
-        <app-post [post]="post" (replySuccess)="replySuccess($event)"></app-post>
-      </div>
+<mat-toolbar color="primary">
+  <span *ngIf="thread" class="m-auto">{{thread.title}}</span>
+</mat-toolbar>
+
+<div *ngIf="thread" class="container pt-4">
+
+  <div class="mb-3">
+    <nav>
+      <ol class="breadcrumb bg-white box-shadow">
+        <li class="breadcrumb-item"><a [routerLink]="['/']" style="text-decoration: none">HOME</a></li>
+        <li class="breadcrumb-item"><a [routerLink]="['/topic/1']" style="text-decoration: none">TOPIC</a></li>
+        <li class="breadcrumb-item"><a [routerLink]="['/topic/1/sub/4']" style="text-decoration: none">SUBTOPIC</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{thread.title | uppercase}}</li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="clearfix">
+    <button mat-raised-button color="primary" (click)="onPost = !onPost">
+      <i class="fa fa-plus fa-fw"></i>
+      Post
+    </button>
+    <ngb-pagination class="float-right"
+                    [collectionSize]="thread.posts.length"
+                    [(page)]="currentPage"
+                    [maxSize]="5"
+                    [rotate]="true"
+                    [pageSize]="pageSize"
+                    (pageChange)="onPageChange()"
+                    size="md"></ngb-pagination>
+  </div>
+  <div *ngIf="onPost">
+    <button mat-raised-button color="primary" class="mb-2"
+            (click)="onSubmit()" [disabled]="!editorContent || loading">
+      <app-fa-spinner *ngIf="loading"></app-fa-spinner>
+      <span *ngIf="!loading">Submit</span>
+    </button>
+    <div [froalaEditor]="{height: 300}" [(froalaModel)]="editorContent"></div>
+  </div>
+
+  <div class="mb-3">
+    <h3>
+      {{thread.title}}
+      <span *ngIf="thread.pinned"
+            class="badge badge-primary position-relative"
+            style="font-size: 60%; top: -4px;">
+        <i class="fa fa-thumb-tack"></i>
+        Pinned
+      </span>
+    </h3>
+    by <a href="#">{{thread.createdBy.name}}</a> on {{thread.dateCreated | date}}
+  </div>
+
+  <div>
+    <div *ngFor="let post of paginatedData" class="mb-3">
+      <app-post [post]="post" (replySuccess)="replySuccess($event)"></app-post>
+    </div>
+    <div class="clearfix">
+      <ngb-pagination class="float-right"
+                      [collectionSize]="thread.posts.length"
+                      [(page)]="currentPage"
+                      [maxSize]="5"
+                      [rotate]="true"
+                      [pageSize]="pageSize"
+                      (pageChange)="onPageChange()"
+                      size="md"></ngb-pagination>
     </div>
   </div>
+
+  <div>
+    <mat-card class="px-3 py-2">
+      <mat-chip-list></mat-chip-list>
+      Tags:
+      <mat-chip *ngFor="let tag of thread.tags" class="bg-primary text-white">
+        {{tag.name}}
+      </mat-chip>
+    </mat-card>
+  </div>
+
 </div>

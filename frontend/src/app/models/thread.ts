@@ -2,6 +2,7 @@ import { User } from './user';
 import { Timestamp } from './timestamp';
 import { Post } from './post';
 import { Tag } from './tag';
+import { Topic } from './topic';
 
 export class Thread extends Timestamp {
   id: number;
@@ -16,6 +17,7 @@ export class Thread extends Timestamp {
   createdBy: User;
   posts: Post[];
   tags: Tag[];
+  topic: Topic;
 
   constructor(obj?) {
     super(obj);

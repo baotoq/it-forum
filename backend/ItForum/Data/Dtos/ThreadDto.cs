@@ -10,6 +10,8 @@ namespace ItForum.Data.Dtos
     {
         public int Point { get; set; }
 
+        public Topic Topic { get; set; }
+
         public UserDto CreatedBy { get; set; }
 
         public List<PostDto> Posts { get; set; }

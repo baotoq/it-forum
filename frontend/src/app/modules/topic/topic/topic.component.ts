@@ -25,8 +25,12 @@ export class TopicComponent implements OnInit {
       .subscribe(resp => {
         this.topic = resp;
         this.topic.subTopics.forEach(item => this.tabLinks.push(`/topic/${this.topic.id}/sub/${item.id}`));
-        const subTopicId = +this.route.firstChild.snapshot.params['subTopicId'];
-        this.matTabGroup.selectedIndex = this.topic.subTopics.findIndex(x => x.id === subTopicId);
+        if (this.route.firstChild) {
+          const subTopicId = +this.route.firstChild.snapshot.params['subTopicId'];
+          this.matTabGroup.selectedIndex = this.topic.subTopics.findIndex(x => x.id === subTopicId);
+        } else {
+          this.router.navigateByUrl(this.tabLinks[0]);
+        }
       });
   }
 

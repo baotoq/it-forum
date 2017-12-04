@@ -1,4 +1,9 @@
 <div class="container-fluid mt-3">
+  <mat-card *ngIf="subTopic" class="mb-3">
+    <h3>{{subTopic.name}}</h3>
+    {{subTopic.description}}
+  </mat-card>
+
   <app-thread-search-input (searchOut)="onSearchOut($event)"></app-thread-search-input>
 
   <mat-table #table [dataSource]="dataSource" matSort matSortStart="desc" [matSortDisableClear]="true">
