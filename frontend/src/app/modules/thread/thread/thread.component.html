@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="mat-toolbar-48">
   <span *ngIf="thread" class="m-auto">{{thread.title}}</span>
 </mat-toolbar>
 
@@ -48,7 +48,10 @@
         Pinned
       </span>
     </h3>
-    by <a href="#">{{thread.createdBy.name}}</a> on {{thread.dateCreated | date}}
+    by <a href="#">{{thread.createdBy.name}}</a> at
+    <span class="text-muted">
+      {{thread.dateCreated | date:'MMM d y, h:mm a'}}
+    </span>
   </div>
 
   <div>

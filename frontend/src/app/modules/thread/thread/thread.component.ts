@@ -13,7 +13,7 @@ import { OrderByPipe } from 'ngx-pipes';
 export class ThreadComponent implements OnInit {
   thread: Thread;
   currentPage = 1;
-  pageSize = 3;
+  pageSize = 10;
   paginatedData = [];
 
   loading = false;
@@ -41,6 +41,7 @@ export class ThreadComponent implements OnInit {
 
   replySuccess($event) {
     this.thread.posts.push($event);
+    this.onPageChange();
   }
 
   onPageChange() {

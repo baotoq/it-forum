@@ -15,8 +15,9 @@ export class DashboardComponent implements OnInit {
 
   threadsDataTable;
   postsDataTable;
-  threadsPerMonthDataTable;
-  postsPerMonthDataTable;
+
+  threadLifetimeDataTable;
+  postLifetimeDataTable;
 
   constructor(private loadingService: LoadingService,
               private dashboardService: DashboardService) {
@@ -26,22 +27,33 @@ export class DashboardComponent implements OnInit {
     this.loadingService.spinnerStart();
     this.dashboardService.getThreadStatistic()
       .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => this.threadsDataTable = this.prepareDataTable('Number of threads', resp));
+      .subscribe(resp => this.threadsDataTable = this.prepareColumnChart('Number of threads', resp));
     this.dashboardService.getPostStatistic()
       .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => this.postsDataTable = this.prepareDataTable('Number of posts', resp));
+      .subscribe(resp => this.postsDataTable = this.prepareColumnChart('Number of posts', resp));
     this.dashboardService.getThreadsPerMonthStatistic()
       .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => this.threadsPerMonthDataTable = this.prepareDataTable('Number of threads', resp));
+      .subscribe(resp => this.threadLifetimeDataTable = this.prepareLineChart('Number of threads', resp));
     this.dashboardService.getPostsPerMonthStatistic()
       .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => this.postsPerMonthDataTable = this.prepareDataTable('Number of posts', resp));
+      .subscribe(resp => this.postLifetimeDataTable = this.prepareLineChart('Number of posts', resp));
   }
 
-  private prepareDataTable(title: string, data: any, take: number = 10) {
-    return [
+  private prepareColumnChart(title: string, data: any) {
+    data = [
       ['Title', title],
-      ...data.map(item => [item.key, item.value]).slice(0, take)
+      ...data.map(item => [item.key, item.value])
     ];
+    return data.slice(0, 10);
+  }
+
+  private prepareLineChart(title: string, data: any) {
+    console.log(data);
+    data = [
+      ['Title', title],
+      ...data.map(item => [new Date(item.key.year, item.key.month - 1), item.value])
+    ];
+    console.log(data);
+    return data;
   }
 }

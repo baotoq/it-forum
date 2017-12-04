@@ -26,23 +26,23 @@ namespace ItForum.Controllers
         [HttpGet("threads-per-topic")]
         public IActionResult ThreadsPerTopic()
         {
-            var topics = _topicService.FindAll("Threads").Where(x => x.ParentId != null);
+            var topics = _topicService.FindBy(x => x.ParentId != null, "Threads");
             return Ok(topics.Select(t => new
             {
                 Key = t.Name,
                 Value = t.Threads.Count
-            }).OrderByDescending(x => x.Value));
+            }).OrderBy(x => x.Value));
         }
 
         [HttpGet("posts-per-topic")]
         public IActionResult PostsPerTopic()
         {
-            var topics = _topicService.FindAll("Threads.Posts").Where(x => x.ParentId != null);
+            var topics = _topicService.FindBy(x => x.ParentId != null, "Threads.Posts");
             return Ok(topics.Select(t => new
             {
                 Key = t.Name,
                 Value = t.Threads.Sum(d => d.Posts.Count)
-            }).OrderByDescending(x => x.Value));
+            }).OrderBy(x => x.Value));
         }
 
         [HttpGet("threads-per-month")]
@@ -54,10 +54,14 @@ namespace ItForum.Controllers
                 {
                     x.Key,
                     Value = x.Count()
-                }).OrderByDescending(x => x.Key);
+                }).OrderBy(x => x.Key);
             return Ok(group.Select(x => new
             {
-                Key = x.Key.ToString("Y"),
+                Key = new
+                {
+                    x.Key.Year,
+                    x.Key.Month
+                },
                 x.Value
             }));
         }
@@ -71,10 +75,14 @@ namespace ItForum.Controllers
                 {
                     x.Key,
                     Value = x.Count()
-                }).OrderByDescending(x => x.Key);
+                }).OrderBy(x => x.Key);
             return Ok(group.Select(x => new
             {
-                Key = x.Key.ToString("Y"),
+                Key = new
+                {
+                    x.Key.Year,
+                    x.Key.Month
+                },
                 x.Value
             }));
         }

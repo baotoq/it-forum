@@ -14,11 +14,13 @@ import { ClickStopPropagationDirective } from './directives/click-stop-propagati
 import { FontAwesomeSpinnerComponent } from './components/font-awesome-spinner/font-awesome-spinner.component';
 import { MaterialSpinnerComponent } from './components/material-spinner/material-spinner.component';
 import { ColumnChartComponent } from './components/column-chart/column-chart.component';
+import { LineChartComponent } from './components/line-chart/line-chart.component';
 
 const COMPONENTS = [
   FontAwesomeSpinnerComponent,
   MaterialSpinnerComponent,
   ColumnChartComponent,
+  LineChartComponent,
 ];
 
 const PIPES = [

@@ -10,7 +10,7 @@
       {{post.createdBy.role}}
     </span>
   </mat-card-subtitle>
-  <mat-card-title class="mb-1 text-muted">
+  <mat-card-title class="mb-1 text-muted" [title]="post.dateCreated | date:'MMM d y, h:mm a'">
     {{post.dateCreated | amTimeAgo}}
   </mat-card-title>
   <div class="ml-auto">
