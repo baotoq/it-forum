@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using ItForum.Data;
@@ -67,6 +68,13 @@ namespace ItForum.Controllers
             thread.Views += 1;
             await _unitOfWork.SaveChangesAsync();
             return Ok();
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpGet("unapprove")]
+        public IActionResult GetUnapprove()
+        {
+            return Ok(_threadService.GetUnapprove().ToList());
         }
     }
 }

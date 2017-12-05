@@ -11,6 +11,8 @@ namespace ItForum.Data.Domains
 
         public List<Post> Posts { get; set; }
 
+        public List<Post> ApprovalStatusModifiedPosts { get; set; }
+
         public User ApprovedBy { get; set; }
     }
 }

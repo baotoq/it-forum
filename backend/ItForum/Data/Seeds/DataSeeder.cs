@@ -59,6 +59,12 @@ namespace ItForum.Data.Seeds
             {
                 o.Content = f.Lorem.Paragraphs(f.Random.Number(1, 4), "<div></div>");
                 o.CreatedBy = f.PickRandom(users);
+                o.ApprovalStatus = ApprovalStatus.Pending;
+                if (f.Random.Number(0, 50) != 0)
+                {
+                    o.ApprovalStatus = ApprovalStatus.Approved;
+                    o.ApprovalStatusModifiedBy = admin;
+                }
                 o.DateCreated = f.Date.Past(3);
                 o.DateModified = o.DateCreated;
             });
@@ -72,6 +78,7 @@ namespace ItForum.Data.Seeds
                 o.Posts = postFaker.Generate(f.Random.Number(5, 30)).ToList();
                 o.Posts.ForEach(x => x.Quotes = postFaker.Generate(f.Random.Number(0, 2)).ToList());
                 var p = o.Posts.OrderBy(x => x.DateCreated).FirstOrDefault();
+                p.Quotes = null;
                 p.CreatedBy = o.CreatedBy;
                 o.DateCreated = p.DateCreated;
                 o.DateModified = o.DateCreated;

@@ -1,0 +1,19 @@
+@import "../../../../../../assets/scss/variables";
+
+$blur-color: #999999;
+
+.btn-approve {
+  color: $blur-color;
+
+  &:hover {
+    color: $mat-primary;
+  }
+}
+
+.btn-decline {
+  color: $blur-color;
+
+  &:hover {
+    color: $red;
+  }
+}

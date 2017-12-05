@@ -1,4 +1,5 @@
 ﻿using System;
+using ItForum.Data.Domains;
 using ItForum.Data.Entities.Core;
 
 namespace ItForum.Data.Entities
@@ -10,6 +11,10 @@ namespace ItForum.Data.Entities
         public int? ThreadId { get; set; }
 
         public int? CreatedById { get; set; }
+
+        public int? ApprovalStatusModifiedById { get; set; }
+
+        public ApprovalStatus ApprovalStatus { get; set; }
 
         public int Id { get; set; }
 

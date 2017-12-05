@@ -7,7 +7,7 @@ import { AuthConfig, AuthHttp } from 'angular2-jwt';
 
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { SnotifyModule, SnotifyService, SnotifyToastConfig, ToastDefaults } from 'ng-snotify';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -74,6 +74,7 @@ export const firebaseConfig = {
       deps: [Http, RequestOptions],
     },
     {provide: 'SnotifyToastConfig', useValue: ToastDefaults},
+    NgbPaginationConfig,
     SnotifyService,
     LoadingService,
     AuthGuard,
@@ -82,4 +83,8 @@ export const firebaseConfig = {
   bootstrap: [AppComponent],
 })
 export class AppModule {
+  constructor(config: NgbPaginationConfig) {
+    config.rotate = true;
+    config.maxSize = 6;
+  }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ItForum.Common;
 using ItForum.Data;
@@ -83,7 +84,7 @@ namespace ItForum.Controllers
         [HttpGet("unapprove")]
         public IActionResult GetUnapprove()
         {
-            return Ok(_userService.GetUnapprove());
+            return Ok(_userService.GetUnapprove().ToList());
         }
 
         [Authorize(Roles = nameof(Role.Administrator))]

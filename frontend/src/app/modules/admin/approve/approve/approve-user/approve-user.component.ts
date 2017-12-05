@@ -34,7 +34,7 @@ export class ApproveUserComponent implements OnInit {
 
   ngOnInit() {
     this.loadingService.spinnerStart();
-    this.approveService.getUnapprove()
+    this.approveService.getUnapproveUsers()
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.unapprove = this.orderByPipe.transform(resp, '-dateCreated');
@@ -67,14 +67,14 @@ export class ApproveUserComponent implements OnInit {
 
   onApprove() {
     this.approveLoading = true;
-    this.approveService.approve(this.getSelected())
+    this.approveService.approveUsers(this.getSelected())
       .finally(() => this.approveLoading = false)
       .subscribe(resp => this.ngOnInit());
   }
 
   onDecline() {
     this.approveLoading = true;
-    this.approveService.decline(this.getSelected())
+    this.approveService.declineUsers(this.getSelected())
       .finally(() => this.approveLoading = false)
       .subscribe(resp => this.ngOnInit());
   }

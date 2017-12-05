@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ItForum.Data;
 using ItForum.Data.Domains;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,11 @@ namespace ItForum.Services
             return DbSet.Include(x => x.CreatedBy)
                 .Include(x => x.Quotes).ThenInclude(x => x.CreatedBy)
                 .SingleOrDefault(x => x.Id == (int) id);
+        }
+
+        public IEnumerable<Post> GetPending()
+        {
+            return DbSet.Include(x => x.CreatedBy).Where(x => x.ApprovalStatus == ApprovalStatus.Pending);
         }
     }
 }

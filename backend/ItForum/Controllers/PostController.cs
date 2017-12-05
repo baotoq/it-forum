@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -51,6 +52,30 @@ namespace ItForum.Controllers
             post = _postService.FindWithCreatedByAndQuotes(post.Id);
             var dto = _mapper.Map<PostDto>(post);
             return StatusCode(StatusCodes.Status201Created, dto);
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpGet("pending")]
+        public IActionResult GetPendingPosts()
+        {
+            var posts = _postService.GetPending().ToList();
+            var dto = _mapper.Map<List<PostDto>>(posts);
+            return Ok(dto);
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpPost("modify-approval-status/{id}")]
+        public async Task<IActionResult> ModifyApprovalStatus(int id, [FromQuery] ApprovalStatus approvalStatus)
+        {
+            var post = _postService.FindById(id);
+            if (post == null) return BadRequest();
+            if (post.ApprovalStatus == ApprovalStatus.Pending)
+            {
+                post.ApprovalStatusModifiedById = CurrentUserId;
+                post.ApprovalStatus = approvalStatus;
+                await _unitOfWork.SaveChangesAsync();
+            }
+            return Ok();
         }
     }
 }

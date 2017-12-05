@@ -35,6 +35,8 @@ export module API {
     public static readonly URL = `${BASE_URL}/post`;
 
     public static readonly LIKE = `${POST.URL}/like`;
+
+    public static readonly PENDING = `${POST.URL}/pending`;
   }
 
   export class TAG {

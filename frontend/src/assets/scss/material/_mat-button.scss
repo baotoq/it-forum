@@ -9,3 +9,15 @@ a[mat-button] {
 button[mat-icon-button] {
   outline: none;
 }
+
+.mat-button.mat-small {
+  min-width: 1%;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  min-height: 30px;
+  vertical-align: top;
+  font-size: 15px;
+  padding: 0 0;
+  margin: 0;
+}

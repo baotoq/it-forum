@@ -24,9 +24,9 @@ namespace ItForum.Services
             return Any(x => x.Email.ToLower() == email.ToLower());
         }
 
-        public List<User> GetUnapprove()
+        public IEnumerable<User> GetUnapprove()
         {
-            return DbSet.Where(x => x.ApprovedBy == null).ToList();
+            return DbSet.Where(x => x.ApprovedBy == null);
         }
 
         public string GenerateJwt(User user)

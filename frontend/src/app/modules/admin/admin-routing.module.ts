@@ -4,6 +4,7 @@ import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 import { ApproveComponent } from './approve/approve/approve.component';
 import { ApproveUserComponent } from './approve/approve/approve-user/approve-user.component';
 import { ApproveThreadComponent } from './approve/approve/approve-thread/approve-thread.component';
+import { ApprovePostComponent } from './approve/approve/approve-post/approve-post.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,10 @@ const routes: Routes = [
       {
         path: 'thread',
         component: ApproveThreadComponent,
+      },
+      {
+        path: 'post',
+        component: ApprovePostComponent,
       },
     ],
   },

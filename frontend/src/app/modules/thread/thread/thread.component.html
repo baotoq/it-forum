@@ -23,8 +23,6 @@
     <ngb-pagination class="float-right"
                     [collectionSize]="thread.posts.length"
                     [(page)]="currentPage"
-                    [maxSize]="5"
-                    [rotate]="true"
                     [pageSize]="pageSize"
                     (pageChange)="onPageChange()"
                     size="md"></ngb-pagination>
@@ -62,11 +60,8 @@
       <ngb-pagination class="float-right"
                       [collectionSize]="thread.posts.length"
                       [(page)]="currentPage"
-                      [maxSize]="5"
-                      [rotate]="true"
-                      [pageSize]="pageSize"
-                      (pageChange)="onPageChange()"
-                      size="md"></ngb-pagination>
+                      [maxSize]="pageSize"
+                      (pageChange)="onPageChange()"></ngb-pagination>
     </div>
   </div>
 

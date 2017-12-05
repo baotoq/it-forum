@@ -32,16 +32,23 @@ namespace ItForum.Data
             modelBuilder.Entity<Post>().HasQueryFilter(x => x.DateDeleted == null);
             modelBuilder.Entity<Tag>().HasQueryFilter(x => x.DateDeleted == null);
 
-            modelBuilder.Entity<ThreadTag>(buildAction =>
+            modelBuilder.Entity<Post>(e =>
             {
-                buildAction.HasKey(x => new {x.ThreadId, x.TagId});
+                e.HasOne(p => p.CreatedBy).WithMany(u => u.Posts).HasForeignKey(p => p.CreatedById);
+                e.HasOne(p => p.ApprovalStatusModifiedBy).WithMany(u => u.ApprovalStatusModifiedPosts)
+                    .HasForeignKey(p => p.ApprovalStatusModifiedById);
+            });
 
-                buildAction.HasOne(x => x.Thread)
+            modelBuilder.Entity<ThreadTag>(e =>
+            {
+                e.HasKey(x => new {x.ThreadId, x.TagId});
+
+                e.HasOne(x => x.Thread)
                     .WithMany(x => x.ThreadTags)
                     .HasForeignKey(x => x.ThreadId)
                     .OnDelete(DeleteBehavior.Cascade);
 
-                buildAction.HasOne(x => x.Tag)
+                e.HasOne(x => x.Tag)
                     .WithMany(x => x.ThreadTags)
                     .HasForeignKey(x => x.TagId)
                     .OnDelete(DeleteBehavior.Cascade);

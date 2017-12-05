@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit {
       ['Title', title],
       ...data.map(item => [item.key, item.value])
     ];
-    return data.slice(0, 10);
+    return data;
   }
 
   private prepareLineChart(title: string, data: any) {
