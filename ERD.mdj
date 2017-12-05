@@ -2091,7 +2091,7 @@
 							"width": 71.29541015625,
 							"height": 70,
 							"autoResize": false,
-							"text": "role:\nadmin\nmod\nuser",
+							"text": "role:\nadmin\nmod,\nnone",
 							"wordWrap": true
 						},
 						{
@@ -2988,9 +2988,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 583,
+									"left": 564,
 									"top": 464,
-									"width": 33.236328125,
+									"width": 70.83349609375,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -5.668522051562298,
@@ -3000,7 +3000,7 @@
 									},
 									"edgePosition": 2,
 									"underline": false,
-									"text": "Reply",
+									"text": "have quotes",
 									"horizontalAlignment": 2,
 									"verticalAlignment": 5,
 									"wordWrap": false
@@ -4172,7 +4172,7 @@
 								"_parent": {
 									"$ref": "AAAAAAFgAuMgl480vAs="
 								},
-								"name": "Reply",
+								"name": "have quotes",
 								"reference": {
 									"$ref": "AAAAAAFezea8KiLS4hA="
 								},
