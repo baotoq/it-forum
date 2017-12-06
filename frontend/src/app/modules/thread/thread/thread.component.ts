@@ -4,6 +4,7 @@ import { ThreadService } from '../thread.service';
 import { Thread } from '../../../models/thread';
 import { LoadingService } from '../../../components/loading/loading.service';
 import { OrderByPipe } from 'ngx-pipes';
+import { Storage } from '../../shared/common/constant';
 
 @Component({
   selector: 'app-thread',
@@ -36,6 +37,7 @@ export class ThreadComponent implements OnInit {
         this.thread.posts = this.orderByPipe.transform(this.thread.posts, ['dateCreated']);
         this.threadService.increaseView(this.thread.id).subscribe();
         this.onPageChange();
+        this.setStorage();
       });
   }
 
@@ -51,5 +53,14 @@ export class ThreadComponent implements OnInit {
 
   onSubmit() {
 
+  }
+
+  setStorage() {
+    let recentlyThreads = [];
+    const token = JSON.parse(localStorage.getItem(Storage.RECENTLY_THREADS));
+    if (token) recentlyThreads = token;
+    const index = recentlyThreads.indexOf(this.thread.id);
+    if (index === -1) recentlyThreads.push(this.thread.id);
+    localStorage.setItem(Storage.RECENTLY_THREADS, JSON.stringify(recentlyThreads));
   }
 }

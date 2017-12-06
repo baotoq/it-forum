@@ -1,69 +1,78 @@
 <div class="container-fluid mt-3">
+
   <mat-card *ngIf="subTopic" class="mb-3">
-    <h3>{{subTopic.name}}</h3>
+    <div>
+      <span class="text-primary" style="font-size: 30px">{{subTopic.name}}</span>
+      <span class="float-right">
+        <button mat-button color="accent">
+          Follow
+        </button>
+      </span>
+    </div>
     {{subTopic.description}}
   </mat-card>
 
-  <app-thread-search-input (searchOut)="onSearchOut($event)"></app-thread-search-input>
+  <div class="shadow-2">
+    <app-thread-search-input (searchOut)="onSearchOut($event)"></app-thread-search-input>
 
-  <mat-table #table [dataSource]="dataSource" matSort matSortStart="desc" [matSortDisableClear]="true">
+    <mat-table #table [dataSource]="dataSource" matSort matSortStart="desc" [matSortDisableClear]="true">
 
-    <ng-container matColumnDef="title">
-      <mat-header-cell *matHeaderCellDef mat-sort-header start="asc">Title</mat-header-cell>
-      <mat-cell *matCellDef="let row" [title]="row.title">
-        <a [matTooltip]="row.createdBy.name" matTooltipPosition="above"
-           [routerLink]="['/']">
-          <img [src]="row.createdBy.avatar" [alt]="row.createdBy.name" class="img-fluid"
-               style="border-radius: 50%; width:30px; height: 30px">
-        </a>
-        <ng-container *ngIf="row.pinned">
-          <span class="badge badge-primary">
+      <ng-container matColumnDef="title">
+        <mat-header-cell *matHeaderCellDef mat-sort-header start="asc">Title</mat-header-cell>
+        <mat-cell *matCellDef="let row" [title]="row.title">
+          <a [matTooltip]="row.createdBy.name" matTooltipPosition="above"
+             [routerLink]="['/']" class="mr-1" style="text-decoration: none">
+            <img [src]="row.createdBy.avatar" [alt]="row.createdBy.name" class="img-fluid"
+                 style="border-radius: 50%; width:30px; height: 30px">
+          </a>
+          <span *ngIf="row.pinned" class="badge badge-primary badge-line-fix mr-1">
             <i class="fa fa-thumb-tack"></i>
             Pinned
           </span>
-        </ng-container>
-        <strong>{{row.title | shorten: 100:'...'}}</strong>
-      </mat-cell>
-    </ng-container>
+          <span [class.font-weight-bold]="!row.visited">{{row.title | shorten: 100:'...'}}</span>
+        </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="numberOfPosts">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Posts</mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        {{row.numberOfPosts}}
-      </mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="numberOfPosts">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Posts</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          {{row.numberOfPosts}}
+        </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="views">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Views</mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        {{row.views}}
-      </mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="views">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Views</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          {{row.views}}
+        </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="lastActivity">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Activity</mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        {{row.lastActivity | amTimeAgo}}
-      </mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="lastActivity">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Activity</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          {{row.lastActivity | amTimeAgo}}
+        </mat-cell>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"
-             [routerLink]="['/thread', row.id]"
-             [class.pinned]="row.pinned"></mat-row>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"
+               [routerLink]="['/thread', row.id]"
+               [class.pinned]="row.pinned"></mat-row>
 
-  </mat-table>
+    </mat-table>
 
-  <mat-card *ngIf="!behavior.value.length && !loading">
-    <mat-card-content class="justify-content-center d-flex py-5">
-      We couldn't find any thread.
-    </mat-card-content>
-  </mat-card>
+    <mat-card *ngIf="!behavior.value.length && !loading">
+      <mat-card-content class="justify-content-center d-flex py-5">
+        We couldn't find any thread.
+      </mat-card-content>
+    </mat-card>
 
-  <mat-paginator [hidden]="!behavior.value.length && !loading"
-                 #paginator class="shadow"
-                 [length]="behavior.value.length"
-                 [pageIndex]="0"
-                 [pageSizeOptions]="[20, 25, 30]">
-  </mat-paginator>
+    <mat-paginator #paginator
+                   [hidden]="!behavior.value.length && !loading"
+                   [length]="behavior.value.length"
+                   [pageIndex]="0"
+                   [pageSizeOptions]="[20, 25, 30]">
+    </mat-paginator>
+  </div>
+
 </div>

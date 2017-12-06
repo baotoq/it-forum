@@ -3,15 +3,15 @@ import { CommonModule } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
 
-import { ApproveModule } from './approve/approve.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { ApproveModule } from './approve/approve.module';
 
 @NgModule({
   imports: [
     CommonModule,
     AdminRoutingModule,
-    ApproveModule,
     DashboardModule,
+    ApproveModule,
   ],
 })
 export class AdminModule {

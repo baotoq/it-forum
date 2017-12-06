@@ -7,6 +7,7 @@ export class Topic extends Timestamp {
   description: string;
   subTopics: Topic[];
   numberOfThreads = 0;
+  numberOfNewThreads = 0;
   threads: Thread[];
 
   constructor(obj?) {

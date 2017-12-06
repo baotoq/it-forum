@@ -48,12 +48,10 @@ export class DashboardComponent implements OnInit {
   }
 
   private prepareLineChart(title: string, data: any) {
-    console.log(data);
     data = [
       ['Title', title],
       ...data.map(item => [new Date(item.key.year, item.key.month - 1), item.value])
     ];
-    console.log(data);
     return data;
   }
 }

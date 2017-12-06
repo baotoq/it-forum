@@ -75,7 +75,7 @@ namespace ItForum.Data.Seeds
                 o.CreatedBy = f.PickRandom(users);
                 o.Views = f.Random.Number(1, 10000);
                 o.Pinned = false;
-                o.Posts = postFaker.Generate(f.Random.Number(5, 30)).ToList();
+                o.Posts = postFaker.Generate(f.Random.Number(5, 20)).ToList();
                 o.Posts.ForEach(x => x.Quotes = postFaker.Generate(f.Random.Number(0, 2)).ToList());
                 var p = o.Posts.OrderBy(x => x.DateCreated).FirstOrDefault();
                 p.Quotes = null;
@@ -111,7 +111,7 @@ namespace ItForum.Data.Seeds
                 x.SubTopics = topicFaker.Generate(f.Random.Number(2, 3)).ToList();
                 x.SubTopics.ForEach(s =>
                 {
-                    s.Threads = threadFaker.Generate(f.Random.Number(10, 50)).ToList();
+                    s.Threads = threadFaker.Generate(f.Random.Number(10, 30)).ToList();
                     for (var i = 0; i < f.Random.Number(1, 5); i++)
                     {
                         var t = f.PickRandom(s.Threads);

@@ -7,8 +7,6 @@ import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 
 import { HasErrorPipe } from './pipes/has-error.pipe';
 
-import { RequestService } from './services/request.service';
-
 import { ClickStopPropagationDirective } from './directives/click-stop-propagation/click-stop-propagation.directive';
 
 import { FontAwesomeSpinnerComponent } from './components/font-awesome-spinner/font-awesome-spinner.component';
@@ -47,7 +45,6 @@ const MODULES = [
   exports: [COMPONENTS, PIPES, DIRECTIVES, MODULES],
   providers: [
     PIPES,
-    RequestService,
     OrderByPipe,
     FilterByPipe,
   ],

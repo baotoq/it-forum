@@ -1,47 +1,49 @@
 import { Injectable } from '@angular/core';
-import { JwtHelper, tokenNotExpired } from 'angular2-jwt';
-import { RequestService } from '../shared/services/request.service';
-import { JWT } from '../shared/common/constant';
-import { API } from '../shared/common/api';
+import { HttpClient } from '@angular/common/http';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Storage } from '../shared/common/constant';
 import { User } from '../../models/user';
+import { API } from '../shared/common/api';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class AuthService {
-  constructor(private requestService: RequestService) {
+  constructor(private httpClient: HttpClient,
+              private jwtHelperService: JwtHelperService) {
   }
 
   login(email: string, password: string): Observable<any> {
-    return this.requestService.post(API.USER.LOGIN, {
+    return this.httpClient.post(API.USER.LOGIN, {
       email: email,
       password: password,
     });
   }
 
   register(user: User): Observable<any> {
-    return this.requestService.post(API.USER.REGISTER, user);
+    return this.httpClient.post(API.USER.REGISTER, user);
   }
 
   isExistEmail(email: string): Observable<boolean> {
-    return this.requestService.post(API.USER.EXIST_EMAIL + `?email=${email}`);
+    return this.httpClient.post<boolean>(API.USER.EXIST_EMAIL + `?email=${email}`, {});
   }
 
   setToken(token: string) {
-    localStorage.setItem(JWT.AUTH, token);
+    localStorage.setItem(Storage.AUTH, token);
   }
 
   logout() {
-    localStorage.removeItem(JWT.AUTH);
+    localStorage.removeItem(Storage.AUTH);
   }
 
   currentUser(): User {
     if (!this.isAuthenticated()) return null;
-    const jwtHelper = new JwtHelper();
-    const rawData = jwtHelper.decodeToken(localStorage.getItem(JWT.AUTH));
+    const rawData = this.jwtHelperService.decodeToken(localStorage.getItem(Storage.AUTH));
     return new User(rawData);
   }
 
   isAuthenticated(): boolean {
-    return tokenNotExpired(JWT.AUTH);
+    const token = this.jwtHelperService.tokenGetter();
+
+    return token != null && !this.jwtHelperService.isTokenExpired(token);
   }
 }

@@ -1,6 +1,4 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { AuthService } from '../../auth/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidenav',
@@ -15,14 +13,9 @@ export class SidenavComponent implements OnInit {
     {label: 'Approve', link: '/admin/approve', icon: 'check'},
   ];
 
-  constructor(private router: Router,
-              private authService: AuthService) {
+  constructor() {
   }
 
   ngOnInit() {
-  }
-
-  get authenticated(): boolean {
-    return this.authService.isAuthenticated();
   }
 }

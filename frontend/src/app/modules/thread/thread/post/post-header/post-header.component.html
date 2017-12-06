@@ -1,11 +1,11 @@
 <mat-card-header>
-  <div mat-card-avatar [style.background-image]="'url(' + post.createdBy.avatar + ')'"></div>
+  <a mat-card-avatar [routerLink]="['/']" [style.background-image]="'url(' + post.createdBy.avatar + ')'"></a>
   <mat-card-subtitle class="mb-1">
     <strong>
       <a href="#">{{post.createdBy.name}}</a>
     </strong>
     <span *ngIf="post.createdBy.role !== role.None"
-          class="badge badge-danger position-relative" style="top: -2px">
+          class="badge badge-danger badge-line-fix">
       <i class="fa fa-user-circle"></i>
       {{post.createdBy.role}}
     </span>

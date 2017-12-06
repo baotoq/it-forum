@@ -6,10 +6,6 @@ import { SubTopicComponent } from './topic/sub-topic/sub-topic.component';
 
 const routes: Routes = [
   {
-    path: '',
-    component: TopicListComponent,
-  },
-  {
     path: ':topicId',
     component: TopicComponent,
     children: [
@@ -18,6 +14,10 @@ const routes: Routes = [
         component: SubTopicComponent,
       },
     ],
+  },
+  {
+    path: '',
+    component: TopicListComponent,
   },
 ];
 

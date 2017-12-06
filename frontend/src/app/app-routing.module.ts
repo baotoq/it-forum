@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './guards/auth.guard';
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { ClientLayoutComponent } from './layouts/client-layout/client-layout.component';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 
 const CLIENT_ROUTES: Routes = [
@@ -30,8 +30,8 @@ const ADMIN_ROUTES: Routes = [
 ];
 
 const routes: Routes = [
-  {path: '', component: ClientLayoutComponent, children: CLIENT_ROUTES},
   {path: 'admin', component: AdminLayoutComponent, children: ADMIN_ROUTES, canActivate: [AuthGuard, AdminGuard]},
+  {path: '', component: ClientLayoutComponent, children: CLIENT_ROUTES},
 ];
 
 @NgModule({

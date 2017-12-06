@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { RequestService } from '../shared/services/request.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 import { Tag } from '../../models/tag';
 import { API } from '../shared/common/api';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class TagService {
 
-  constructor(private requestService: RequestService) {
+  constructor(private httpClient: HttpClient) {
   }
 
   getAll(): Observable<Tag[]> {
-    return this.requestService.get(API.TAG.URL);
+    return this.httpClient.get<Tag[]>(API.TAG.URL);
   }
 }

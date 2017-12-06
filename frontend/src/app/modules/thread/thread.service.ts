@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RequestService } from '../shared/services/request.service';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { API } from '../shared/common/api';
 import { Thread } from '../../models/thread';
@@ -8,22 +8,22 @@ import { Post } from '../../models/post';
 @Injectable()
 export class ThreadService {
 
-  constructor(private requestService: RequestService) {
+  constructor(private httpClient: HttpClient) {
   }
 
   getWithCreatedByTagsAndReplies(id: number): Observable<Thread> {
-    return this.requestService.get(`${API.THREAD.URL}/created-tags-quotes/${id}`);
+    return this.httpClient.get<Thread>(`${API.THREAD.URL}/created-tags-quotes/${id}`);
   }
 
   create(thread: Thread): Observable<Thread> {
-    return this.requestService.authPost(API.THREAD.URL, thread);
+    return this.httpClient.post<Thread>(API.THREAD.URL, thread);
   }
 
   post(post: Post): Observable<Post> {
-    return this.requestService.authPost(API.POST.URL, post);
+    return this.httpClient.post<Post>(API.POST.URL, post);
   }
 
   increaseView(id: number): Observable<any> {
-    return this.requestService.post(`${API.THREAD.VIEW}/${id}`);
+    return this.httpClient.post(`${API.THREAD.VIEW}/${id}`, {});
   }
 }

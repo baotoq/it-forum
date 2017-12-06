@@ -27,7 +27,7 @@ import { ApprovePostComponent } from './approve/approve-post/approve-post.compon
     ApproveUserComponent,
     ApproveUserSearchInputComponent,
     ApproveThreadComponent,
-    ApprovePostComponent
+    ApprovePostComponent,
   ],
   providers: [ApproveService],
 })

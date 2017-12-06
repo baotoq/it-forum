@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TopicService } from '../topic.service';
 import { Topic } from '../../../models/topic';
 import { LoadingService } from '../../../components/loading/loading.service';
+import { Storage } from '../../shared/common/constant';
 
 @Component({
   selector: 'app-topic-list',
@@ -28,6 +29,32 @@ export class TopicListComponent implements OnInit, OnDestroy {
     this.loadingService.spinnerStart();
     this.subscription = this.topicService.getAll()
       .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => this.topics = resp);
+      .subscribe(resp => {
+        this.topics = resp;
+
+        this.countUnread();
+      });
+  }
+
+  countUnread() {
+    let recentlyThreads = [];
+    const token = JSON.parse(localStorage.getItem(Storage.RECENTLY_THREADS));
+    if (token) recentlyThreads = token;
+
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(new Date().getDate() - 3);
+
+    this.topics.forEach(t => {
+      t.subTopics.forEach(st => {
+        st.numberOfNewThreads = 0;
+        st.threads.forEach(th => {
+          const d = new Date(th.dateCreated);
+          if (d >= threeDaysAgo) {
+            const index = recentlyThreads.indexOf(th.id);
+            if (index === -1) st.numberOfNewThreads += 1;
+          }
+        });
+      });
+    });
   }
 }

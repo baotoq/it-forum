@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { TopicService } from '../../topic.service';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
+import { Storage } from '../../../shared/common/constant';
 
 @Component({
   selector: 'app-sub-topic',
@@ -47,6 +48,9 @@ export class SubTopicComponent implements OnInit {
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.subTopic = resp;
+
+        this.findRecently();
+
         this.behavior.next(this.subTopic.threads);
         if (this.matSort.active !== 'lastActivity') {
           this.matSort.sort({
@@ -58,6 +62,22 @@ export class SubTopicComponent implements OnInit {
         this.filter();
         this.dataSource = new ThreadDataSource(this.behavior, this.paginator);
       });
+  }
+
+  findRecently() {
+    let recentlyThreads = [];
+    const token = JSON.parse(localStorage.getItem(Storage.RECENTLY_THREADS));
+    if (token) recentlyThreads = token;
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(new Date().getDate() - 3);
+    this.subTopic.threads.forEach(th => {
+      th.visited = true;
+      const d = new Date(th.dateCreated);
+      if (d >= threeDaysAgo) {
+        const index = recentlyThreads.indexOf(th.id);
+        if (index === -1) th.visited = false;
+      }
+    });
   }
 
   onSearchOut($event) {

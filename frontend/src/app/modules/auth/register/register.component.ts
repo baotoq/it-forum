@@ -78,7 +78,7 @@ export class RegisterComponent implements OnInit {
       .finally(() => this.loading = false)
       .subscribe(() => {
         this.coreService.notifySuccess('Register Success!');
-        this.router.navigate(['/login']);
+        this.router.navigate(['/auth/login']);
       });
   }
 }

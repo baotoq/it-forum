@@ -8,8 +8,7 @@
       "root": "src",
       "outDir": "dist",
       "assets": [
-        "assets",
-        "favicon.ico"
+        "assets"
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -26,8 +25,7 @@
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
-        "../node_modules/froala-editor/js/froala_editor.pkgd.min.js",
-        "../node_modules/hammerjs/hammer.min.js"
+        "../node_modules/froala-editor/js/froala_editor.pkgd.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

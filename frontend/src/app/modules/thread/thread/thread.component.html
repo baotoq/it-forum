@@ -6,7 +6,7 @@
 
   <div class="mb-3">
     <nav>
-      <ol class="breadcrumb bg-white box-shadow">
+      <ol class="breadcrumb bg-white shadow-1">
         <li class="breadcrumb-item"><a [routerLink]="['/']" style="text-decoration: none">HOME</a></li>
         <li class="breadcrumb-item"><a [routerLink]="['/topic/1']" style="text-decoration: none">TOPIC</a></li>
         <li class="breadcrumb-item"><a [routerLink]="['/topic/1/sub/4']" style="text-decoration: none">SUBTOPIC</a></li>
@@ -41,7 +41,7 @@
       {{thread.title}}
       <span *ngIf="thread.pinned"
             class="badge badge-primary position-relative"
-            style="font-size: 60%; top: -4px;">
+            style="font-size: 60%; top: -3px;">
         <i class="fa fa-thumb-tack"></i>
         Pinned
       </span>
@@ -65,7 +65,7 @@
     </div>
   </div>
 
-  <div>
+  <div *ngIf="thread.tags?.length">
     <mat-card class="px-3 py-2">
       <mat-chip-list></mat-chip-list>
       Tags:

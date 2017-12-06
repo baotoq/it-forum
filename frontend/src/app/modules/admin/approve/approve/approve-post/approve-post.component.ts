@@ -8,7 +8,7 @@ import { OrderByPipe } from 'ngx-pipes';
 @Component({
   selector: 'app-approve-post',
   templateUrl: './approve-post.component.html',
-  styleUrls: ['./approve-post.component.scss']
+  styleUrls: ['./approve-post.component.scss'],
 })
 export class ApprovePostComponent implements OnInit {
   pendingPosts: Post[];
@@ -19,7 +19,8 @@ export class ApprovePostComponent implements OnInit {
 
   constructor(private loadingService: LoadingService,
               private approveService: ApproveService,
-              private orderByPipe: OrderByPipe) { }
+              private orderByPipe: OrderByPipe) {
+  }
 
   ngOnInit() {
     this.loadingService.spinnerStart();

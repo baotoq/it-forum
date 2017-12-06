@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { CoreService } from '../../core/core.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Role } from '../../../models/role';
 import { StatusCodes } from '../../shared/common/status-codes';
 
 @Component({
@@ -51,9 +50,9 @@ export class LoginComponent implements OnInit {
           this.coreService.notifySuccess('Login successful!');
           this.navigate();
         }
-      }, error => {
-        if (error.status === StatusCodes.UNAUTHORIZED) {
-          this.coreService.notifyError(error.json());
+      }, resp => {
+        if (resp.status === StatusCodes.UNAUTHORIZED) {
+          this.coreService.notifyError(resp.error);
         }
       });
   }
@@ -61,10 +60,7 @@ export class LoginComponent implements OnInit {
   navigate() {
     let returnUrl = this.route.snapshot.queryParams['returnUrl'];
     if (!returnUrl) {
-      if (this.authService.currentUser().role === Role.Administrator)
-        returnUrl = '/admin';
-    } else {
-      returnUrl = returnUrl === '/auth/login' ? '/' : returnUrl;
+      returnUrl = '/';
     }
     this.router.navigateByUrl(returnUrl);
   }
