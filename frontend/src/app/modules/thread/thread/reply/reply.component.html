@@ -1,0 +1,12 @@
+<mat-chip style="background-color: #e9ebee" class="d-block" [selectable]="false">
+  <strong>
+    <a href="#">{{reply.createdBy.name}}</a>
+  </strong>
+  <span *ngIf="reply.createdBy.role !== role.None"
+        class="badge badge-danger badge-line-fix">
+    <i class="fa fa-user-circle"></i>
+    Admin
+  </span>
+  <span class="text-muted">{{reply.dateCreated | amTimeAgo}}</span>
+  <span [froalaView]="reply.content"></span>
+</mat-chip>

@@ -12,7 +12,7 @@ export class ThreadService {
   }
 
   getWithCreatedByTagsAndReplies(id: number): Observable<Thread> {
-    return this.httpClient.get<Thread>(`${API.THREAD.URL}/created-tags-quotes/${id}`);
+    return this.httpClient.get<Thread>(`${API.THREAD.URL}/created-tags-replies/${id}`);
   }
 
   create(thread: Thread): Observable<Thread> {

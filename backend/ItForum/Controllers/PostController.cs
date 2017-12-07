@@ -41,7 +41,6 @@ namespace ItForum.Controllers
             if (post.ThreadId == null) return BadRequest();
 
             post.CreatedById = CurrentUserId;
-            post.Quotes = post.Quotes?.Select(item => _postService.FindById(item.Id)).Where(p => p != null).ToList();
             await _postService.AddAsync(post);
 
             var thread = _threadService.FindById(post.ThreadId);
@@ -49,7 +48,7 @@ namespace ItForum.Controllers
 
             await _unitOfWork.SaveChangesAsync();
 
-            post = _postService.FindWithCreatedByAndQuotes(post.Id);
+            post = _postService.FindWithCreatedBy(post.Id);
             var dto = _mapper.Map<PostDto>(post);
             return StatusCode(StatusCodes.Status201Created, dto);
         }

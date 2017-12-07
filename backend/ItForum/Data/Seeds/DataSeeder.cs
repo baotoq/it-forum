@@ -76,9 +76,12 @@ namespace ItForum.Data.Seeds
                 o.Views = f.Random.Number(1, 10000);
                 o.Pinned = false;
                 o.Posts = postFaker.Generate(f.Random.Number(5, 20)).ToList();
-                o.Posts.ForEach(x => x.Quotes = postFaker.Generate(f.Random.Number(0, 2)).ToList());
+                o.Posts.ForEach(x =>
+                {
+                    x.Replies = postFaker.Generate(f.Random.Number(0, 2)).ToList();
+                    x.Replies.ForEach(y => y.Thread = o);
+                });
                 var p = o.Posts.OrderBy(x => x.DateCreated).FirstOrDefault();
-                p.Quotes = null;
                 p.CreatedBy = o.CreatedBy;
                 o.DateCreated = p.DateCreated;
                 o.DateModified = o.DateCreated;

@@ -8,8 +8,8 @@ export class Post extends Timestamp {
   threadId: number;
   userId: number;
   createdBy: User;
-  postId: number;
-  quotes: Post[];
+  parentId: number;
+  replies: Post[];
 
   constructor(obj?) {
     super(obj);
@@ -18,8 +18,8 @@ export class Post extends Timestamp {
       this.content = obj.content;
       this.threadId = obj.threadId;
       this.userId = obj.userId;
-      this.postId = obj.postId;
-      this.quotes = obj.quotes;
+      this.parentId = obj.parentId;
+      this.replies = obj.replies;
       this.createdBy = obj.createdBy;
     }
   }

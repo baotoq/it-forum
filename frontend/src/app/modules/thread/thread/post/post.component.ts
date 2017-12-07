@@ -15,6 +15,5 @@ export class PostComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.post.quotes = this.orderByPipe.transform(this.post.quotes, ['-dateCreated']);
   }
 }

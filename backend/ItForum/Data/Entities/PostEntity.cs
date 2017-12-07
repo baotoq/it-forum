@@ -12,6 +12,8 @@ namespace ItForum.Data.Entities
 
         public int? CreatedById { get; set; }
 
+        public int? ParentId { get; set; }
+
         public int? ApprovalStatusModifiedById { get; set; }
 
         public ApprovalStatus ApprovalStatus { get; set; }

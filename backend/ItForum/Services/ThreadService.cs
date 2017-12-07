@@ -12,12 +12,12 @@ namespace ItForum.Services
         {
         }
 
-        public Thread FindWithCreatedByTagsAndQuotes(int id)
+        public Thread FindWithCreatedByTagsAndReplies(int id)
         {
             return DbSet.Include(x => x.CreatedBy)
                 .Include(x => x.ThreadTags).ThenInclude(x => x.Tag)
                 .Include(x => x.Posts).ThenInclude(x => x.CreatedBy)
-                .Include(x => x.Posts).ThenInclude(x => x.Quotes).ThenInclude(x => x.CreatedBy)
+                .Include(x => x.Posts).ThenInclude(x => x.Replies).ThenInclude(x => x.CreatedBy)
                 .SingleOrDefault(x => x.Id == id);
         }
 

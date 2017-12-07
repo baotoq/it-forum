@@ -13,7 +13,7 @@ namespace ItForum.Data.Dtos
 
         public UserDto ApprovedBy { get; set; }
 
-        public List<PostDto> Quotes { get; set; }
+        public List<PostDto> Replies { get; set; }
 
         public class UserDto : UserEntity
         {

@@ -30,11 +30,12 @@ namespace ItForum.Controllers
 
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
 
-        [HttpGet("created-tags-quotes/{id}")]
+        [HttpGet("created-tags-replies/{id}")]
         public IActionResult GetWithCreatedByTagsAndReplies(int id)
         {
-            var thread = _threadService.FindWithCreatedByTagsAndQuotes(id);
+            var thread = _threadService.FindWithCreatedByTagsAndReplies(id);
             if (thread == null) return BadRequest();
+            thread.Posts = thread.Posts.Where(x => x.ParentId == null).ToList();
             var dto = _mapper.Map<ThreadDto>(thread);
             return Ok(dto);
         }

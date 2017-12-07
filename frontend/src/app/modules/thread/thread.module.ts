@@ -11,9 +11,9 @@ import { PostComponent } from './thread/post/post.component';
 import { ThreadCreateComponent } from './thread-create/thread-create.component';
 
 import { ThreadService } from './thread.service';
-import { QuoteComponent } from './thread/quote/quote.component';
 import { PostContentComponent } from './thread/post/post-content/post-content.component';
 import { PostHeaderComponent } from './thread/post/post-header/post-header.component';
+import { ReplyComponent } from './thread/reply/reply.component';
 
 
 @NgModule({
@@ -31,9 +31,9 @@ import { PostHeaderComponent } from './thread/post/post-header/post-header.compo
     ThreadComponent,
     ThreadCreateComponent,
     PostComponent,
-    QuoteComponent,
     PostContentComponent,
     PostHeaderComponent,
+    ReplyComponent,
   ],
   providers: [
     ThreadService,

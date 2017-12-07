@@ -15,6 +15,7 @@ namespace ItForum.Data.Domains
         [ForeignKey(nameof(ApprovalStatusModifiedById))]
         public User ApprovalStatusModifiedBy { get; set; }
 
-        public List<Post> Quotes { get; set; }
+        [ForeignKey(nameof(ParentId))]
+        public List<Post> Replies { get; set; }
     }
 }

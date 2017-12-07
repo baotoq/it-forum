@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Role } from '../../../../../models/role';
 import { Post } from '../../../../../models/post';
 
@@ -9,7 +9,6 @@ import { Post } from '../../../../../models/post';
 })
 export class PostHeaderComponent implements OnInit {
   @Input() post: Post;
-  @Output() replySuccess = new EventEmitter<any>();
 
   role = Role;
 

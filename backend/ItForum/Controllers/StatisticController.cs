@@ -26,22 +26,22 @@ namespace ItForum.Controllers
         [HttpGet("threads-per-topic")]
         public IActionResult ThreadsPerTopic()
         {
-            var topics = _topicService.FindBy(x => x.ParentId != null, "Threads");
-            return Ok(topics.Select(t => new
+            var threads = _threadService.FindAll("Topic");
+            return Ok(threads.GroupBy(x => x.Topic.Name).Select(x => new
             {
-                Key = t.Name,
-                Value = t.Threads.Count
+                x.Key,
+                Value = x.Count()
             }).OrderBy(x => x.Value));
         }
 
         [HttpGet("posts-per-topic")]
         public IActionResult PostsPerTopic()
         {
-            var topics = _topicService.FindBy(x => x.ParentId != null, "Threads.Posts");
-            return Ok(topics.Select(t => new
+            var posts = _postService.FindAll("Thread.Topic");
+            return Ok(posts.GroupBy(x => x.Thread.Topic.Name).Select(x => new
             {
-                Key = t.Name,
-                Value = t.Threads.Sum(d => d.Posts.Count)
+                x.Key,
+                Value = x.Count()
             }).OrderBy(x => x.Value));
         }
 
@@ -49,42 +49,32 @@ namespace ItForum.Controllers
         public IActionResult ThreadsPerMonth()
         {
             var threads = _threadService.FindAll();
-            var group = threads.GroupBy(x => new DateTime(x.DateCreated.Value.Year, x.DateCreated.Value.Month, 1))
+            return Ok(threads.GroupBy(x => new DateTime(x.DateCreated.Value.Year, x.DateCreated.Value.Month, 1))
                 .Select(x => new
                 {
-                    x.Key,
+                    Key = new
+                    {
+                        x.Key.Year,
+                        x.Key.Month
+                    },
                     Value = x.Count()
-                }).OrderBy(x => x.Key);
-            return Ok(group.Select(x => new
-            {
-                Key = new
-                {
-                    x.Key.Year,
-                    x.Key.Month
-                },
-                x.Value
-            }));
+                }).OrderBy(x => x.Key.Year).ThenBy(x => x.Key.Month));
         }
 
         [HttpGet("posts-per-month")]
         public IActionResult PostsPerMonth()
         {
             var posts = _postService.FindAll();
-            var group = posts.GroupBy(x => new DateTime(x.DateCreated.Value.Year, x.DateCreated.Value.Month, 1))
+            return Ok(posts.GroupBy(x => new DateTime(x.DateCreated.Value.Year, x.DateCreated.Value.Month, 1))
                 .Select(x => new
                 {
-                    x.Key,
+                    Key = new
+                    {
+                        x.Key.Year,
+                        x.Key.Month
+                    },
                     Value = x.Count()
-                }).OrderBy(x => x.Key);
-            return Ok(group.Select(x => new
-            {
-                Key = new
-                {
-                    x.Key.Year,
-                    x.Key.Month
-                },
-                x.Value
-            }));
+                }).OrderBy(x => x.Key.Year).ThenBy(x => x.Key.Month));
         }
     }
 }

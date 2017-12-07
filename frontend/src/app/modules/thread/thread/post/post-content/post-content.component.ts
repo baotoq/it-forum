@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Post } from '../../../../../models/post';
 import { Router } from '@angular/router';
 import { LoadingService } from '../../../../../components/loading/loading.service';
@@ -15,8 +15,6 @@ import { OrderByPipe } from 'ngx-pipes';
 export class PostContentComponent implements OnInit {
   @Input() post: Post;
 
-  @Output() replySuccess = new EventEmitter<any>();
-
   onReply = false;
   loading = false;
   editorContent: string;
@@ -30,7 +28,7 @@ export class PostContentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.post.quotes = this.orderByPipe.transform(this.post.quotes, ['-dateCreated']);
+    this.post.replies = this.orderByPipe.transform(this.post.replies, ['-dateCreated']);
   }
 
   onSubmit() {
@@ -38,7 +36,7 @@ export class PostContentComponent implements OnInit {
     const post = new Post({
       content: this.editorContent,
       threadId: this.post.threadId,
-      quotes: [{id: this.post.id}],
+      parentId: this.post.id,
     });
 
     this.threadService.post(post)
@@ -47,7 +45,7 @@ export class PostContentComponent implements OnInit {
         this.onReply = false;
         this.editorContent = '';
         this.coreService.notifySuccess();
-        this.replySuccess.emit(resp);
+        this.post.replies.unshift(resp);
       });
   }
 

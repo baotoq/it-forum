@@ -24,7 +24,7 @@ namespace ItForum.Data.Dtos
 
             public UserDto CreatedBy { get; set; }
 
-            public List<PostDto> Quotes { get; set; }
+            public List<PostDto> Replies { get; set; }
         }
 
         public class UserDto : UserEntity
