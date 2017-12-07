@@ -45,10 +45,9 @@ namespace ItForum.Services
                 .SingleOrDefault(x => x.Id == id);
         }
 
-        public Topic FindWithThreadsCreatedByAndPosts(int id)
+        public Topic FindWithThreadsCreatedBy(int id)
         {
             return DbSet.Include(x => x.Threads).ThenInclude(x => x.CreatedBy)
-                .Include(x => x.Threads).ThenInclude(x => x.Posts)
                 .SingleOrDefault(x => x.Id == id);
         }
     }

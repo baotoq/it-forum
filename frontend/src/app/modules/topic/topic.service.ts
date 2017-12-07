@@ -20,7 +20,7 @@ export class TopicService {
   }
 
   getWithThreads(id: number): Observable<Topic> {
-    return this.httpClient.get<Topic>(`${API.TOPIC.URL}/threads-created-posts/${id}`);
+    return this.httpClient.get<Topic>(`${API.TOPIC.URL}/threads-created/${id}`);
   }
 
   getParentOptions(): Observable<any> {

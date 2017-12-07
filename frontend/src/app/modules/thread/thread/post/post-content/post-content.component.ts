@@ -15,7 +15,7 @@ import { OrderByPipe } from 'ngx-pipes';
 export class PostContentComponent implements OnInit {
   @Input() post: Post;
 
-  onReply = false;
+  showEditor = false;
   loading = false;
   editorContent: string;
 
@@ -42,20 +42,20 @@ export class PostContentComponent implements OnInit {
     this.threadService.post(post)
       .finally(() => this.loading = false)
       .subscribe(resp => {
-        this.onReply = false;
+        this.showEditor = false;
         this.editorContent = '';
         this.coreService.notifySuccess();
         this.post.replies.unshift(resp);
       });
   }
 
-  replyClick() {
+  onReply() {
     if (!this.authenticated) {
       this.router.navigate(['/auth/login'],
         {queryParams: {returnUrl: this.router.routerState.snapshot.url}});
       return;
     }
-    this.onReply = !this.onReply;
+    this.showEditor = !this.showEditor;
   }
 
   get authenticated() {

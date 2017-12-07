@@ -21,14 +21,16 @@ namespace ItForum.Controllers
         private readonly PostService _postService;
         private readonly ThreadService _threadService;
         private readonly UnitOfWork _unitOfWork;
+        private readonly UserService _userService;
 
         public PostController(IMapper mapper, PostService postService, ThreadService threadService,
-            UnitOfWork unitOfWork)
+            UnitOfWork unitOfWork, UserService userService)
         {
             _mapper = mapper;
             _postService = postService;
             _threadService = threadService;
             _unitOfWork = unitOfWork;
+            _userService = userService;
         }
 
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
@@ -45,6 +47,14 @@ namespace ItForum.Controllers
 
             var thread = _threadService.FindById(post.ThreadId);
             thread.LastActivity = DateTime.Now;
+
+            var createdBy = _userService.FindById(CurrentUserId);
+            if (createdBy.Role == Role.Administrator || createdBy.Role == Role.Moderator)
+            {
+                post.ApprovalStatusModifiedBy = createdBy;
+                post.ApprovalStatus = ApprovalStatus.Approved;
+                thread.NumberOfPosts += 1;
+            }
 
             await _unitOfWork.SaveChangesAsync();
 
@@ -72,6 +82,10 @@ namespace ItForum.Controllers
             {
                 post.ApprovalStatusModifiedById = CurrentUserId;
                 post.ApprovalStatus = approvalStatus;
+
+                var thread = _threadService.FindById(post.ThreadId);
+                thread.NumberOfPosts += 1;
+
                 await _unitOfWork.SaveChangesAsync();
             }
             return Ok();

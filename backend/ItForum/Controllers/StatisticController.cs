@@ -26,22 +26,22 @@ namespace ItForum.Controllers
         [HttpGet("threads-per-topic")]
         public IActionResult ThreadsPerTopic()
         {
-            var threads = _threadService.FindAll("Topic");
-            return Ok(threads.GroupBy(x => x.Topic.Name).Select(x => new
+            var topics = _topicService.FindBy(x => x.ParentId != null);
+            return Ok(topics.Select(x => new
             {
-                x.Key,
-                Value = x.Count()
+                Key = x.Name,
+                Value = x.NumberOfThreads
             }).OrderBy(x => x.Value));
         }
 
         [HttpGet("posts-per-topic")]
         public IActionResult PostsPerTopic()
         {
-            var posts = _postService.FindAll("Thread.Topic");
-            return Ok(posts.GroupBy(x => x.Thread.Topic.Name).Select(x => new
+            var topics = _topicService.FindBy(x => x.ParentId != null, "Threads");
+            return Ok(topics.Select(x => new
             {
-                x.Key,
-                Value = x.Count()
+                Key = x.Name,
+                Value = x.Threads.Sum(t => t.NumberOfPosts)
             }).OrderBy(x => x.Value));
         }
 

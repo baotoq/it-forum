@@ -10,7 +10,7 @@ namespace ItForum.Data.Dtos
     {
         public int Point { get; set; }
 
-        public Topic Topic { get; set; }
+        public TopicDto Topic { get; set; }
 
         public UserDto CreatedBy { get; set; }
 
@@ -34,6 +34,10 @@ namespace ItForum.Data.Dtos
         public class TagDto : TagEntity
         {
         }
+
+        public class TopicDto : TopicEntity
+        {
+        }
     }
 
     public class ThreadMapperProfile : Profile
@@ -46,11 +50,13 @@ namespace ItForum.Data.Dtos
                 .ForMember(d => d.Password, s => s.Ignore());
             CreateMap<Post, ThreadDto.PostDto>();
             CreateMap<Tag, ThreadDto.TagDto>();
+            CreateMap<Topic, ThreadDto.TopicDto>();
 
             CreateMap<ThreadDto, Thread>();
             CreateMap<ThreadDto.UserDto, User>();
             CreateMap<ThreadDto.PostDto, Post>();
             CreateMap<ThreadDto.TagDto, Tag>();
+            CreateMap<ThreadDto.TopicDto, Topic>();
         }
     }
 }

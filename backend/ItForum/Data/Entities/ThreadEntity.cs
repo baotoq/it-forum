@@ -11,6 +11,8 @@ namespace ItForum.Data.Entities
 
         public bool Pinned { get; set; }
 
+        public int NumberOfPosts { get; set; }
+
         public DateTime LastActivity { get; set; }
 
         public int? CreatedById { get; set; }

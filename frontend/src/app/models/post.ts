@@ -1,5 +1,6 @@
 import { User } from './user';
 import { Timestamp } from './timestamp';
+import { ApprovalStatus } from './approval-status';
 
 export class Post extends Timestamp {
   id: number;
@@ -10,6 +11,7 @@ export class Post extends Timestamp {
   createdBy: User;
   parentId: number;
   replies: Post[];
+  approvalStatus: ApprovalStatus;
 
   constructor(obj?) {
     super(obj);

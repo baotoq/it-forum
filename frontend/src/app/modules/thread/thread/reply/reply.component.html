@@ -2,11 +2,8 @@
   <strong>
     <a href="#">{{reply.createdBy.name}}</a>
   </strong>
-  <span *ngIf="reply.createdBy.role !== role.None"
-        class="badge badge-danger badge-line-fix">
-    <i class="fa fa-user-circle"></i>
-    Admin
-  </span>
+  <app-badge-role [role]="reply.createdBy.role" [short]="true"></app-badge-role>
+  <app-badge-approval-status [status]="reply.approvalStatus"></app-badge-approval-status>
   <span class="text-muted">{{reply.dateCreated | amTimeAgo}}</span>
   <span [froalaView]="reply.content"></span>
 </mat-chip>

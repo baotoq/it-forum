@@ -75,11 +75,14 @@ namespace ItForum.Data.Seeds
                 o.CreatedBy = f.PickRandom(users);
                 o.Views = f.Random.Number(1, 10000);
                 o.Pinned = false;
-                o.Posts = postFaker.Generate(f.Random.Number(5, 20)).ToList();
+                o.NumberOfPosts = 0;
+                o.Posts = postFaker.Generate(f.Random.Number(3, 30)).ToList();
+                o.NumberOfPosts += o.Posts.Count(x => x.ApprovalStatus == ApprovalStatus.Approved);
                 o.Posts.ForEach(x =>
                 {
-                    x.Replies = postFaker.Generate(f.Random.Number(0, 2)).ToList();
+                    x.Replies = postFaker.Generate(f.Random.Number(0, 3)).ToList();
                     x.Replies.ForEach(y => y.Thread = o);
+                    o.NumberOfPosts += x.Replies.Count(z => z.ApprovalStatus == ApprovalStatus.Approved);
                 });
                 var p = o.Posts.OrderBy(x => x.DateCreated).FirstOrDefault();
                 p.CreatedBy = o.CreatedBy;
@@ -122,6 +125,7 @@ namespace ItForum.Data.Seeds
                         t.Pinned = true;
                         s.Threads.Add(t);
                     }
+                    s.NumberOfThreads = s.Threads.Count;
                 });
             });
             _context.AddRange(topics);

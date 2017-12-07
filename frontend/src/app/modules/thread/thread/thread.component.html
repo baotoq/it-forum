@@ -16,9 +16,17 @@
   </div>
 
   <div class="clearfix">
-    <button mat-raised-button color="primary" (click)="onPost = !onPost">
+    <button *ngIf="!showEditor" mat-raised-button color="primary" (click)="onPost()">
       <i class="fa fa-plus fa-fw"></i>
       Post
+    </button>
+    <button *ngIf="showEditor" mat-raised-button color="primary" class="mb-2"
+            (click)="onSubmit()" [disabled]="!editorContent || loading">
+      <app-fa-spinner *ngIf="loading"></app-fa-spinner>
+      <span *ngIf="!loading">Submit</span>
+    </button>
+    <button *ngIf="showEditor" mat-raised-button color="accent" (click)="showEditor = false">
+      Cancel
     </button>
     <ngb-pagination class="float-right"
                     [collectionSize]="thread.posts.length"
@@ -27,12 +35,7 @@
                     (pageChange)="onPageChange()"
                     size="md"></ngb-pagination>
   </div>
-  <div *ngIf="onPost">
-    <button mat-raised-button color="primary" class="mb-2"
-            (click)="onSubmit()" [disabled]="!editorContent || loading">
-      <app-fa-spinner *ngIf="loading"></app-fa-spinner>
-      <span *ngIf="!loading">Submit</span>
-    </button>
+  <div *ngIf="showEditor">
     <div [froalaEditor]="{height: 300}" [(froalaModel)]="editorContent"></div>
   </div>
 
@@ -54,7 +57,7 @@
 
   <div>
     <div *ngFor="let post of paginatedData" class="mb-3">
-      <app-post [post]="post" (replySuccess)="replySuccess($event)"></app-post>
+      <app-post [post]="post"></app-post>
     </div>
     <div class="clearfix">
       <ngb-pagination class="float-right"

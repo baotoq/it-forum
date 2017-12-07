@@ -1,26 +1,30 @@
 <mat-card-content>
   <div [froalaView]="post.content"></div>
 </mat-card-content>
+
 <hr>
-<button mat-button (click)="replyClick()">
+<button *ngIf="!showEditor" mat-button (click)="onReply()">
   <i class="fa fa-reply fa-fw"></i>
   Reply
+</button>
+<button *ngIf="showEditor" mat-button color="primary" class="mb-2"
+        (click)="onSubmit()" [disabled]="!editorContent || loading">
+  <app-fa-spinner *ngIf="loading"></app-fa-spinner>
+  <span *ngIf="!loading">Submit</span>
+</button>
+<button *ngIf="showEditor" mat-button color="accent" (click)="showEditor = false">
+  Cancel
 </button>
 <button mat-button>
   <i class="fa fa-thumbs-up fa-fw"></i>
   5 Likes
 </button>
-<ng-container *ngIf="onReply && authenticated">
+
+<div *ngIf="showEditor">
   <hr>
-  <div>
-    <button mat-raised-button color="primary" class="mb-2"
-            (click)="onSubmit()" [disabled]="!editorContent || loading">
-      <app-fa-spinner *ngIf="loading"></app-fa-spinner>
-      <span *ngIf="!loading">Submit</span>
-    </button>
-    <div [froalaEditor]="{height: 200}" [(froalaModel)]="editorContent"></div>
-  </div>
-</ng-container>
+  <div [froalaEditor]="{height: 200}" [(froalaModel)]="editorContent"></div>
+</div>
+
 <hr class="mb-1">
 <div *ngFor="let reply of post.replies" class="mt-3">
   <app-reply [reply]="reply"></app-reply>

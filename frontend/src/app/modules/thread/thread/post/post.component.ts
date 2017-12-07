@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Post } from '../../../../models/post';
 import { OrderByPipe } from 'ngx-pipes';
 
@@ -9,7 +9,6 @@ import { OrderByPipe } from 'ngx-pipes';
 })
 export class PostComponent implements OnInit {
   @Input() post: Post;
-  @Output() replySuccess = new EventEmitter<any>();
 
   constructor(private orderByPipe: OrderByPipe) {
   }

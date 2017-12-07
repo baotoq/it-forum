@@ -19,13 +19,16 @@ namespace ItForum.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ThreadService _threadService;
+        private readonly TopicService _topicService;
         private readonly UnitOfWork _unitOfWork;
 
-        public ThreadController(ThreadService threadService, UnitOfWork unitOfWork, IMapper mapper)
+        public ThreadController(ThreadService threadService, UnitOfWork unitOfWork, IMapper mapper,
+            TopicService topicService)
         {
             _threadService = threadService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _topicService = topicService;
         }
 
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
@@ -35,7 +38,13 @@ namespace ItForum.Controllers
         {
             var thread = _threadService.FindWithCreatedByTagsAndReplies(id);
             if (thread == null) return BadRequest();
-            thread.Posts = thread.Posts.Where(x => x.ParentId == null).ToList();
+            thread.Posts = thread.Posts.Where(x => x.ParentId == null)
+                .Where(x => x.ApprovalStatus == ApprovalStatus.Approved ||
+                            x.ApprovalStatus == ApprovalStatus.Pending && x.CreatedById == CurrentUserId).ToList();
+            thread.Posts.ForEach(p =>
+                p.Replies = p.Replies.Where(x => x.ApprovalStatus == ApprovalStatus.Approved ||
+                                                 x.ApprovalStatus == ApprovalStatus.Pending &&
+                                                 x.CreatedById == CurrentUserId).ToList());
             var dto = _mapper.Map<ThreadDto>(thread);
             return Ok(dto);
         }
@@ -54,6 +63,9 @@ namespace ItForum.Controllers
             thread.LastActivity = DateTime.Now;
             thread.ThreadTags = new List<ThreadTag>();
             threadDto.Tags.ForEach(t => thread.ThreadTags.Add(new ThreadTag {TagId = t.Id}));
+
+            var topic = _topicService.FindById(thread.TopicId);
+            topic.NumberOfThreads += 1;
 
             await _threadService.AddAsync(thread);
             await _unitOfWork.SaveChangesAsync();
