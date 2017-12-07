@@ -12,17 +12,6 @@ namespace ItForum.Services
         {
         }
 
-        public override Topic FindById(object id)
-        {
-            return DbSet.Include(x => x.Threads)
-                .SingleOrDefault(x => x.Id == (int) id);
-        }
-
-        public override IEnumerable<Topic> FindAll()
-        {
-            return DbSet.Include(x => x.Threads);
-        }
-
         public IEnumerable<Topic> FindParent()
         {
             return DbSet.Where(x => x.ParentId == null);

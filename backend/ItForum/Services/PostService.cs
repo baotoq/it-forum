@@ -12,12 +12,6 @@ namespace ItForum.Services
         {
         }
 
-        public override Post FindById(object id)
-        {
-            return DbSet.Include(x => x.CreatedBy)
-                .SingleOrDefault(x => x.Id == (int) id);
-        }
-
         public Post FindWithCreatedBy(object id)
         {
             return DbSet.Include(x => x.CreatedBy)

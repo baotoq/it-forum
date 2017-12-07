@@ -11,7 +11,7 @@ import { ApproveUserComponent } from './approve/approve-user/approve-user.compon
 import { ApproveService } from './approve.service';
 import { ApproveUserSearchInputComponent } from './approve/approve-user/approve-user-search-input/approve-user-search-input.component';
 import { ApproveThreadComponent } from './approve/approve-thread/approve-thread.component';
-import { ApprovePostComponent } from './approve/approve-post/approve-post.component';
+import { ApprovePostComponent, ConfirmDialogComponent } from './approve/approve-post/approve-post.component';
 
 @NgModule({
   imports: [
@@ -28,7 +28,9 @@ import { ApprovePostComponent } from './approve/approve-post/approve-post.compon
     ApproveUserSearchInputComponent,
     ApproveThreadComponent,
     ApprovePostComponent,
+    ConfirmDialogComponent,
   ],
+  entryComponents: [ConfirmDialogComponent],
   providers: [ApproveService],
 })
 export class ApproveModule {

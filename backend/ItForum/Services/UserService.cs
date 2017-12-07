@@ -52,5 +52,16 @@ namespace ItForum.Services
 
             return encodedToken;
         }
+
+        public void SelfApprovePost(int currentUserId, ref Post post, ref Thread thread)
+        {
+            var createdBy = FindById(currentUserId);
+            if (createdBy.Role == Role.Administrator || createdBy.Role == Role.Moderator)
+            {
+                post.ApprovalStatusModifiedBy = createdBy;
+                post.ApprovalStatus = ApprovalStatus.Approved;
+                thread.NumberOfPosts += 1;
+            }
+        }
     }
 }

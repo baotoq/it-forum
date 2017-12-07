@@ -21,14 +21,16 @@ namespace ItForum.Controllers
         private readonly ThreadService _threadService;
         private readonly TopicService _topicService;
         private readonly UnitOfWork _unitOfWork;
+        private readonly UserService _userService;
 
         public ThreadController(ThreadService threadService, UnitOfWork unitOfWork, IMapper mapper,
-            TopicService topicService)
+            TopicService topicService, UserService userService)
         {
             _threadService = threadService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _topicService = topicService;
+            _userService = userService;
         }
 
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
@@ -59,10 +61,14 @@ namespace ItForum.Controllers
             if (thread.Posts[0] == null) return BadRequest();
 
             thread.CreatedById = CurrentUserId;
-            thread.Posts[0].CreatedById = CurrentUserId;
             thread.LastActivity = DateTime.Now;
             thread.ThreadTags = new List<ThreadTag>();
             threadDto.Tags.ForEach(t => thread.ThreadTags.Add(new ThreadTag {TagId = t.Id}));
+
+            var post = thread.Posts[0];
+            post.CreatedById = CurrentUserId;
+            _userService.SelfApprovePost(CurrentUserId, ref post, ref thread);
+            thread.Posts[0] = post;
 
             var topic = _topicService.FindById(thread.TopicId);
             topic.NumberOfThreads += 1;
@@ -86,6 +92,12 @@ namespace ItForum.Controllers
         [Authorize(Roles = nameof(Role.Administrator))]
         [HttpGet("unapprove")]
         public IActionResult GetUnapprove()
+        {
+            return Ok(_threadService.GetUnapprove().ToList());
+        }
+
+        [HttpGet("unapprove")]
+        public IActionResult GetBreadcrumbs()
         {
             return Ok(_threadService.GetUnapprove().ToList());
         }

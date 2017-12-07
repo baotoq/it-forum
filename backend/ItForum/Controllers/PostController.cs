@@ -48,13 +48,7 @@ namespace ItForum.Controllers
             var thread = _threadService.FindById(post.ThreadId);
             thread.LastActivity = DateTime.Now;
 
-            var createdBy = _userService.FindById(CurrentUserId);
-            if (createdBy.Role == Role.Administrator || createdBy.Role == Role.Moderator)
-            {
-                post.ApprovalStatusModifiedBy = createdBy;
-                post.ApprovalStatus = ApprovalStatus.Approved;
-                thread.NumberOfPosts += 1;
-            }
+            _userService.SelfApprovePost(CurrentUserId, ref post, ref thread);
 
             await _unitOfWork.SaveChangesAsync();
 

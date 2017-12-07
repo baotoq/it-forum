@@ -1,8 +1,16 @@
 <div *ngIf="pendingPosts" class="container-fluid mt-3">
+  <div class="clearfix">
+    <ngb-pagination class="float-right"
+                    [collectionSize]="pendingPosts.length"
+                    [(page)]="currentPage"
+                    [pageSize]="pageSize"
+                    (pageChange)="onPageChange()"></ngb-pagination>
+  </div>
   <div *ngFor="let post of paginatedData" class="mb-3">
     <mat-card>
       <mat-card-header>
-        <div mat-card-avatar [style.background-image]="'url(' + post.createdBy.avatar + ')'"></div>
+        <a mat-card-avatar [routerLink]="['/']" [style.background-image]="'url(' + post.createdBy.avatar + ')'"
+           style="background-size: cover"></a>
         <mat-card-subtitle class="mb-1">
           <strong>
             <a href="#">{{post.createdBy.name}}</a>

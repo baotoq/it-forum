@@ -20,17 +20,17 @@ namespace ItForum.Services
 
         protected DbSet<TEntity> DbSet { get; }
 
-        public virtual TEntity FindById(object id)
+        public TEntity FindById(object id)
         {
             return DbSet.Find(id);
         }
 
-        public virtual IEnumerable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate)
+        public IEnumerable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.Where(predicate);
         }
 
-        public virtual IEnumerable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate,
+        public IEnumerable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate,
             string navigationPropertyPath)
         {
             if (string.IsNullOrEmpty(navigationPropertyPath)) throw new ArgumentNullException();
@@ -38,7 +38,7 @@ namespace ItForum.Services
             return DbSet.Include(navigationPropertyPath).Where(predicate);
         }
 
-        public virtual TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
+        public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.SingleOrDefault(predicate);
         }
@@ -83,12 +83,12 @@ namespace ItForum.Services
             DbSet.Attach(entity);
         }
 
-        public virtual IEnumerable<TEntity> FindAll()
+        public IEnumerable<TEntity> FindAll()
         {
             return DbSet.AsEnumerable();
         }
 
-        public virtual IEnumerable<TEntity> FindAll(string navigationPropertyPath)
+        public IEnumerable<TEntity> FindAll(string navigationPropertyPath)
         {
             if (string.IsNullOrEmpty(navigationPropertyPath)) throw new ArgumentNullException();
 
