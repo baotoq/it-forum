@@ -20,9 +20,9 @@ namespace ItForum.Data.Dtos
         }
     }
 
-    public class CommentMapperProfile : Profile
+    public class PostMapperProfile : Profile
     {
-        public CommentMapperProfile()
+        public PostMapperProfile()
         {
             CreateMap<Post, PostDto>();
 

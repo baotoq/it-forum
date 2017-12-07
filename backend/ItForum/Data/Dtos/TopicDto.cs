@@ -21,9 +21,9 @@ namespace ItForum.Data.Dtos
         }
     }
 
-    public class CategoryMapperProfile : Profile
+    public class TopicMapperProfile : Profile
     {
-        public CategoryMapperProfile()
+        public TopicMapperProfile()
         {
             CreateMap<Topic, TopicDto>();
             CreateMap<Thread, TopicDto.ThreadDto>();

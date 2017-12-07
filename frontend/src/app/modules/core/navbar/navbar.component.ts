@@ -24,6 +24,10 @@ export class NavbarComponent implements OnInit {
     return query ? query : this.router.routerState.snapshot.url;
   }
 
+  gotoProfile() {
+    this.router.navigate(['/user/profile']);
+  }
+
   logout() {
     this.authService.logout();
     this.router.navigate(['/auth/login']);

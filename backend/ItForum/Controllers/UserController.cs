@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using ItForum.Common;
 using ItForum.Data;
 using ItForum.Data.Domains;
+using ItForum.Data.Dtos;
 using ItForum.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -15,13 +17,15 @@ namespace ItForum.Controllers
     [Produces("application/json")]
     public class UserController : Controller
     {
+        private readonly IMapper _mapper;
         private readonly UnitOfWork _unitOfWork;
         private readonly UserService _userService;
 
-        public UserController(UserService userService, UnitOfWork unitOfWork)
+        public UserController(UserService userService, UnitOfWork unitOfWork, IMapper mapper)
         {
             _userService = userService;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
@@ -55,22 +59,13 @@ namespace ItForum.Controllers
             return StatusCode(StatusCodes.Status201Created, user);
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            return Ok(_userService.FindAll());
-        }
-
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            return Ok(_userService.FindById(id));
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            return NoContent();
+            var user = _userService.FindById(id);
+            var dto = _mapper.Map<UserDto>(user);
+            return Ok(dto);
         }
 
         [HttpPost("exist-email")]

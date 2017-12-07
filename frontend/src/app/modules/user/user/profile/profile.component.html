@@ -1,0 +1,27 @@
+<h3>Public Profile</h3>
+<hr>
+
+<div *ngIf="user">
+
+  <mat-form-field class="w-100">
+    <input matInput placeholder="Email" [value]="user.email" [disabled]="true"
+           style="color: #3f51b5">
+  </mat-form-field>
+
+  <mat-form-field class="w-100" *ngIf="user.role !== 'None'">
+    <input matInput placeholder="Role" [value]="user.role" [disabled]="true"
+           style="color: #D32F2F">
+  </mat-form-field>
+
+  <mat-form-field class="w-100">
+    <input matInput placeholder="Name" [value]="user.name">
+  </mat-form-field>
+
+  <mat-form-field class="w-100">
+    <input matInput placeholder="Phone" [value]="user.phone">
+  </mat-form-field>
+
+  <button mat-raised-button color="primary">
+    Update profile
+  </button>
+</div>

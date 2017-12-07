@@ -19,6 +19,10 @@ const CLIENT_ROUTES: Routes = [
     path: 'auth',
     loadChildren: 'app/modules/auth/auth.module#AuthModule',
   },
+  {
+    path: 'user',
+    loadChildren: 'app/modules/user/user.module#UserModule',
+  },
 ];
 
 const ADMIN_ROUTES: Routes = [

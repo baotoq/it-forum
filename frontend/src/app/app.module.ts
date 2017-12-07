@@ -26,6 +26,7 @@ import { CoreModule } from './modules/core/core.module';
 import { ThreadModule } from './modules/thread/thread.module';
 import { TopicModule } from './modules/topic/topic.module';
 import { TagModule } from './modules/tag/tag.module';
+import { UserModule } from './modules/user/user.module';
 import { SharedModule } from './modules/shared/shared.module';
 
 import { Storage } from './modules/shared/common/constant';
@@ -74,6 +75,7 @@ import 'rxjs/add/observable/combineLatest';
     TopicModule,
     TagModule,
     CoreModule,
+    UserModule,
     SharedModule,
   ],
   providers: [
