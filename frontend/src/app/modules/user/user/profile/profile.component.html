@@ -4,13 +4,11 @@
 <div *ngIf="user">
 
   <mat-form-field class="w-100">
-    <input matInput placeholder="Email" [value]="user.email" [disabled]="true"
-           style="color: #3f51b5">
+    <input matInput placeholder="Email" [value]="user.email" [disabled]="true" class="text-primary">
   </mat-form-field>
 
   <mat-form-field class="w-100" *ngIf="user.role !== 'None'">
-    <input matInput placeholder="Role" [value]="user.role" [disabled]="true"
-           style="color: #D32F2F">
+    <input matInput placeholder="Role" [value]="user.role" [disabled]="true" class="text-danger">
   </mat-form-field>
 
   <mat-form-field class="w-100">

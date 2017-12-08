@@ -2,7 +2,7 @@
   <strong>
     <a href="#">{{reply.createdBy.name}}</a>
   </strong>
-  <app-badge-role [role]="reply.createdBy.role" [short]="true"></app-badge-role>
+  <app-badge-role [user]="reply.createdBy"></app-badge-role>
   <app-badge-approval-status [status]="reply.approvalStatus"></app-badge-approval-status>
   <span class="text-muted">{{reply.dateCreated | amTimeAgo}}</span>
   <span [froalaView]="reply.content"></span>

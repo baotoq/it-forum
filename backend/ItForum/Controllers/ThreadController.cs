@@ -88,18 +88,5 @@ namespace ItForum.Controllers
             await _unitOfWork.SaveChangesAsync();
             return Ok();
         }
-
-        [Authorize(Roles = nameof(Role.Administrator))]
-        [HttpGet("unapprove")]
-        public IActionResult GetUnapprove()
-        {
-            return Ok(_threadService.GetUnapprove().ToList());
-        }
-
-        [HttpGet("unapprove")]
-        public IActionResult GetBreadcrumbs()
-        {
-            return Ok(_threadService.GetUnapprove().ToList());
-        }
     }
 }

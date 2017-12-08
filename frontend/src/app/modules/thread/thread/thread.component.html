@@ -7,10 +7,18 @@
   <div class="mb-3">
     <nav>
       <ol class="breadcrumb bg-white shadow-1">
-        <li class="breadcrumb-item"><a [routerLink]="['/']" style="text-decoration: none">HOME</a></li>
-        <li class="breadcrumb-item"><a [routerLink]="['/topic/1']" style="text-decoration: none">TOPIC</a></li>
-        <li class="breadcrumb-item"><a [routerLink]="['/topic/1/sub/4']" style="text-decoration: none">SUBTOPIC</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{thread.title | uppercase}}</li>
+        <li class="breadcrumb-item">
+          <a [routerLink]="['/']" style="text-decoration: none">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a [routerLink]="['/topic', thread.topic.parent.id]" style="text-decoration: none">{{thread.topic.parent.name}}</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a [routerLink]="['/topic', thread.topic.parent.id, 'sub', thread.topic.id]" style="text-decoration: none">{{thread.topic.name}}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          {{thread.title}}
+        </li>
       </ol>
     </nav>
   </div>

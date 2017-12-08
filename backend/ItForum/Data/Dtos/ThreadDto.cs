@@ -37,6 +37,7 @@ namespace ItForum.Data.Dtos
 
         public class TopicDto : TopicEntity
         {
+            public TopicDto Parent { get; set; }
         }
     }
 

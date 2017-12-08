@@ -13,6 +13,10 @@ const routes: Routes = [
         path: 'sub/:subTopicId',
         component: SubTopicComponent,
       },
+      {
+        path: '',
+        component: TopicComponent,
+      },
     ],
   },
   {

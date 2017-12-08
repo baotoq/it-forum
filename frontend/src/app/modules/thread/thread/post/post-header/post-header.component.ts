@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Role } from '../../../../../models/role';
 import { Post } from '../../../../../models/post';
 import { ApprovalStatus } from '../../../../../models/approval-status';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-post-header',
@@ -14,10 +15,13 @@ export class PostHeaderComponent implements OnInit {
   role = Role;
   approvalStatus = ApprovalStatus;
 
-  constructor() {
+  constructor(private authService: AuthService) {
   }
 
   ngOnInit() {
   }
 
+  get currentUser() {
+    return this.authService.currentUser();
+  }
 }

@@ -5,6 +5,8 @@ export class Topic extends Timestamp {
   id: number;
   name: string;
   description: string;
+  parentId: number;
+  parent: Topic;
   subTopics: Topic[];
   numberOfThreads = 0;
   numberOfNewThreads = 0;

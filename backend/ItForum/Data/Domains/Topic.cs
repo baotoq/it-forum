@@ -12,6 +12,9 @@ namespace ItForum.Data.Domains
         public List<Thread> Threads { get; set; }
 
         [ForeignKey(nameof(ParentId))]
+        public Topic Parent { get; set; }
+
+        [ForeignKey(nameof(ParentId))]
         public List<Topic> SubTopics { get; set; }
     }
 }

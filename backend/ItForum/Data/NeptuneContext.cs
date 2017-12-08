@@ -39,6 +39,11 @@ namespace ItForum.Data
                     .HasForeignKey(p => p.ApprovalStatusModifiedById);
             });
 
+            modelBuilder.Entity<Topic>(e =>
+            {
+                e.HasOne(p => p.Parent).WithMany(s => s.SubTopics).HasForeignKey(p => p.ParentId);
+            });
+
             modelBuilder.Entity<ThreadTag>(e =>
             {
                 e.HasKey(x => new {x.ThreadId, x.TagId});

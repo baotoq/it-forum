@@ -18,6 +18,7 @@ namespace ItForum.Services
                 .Include(x => x.ThreadTags).ThenInclude(x => x.Tag)
                 .Include(x => x.Posts).ThenInclude(x => x.CreatedBy)
                 .Include(x => x.Posts).ThenInclude(x => x.Replies).ThenInclude(x => x.CreatedBy)
+                .Include(x => x.Topic).ThenInclude(x => x.Parent)
                 .SingleOrDefault(x => x.Id == id);
         }
 
