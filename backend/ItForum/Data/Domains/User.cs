@@ -18,5 +18,7 @@ namespace ItForum.Data.Domains
         public User ApprovedBy { get; set; }
 
         public List<Vote> Votes { get; set; }
+
+        public List<Management> Managements { get; set; }
     }
 }

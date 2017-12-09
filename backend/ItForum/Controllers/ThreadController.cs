@@ -39,7 +39,6 @@ namespace ItForum.Controllers
         public IActionResult GetWithCreatedByTagsAndReplies(int id)
         {
             var thread = _threadService.FindWithCreatedByTagsAndReplies(id);
-            if (thread == null) return BadRequest();
 
             if (User.Identity.IsAuthenticated)
             {

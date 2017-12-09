@@ -32,10 +32,8 @@ namespace ItForum.Data.Dtos
         public PostMapperProfile()
         {
             CreateMap<Post, PostDto>();
-
             CreateMap<User, PostDto.UserDto>()
                 .ForMember(d => d.Password, s => s.Ignore());
-
             CreateMap<Vote, PostDto.VoteDto>();
         }
     }

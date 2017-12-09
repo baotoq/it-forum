@@ -26,16 +26,18 @@ namespace ItForum.Data
 
         public DbSet<Vote> Votes { get; set; }
 
+        public DbSet<Management> Managements { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasQueryFilter(x => x.DateDeleted == null);
-            modelBuilder.Entity<Topic>().HasQueryFilter(x => x.DateDeleted == null);
             modelBuilder.Entity<Thread>().HasQueryFilter(x => x.DateDeleted == null);
-            modelBuilder.Entity<Post>().HasQueryFilter(x => x.DateDeleted == null);
             modelBuilder.Entity<Tag>().HasQueryFilter(x => x.DateDeleted == null);
 
             modelBuilder.Entity<Post>(e =>
             {
+                e.HasQueryFilter(x => x.DateDeleted == null);
+
                 e.HasOne(p => p.CreatedBy)
                     .WithMany(u => u.Posts)
                     .HasForeignKey(p => p.CreatedById);
@@ -47,6 +49,8 @@ namespace ItForum.Data
 
             modelBuilder.Entity<Topic>(e =>
             {
+                e.HasQueryFilter(x => x.DateDeleted == null);
+
                 e.HasOne(p => p.Parent)
                     .WithMany(s => s.SubTopics)
                     .HasForeignKey(p => p.ParentId);
@@ -58,13 +62,11 @@ namespace ItForum.Data
 
                 e.HasOne(x => x.Thread)
                     .WithMany(x => x.ThreadTags)
-                    .HasForeignKey(x => x.ThreadId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .HasForeignKey(x => x.ThreadId);
 
                 e.HasOne(x => x.Tag)
                     .WithMany(x => x.ThreadTags)
-                    .HasForeignKey(x => x.TagId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .HasForeignKey(x => x.TagId);
             });
 
             modelBuilder.Entity<Vote>(e =>
@@ -73,13 +75,24 @@ namespace ItForum.Data
 
                 e.HasOne(x => x.Post)
                     .WithMany(x => x.Votes)
-                    .HasForeignKey(x => x.PostId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .HasForeignKey(x => x.PostId);
 
                 e.HasOne(x => x.User)
                     .WithMany(x => x.Votes)
-                    .HasForeignKey(x => x.UserId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .HasForeignKey(x => x.UserId);
+            });
+
+            modelBuilder.Entity<Management>(e =>
+            {
+                e.HasKey(x => new {x.TopicId, x.UserId});
+
+                e.HasOne(x => x.Topic)
+                    .WithMany(x => x.Managements)
+                    .HasForeignKey(x => x.TopicId);
+
+                e.HasOne(x => x.User)
+                    .WithMany(x => x.Managements)
+                    .HasForeignKey(x => x.UserId);
             });
         }
 

@@ -17,15 +17,18 @@ namespace ItForum.Controllers
     [Produces("application/json")]
     public class UserController : Controller
     {
+        private readonly HelperService _helperService;
         private readonly IMapper _mapper;
         private readonly UnitOfWork _unitOfWork;
         private readonly UserService _userService;
 
-        public UserController(UserService userService, UnitOfWork unitOfWork, IMapper mapper)
+        public UserController(UserService userService, UnitOfWork unitOfWork, IMapper mapper,
+            HelperService helperService)
         {
             _userService = userService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _helperService = helperService;
         }
 
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
@@ -35,8 +38,11 @@ namespace ItForum.Controllers
         {
             if (user == null) return BadRequest();
 
-            var innerUser = _userService.FindBy(user.Email, _userService.Hash(user.Password));
-            if (innerUser == null) return StatusCode(StatusCodes.Status401Unauthorized, "Invalid email or password!");
+            var innerUser = _userService.FindBy(user.Email.ToLower());
+
+            if (innerUser == null || innerUser.Password != _helperService.Hash(user.Password, innerUser.Salt))
+                return StatusCode(StatusCodes.Status401Unauthorized, "Invalid email or password!");
+
             if (innerUser.ApprovedById == null)
                 return StatusCode(StatusCodes.Status401Unauthorized, "You need to be approved by admin!");
 
@@ -53,7 +59,10 @@ namespace ItForum.Controllers
             if (_userService.IsExistEmail(user.Email)) return BadRequest();
 
             user.Role = Role.None;
-            user.Password = _userService.Hash(user.Password);
+            user.Email = user.Email.ToLower();
+            user.Salt = _helperService.CreateSalt();
+            user.Password = _helperService.Hash(user.Password, user.Salt);
+
             await _userService.AddAsync(user);
             await _unitOfWork.SaveChangesAsync();
 
@@ -73,7 +82,7 @@ namespace ItForum.Controllers
         public IActionResult IsExistEmail(string email)
         {
             if (string.IsNullOrEmpty(email)) return BadRequest();
-            return Ok(_userService.IsExistEmail(email));
+            return Ok(_userService.IsExistEmail(email.ToLower()));
         }
 
         [Authorize(Roles = nameof(Role.Administrator))]

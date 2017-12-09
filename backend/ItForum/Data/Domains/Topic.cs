@@ -16,5 +16,7 @@ namespace ItForum.Data.Domains
 
         [ForeignKey(nameof(ParentId))]
         public List<Topic> SubTopics { get; set; }
+
+        public List<Management> Managements { get; set; }
     }
 }

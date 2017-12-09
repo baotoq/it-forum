@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 using ItForum.Common;
 using ItForum.Data;
 using ItForum.Data.Domains;
@@ -13,18 +10,21 @@ namespace ItForum.Services
 {
     public class UserService : Service<User>
     {
-        public UserService(NeptuneContext context) : base(context)
+        private readonly HelperService _helperService;
+
+        public UserService(NeptuneContext context, HelperService helperService) : base(context)
         {
+            _helperService = helperService;
         }
 
-        public User FindBy(string email, string password)
+        public User FindBy(string email)
         {
-            return SingleOrDefault(x => x.Email == email && x.Password == password);
+            return SingleOrDefault(x => x.Email == email);
         }
 
         public bool IsExistEmail(string email)
         {
-            return Any(x => x.Email.ToLower() == email.ToLower());
+            return Any(x => x.Email == email);
         }
 
         public IEnumerable<User> GetUnapprove()
@@ -64,16 +64,6 @@ namespace ItForum.Services
                 post.ApprovalStatusModifiedBy = createdBy;
                 post.ApprovalStatus = ApprovalStatus.Approved;
                 thread.NumberOfPosts += 1;
-            }
-        }
-
-        public string Hash(string value)
-        {
-            using (var sha256 = SHA256.Create())
-            {
-                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(value));
-                var hash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
-                return hash;
             }
         }
     }

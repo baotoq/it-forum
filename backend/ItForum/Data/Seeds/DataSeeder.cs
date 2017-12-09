@@ -41,8 +41,9 @@ namespace ItForum.Data.Seeds
                 o.Phone = f.Person.Phone;
                 o.Birthday = f.Person.DateOfBirth;
                 o.Avatar = f.Internet.Avatar();
-                o.Email = f.Person.Email;
-                o.Password = _userService.Hash("1");
+                o.Email = f.Person.Email.ToLower();
+                o.Salt = _helperService.CreateSalt();
+                o.Password = _helperService.Hash("1", o.Salt);
                 o.Role = f.PickRandom(o.Role);
                 o.DateCreated = f.Date.Past(4);
                 o.DateModified = o.DateCreated;
@@ -124,6 +125,16 @@ namespace ItForum.Data.Seeds
                 o.CreatedBy = admin;
                 o.DateCreated = f.Date.Past(4);
                 o.DateModified = o.DateCreated;
+
+                var temp = new List<User>(users);
+                var managements = new List<Management>();
+                for (var i = 0; i < f.Random.Number(1, 5); i++)
+                {
+                    var u = f.PickRandom(temp);
+                    temp.Remove(u);
+                    managements.Add(new Management {User = u});
+                }
+                o.Managements = managements.ToList();
             });
 
             var topics = topicFaker.Generate(3);

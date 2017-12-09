@@ -35,8 +35,6 @@ namespace ItForum.Controllers
         public IActionResult GetWithSubTopics(int id)
         {
             var topic = _topicService.FindWithSubTopics(id);
-            if (topic == null)
-                return BadRequest();
             var dto = _mapper.Map<TopicDto>(topic);
             return Ok(dto);
         }
@@ -69,8 +67,6 @@ namespace ItForum.Controllers
         public IActionResult GetWithThreadsCreatedBy(int id)
         {
             var topic = _topicService.FindWithThreadsCreatedBy(id);
-            if (topic == null)
-                return BadRequest();
             var dto = _mapper.Map<TopicDto>(topic);
             return Ok(dto);
         }
