@@ -49,7 +49,7 @@ export class SubTopicComponent implements OnInit {
       .subscribe(resp => {
         this.subTopic = resp;
 
-        this.findRecently();
+        this.highlightRecently();
 
         this.behavior.next(this.subTopic.threads);
         if (this.matSort.active !== 'lastActivity') {
@@ -64,18 +64,21 @@ export class SubTopicComponent implements OnInit {
       });
   }
 
-  findRecently() {
-    let recentlyThreads = [];
-    const token = JSON.parse(localStorage.getItem(Storage.RECENTLY_THREADS));
-    if (token) recentlyThreads = token;
+  highlightRecently() {
+    const recentlyThreads = JSON.parse(localStorage.getItem(Storage.RECENTLY_THREADS));
+
     const threeDaysAgo = new Date();
     threeDaysAgo.setDate(new Date().getDate() - 3);
+
     this.subTopic.threads.forEach(th => {
-      th.visited = true;
       const d = new Date(th.dateCreated);
       if (d >= threeDaysAgo) {
-        const index = recentlyThreads.indexOf(th.id);
-        if (index === -1) th.visited = false;
+        if (recentlyThreads) {
+          const index = recentlyThreads.indexOf(th.id);
+          if (index === -1) th.highlight = true;
+        } else {
+          th.highlight = true;
+        }
       }
     });
   }

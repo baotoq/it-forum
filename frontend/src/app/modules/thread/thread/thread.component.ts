@@ -54,11 +54,7 @@ export class ThreadComponent implements OnInit {
   }
 
   onPost() {
-    if (!this.authenticated) {
-      this.router.navigate(['/auth/login'],
-        {queryParams: {returnUrl: this.router.routerState.snapshot.url}});
-      return;
-    }
+    this.authService.checkLogin();
     this.showEditor = !this.showEditor;
   }
 
@@ -81,15 +77,10 @@ export class ThreadComponent implements OnInit {
   }
 
   setStorage() {
-    let recentlyThreads = [];
-    const token = JSON.parse(localStorage.getItem(Storage.RECENTLY_THREADS));
-    if (token) recentlyThreads = token;
+    let recentlyThreads = JSON.parse(localStorage.getItem(Storage.RECENTLY_THREADS));
+    if (!recentlyThreads) recentlyThreads = [];
     const index = recentlyThreads.indexOf(this.thread.id);
     if (index === -1) recentlyThreads.push(this.thread.id);
     localStorage.setItem(Storage.RECENTLY_THREADS, JSON.stringify(recentlyThreads));
-  }
-
-  get authenticated() {
-    return this.authService.isAuthenticated();
   }
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Storage } from '../shared/common/constant';
@@ -9,6 +10,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class AuthService {
   constructor(private httpClient: HttpClient,
+              private router: Router,
               private jwtHelperService: JwtHelperService) {
   }
 
@@ -45,5 +47,13 @@ export class AuthService {
     const token = this.jwtHelperService.tokenGetter();
 
     return token != null && !this.jwtHelperService.isTokenExpired(token);
+  }
+
+  checkLogin() {
+    if (!this.isAuthenticated()) {
+      this.router.navigate(['/auth/login'],
+        {queryParams: {returnUrl: this.router.routerState.snapshot.url}});
+      return;
+    }
   }
 }

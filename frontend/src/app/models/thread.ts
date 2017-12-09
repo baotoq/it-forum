@@ -10,7 +10,7 @@ export class Thread extends Timestamp {
   views = 0;
   pinned = false;
   point = 0;
-  visited = false;
+  highlight = false;
   numberOfPosts = 0;
   lastActivity: Date;
   userId: number;

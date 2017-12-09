@@ -37,9 +37,7 @@ export class TopicListComponent implements OnInit, OnDestroy {
   }
 
   countUnread() {
-    let recentlyThreads = [];
-    const token = JSON.parse(localStorage.getItem(Storage.RECENTLY_THREADS));
-    if (token) recentlyThreads = token;
+    const recentlyThreads = JSON.parse(localStorage.getItem(Storage.RECENTLY_THREADS));
 
     const threeDaysAgo = new Date();
     threeDaysAgo.setDate(new Date().getDate() - 3);
@@ -50,8 +48,12 @@ export class TopicListComponent implements OnInit, OnDestroy {
         st.threads.forEach(th => {
           const d = new Date(th.dateCreated);
           if (d >= threeDaysAgo) {
-            const index = recentlyThreads.indexOf(th.id);
-            if (index === -1) st.numberOfNewThreads += 1;
+            if (recentlyThreads) {
+              const index = recentlyThreads.indexOf(th.id);
+              if (index === -1) st.numberOfNewThreads += 1;
+            } else {
+              st.numberOfNewThreads += 1;
+            }
           }
         });
       });

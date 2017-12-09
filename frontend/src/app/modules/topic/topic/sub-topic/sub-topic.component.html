@@ -29,7 +29,7 @@
             <i class="fa fa-thumb-tack"></i>
             Pinned
           </span>
-          <span [class.font-weight-bold]="!row.visited">{{row.title | shorten: 100:'...'}}</span>
+          <span [class.font-weight-bold]="row.highlight">{{row.title | shorten: 100:'...'}}</span>
         </mat-cell>
       </ng-container>
 

@@ -62,15 +62,12 @@ export class PostContentComponent implements OnInit {
   }
 
   onReply() {
-    if (!this.authenticated) {
-      this.router.navigate(['/auth/login'],
-        {queryParams: {returnUrl: this.router.routerState.snapshot.url}});
-      return;
-    }
+    this.authService.checkLogin();
     this.showEditor = !this.showEditor;
   }
 
   onVote(like: boolean) {
+    this.authService.checkLogin();
     this.threadService.vote(this.post.id, like).subscribe(resp => {
       if (resp.message) this.post.point = resp.point;
       if (resp.message === 'up') this.setVote(true, false);
