@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using ItForum.Common;
 using ItForum.Data;
 using ItForum.Data.Domains;
@@ -61,6 +64,16 @@ namespace ItForum.Services
                 post.ApprovalStatusModifiedBy = createdBy;
                 post.ApprovalStatus = ApprovalStatus.Approved;
                 thread.NumberOfPosts += 1;
+            }
+        }
+
+        public string Hash(string value)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(value));
+                var hash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+                return hash;
             }
         }
     }

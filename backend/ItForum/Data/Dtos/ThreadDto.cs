@@ -20,9 +20,9 @@ namespace ItForum.Data.Dtos
 
         public class PostDto : PostEntity
         {
-            public int Point { get; set; }
-
             public UserDto CreatedBy { get; set; }
+
+            public List<VoteDto> Votes { get; set; }
 
             public List<PostDto> Replies { get; set; }
         }
@@ -39,6 +39,13 @@ namespace ItForum.Data.Dtos
         {
             public TopicDto Parent { get; set; }
         }
+
+        public class VoteDto
+        {
+            public int UserId { get; set; }
+
+            public int Like { get; set; }
+        }
     }
 
     public class ThreadMapperProfile : Profile
@@ -52,12 +59,14 @@ namespace ItForum.Data.Dtos
             CreateMap<Post, ThreadDto.PostDto>();
             CreateMap<Tag, ThreadDto.TagDto>();
             CreateMap<Topic, ThreadDto.TopicDto>();
+            CreateMap<Vote, ThreadDto.VoteDto>();
 
             CreateMap<ThreadDto, Thread>();
             CreateMap<ThreadDto.UserDto, User>();
             CreateMap<ThreadDto.PostDto, Post>();
             CreateMap<ThreadDto.TagDto, Tag>();
             CreateMap<ThreadDto.TopicDto, Topic>();
+            CreateMap<ThreadDto.VoteDto, Vote>();
         }
     }
 }

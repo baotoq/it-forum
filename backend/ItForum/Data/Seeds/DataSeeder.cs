@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
 using ItForum.Data.Domains;
+using ItForum.Services;
 using MoreLinq;
 
 namespace ItForum.Data.Seeds
@@ -10,10 +11,14 @@ namespace ItForum.Data.Seeds
     public class DataSeeder
     {
         private readonly NeptuneContext _context;
+        private readonly HelperService _helperService;
+        private readonly UserService _userService;
 
-        public DataSeeder(NeptuneContext context)
+        public DataSeeder(NeptuneContext context, UserService userService, HelperService helperService)
         {
             _context = context;
+            _userService = userService;
+            _helperService = helperService;
         }
 
         public async Task InitializeAsync()
@@ -37,7 +42,7 @@ namespace ItForum.Data.Seeds
                 o.Birthday = f.Person.DateOfBirth;
                 o.Avatar = f.Internet.Avatar();
                 o.Email = f.Person.Email;
-                o.Password = "123";
+                o.Password = _userService.Hash("1");
                 o.Role = f.PickRandom(o.Role);
                 o.DateCreated = f.Date.Past(4);
                 o.DateModified = o.DateCreated;
@@ -67,6 +72,17 @@ namespace ItForum.Data.Seeds
                 }
                 o.DateCreated = f.Date.Past(3);
                 o.DateModified = o.DateCreated;
+
+                var temp = new List<User>(users);
+                var votes = new List<Vote>();
+                for (var i = 0; i < f.Random.Number(0, 10); i++)
+                {
+                    var u = f.PickRandom(temp);
+                    temp.Remove(u);
+                    votes.Add(new Vote {User = u, Like = f.Random.Bool()});
+                }
+                o.Votes = votes.ToList();
+                o.Point = _helperService.CaculatePoint(o.Votes);
             });
 
             var threadFaker = new Faker<Thread>().Rules((f, o) =>

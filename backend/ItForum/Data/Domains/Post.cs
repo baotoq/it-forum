@@ -17,5 +17,7 @@ namespace ItForum.Data.Domains
 
         [ForeignKey(nameof(ParentId))]
         public List<Post> Replies { get; set; }
+
+        public List<Vote> Votes { get; set; }
     }
 }

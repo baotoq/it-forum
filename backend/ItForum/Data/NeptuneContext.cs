@@ -24,6 +24,8 @@ namespace ItForum.Data
 
         public DbSet<Tag> Tags { get; set; }
 
+        public DbSet<Vote> Votes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasQueryFilter(x => x.DateDeleted == null);
@@ -34,14 +36,20 @@ namespace ItForum.Data
 
             modelBuilder.Entity<Post>(e =>
             {
-                e.HasOne(p => p.CreatedBy).WithMany(u => u.Posts).HasForeignKey(p => p.CreatedById);
-                e.HasOne(p => p.ApprovalStatusModifiedBy).WithMany(u => u.ApprovalStatusModifiedPosts)
+                e.HasOne(p => p.CreatedBy)
+                    .WithMany(u => u.Posts)
+                    .HasForeignKey(p => p.CreatedById);
+
+                e.HasOne(p => p.ApprovalStatusModifiedBy)
+                    .WithMany(u => u.ApprovalStatusModifiedPosts)
                     .HasForeignKey(p => p.ApprovalStatusModifiedById);
             });
 
             modelBuilder.Entity<Topic>(e =>
             {
-                e.HasOne(p => p.Parent).WithMany(s => s.SubTopics).HasForeignKey(p => p.ParentId);
+                e.HasOne(p => p.Parent)
+                    .WithMany(s => s.SubTopics)
+                    .HasForeignKey(p => p.ParentId);
             });
 
             modelBuilder.Entity<ThreadTag>(e =>
@@ -56,6 +64,21 @@ namespace ItForum.Data
                 e.HasOne(x => x.Tag)
                     .WithMany(x => x.ThreadTags)
                     .HasForeignKey(x => x.TagId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<Vote>(e =>
+            {
+                e.HasKey(x => new {x.PostId, x.UserId});
+
+                e.HasOne(x => x.Post)
+                    .WithMany(x => x.Votes)
+                    .HasForeignKey(x => x.PostId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                e.HasOne(x => x.User)
+                    .WithMany(x => x.Votes)
+                    .HasForeignKey(x => x.UserId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
         }

@@ -15,10 +15,13 @@
 <button *ngIf="showEditor" mat-button color="accent" (click)="showEditor = false">
   Cancel
 </button>
-<button mat-button>
-  <i class="fa fa-thumbs-up fa-fw"></i>
-  5 Likes
-</button>
+<span>
+  <i class="fa fa-chevron-up vote p-2" [class.text-primary]="like" matTooltip="This post is useful"
+     (click)="onVote(true)"></i>
+  <span [class.text-primary]="post.point > 0" [class.text-danger]="post.point < 0">{{post.point}}</span>
+  <i class="fa fa-chevron-down vote p-2" [class.text-danger]="dislike" matTooltip="This post is not useful"
+     (click)="onVote(false)"></i>
+</span>
 
 <div *ngIf="showEditor">
   <hr>

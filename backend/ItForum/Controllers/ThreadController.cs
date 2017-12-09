@@ -40,13 +40,24 @@ namespace ItForum.Controllers
         {
             var thread = _threadService.FindWithCreatedByTagsAndReplies(id);
             if (thread == null) return BadRequest();
-            thread.Posts = thread.Posts.Where(x => x.ParentId == null)
-                .Where(x => x.ApprovalStatus == ApprovalStatus.Approved ||
-                            x.ApprovalStatus == ApprovalStatus.Pending && x.CreatedById == CurrentUserId).ToList();
-            thread.Posts.ForEach(p =>
-                p.Replies = p.Replies.Where(x => x.ApprovalStatus == ApprovalStatus.Approved ||
-                                                 x.ApprovalStatus == ApprovalStatus.Pending &&
-                                                 x.CreatedById == CurrentUserId).ToList());
+
+            if (User.Identity.IsAuthenticated)
+            {
+                thread.Posts = thread.Posts.Where(x => x.ParentId == null).Where(x =>
+                    x.ApprovalStatus == ApprovalStatus.Approved ||
+                    x.ApprovalStatus == ApprovalStatus.Pending && x.CreatedById == CurrentUserId).ToList();
+                thread.Posts.ForEach(p => p.Replies = p.Replies.Where(x =>
+                    x.ApprovalStatus == ApprovalStatus.Approved ||
+                    x.ApprovalStatus == ApprovalStatus.Pending && x.CreatedById == CurrentUserId).ToList());
+            }
+            else
+            {
+                thread.Posts = thread.Posts.Where(x => x.ParentId == null)
+                    .Where(x => x.ApprovalStatus == ApprovalStatus.Approved).ToList();
+                thread.Posts.ForEach(p =>
+                    p.Replies = p.Replies.Where(x => x.ApprovalStatus == ApprovalStatus.Approved).ToList());
+            }
+
             var dto = _mapper.Map<ThreadDto>(thread);
             return Ok(dto);
         }

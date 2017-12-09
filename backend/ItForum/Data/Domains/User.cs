@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using ItForum.Data.Entities;
 
 namespace ItForum.Data.Domains
@@ -13,6 +14,9 @@ namespace ItForum.Data.Domains
 
         public List<Post> ApprovalStatusModifiedPosts { get; set; }
 
+        [ForeignKey(nameof(ApprovedById))]
         public User ApprovedBy { get; set; }
+
+        public List<Vote> Votes { get; set; }
     }
 }

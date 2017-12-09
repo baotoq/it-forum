@@ -22,5 +22,25 @@ namespace ItForum.Services
         {
             return DbSet.Include(x => x.CreatedBy).Where(x => x.ApprovalStatus == ApprovalStatus.Pending);
         }
+
+        public Post FindWithVotes(int id)
+        {
+            return DbSet.Include(x => x.Votes).SingleOrDefault(x => x.Id == id);
+        }
+
+        public void Add(Vote vote)
+        {
+            Context.Votes.Add(vote);
+        }
+
+        public void Remove(Vote vote)
+        {
+            Context.Votes.Remove(vote);
+        }
+
+        public Vote FindVote(int postId, int userId)
+        {
+            return Context.Votes.SingleOrDefault(x => x.PostId == postId && x.UserId == userId);
+        }
     }
 }

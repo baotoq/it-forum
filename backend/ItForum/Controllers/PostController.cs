@@ -17,6 +17,7 @@ namespace ItForum.Controllers
     [Produces("application/json")]
     public class PostController : Controller
     {
+        private readonly HelperService _helperService;
         private readonly IMapper _mapper;
         private readonly PostService _postService;
         private readonly ThreadService _threadService;
@@ -24,13 +25,14 @@ namespace ItForum.Controllers
         private readonly UserService _userService;
 
         public PostController(IMapper mapper, PostService postService, ThreadService threadService,
-            UnitOfWork unitOfWork, UserService userService)
+            UnitOfWork unitOfWork, UserService userService, HelperService helperService)
         {
             _mapper = mapper;
             _postService = postService;
             _threadService = threadService;
             _unitOfWork = unitOfWork;
             _userService = userService;
+            _helperService = helperService;
         }
 
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
@@ -83,6 +85,37 @@ namespace ItForum.Controllers
                 await _unitOfWork.SaveChangesAsync();
             }
             return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("vote")]
+        public async Task<IActionResult> Vote([FromBody] Vote vote)
+        {
+            var message = vote.Like ? "up" : "down";
+            vote.UserId = CurrentUserId;
+            var oldVote = _postService.FindVote(vote.PostId, vote.UserId);
+
+            if (oldVote == null)
+            {
+                _postService.Add(vote);
+            }
+            else if (oldVote.Like != vote.Like)
+            {
+                oldVote.Like = vote.Like;
+            }
+            else
+            {
+                message = "remove";
+                _postService.Remove(oldVote);
+                await _unitOfWork.SaveChangesAsync();
+            }
+
+            var post = _postService.FindWithVotes(vote.PostId);
+            post.Point = _helperService.CaculatePoint(post.Votes);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return Ok(new {message, post.Point});
         }
     }
 }

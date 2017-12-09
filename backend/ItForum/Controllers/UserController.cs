@@ -35,7 +35,7 @@ namespace ItForum.Controllers
         {
             if (user == null) return BadRequest();
 
-            var innerUser = _userService.FindBy(user.Email, user.Password);
+            var innerUser = _userService.FindBy(user.Email, _userService.Hash(user.Password));
             if (innerUser == null) return StatusCode(StatusCodes.Status401Unauthorized, "Invalid email or password!");
             if (innerUser.ApprovedById == null)
                 return StatusCode(StatusCodes.Status401Unauthorized, "You need to be approved by admin!");
@@ -53,6 +53,7 @@ namespace ItForum.Controllers
             if (_userService.IsExistEmail(user.Email)) return BadRequest();
 
             user.Role = Role.None;
+            user.Password = _userService.Hash(user.Password);
             await _userService.AddAsync(user);
             await _unitOfWork.SaveChangesAsync();
 

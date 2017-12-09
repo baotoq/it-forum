@@ -8,6 +8,8 @@ namespace ItForum.Data.Entities
     {
         public string Content { get; set; }
 
+        public int Point { get; set; }
+
         public int? ThreadId { get; set; }
 
         public int? CreatedById { get; set; }

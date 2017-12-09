@@ -15,8 +15,15 @@ namespace ItForum.Data.Dtos
 
         public List<PostDto> Replies { get; set; }
 
+        public List<VoteDto> Votes { get; set; }
+
         public class UserDto : UserEntity
         {
+        }
+
+        public class VoteDto
+        {
+            public int UserId { get; set; }
         }
     }
 
@@ -28,6 +35,8 @@ namespace ItForum.Data.Dtos
 
             CreateMap<User, PostDto.UserDto>()
                 .ForMember(d => d.Password, s => s.Ignore());
+
+            CreateMap<Vote, PostDto.VoteDto>();
         }
     }
 }

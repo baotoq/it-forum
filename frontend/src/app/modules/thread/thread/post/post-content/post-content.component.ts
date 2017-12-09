@@ -19,6 +19,9 @@ export class PostContentComponent implements OnInit {
   loading = false;
   editorContent: string;
 
+  like = false;
+  dislike = false;
+
   constructor(private router: Router,
               private loadingService: LoadingService,
               private coreService: CoreService,
@@ -29,6 +32,15 @@ export class PostContentComponent implements OnInit {
 
   ngOnInit() {
     this.post.replies = this.orderByPipe.transform(this.post.replies, ['-dateCreated']);
+
+    if (this.post.votes && this.authenticated) {
+      this.post.votes.forEach(x => {
+        if (x.userId == this.currentUser.id) {
+          if (x.like) this.like = true;
+          else this.dislike = true;
+        }
+      });
+    }
   }
 
   onSubmit() {
@@ -56,6 +68,24 @@ export class PostContentComponent implements OnInit {
       return;
     }
     this.showEditor = !this.showEditor;
+  }
+
+  onVote(like: boolean) {
+    this.threadService.vote(this.post.id, like).subscribe(resp => {
+      if (resp.message) this.post.point = resp.point;
+      if (resp.message === 'up') this.setVote(true, false);
+      if (resp.message === 'down') this.setVote(false, true);
+      if (resp.message === 'remove') this.setVote(false, false);
+    });
+  }
+
+  setVote(up: boolean, down: boolean) {
+    this.like = up;
+    this.dislike = down;
+  }
+
+  get currentUser() {
+    return this.authService.currentUser();
   }
 
   get authenticated() {

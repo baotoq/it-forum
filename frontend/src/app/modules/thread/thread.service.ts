@@ -23,6 +23,13 @@ export class ThreadService {
     return this.httpClient.post<Post>(API.POST.URL, post);
   }
 
+  vote(postId: number, like: boolean): Observable<any> {
+    return this.httpClient.post(API.POST.VOTE, {
+      postId: postId,
+      like: like,
+    });
+  }
+
   increaseView(id: number): Observable<any> {
     return this.httpClient.post(`${API.THREAD.VIEW}/${id}`, {});
   }
