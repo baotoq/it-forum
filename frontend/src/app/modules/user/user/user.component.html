@@ -6,8 +6,7 @@
   <div class="row">
     <div class="col-md-3">
       <div class="card border-bottom-0">
-        <img matTooltip="Change your avatar"
-             [src]="currentUser.avatar" alt="">
+        <img [src]="currentUser.avatar" alt="">
         <mat-nav-list class="p-0">
           <mat-list-item *ngFor="let navLink of navLinks"
                          [routerLink]="[navLink.link]" routerLinkActive="active">

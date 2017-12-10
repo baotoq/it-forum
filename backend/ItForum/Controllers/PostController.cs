@@ -74,16 +74,16 @@ namespace ItForum.Controllers
         {
             var post = _postService.FindById(id);
             if (post == null) return BadRequest();
-            if (post.ApprovalStatus == ApprovalStatus.Pending)
-            {
-                post.ApprovalStatusModifiedById = CurrentUserId;
-                post.ApprovalStatus = approvalStatus;
 
-                var thread = _threadService.FindById(post.ThreadId);
-                thread.NumberOfPosts += 1;
+            post.ApprovalStatusModifiedById = CurrentUserId;
+            post.ApprovalStatus = approvalStatus;
 
-                await _unitOfWork.SaveChangesAsync();
-            }
+            var thread = _threadService.FindById(post.ThreadId);
+
+            if (approvalStatus == ApprovalStatus.Approved) thread.NumberOfPosts += 1;
+            else thread.NumberOfPosts -= 1;
+
+            await _unitOfWork.SaveChangesAsync();
             return Ok();
         }
 

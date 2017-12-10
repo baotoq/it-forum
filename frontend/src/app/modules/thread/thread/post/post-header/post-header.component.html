@@ -12,6 +12,12 @@
     {{post.dateCreated | amTimeAgo}}
   </mat-card-title>
   <div class="ml-auto">
+    <button mat-icon-button class="btn-approve" (click)="approve(post)">
+      <i class="fa fa-check fa-fw"></i>
+    </button>
+    <button mat-icon-button class="btn-decline" (click)="decline(post)">
+      <i class="fa fa-close fa-fw"></i>
+    </button>
     <button mat-icon-button [matMenuTriggerFor]="postMenu">
       <mat-icon>more_vert</mat-icon>
     </button>

@@ -5,6 +5,7 @@ import { LoadingService } from '../../../../../components/loading/loading.servic
 import { ApprovalStatus } from '../../../../../models/approval-status';
 import { OrderByPipe } from 'ngx-pipes';
 import { MatDialog } from '@angular/material';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-approve-post',
@@ -61,22 +62,5 @@ export class ApprovePostComponent implements OnInit {
   onPageChange() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     this.paginatedData = this.pendingPosts.slice(startIndex, startIndex + this.pageSize);
-  }
-}
-
-@Component({
-  selector: 'app-confirm-dialog',
-  template: `
-    <div mat-dialog-content class="d-flex justify-content-center">
-      <p>Are you sure?</p>
-    </div>
-    <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="true" tabindex="1">Yes</button>
-      <button mat-button mat-dialog-close tabindex="-1">No</button>
-    </mat-dialog-actions>
-  `,
-})
-export class ConfirmDialogComponent {
-  constructor() {
   }
 }

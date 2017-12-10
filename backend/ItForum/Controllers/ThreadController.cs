@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using ItForum.Data;
@@ -36,25 +35,33 @@ namespace ItForum.Controllers
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
 
         [HttpGet("created-tags-replies/{id}")]
-        public IActionResult GetWithCreatedByTagsAndReplies(int id)
+        public IActionResult GetWithCreatedByTagsAndRepliesAsync(int id)
         {
             var thread = _threadService.FindWithCreatedByTagsAndReplies(id);
 
+            thread.Posts.RemoveAll(p => p.ParentId != null || p.ApprovalStatus == ApprovalStatus.Declined);
+
+            thread.Posts.ForEach(p => p.Replies.RemoveAll(r => r.ApprovalStatus == ApprovalStatus.Declined));
+
             if (User.Identity.IsAuthenticated)
             {
-                thread.Posts = thread.Posts.Where(x => x.ParentId == null).Where(x =>
-                    x.ApprovalStatus == ApprovalStatus.Approved ||
-                    x.ApprovalStatus == ApprovalStatus.Pending && x.CreatedById == CurrentUserId).ToList();
-                thread.Posts.ForEach(p => p.Replies = p.Replies.Where(x =>
-                    x.ApprovalStatus == ApprovalStatus.Approved ||
-                    x.ApprovalStatus == ApprovalStatus.Pending && x.CreatedById == CurrentUserId).ToList());
+                var user = _userService.FindById(CurrentUserId);
+
+                if (user.Role == Role.None)
+                {
+                    var predicate = new Predicate<Post>(p =>
+                        p.ApprovalStatus == ApprovalStatus.Pending && p.CreatedById != CurrentUserId);
+
+                    thread.Posts.RemoveAll(predicate);
+                    thread.Posts.ForEach(p => p.Replies.RemoveAll(predicate));
+                }
             }
             else
             {
-                thread.Posts = thread.Posts.Where(x => x.ParentId == null)
-                    .Where(x => x.ApprovalStatus == ApprovalStatus.Approved).ToList();
-                thread.Posts.ForEach(p =>
-                    p.Replies = p.Replies.Where(x => x.ApprovalStatus == ApprovalStatus.Approved).ToList());
+                var predicate = new Predicate<Post>(p => p.ApprovalStatus == ApprovalStatus.Pending);
+
+                thread.Posts.RemoveAll(predicate);
+                thread.Posts.ForEach(p => p.Replies.RemoveAll(predicate));
             }
 
             var dto = _mapper.Map<ThreadDto>(thread);

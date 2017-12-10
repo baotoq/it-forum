@@ -6,7 +6,7 @@ import { ApprovalStatus } from '../../../../models/approval-status';
   template: `
     <span *ngIf="status === approvalStatus.Pending"
           class="badge badge-warning badge-line-fix text-white"
-          matTooltip="Your post need to be approved by the admin">
+          matTooltip="This post is waiting to be approved" matTooltipPosition="above">
       {{status}}
     </span>
   `,

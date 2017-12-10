@@ -13,6 +13,7 @@ import { FontAwesomeSpinnerComponent } from './components/font-awesome-spinner/f
 import { MaterialSpinnerComponent } from './components/material-spinner/material-spinner.component';
 import { ColumnChartComponent } from './components/column-chart/column-chart.component';
 import { LineChartComponent } from './components/line-chart/line-chart.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 const COMPONENTS = [
   FontAwesomeSpinnerComponent,
@@ -41,7 +42,8 @@ const MODULES = [
     Ng2GoogleChartsModule,
     MODULES,
   ],
-  declarations: [COMPONENTS, PIPES, DIRECTIVES],
+  declarations: [COMPONENTS, PIPES, DIRECTIVES, ConfirmDialogComponent],
+  entryComponents: [ConfirmDialogComponent],
   exports: [COMPONENTS, PIPES, DIRECTIVES, MODULES],
   providers: [
     PIPES,
