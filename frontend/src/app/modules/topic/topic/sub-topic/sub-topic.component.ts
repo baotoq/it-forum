@@ -10,6 +10,8 @@ import { TopicService } from '../../topic.service';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
 import { Storage } from '../../../shared/common/constant';
+import { User } from '../../../../models/user';
+import { UserService } from '../../../user/user.service';
 
 @Component({
   selector: 'app-sub-topic',
@@ -26,8 +28,11 @@ export class SubTopicComponent implements OnInit {
   behavior = new BehaviorSubject<Thread[]>([]);
   dataSource: ThreadDataSource;
 
+  moderators: User[];
+
   constructor(private route: ActivatedRoute,
               private topicService: TopicService,
+              private userService: UserService,
               private loadingService: LoadingService,
               private orderByPipe: OrderByPipe,
               private filterByPipe: FilterByPipe) {
@@ -38,6 +43,10 @@ export class SubTopicComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.searchString = '';
       this.getSubTopic(params['subTopicId']);
+
+      this.userService.getModerators(params['subTopicId']).subscribe(resp => {
+        this.moderators = resp;
+      });
     });
     this.matSort.sortChange.subscribe(() => this.filter());
   }

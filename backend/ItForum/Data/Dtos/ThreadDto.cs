@@ -38,6 +38,8 @@ namespace ItForum.Data.Dtos
         public class TopicDto : TopicEntity
         {
             public TopicDto Parent { get; set; }
+
+            public List<ManagementDto> Managements { get; set; }
         }
 
         public class VoteDto
@@ -45,6 +47,13 @@ namespace ItForum.Data.Dtos
             public int UserId { get; set; }
 
             public int Like { get; set; }
+        }
+
+        public class ManagementDto
+        {
+            public int UserId { get; set; }
+
+            public UserDto User { get; set; }
         }
     }
 
@@ -60,6 +69,7 @@ namespace ItForum.Data.Dtos
             CreateMap<Tag, ThreadDto.TagDto>();
             CreateMap<Topic, ThreadDto.TopicDto>();
             CreateMap<Vote, ThreadDto.VoteDto>();
+            CreateMap<Management, ThreadDto.ManagementDto>();
 
             CreateMap<ThreadDto, Thread>();
             CreateMap<ThreadDto.UserDto, User>();
@@ -67,6 +77,7 @@ namespace ItForum.Data.Dtos
             CreateMap<ThreadDto.TagDto, Tag>();
             CreateMap<ThreadDto.TopicDto, Topic>();
             CreateMap<ThreadDto.VoteDto, Vote>();
+            CreateMap<ThreadDto.ManagementDto, Management>();
         }
     }
 }

@@ -127,5 +127,13 @@ namespace ItForum.Controllers
             await _unitOfWork.SaveChangesAsync();
             return Ok(response);
         }
+
+        [HttpGet("moderators/{topicId}")]
+        public IActionResult GetModerators(int topicId)
+        {
+            var moderators = _userService.FindModerators(topicId).ToList();
+            var dto = _mapper.Map<List<User>>(moderators);
+            return Ok(dto);
+        }
     }
 }

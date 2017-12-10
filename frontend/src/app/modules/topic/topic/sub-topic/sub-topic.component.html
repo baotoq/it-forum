@@ -9,7 +9,19 @@
         </button>
       </span>
     </div>
-    {{subTopic.description}}
+    <div>
+      {{subTopic.description}}
+    </div>
+    <div class="mt-2">
+      <span class="mr-2">Mods:</span>
+      <span *ngFor="let mod of moderators">
+        <a [matTooltip]="mod.name" matTooltipPosition="above"
+           [routerLink]="['/']" class="mr-1" style="text-decoration: none">
+          <img [src]="mod.avatar" [alt]="mod.name" class="img-fluid"
+               style="width:40px; height: 40px">
+        </a>
+      </span>
+    </div>
   </mat-card>
 
   <div class="shadow-2">
@@ -23,7 +35,7 @@
           <a [matTooltip]="row.createdBy.name" matTooltipPosition="above"
              [routerLink]="['/']" class="mr-1" style="text-decoration: none">
             <img [src]="row.createdBy.avatar" [alt]="row.createdBy.name" class="img-fluid"
-                 style="border-radius: 50%; width:30px; height: 30px">
+                 style="width:30px; height: 30px">
           </a>
           <span *ngIf="row.pinned" class="badge badge-primary badge-line-fix mr-1">
             <i class="fa fa-thumb-tack"></i>

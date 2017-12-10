@@ -5,6 +5,7 @@ using System.Security.Claims;
 using ItForum.Common;
 using ItForum.Data;
 using ItForum.Data.Domains;
+using Microsoft.EntityFrameworkCore;
 
 namespace ItForum.Services
 {
@@ -65,6 +66,13 @@ namespace ItForum.Services
                 post.ApprovalStatus = ApprovalStatus.Approved;
                 thread.NumberOfPosts += 1;
             }
+        }
+
+        public IEnumerable<User> FindModerators(int topicId)
+        {
+            return Context.Managements.Include(m => m.User)
+                .Where(m => m.TopicId == topicId)
+                .Select(m => m.User);
         }
     }
 }

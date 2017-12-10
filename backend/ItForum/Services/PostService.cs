@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ItForum.Data;
 using ItForum.Data.Domains;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,15 @@ namespace ItForum.Services
         public IEnumerable<Post> GetPending()
         {
             return DbSet.Include(x => x.CreatedBy).Where(x => x.ApprovalStatus == ApprovalStatus.Pending);
+        }
+
+        public async Task<IEnumerable<Post>> GetPending(User user)
+        {
+            var tasks = new List<Task<Topic>>();
+            user.Managements.ForEach(m => tasks.Add(Context.Topics.SingleOrDefaultAsync(t => t.Id == m.TopicId)));
+            var topics = await Task.WhenAll(tasks);
+            return DbSet.Include(x => x.CreatedBy)
+                .Where(x => x.ApprovalStatus == ApprovalStatus.Pending && topics.Any(t => t.Id == x.Thread.Topic.Id));
         }
 
         public Post FindWithVotes(int id)

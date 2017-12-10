@@ -7,8 +7,6 @@ namespace ItForum.Data.Dtos
 {
     public class PostDto : PostEntity
     {
-        public int Point { get; set; }
-
         public UserDto CreatedBy { get; set; }
 
         public UserDto ApprovedBy { get; set; }

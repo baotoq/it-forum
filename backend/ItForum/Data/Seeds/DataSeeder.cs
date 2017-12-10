@@ -56,8 +56,39 @@ namespace ItForum.Data.Seeds
             await _context.SaveChangesAsync();
             admin.ApprovedBy = admin;
 
+            var index = 1;
+            var admins = userFaker.Generate(50);
+            admins.ToList().ForEach(x =>
+            {
+                x.Role = Role.Administrator;
+                x.Name = $"admin{index}";
+                x.Email = $"admin{index++}@gmail.com";
+                x.ApprovedBy = admin;
+            });
+            _context.Users.AddRange(admins);
+            await _context.SaveChangesAsync();
+
+            index = 1;
+            var mods = userFaker.Generate(50);
+            mods.ToList().ForEach(x =>
+            {
+                x.Role = Role.Moderator;
+                x.Name = $"mod{index}";
+                x.Email = $"mod{index++}@gmail.com";
+                x.ApprovedBy = admin;
+            });
+            _context.Users.AddRange(mods);
+            await _context.SaveChangesAsync();
+
+            index = 1;
             var users = userFaker.Generate(100);
-            users.ToList().ForEach(x => x.ApprovedBy = admin);
+            users.ToList().ForEach(x =>
+            {
+                x.Role = Role.None;
+                x.Name = $"user{index}";
+                x.Email = $"user{index++}@gmail.com";
+                x.ApprovedBy = admin;
+            });
             _context.Users.AddRange(users);
             await _context.SaveChangesAsync();
 
@@ -126,7 +157,7 @@ namespace ItForum.Data.Seeds
                 o.DateCreated = f.Date.Past(4);
                 o.DateModified = o.DateCreated;
 
-                var temp = new List<User>(users);
+                var temp = new List<User>(mods);
                 var managements = new List<Management>();
                 for (var i = 0; i < f.Random.Number(1, 5); i++)
                 {
@@ -158,10 +189,10 @@ namespace ItForum.Data.Seeds
             _context.AddRange(topics);
 
             users = userFaker.Generate(50);
-            var index = 1;
             users.ToList().ForEach(x =>
             {
                 x.Role = Role.None;
+                x.Name = $"user{index}";
                 x.Email = $"user{index++}@gmail.com";
             });
             _context.AddRange(users);

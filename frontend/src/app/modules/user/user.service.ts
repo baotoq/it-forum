@@ -13,4 +13,8 @@ export class UserService {
   get(id: number): Observable<User> {
     return this.httpClient.get<User>(`${API.USER.URL}/${id}`);
   }
+
+  getModerators(topicId: number): Observable<User[]> {
+    return this.httpClient.get<User[]>(`${API.USER.URL}/moderators/${topicId}`);
+  }
 }

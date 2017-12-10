@@ -6,10 +6,13 @@ import { User } from '../../../../models/user';
   selector: 'app-badge-role',
   template: `
     <ng-container *ngIf="user.role !== role.None">
-      <span class="badge badge-danger badge-line-fix">
+      <span *ngIf="user.role === role.Administrator" class="badge badge-danger badge-line-fix">
         <i class="fa fa-user-circle"></i>
-        <span *ngIf="user.role === role.Administrator">Admin</span>
-        <span *ngIf="user.role === role.Moderator">Mod</span>
+        Admin
+      </span>
+      <span *ngIf="user.role === role.Moderator" class="badge badge-dark badge-line-fix">
+        <i class="fa fa-user-circle"></i>
+        Mod
       </span>
     </ng-container>
     <ng-container *ngIf="user.role === role.None">

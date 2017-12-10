@@ -59,11 +59,16 @@ namespace ItForum.Controllers
             return StatusCode(StatusCodes.Status201Created, dto);
         }
 
-        [Authorize(Roles = nameof(Role.Administrator))]
+        [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
         [HttpGet("pending")]
-        public IActionResult GetPendingPosts()
+        public async Task<IActionResult> GetPendingPosts()
         {
-            var posts = _postService.GetPending().ToList();
+            List<Post> posts;
+            var currentUser = _userService.FindById(CurrentUserId);
+            if (currentUser.Role == Role.Administrator)
+                posts = _postService.GetPending().ToList();
+            else
+                posts = (await _postService.GetPending(currentUser)).ToList();
             var dto = _mapper.Map<List<PostDto>>(posts);
             return Ok(dto);
         }
