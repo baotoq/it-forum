@@ -12,13 +12,15 @@
     {{post.dateCreated | amTimeAgo}}
   </mat-card-title>
   <div class="ml-auto">
-    <ng-container *ngIf="post.approvalStatus === approvalStatus.Pending && currentUser.role !== role.None">
-      <button mat-icon-button class="btn-approve" (click)="approve(post)">
-        <i class="fa fa-check fa-fw"></i>
-      </button>
-      <button mat-icon-button class="btn-decline" (click)="decline(post)">
-        <i class="fa fa-close fa-fw"></i>
-      </button>
+    <ng-container *ngIf="post.approvalStatus === approvalStatus.Pending">
+      <ng-container *ngIf="currentUser.role === role.Administrator || mod">
+        <button mat-icon-button class="btn-approve" (click)="approve(post)">
+          <i class="fa fa-check fa-fw"></i>
+        </button>
+        <button mat-icon-button class="btn-decline" (click)="decline(post)">
+          <i class="fa fa-close fa-fw"></i>
+        </button>
+      </ng-container>
     </ng-container>
     <button mat-icon-button [matMenuTriggerFor]="postMenu">
       <mat-icon>more_vert</mat-icon>

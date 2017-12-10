@@ -1,5 +1,6 @@
 import { Timestamp } from './timestamp';
 import { Thread } from './thread';
+import { Management } from './management';
 
 export class Topic extends Timestamp {
   id: number;
@@ -11,6 +12,7 @@ export class Topic extends Timestamp {
   numberOfThreads = 0;
   numberOfNewThreads = 0;
   threads: Thread[];
+  managements: Management[];
 
   constructor(obj?) {
     super(obj);

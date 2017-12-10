@@ -97,7 +97,7 @@ namespace ItForum.Data.Seeds
                 o.Content = f.Lorem.Paragraphs(f.Random.Number(1, 4), "<div></div>");
                 o.CreatedBy = f.PickRandom(users);
                 o.ApprovalStatus = ApprovalStatus.Pending;
-                if (f.Random.Number(0, 50) != 0)
+                if (f.Random.Number(0, 10) != 0)
                 {
                     o.ApprovalStatus = ApprovalStatus.Approved;
                     o.ApprovalStatusModifiedBy = admin;

@@ -63,17 +63,16 @@
     </span>
   </div>
 
-  <div>
-    <div *ngFor="let post of paginatedData" class="mb-3">
-      <app-post [post]="post"></app-post>
-    </div>
-    <div class="clearfix">
-      <ngb-pagination class="float-right"
-                      [collectionSize]="thread.posts.length"
-                      [(page)]="currentPage"
-                      [maxSize]="pageSize"
-                      (pageChange)="onPageChange()"></ngb-pagination>
-    </div>
+  <div *ngFor="let post of paginatedData" class="mb-3">
+    <app-post [post]="post" [mod]="mod"></app-post>
+  </div>
+
+  <div class="clearfix">
+    <ngb-pagination class="float-right"
+                    [collectionSize]="thread.posts.length"
+                    [(page)]="currentPage"
+                    [maxSize]="pageSize"
+                    (pageChange)="onPageChange()"></ngb-pagination>
   </div>
 
   <div *ngIf="thread.tags?.length">

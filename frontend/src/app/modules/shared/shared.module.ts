@@ -14,6 +14,8 @@ import { MaterialSpinnerComponent } from './components/material-spinner/material
 import { ColumnChartComponent } from './components/column-chart/column-chart.component';
 import { LineChartComponent } from './components/line-chart/line-chart.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { IsExistPipe } from './pipes/is-exist.pipe';
+import { IsManagementPipe } from './pipes/is-management';
 
 const COMPONENTS = [
   FontAwesomeSpinnerComponent,
@@ -24,6 +26,8 @@ const COMPONENTS = [
 
 const PIPES = [
   HasErrorPipe,
+  IsExistPipe,
+  IsManagementPipe,
 ];
 
 const DIRECTIVES = [

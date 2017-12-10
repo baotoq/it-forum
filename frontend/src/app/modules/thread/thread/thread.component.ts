@@ -8,6 +8,8 @@ import { Storage } from '../../shared/common/constant';
 import { Post } from '../../../models/post';
 import { CoreService } from '../../core/core.service';
 import { AuthService } from '../../auth/auth.service';
+import { IsExistPipe } from '../../shared/pipes/is-exist.pipe';
+import { IsManagementPipe } from '../../shared/pipes/is-management';
 
 @Component({
   selector: 'app-thread',
@@ -16,6 +18,7 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class ThreadComponent implements OnInit {
   thread: Thread;
+  mod = false;
 
   currentPage = 1;
   pageSize = 10;
@@ -31,7 +34,9 @@ export class ThreadComponent implements OnInit {
               private authService: AuthService,
               private loadingService: LoadingService,
               private threadService: ThreadService,
-              private orderByPipe: OrderByPipe) {
+              private orderByPipe: OrderByPipe,
+              private isExistPipe: IsExistPipe,
+              private isManagementPipe: IsManagementPipe) {
   }
 
   ngOnInit() {
@@ -41,6 +46,7 @@ export class ThreadComponent implements OnInit {
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.thread = resp;
+        this.mod = this.isManagementPipe.transform(this.thread.topic.managements, this.currentUser);
         this.thread.posts = this.orderByPipe.transform(this.thread.posts, ['dateCreated']);
         this.threadService.increaseView(this.thread.id).subscribe();
         this.onPageChange();
@@ -79,8 +85,12 @@ export class ThreadComponent implements OnInit {
   setStorage() {
     let recentlyThreads = JSON.parse(localStorage.getItem(Storage.RECENTLY_THREADS));
     if (!recentlyThreads) recentlyThreads = [];
-    const index = recentlyThreads.indexOf(this.thread.id);
-    if (index === -1) recentlyThreads.push(this.thread.id);
+    if (!this.isExistPipe.transform(recentlyThreads, this.thread.id))
+      recentlyThreads.push(this.thread.id);
     localStorage.setItem(Storage.RECENTLY_THREADS, JSON.stringify(recentlyThreads));
+  }
+
+  get currentUser() {
+    return this.authService.currentUser();
   }
 }

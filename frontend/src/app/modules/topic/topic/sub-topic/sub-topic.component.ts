@@ -12,6 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { Storage } from '../../../shared/common/constant';
 import { User } from '../../../../models/user';
 import { UserService } from '../../../user/user.service';
+import { IsExistPipe } from '../../../shared/pipes/is-exist.pipe';
 
 @Component({
   selector: 'app-sub-topic',
@@ -35,7 +36,8 @@ export class SubTopicComponent implements OnInit {
               private userService: UserService,
               private loadingService: LoadingService,
               private orderByPipe: OrderByPipe,
-              private filterByPipe: FilterByPipe) {
+              private filterByPipe: FilterByPipe,
+              private isExistPipe: IsExistPipe) {
   }
 
   ngOnInit() {
@@ -81,13 +83,8 @@ export class SubTopicComponent implements OnInit {
 
     this.subTopic.threads.forEach(th => {
       const d = new Date(th.dateCreated);
-      if (d >= threeDaysAgo) {
-        if (recentlyThreads) {
-          const index = recentlyThreads.indexOf(th.id);
-          if (index === -1) th.highlight = true;
-        } else {
-          th.highlight = true;
-        }
+      if (d >= threeDaysAgo && !this.isExistPipe.transform(recentlyThreads, th.id)) {
+        th.highlight = true;
       }
     });
   }

@@ -65,10 +65,7 @@ namespace ItForum.Controllers
         {
             List<Post> posts;
             var currentUser = _userService.FindById(CurrentUserId);
-            if (currentUser.Role == Role.Administrator)
-                posts = _postService.GetPending().ToList();
-            else
-                posts = (await _postService.GetPending(currentUser)).ToList();
+            posts = _postService.GetPending().ToList();
             var dto = _mapper.Map<List<PostDto>>(posts);
             return Ok(dto);
         }
