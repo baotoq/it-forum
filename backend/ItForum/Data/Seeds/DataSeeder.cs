@@ -138,6 +138,12 @@ namespace ItForum.Data.Seeds
                 o.DateModified = o.DateCreated;
                 o.LastActivity = o.Posts.OrderByDescending(x => x.DateCreated).FirstOrDefault().DateCreated.Value;
 
+                if (f.Random.Number(0, 10) != 0)
+                {
+                    o.ApprovalStatus = ApprovalStatus.Approved;
+                    o.ApprovalStatusModifiedBy = admin;
+                }
+
                 var temp = new List<Tag>(tags);
                 var threadTags = new List<ThreadTag>();
                 for (var i = 0; i < f.Random.Number(2, 5); i++)
@@ -183,7 +189,7 @@ namespace ItForum.Data.Seeds
                         t.Pinned = true;
                         s.Threads.Add(t);
                     }
-                    s.NumberOfThreads = s.Threads.Count;
+                    s.NumberOfThreads = s.Threads.Count(th => th.ApprovalStatus == ApprovalStatus.Approved);
                 });
             });
             _context.AddRange(topics);

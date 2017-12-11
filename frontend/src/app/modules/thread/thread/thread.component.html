@@ -48,11 +48,10 @@
   </div>
 
   <div class="mb-3">
-    <h3>
+    <h3 class="thread-title">
       {{thread.title}}
       <span *ngIf="thread.pinned"
-            class="badge badge-primary position-relative"
-            style="font-size: 60%; top: -3px;">
+            class="badge badge-primary">
         <i class="fa fa-thumb-tack"></i>
         Pinned
       </span>
@@ -77,12 +76,12 @@
 
   <div *ngIf="thread.tags?.length">
     <mat-card class="px-3 py-2">
-      <mat-chip-list></mat-chip-list>
       Tags:
       <mat-chip *ngFor="let tag of thread.tags" class="bg-primary text-white">
         {{tag.name}}
       </mat-chip>
     </mat-card>
   </div>
+  <mat-chip-list></mat-chip-list>
 
 </div>

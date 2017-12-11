@@ -57,15 +57,33 @@ namespace ItForum.Services
             return encodedToken;
         }
 
-        public void SelfApprovePost(int currentUserId, ref Post post, ref Thread thread)
+        public bool ApprovePost(int currentUserId, ref Post post)
         {
             var createdBy = FindById(currentUserId);
             if (createdBy.Role == Role.Administrator || createdBy.Role == Role.Moderator)
             {
                 post.ApprovalStatusModifiedBy = createdBy;
                 post.ApprovalStatus = ApprovalStatus.Approved;
-                thread.NumberOfPosts += 1;
+                return true;
             }
+            return false;
+        }
+
+        public bool ApproveThread(int currentUserId, ref Thread thread)
+        {
+            var createdBy = FindById(currentUserId);
+            if (createdBy.Role == Role.Administrator || createdBy.Role == Role.Moderator)
+            {
+                thread.ApprovalStatusModifiedBy = createdBy;
+                thread.ApprovalStatus = ApprovalStatus.Approved;
+
+                thread.Posts[0].ApprovalStatusModifiedBy = createdBy;
+                thread.Posts[0].ApprovalStatus = ApprovalStatus.Approved;
+                thread.NumberOfPosts += 1;
+
+                return true;
+            }
+            return false;
         }
 
         public IEnumerable<User> FindModerators(int topicId)

@@ -6,6 +6,8 @@ import { MomentModule } from 'angular2-moment';
 import { Ng2GoogleChartsModule } from 'ng2-google-charts';
 
 import { HasErrorPipe } from './pipes/has-error.pipe';
+import { IsExistPipe } from './pipes/is-exist.pipe';
+import { IsManagementPipe } from './pipes/is-management';
 
 import { ClickStopPropagationDirective } from './directives/click-stop-propagation/click-stop-propagation.directive';
 
@@ -13,15 +15,17 @@ import { FontAwesomeSpinnerComponent } from './components/font-awesome-spinner/f
 import { MaterialSpinnerComponent } from './components/material-spinner/material-spinner.component';
 import { ColumnChartComponent } from './components/column-chart/column-chart.component';
 import { LineChartComponent } from './components/line-chart/line-chart.component';
+import { BadgeRoleComponent } from './components/badge-role/badge-role.component';
+import { BadgeApprovalStatusComponent } from './components/badge-approval-status/badge-approval-status.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
-import { IsExistPipe } from './pipes/is-exist.pipe';
-import { IsManagementPipe } from './pipes/is-management';
 
 const COMPONENTS = [
   FontAwesomeSpinnerComponent,
   MaterialSpinnerComponent,
   ColumnChartComponent,
   LineChartComponent,
+  BadgeRoleComponent,
+  BadgeApprovalStatusComponent,
 ];
 
 const PIPES = [

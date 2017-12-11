@@ -14,6 +14,8 @@ namespace ItForum.Data.Domains
 
         public List<Post> ApprovalStatusModifiedPosts { get; set; }
 
+        public List<Thread> ApprovalStatusModifiedThreads { get; set; }
+
         [ForeignKey(nameof(ApprovedById))]
         public User ApprovedBy { get; set; }
 

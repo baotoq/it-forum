@@ -28,5 +28,24 @@ namespace ItForum.Services
         {
             return null;
         }
+
+        public Thread FindWithPosts(int id)
+        {
+            return DbSet.Include(x => x.Posts).SingleOrDefault(x => x.Id == id);
+        }
+
+        public void IncreaseNumberOfPosts(int? id)
+        {
+            if (id == null) return;
+            var thread = FindById(id);
+            thread.NumberOfPosts += 1;
+        }
+
+        public void DecreaseNumberOfPosts(int? id)
+        {
+            if (id == null) return;
+            var thread = FindById(id);
+            thread.NumberOfPosts -= 1;
+        }
     }
 }

@@ -75,25 +75,48 @@ namespace ItForum.Controllers
             var thread = _mapper.Map<Thread>(threadDto);
 
             if (thread == null) return BadRequest();
+            if (thread.TopicId == null) return BadRequest();
             if (thread.Posts[0] == null) return BadRequest();
 
             thread.CreatedById = CurrentUserId;
+            thread.Posts[0].CreatedById = CurrentUserId;
             thread.LastActivity = DateTime.Now;
             thread.ThreadTags = new List<ThreadTag>();
             threadDto.Tags.ForEach(t => thread.ThreadTags.Add(new ThreadTag {TagId = t.Id}));
 
-            var post = thread.Posts[0];
-            post.CreatedById = CurrentUserId;
-            _userService.SelfApprovePost(CurrentUserId, ref post, ref thread);
-            thread.Posts[0] = post;
-
-            var topic = _topicService.FindById(thread.TopicId);
-            topic.NumberOfThreads += 1;
+            if (_userService.ApproveThread(CurrentUserId, ref thread))
+                _topicService.IncreaseNumberOfThreads(thread.TopicId);
 
             await _threadService.AddAsync(thread);
             await _unitOfWork.SaveChangesAsync();
 
             return StatusCode(StatusCodes.Status201Created, thread);
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpPost("modify-approval-status/{id}")]
+        public async Task<IActionResult> ModifyApprovalStatus(int id, [FromQuery] ApprovalStatus approvalStatus)
+        {
+            var thread = _threadService.FindWithPosts(id);
+            if (thread == null) return BadRequest();
+
+            thread.ApprovalStatusModifiedById = CurrentUserId;
+            thread.ApprovalStatus = approvalStatus;
+
+            if (thread.Posts.Count == 1)
+            {
+                thread.Posts[0].ApprovalStatusModifiedById = CurrentUserId;
+                thread.Posts[0].ApprovalStatus = approvalStatus;
+
+                if (approvalStatus == ApprovalStatus.Approved) thread.NumberOfPosts += 1;
+                else thread.NumberOfPosts -= 1;
+            }
+
+            if (approvalStatus == ApprovalStatus.Approved) _topicService.IncreaseNumberOfThreads(thread.TopicId);
+            else _topicService.DecreaseNumberOfThreads(thread.TopicId);
+
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
         }
 
         [HttpPost("view/{id}")]

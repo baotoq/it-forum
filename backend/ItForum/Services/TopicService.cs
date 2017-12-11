@@ -39,5 +39,19 @@ namespace ItForum.Services
             return DbSet.Include(x => x.Threads).ThenInclude(x => x.CreatedBy)
                 .SingleOrDefault(x => x.Id == id);
         }
+
+        public void IncreaseNumberOfThreads(int? id)
+        {
+            if (id == null) return;
+            var topic = FindById(id);
+            topic.NumberOfThreads += 1;
+        }
+
+        public void DecreaseNumberOfThreads(int? id)
+        {
+            if (id == null) return;
+            var topic = FindById(id);
+            topic.NumberOfThreads -= 1;
+        }
     }
 }

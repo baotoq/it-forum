@@ -50,12 +50,14 @@ namespace ItForum.Controllers
             var thread = _threadService.FindById(post.ThreadId);
             thread.LastActivity = DateTime.Now;
 
-            _userService.SelfApprovePost(CurrentUserId, ref post, ref thread);
+            if (_userService.ApprovePost(CurrentUserId, ref post))
+                thread.NumberOfPosts += 1;
 
             await _unitOfWork.SaveChangesAsync();
 
             post = _postService.FindWithCreatedBy(post.Id);
             var dto = _mapper.Map<PostDto>(post);
+
             return StatusCode(StatusCodes.Status201Created, dto);
         }
 
@@ -80,10 +82,8 @@ namespace ItForum.Controllers
             post.ApprovalStatusModifiedById = CurrentUserId;
             post.ApprovalStatus = approvalStatus;
 
-            var thread = _threadService.FindById(post.ThreadId);
-
-            if (approvalStatus == ApprovalStatus.Approved) thread.NumberOfPosts += 1;
-            else thread.NumberOfPosts -= 1;
+            if (approvalStatus == ApprovalStatus.Approved) _threadService.IncreaseNumberOfPosts(post.ThreadId);
+            else _threadService.DecreaseNumberOfPosts(post.ThreadId);
 
             await _unitOfWork.SaveChangesAsync();
             return Ok();

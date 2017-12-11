@@ -14,8 +14,6 @@ import { ThreadService } from './thread.service';
 import { PostContentComponent } from './thread/post/post-content/post-content.component';
 import { PostHeaderComponent } from './thread/post/post-header/post-header.component';
 import { ReplyComponent } from './thread/reply/reply.component';
-import { BadgeRoleComponent } from './thread/badge-role/badge-role.component';
-import { BadgeApprovalStatusComponent } from './thread/badge-approval-status/badge-approval-status.component';
 
 
 @NgModule({
@@ -36,8 +34,6 @@ import { BadgeApprovalStatusComponent } from './thread/badge-approval-status/bad
     PostContentComponent,
     PostHeaderComponent,
     ReplyComponent,
-    BadgeRoleComponent,
-    BadgeApprovalStatusComponent,
   ],
   providers: [
     ThreadService,

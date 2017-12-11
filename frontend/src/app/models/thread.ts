@@ -3,6 +3,7 @@ import { Timestamp } from './timestamp';
 import { Post } from './post';
 import { Tag } from './tag';
 import { Topic } from './topic';
+import { ApprovalStatus } from './approval-status';
 
 export class Thread extends Timestamp {
   id: number;
@@ -19,6 +20,7 @@ export class Thread extends Timestamp {
   posts: Post[];
   tags: Tag[];
   topic: Topic;
+  approvalStatus: ApprovalStatus;
 
   constructor(obj?) {
     super(obj);

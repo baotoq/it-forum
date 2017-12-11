@@ -31,12 +31,25 @@ namespace ItForum.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasQueryFilter(x => x.DateDeleted == null);
-            modelBuilder.Entity<Thread>().HasQueryFilter(x => x.DateDeleted == null);
+
             modelBuilder.Entity<Tag>().HasQueryFilter(x => x.DateDeleted == null);
+
+            modelBuilder.Entity<Thread>(e =>
+            {
+                e.HasQueryFilter(th => th.DateDeleted == null);
+
+                e.HasOne(p => p.CreatedBy)
+                    .WithMany(u => u.Threads)
+                    .HasForeignKey(p => p.CreatedById);
+
+                e.HasOne(th => th.ApprovalStatusModifiedBy)
+                    .WithMany(u => u.ApprovalStatusModifiedThreads)
+                    .HasForeignKey(th => th.ApprovalStatusModifiedById);
+            });
 
             modelBuilder.Entity<Post>(e =>
             {
-                e.HasQueryFilter(x => x.DateDeleted == null);
+                e.HasQueryFilter(p => p.DateDeleted == null);
 
                 e.HasOne(p => p.CreatedBy)
                     .WithMany(u => u.Posts)
