@@ -13,6 +13,10 @@ import { Storage } from '../../../shared/common/constant';
 import { User } from '../../../../models/user';
 import { UserService } from '../../../user/user.service';
 import { IsExistPipe } from '../../../shared/pipes/is-exist.pipe';
+import { ApprovalStatus } from '../../../../models/approval-status';
+import { AuthService } from '../../../auth/auth.service';
+import { Role } from '../../../../models/role';
+import { IsManagementPipe } from '../../../shared/pipes/is-management';
 
 @Component({
   selector: 'app-sub-topic',
@@ -31,13 +35,22 @@ export class SubTopicComponent implements OnInit {
 
   moderators: User[];
 
+  role = Role;
+  approvalStatus = ApprovalStatus;
+
+  currentUser = this.authService.currentUser();
+  authenticated = this.authService.isAuthenticated();
+  management = false;
+
   constructor(private route: ActivatedRoute,
+              private authService: AuthService,
               private topicService: TopicService,
               private userService: UserService,
               private loadingService: LoadingService,
               private orderByPipe: OrderByPipe,
               private filterByPipe: FilterByPipe,
-              private isExistPipe: IsExistPipe) {
+              private isExistPipe: IsExistPipe,
+              private isManagementPipe: IsManagementPipe) {
   }
 
   ngOnInit() {
@@ -72,6 +85,8 @@ export class SubTopicComponent implements OnInit {
         }
         this.filter();
         this.dataSource = new ThreadDataSource(this.behavior, this.paginator);
+
+        this.management = this.isManagementPipe.transform(this.currentUser, this.subTopic.managements);
       });
   }
 

@@ -37,6 +37,7 @@ namespace ItForum.Services
         public Topic FindWithThreadsCreatedBy(int id)
         {
             return DbSet.Include(x => x.Threads).ThenInclude(x => x.CreatedBy)
+                .Include(x => x.Managements)
                 .SingleOrDefault(x => x.Id == id);
         }
 

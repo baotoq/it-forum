@@ -7,12 +7,12 @@ import { User } from '../../../models/user';
 })
 export class IsManagementPipe implements PipeTransform {
 
-  transform(value: Management[], user: User): boolean {
-    if (value === null || user === null) {
+  transform(value: User, management: Management[]): boolean {
+    if (value === null || management === null) {
       return false;
     }
 
-    const index = value.findIndex(item => item.userId == user.id);
+    const index = management.findIndex(item => item.userId == value.id);
     return index !== -1;
   }
 }

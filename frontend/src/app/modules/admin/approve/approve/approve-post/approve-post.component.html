@@ -9,8 +9,7 @@
   <div *ngFor="let post of paginatedData" class="mb-3">
     <mat-card>
       <mat-card-header>
-        <a mat-card-avatar [routerLink]="['/']" [style.background-image]="'url(' + post.createdBy.avatar + ')'"
-           style="background-size: cover"></a>
+        <a mat-card-avatar [routerLink]="['/']" [style.background-image]="'url(' + post.createdBy.avatar + ')'"></a>
         <mat-card-subtitle class="mb-1">
           <strong>
             <a href="#">{{post.createdBy.name}}</a>

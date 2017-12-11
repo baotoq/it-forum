@@ -1,38 +1,40 @@
 <mat-card-header>
-  <a mat-card-avatar [routerLink]="['/']" [style.background-image]="'url(' + post.createdBy.avatar + ')'"
-     style="background-size: cover"></a>
+
+  <a mat-card-avatar [routerLink]="['/']" [style.background-image]="'url(' + post.createdBy.avatar + ')'"></a>
   <mat-card-subtitle class="mb-1">
     <strong>
       <a href="#">{{post.createdBy.name}}</a>
     </strong>
+
     <app-badge-role [user]="post.createdBy"></app-badge-role>
     <app-badge-approval-status [status]="post.approvalStatus"></app-badge-approval-status>
   </mat-card-subtitle>
+
   <mat-card-title class="mb-1 text-muted" [title]="post.dateCreated | date:'MMM d y, h:mm a'">
     {{post.dateCreated | amTimeAgo}}
   </mat-card-title>
-  <div class="ml-auto">
-    <ng-container *ngIf="post.approvalStatus === approvalStatus.Pending">
-      <ng-container *ngIf="currentUser.role === role.Administrator || mod">
-        <button mat-icon-button class="btn-approve" (click)="approve(post)">
-          <i class="fa fa-check fa-fw"></i>
-        </button>
-        <button mat-icon-button class="btn-decline" (click)="decline(post)">
-          <i class="fa fa-close fa-fw"></i>
-        </button>
-      </ng-container>
+
+  <div *ngIf="authenticated" class="ml-auto">
+    <ng-container
+      *ngIf="post.approvalStatus === approvalStatus.Pending && currentUser.role === role.Administrator || mod">
+      <button mat-icon-button class="btn-approve" (click)="approve(post)">
+        <i class="fa fa-check fa-fw"></i>
+      </button>
+      <button mat-icon-button class="btn-decline" (click)="decline(post)">
+        <i class="fa fa-close fa-fw"></i>
+      </button>
     </ng-container>
+
     <button mat-icon-button [matMenuTriggerFor]="postMenu">
       <mat-icon>more_vert</mat-icon>
     </button>
+    <mat-menu #postMenu>
+      <button *ngIf="currentUser.role === role.Administrator || mod" mat-menu-item>
+        Delete
+      </button>
+      <button mat-menu-item>
+        Report
+      </button>
+    </mat-menu>
   </div>
 </mat-card-header>
-
-<mat-menu #postMenu>
-  <button mat-menu-item>
-    Delete
-  </button>
-  <button mat-menu-item>
-    Report
-  </button>
-</mat-menu>

@@ -16,13 +16,12 @@ export class PostHeaderComponent implements OnInit {
   role = Role;
   approvalStatus = ApprovalStatus;
 
+  currentUser = this.authService.currentUser();
+  authenticated = this.authService.isAuthenticated();
+
   constructor(private authService: AuthService) {
   }
 
   ngOnInit() {
-  }
-
-  get currentUser() {
-    return this.authService.currentUser();
   }
 }

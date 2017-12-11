@@ -28,6 +28,8 @@ export class ThreadComponent implements OnInit {
   showEditor = false;
   editorContent;
 
+  currentUser = this.authService.currentUser();
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private coreService: CoreService,
@@ -46,7 +48,7 @@ export class ThreadComponent implements OnInit {
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.thread = resp;
-        this.mod = this.isManagementPipe.transform(this.thread.topic.managements, this.currentUser);
+        this.mod = this.isManagementPipe.transform(this.currentUser, this.thread.topic.managements);
         this.thread.posts = this.orderByPipe.transform(this.thread.posts, ['dateCreated']);
         this.threadService.increaseView(this.thread.id).subscribe();
         this.onPageChange();
@@ -88,9 +90,5 @@ export class ThreadComponent implements OnInit {
     if (!this.isExistPipe.transform(recentlyThreads, this.thread.id))
       recentlyThreads.push(this.thread.id);
     localStorage.setItem(Storage.RECENTLY_THREADS, JSON.stringify(recentlyThreads));
-  }
-
-  get currentUser() {
-    return this.authService.currentUser();
   }
 }
