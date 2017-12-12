@@ -14,6 +14,7 @@ import { OrderByPipe } from 'ngx-pipes';
 })
 export class PostContentComponent implements OnInit {
   @Input() post: Post;
+  @Input() showAction = false;
 
   showEditor = false;
   loading = false;

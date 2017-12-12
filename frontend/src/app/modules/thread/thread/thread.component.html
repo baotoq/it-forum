@@ -24,18 +24,21 @@
   </div>
 
   <div class="clearfix">
-    <button *ngIf="!showEditor" mat-raised-button color="primary" (click)="onPost()">
-      <i class="fa fa-plus fa-fw"></i>
-      Post
-    </button>
-    <button *ngIf="showEditor" mat-raised-button color="primary" class="mb-2"
-            (click)="onSubmit()" [disabled]="!editorContent || loading">
-      <app-fa-spinner *ngIf="loading"></app-fa-spinner>
-      <span *ngIf="!loading">Submit</span>
-    </button>
-    <button *ngIf="showEditor" mat-raised-button color="accent" (click)="showEditor = false">
-      Cancel
-    </button>
+    <ng-container *ngIf="thread.approvalStatus === approvalStatus.Approved">
+      <button *ngIf="!showEditor" mat-raised-button color="primary" (click)="onPost()">
+        <i class="fa fa-plus fa-fw"></i>
+        Post
+      </button>
+      <button *ngIf="showEditor" mat-raised-button color="primary" class="mb-2"
+              (click)="onSubmit()" [disabled]="!editorContent || loading">
+        <app-fa-spinner *ngIf="loading"></app-fa-spinner>
+        <span *ngIf="!loading">Submit</span>
+      </button>
+      <button *ngIf="showEditor" mat-raised-button color="accent" (click)="showEditor = false">
+        Cancel
+      </button>
+    </ng-container>
+
     <ngb-pagination class="float-right"
                     [collectionSize]="thread.posts.length"
                     [(page)]="currentPage"

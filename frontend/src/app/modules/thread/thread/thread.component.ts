@@ -10,6 +10,7 @@ import { CoreService } from '../../core/core.service';
 import { AuthService } from '../../auth/auth.service';
 import { IsExistPipe } from '../../shared/pipes/is-exist.pipe';
 import { IsManagementPipe } from '../../shared/pipes/is-management';
+import { ApprovalStatus } from '../../../models/approval-status';
 
 @Component({
   selector: 'app-thread',
@@ -29,6 +30,8 @@ export class ThreadComponent implements OnInit {
   editorContent;
 
   currentUser = this.authService.currentUser();
+
+  approvalStatus = ApprovalStatus;
 
   constructor(private route: ActivatedRoute,
               private router: Router,

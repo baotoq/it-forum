@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 import { API } from '../../shared/common/api';
 import { User } from '../../../models/user';
 import { Post } from '../../../models/post';
-import { ApprovalStatus } from '../../../models/approval-status';
 
 @Injectable()
 export class ApproveService {
@@ -32,7 +31,11 @@ export class ApproveService {
     return this.httpClient.get<Post[]>(API.POST.PENDING);
   }
 
-  approvePost(id: number, approvalStatus: ApprovalStatus): Observable<any> {
-    return this.httpClient.post(`${API.POST.URL}/modify-approval-status/${id}?approvalStatus=${approvalStatus}`, {});
+  approvePost(id: number): Observable<any> {
+    return this.httpClient.post(`${API.POST.URL}/approve/${id}`, {});
+  }
+
+  declinePost(id: number): Observable<any> {
+    return this.httpClient.post(`${API.POST.URL}/decline/${id}`, {});
   }
 }

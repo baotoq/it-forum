@@ -2,20 +2,21 @@
   <div [froalaView]="post.content"></div>
 </mat-card-content>
 
-<hr>
-<button *ngIf="!showEditor" mat-button (click)="onReply()">
-  <i class="fa fa-reply fa-fw"></i>
-  Reply
-</button>
-<button *ngIf="showEditor" mat-button color="primary" class="mb-2"
-        (click)="onSubmit()" [disabled]="!editorContent || loading">
-  <app-fa-spinner *ngIf="loading"></app-fa-spinner>
-  <span *ngIf="!loading">Submit</span>
-</button>
-<button *ngIf="showEditor" mat-button color="accent" (click)="showEditor = false">
-  Cancel
-</button>
-<span>
+<div *ngIf="showAction">
+  <hr>
+  <button *ngIf="!showEditor" mat-button (click)="onReply()">
+    <i class="fa fa-reply fa-fw"></i>
+    Reply
+  </button>
+  <button *ngIf="showEditor" mat-button color="primary" class="mb-2"
+          (click)="onSubmit()" [disabled]="!editorContent || loading">
+    <app-fa-spinner *ngIf="loading"></app-fa-spinner>
+    <span *ngIf="!loading">Submit</span>
+  </button>
+  <button *ngIf="showEditor" mat-button color="accent" (click)="showEditor = false">
+    Cancel
+  </button>
+  <span>
   <i class="fa fa-chevron-up vote p-2" [class.text-primary]="like" matTooltip="This post is useful"
      (click)="onVote(true)"></i>
   <span [class.text-primary]="post.point > 0" [class.text-danger]="post.point < 0">{{post.point}}</span>
@@ -23,12 +24,13 @@
      (click)="onVote(false)"></i>
 </span>
 
-<div *ngIf="showEditor">
-  <hr>
-  <div [froalaEditor]="{height: 200}" [(froalaModel)]="editorContent"></div>
+  <div *ngIf="showEditor">
+    <hr>
+    <div [froalaEditor]="{height: 200}" [(froalaModel)]="editorContent"></div>
+  </div>
 </div>
 
-<hr class="mb-1">
+<hr *ngIf="post.replies?.length" class="mb-1">
 <div *ngFor="let reply of post.replies" class="mt-3">
   <app-reply [reply]="reply"></app-reply>
 </div>

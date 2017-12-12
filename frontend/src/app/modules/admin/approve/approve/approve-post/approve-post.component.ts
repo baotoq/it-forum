@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ApproveService } from '../../approve.service';
 import { Post } from '../../../../../models/post';
 import { LoadingService } from '../../../../../components/loading/loading.service';
-import { ApprovalStatus } from '../../../../../models/approval-status';
 import { OrderByPipe } from 'ngx-pipes';
 import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -36,7 +35,7 @@ export class ApprovePostComponent implements OnInit {
   }
 
   approve(post: Post) {
-    this.approveService.approvePost(post.id, ApprovalStatus.Approved)
+    this.approveService.approvePost(post.id)
       .subscribe(() => {
         const index = this.pendingPosts.indexOf(post);
         this.pendingPosts.splice(index, 1);
@@ -49,7 +48,7 @@ export class ApprovePostComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        this.approveService.approvePost(post.id, ApprovalStatus.Declined)
+        this.approveService.declinePost(post.id)
           .subscribe(() => {
             const index = this.pendingPosts.indexOf(post);
             this.pendingPosts.splice(index, 1);

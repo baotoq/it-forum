@@ -43,16 +43,23 @@ namespace ItForum.Controllers
         {
             if (post == null) return BadRequest();
             if (post.ThreadId == null) return BadRequest();
-
-            post.CreatedById = CurrentUserId;
-            await _postService.AddAsync(post);
-
+            
             var thread = _threadService.FindById(post.ThreadId);
+
+            if (thread.ApprovalStatus != ApprovalStatus.Approved) return BadRequest();
+
             thread.LastActivity = DateTime.Now;
 
-            if (_userService.ApprovePost(CurrentUserId, ref post))
+            post.CreatedById = CurrentUserId;
+            var createdBy = _userService.FindById(CurrentUserId);
+            if (createdBy.Role == Role.Administrator || createdBy.Role == Role.Moderator)
+            {
+                post.ApprovalStatusModifiedBy = createdBy;
+                post.ApprovalStatus = ApprovalStatus.Approved;
                 thread.NumberOfPosts += 1;
+            }
 
+            await _postService.AddAsync(post);
             await _unitOfWork.SaveChangesAsync();
 
             post = _postService.FindWithCreatedBy(post.Id);
@@ -73,17 +80,35 @@ namespace ItForum.Controllers
         }
 
         [Authorize(Roles = nameof(Role.Administrator))]
-        [HttpPost("modify-approval-status/{id}")]
-        public async Task<IActionResult> ModifyApprovalStatus(int id, [FromQuery] ApprovalStatus approvalStatus)
+        [HttpPost("approve/{id}")]
+        public async Task<IActionResult> Approve(int id)
         {
             var post = _postService.FindById(id);
             if (post == null) return BadRequest();
 
-            post.ApprovalStatusModifiedById = CurrentUserId;
-            post.ApprovalStatus = approvalStatus;
+            if (post.ApprovalStatus == ApprovalStatus.Pending || post.ApprovalStatus == ApprovalStatus.Declined)
+            {
+                post.ApprovalStatusModifiedById = CurrentUserId;
+                post.ApprovalStatus = ApprovalStatus.Approved;
+                _threadService.IncreaseNumberOfPosts(post.ThreadId);
+            }
 
-            if (approvalStatus == ApprovalStatus.Approved) _threadService.IncreaseNumberOfPosts(post.ThreadId);
-            else _threadService.DecreaseNumberOfPosts(post.ThreadId);
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpPost("decline/{id}")]
+        public async Task<IActionResult> Decline(int id)
+        {
+            var post = _postService.FindById(id);
+            if (post == null) return BadRequest();
+
+            if (post.ApprovalStatus == ApprovalStatus.Pending)
+            {
+                post.ApprovalStatusModifiedById = CurrentUserId;
+                post.ApprovalStatus = ApprovalStatus.Approved;
+            }
 
             await _unitOfWork.SaveChangesAsync();
             return Ok();

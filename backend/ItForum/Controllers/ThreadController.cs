@@ -77,15 +77,22 @@ namespace ItForum.Controllers
             if (thread == null) return BadRequest();
             if (thread.TopicId == null) return BadRequest();
             if (thread.Posts[0] == null) return BadRequest();
-
+           
             thread.CreatedById = CurrentUserId;
             thread.Posts[0].CreatedById = CurrentUserId;
             thread.LastActivity = DateTime.Now;
             thread.ThreadTags = new List<ThreadTag>();
             threadDto.Tags.ForEach(t => thread.ThreadTags.Add(new ThreadTag {TagId = t.Id}));
 
-            if (_userService.ApproveThread(CurrentUserId, ref thread))
+            var createdBy = _userService.FindById(CurrentUserId);
+            if (createdBy.Role == Role.Administrator || createdBy.Role == Role.Moderator)
+            {
+                thread.Posts[0].ApprovalStatusModifiedBy = createdBy;
+                thread.Posts[0].ApprovalStatus = ApprovalStatus.Approved;
+                thread.NumberOfPosts += 1;
+
                 _topicService.IncreaseNumberOfThreads(thread.TopicId);
+            }
 
             await _threadService.AddAsync(thread);
             await _unitOfWork.SaveChangesAsync();
@@ -94,26 +101,26 @@ namespace ItForum.Controllers
         }
 
         [Authorize(Roles = nameof(Role.Administrator))]
-        [HttpPost("modify-approval-status/{id}")]
-        public async Task<IActionResult> ModifyApprovalStatus(int id, [FromQuery] ApprovalStatus approvalStatus)
+        [HttpPost("approve/{id}")]
+        public async Task<IActionResult> Approve(int id)
         {
             var thread = _threadService.FindWithPosts(id);
             if (thread == null) return BadRequest();
 
-            thread.ApprovalStatusModifiedById = CurrentUserId;
-            thread.ApprovalStatus = approvalStatus;
-
-            if (thread.Posts.Count == 1)
+            if (thread.ApprovalStatus == ApprovalStatus.Pending || thread.ApprovalStatus == ApprovalStatus.Declined)
             {
-                thread.Posts[0].ApprovalStatusModifiedById = CurrentUserId;
-                thread.Posts[0].ApprovalStatus = approvalStatus;
+                thread.ApprovalStatusModifiedById = CurrentUserId;
+                thread.ApprovalStatus = ApprovalStatus.Approved;
+                _topicService.IncreaseNumberOfThreads(thread.TopicId);
 
-                if (approvalStatus == ApprovalStatus.Approved) thread.NumberOfPosts += 1;
-                else thread.NumberOfPosts -= 1;
+                if (thread.Posts.Count == 1)
+                {
+                    thread.Posts[0].ApprovalStatusModifiedById = CurrentUserId;
+                    thread.Posts[0].ApprovalStatus = ApprovalStatus.Approved;
+
+                    thread.NumberOfPosts += 1;
+                }
             }
-
-            if (approvalStatus == ApprovalStatus.Approved) _topicService.IncreaseNumberOfThreads(thread.TopicId);
-            else _topicService.DecreaseNumberOfThreads(thread.TopicId);
 
             await _unitOfWork.SaveChangesAsync();
             return Ok();

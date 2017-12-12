@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Post } from '../../../../models/post';
+import { ApprovalStatus } from '../../../../models/approval-status';
 
 @Component({
   selector: 'app-post',
@@ -9,6 +10,8 @@ import { Post } from '../../../../models/post';
 export class PostComponent implements OnInit {
   @Input() post: Post;
   @Input() mod = false;
+
+  approvalStatus = ApprovalStatus;
 
   constructor() {
   }
