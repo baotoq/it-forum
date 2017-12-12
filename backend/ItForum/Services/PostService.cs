@@ -38,6 +38,17 @@ namespace ItForum.Services
             return DbSet.Include(x => x.Votes).SingleOrDefault(x => x.Id == id);
         }
 
+        public Post FindWithThread(int id)
+        {
+            return DbSet.Include(x => x.Thread).SingleOrDefault(x => x.Id == id);
+        }
+
+        public void SetApprovalStatus(int userId, Post post, ApprovalStatus approvalStatus)
+        {
+            post.ApprovalStatusModifiedById = userId;
+            post.ApprovalStatus = ApprovalStatus.Approved;
+        }
+
         public void Add(Vote vote)
         {
             Context.Votes.Add(vote);

@@ -19,7 +19,7 @@ import { ApprovalStatus } from '../../../models/approval-status';
 })
 export class ThreadComponent implements OnInit {
   thread: Thread;
-  mod = false;
+  management = false;
 
   currentPage = 1;
   pageSize = 10;
@@ -51,7 +51,7 @@ export class ThreadComponent implements OnInit {
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.thread = resp;
-        this.mod = this.isManagementPipe.transform(this.currentUser, this.thread.topic.managements);
+        this.management = this.isManagementPipe.transform(this.currentUser, this.thread.topic.managements);
         this.thread.posts = this.orderByPipe.transform(this.thread.posts, ['dateCreated']);
         this.threadService.increaseView(this.thread.id).subscribe();
         this.onPageChange();

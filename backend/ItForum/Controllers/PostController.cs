@@ -43,7 +43,7 @@ namespace ItForum.Controllers
         {
             if (post == null) return BadRequest();
             if (post.ThreadId == null) return BadRequest();
-            
+
             var thread = _threadService.FindById(post.ThreadId);
 
             if (thread.ApprovalStatus != ApprovalStatus.Approved) return BadRequest();
@@ -54,8 +54,7 @@ namespace ItForum.Controllers
             var createdBy = _userService.FindById(CurrentUserId);
             if (createdBy.Role == Role.Administrator || createdBy.Role == Role.Moderator)
             {
-                post.ApprovalStatusModifiedBy = createdBy;
-                post.ApprovalStatus = ApprovalStatus.Approved;
+                _postService.SetApprovalStatus(CurrentUserId, post, ApprovalStatus.Approved);
                 thread.NumberOfPosts += 1;
             }
 
@@ -83,13 +82,12 @@ namespace ItForum.Controllers
         [HttpPost("approve/{id}")]
         public async Task<IActionResult> Approve(int id)
         {
-            var post = _postService.FindById(id);
+            var post = _postService.FindWithThread(id);
             if (post == null) return BadRequest();
 
-            if (post.ApprovalStatus == ApprovalStatus.Pending || post.ApprovalStatus == ApprovalStatus.Declined)
+            if (post.ApprovalStatus == ApprovalStatus.Pending && post.Thread.ApprovalStatus == ApprovalStatus.Approved)
             {
-                post.ApprovalStatusModifiedById = CurrentUserId;
-                post.ApprovalStatus = ApprovalStatus.Approved;
+                _postService.SetApprovalStatus(CurrentUserId, post, ApprovalStatus.Approved);
                 _threadService.IncreaseNumberOfPosts(post.ThreadId);
             }
 
@@ -101,14 +99,11 @@ namespace ItForum.Controllers
         [HttpPost("decline/{id}")]
         public async Task<IActionResult> Decline(int id)
         {
-            var post = _postService.FindById(id);
+            var post = _postService.FindWithThread(id);
             if (post == null) return BadRequest();
 
             if (post.ApprovalStatus == ApprovalStatus.Pending)
-            {
-                post.ApprovalStatusModifiedById = CurrentUserId;
-                post.ApprovalStatus = ApprovalStatus.Approved;
-            }
+                _postService.SetApprovalStatus(CurrentUserId, post, ApprovalStatus.Declined);
 
             await _unitOfWork.SaveChangesAsync();
             return Ok();

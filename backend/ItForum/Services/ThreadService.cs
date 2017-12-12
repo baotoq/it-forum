@@ -34,6 +34,12 @@ namespace ItForum.Services
             return DbSet.Include(x => x.Posts).SingleOrDefault(x => x.Id == id);
         }
 
+        public void SetApprovalStatus(int userId, Thread thread, ApprovalStatus approvalStatus)
+        {
+            thread.ApprovalStatusModifiedById = userId;
+            thread.ApprovalStatus = ApprovalStatus.Approved;
+        }
+
         public void IncreaseNumberOfPosts(int? id)
         {
             if (id == null) return;

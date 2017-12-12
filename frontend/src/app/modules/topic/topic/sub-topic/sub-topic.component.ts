@@ -17,6 +17,7 @@ import { ApprovalStatus } from '../../../../models/approval-status';
 import { AuthService } from '../../../auth/auth.service';
 import { Role } from '../../../../models/role';
 import { IsManagementPipe } from '../../../shared/pipes/is-management';
+import { ApproveService } from '../../../admin/approve/approve.service';
 
 @Component({
   selector: 'app-sub-topic',
@@ -46,6 +47,7 @@ export class SubTopicComponent implements OnInit {
               private authService: AuthService,
               private topicService: TopicService,
               private userService: UserService,
+              private approveService: ApproveService,
               private loadingService: LoadingService,
               private orderByPipe: OrderByPipe,
               private filterByPipe: FilterByPipe,
@@ -125,6 +127,12 @@ export class SubTopicComponent implements OnInit {
     const smallScreen = window.innerWidth < 960;
     if (smallScreen) this.displayedColumns = ['title'];
     else this.displayedColumns = ['title', 'numberOfPosts', 'views', 'lastActivity'];
+  }
+
+  approve(thread: Thread) {
+    this.approveService.approveThread(thread.id).subscribe(resp => {
+      thread.approvalStatus = ApprovalStatus.Approved;
+    });
   }
 }
 

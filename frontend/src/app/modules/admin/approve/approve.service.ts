@@ -38,4 +38,8 @@ export class ApproveService {
   declinePost(id: number): Observable<any> {
     return this.httpClient.post(`${API.POST.URL}/decline/${id}`, {});
   }
+
+  approveThread(id: number): Observable<any> {
+    return this.httpClient.post(`${API.THREAD.URL}/approve/${id}`, {});
+  }
 }

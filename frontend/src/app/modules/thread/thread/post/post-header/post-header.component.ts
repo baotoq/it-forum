@@ -11,7 +11,7 @@ import { AuthService } from '../../../../auth/auth.service';
 })
 export class PostHeaderComponent implements OnInit {
   @Input() post: Post;
-  @Input() mod = false;
+  @Input() management = false;
 
   role = Role;
   approvalStatus = ApprovalStatus;
