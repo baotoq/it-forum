@@ -95,26 +95,22 @@
         </mat-cell>
       </ng-container>
 
-      <a *matHeaderRowDef="displayedColumns">
-        <mat-header-row></mat-header-row>
-      </a>
-      <a *matRowDef="let row; columns: displayedColumns;" style="text-decoration: none"
-         [routerLink]="['/thread', row.id]">
-        <mat-row [class.pinned]="row.pinned"></mat-row>
-      </a>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"
+               [routerLink]="['/thread', row.id]"
+               [class.pinned]="row.pinned">>
+      </mat-row>
 
     </mat-table>
 
-    <mat-card *ngIf="!behavior.value.length && !loading">
+    <mat-card *ngIf="!dataSource?.connect().value.length && !loading">
       <mat-card-content class="justify-content-center d-flex py-5">
         We couldn't find any thread.
       </mat-card-content>
     </mat-card>
 
     <mat-paginator #paginator
-                   [hidden]="!behavior.value.length && !loading"
-                   [length]="behavior.value.length"
-                   [pageIndex]="0"
+                   [hidden]="!dataSource?.connect().value.length"
                    [pageSizeOptions]="[20, 25, 30]">
     </mat-paginator>
   </div>

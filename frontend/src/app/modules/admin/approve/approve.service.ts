@@ -11,8 +11,8 @@ export class ApproveService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getUnapproveUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>(API.USER.UNAPPROVE);
+  getPendingUsers(): Observable<User[]> {
+    return this.httpClient.get<User[]>(API.USER.PENDING);
   }
 
   approveUsers(payload: number[]): Observable<any> {

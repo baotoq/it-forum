@@ -28,7 +28,9 @@ namespace ItForum.Data.Entities
 
         public DateTime LockoutEnd { get; set; }
 
-        public int? ApprovedById { get; set; }
+        public int? ApprovalStatusModifiedById { get; set; }
+
+        public ApprovalStatus ApprovalStatus { get; set; }
 
         public int Id { get; set; }
 

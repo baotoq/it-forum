@@ -19,24 +19,3 @@ mat-header-row {
 mat-paginator {
   background-color: $table-secondary-color;
 }
-
-.mat-table {
-  display: table !important;
-  width: 100%;
-
-  .mat-header-row, .mat-row {
-    display: table-row;
-    padding: 0;
-    border: none;
-
-    .mat-header-cell, .mat-cell {
-      display: table-cell;
-      height: 48px;
-      vertical-align: middle;
-      padding: 0 1.5%;
-      border-bottom: 1px solid $border-color;
-      font-size: 13px;
-    }
-  }
-}
-

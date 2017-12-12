@@ -28,9 +28,9 @@ namespace ItForum.Services
             return Any(x => x.Email == email);
         }
 
-        public IEnumerable<User> GetUnapprove()
+        public IEnumerable<User> FindPending()
         {
-            return DbSet.Where(x => x.ApprovedBy == null);
+            return DbSet.Where(x => x.ApprovalStatus == ApprovalStatus.Pending);
         }
 
         public string GenerateJwt(User user)

@@ -1,5 +1,6 @@
 import { Role } from './role';
 import { Timestamp } from './timestamp';
+import { ApprovalStatus } from './approval-status';
 
 export class User extends Timestamp {
   id: number;
@@ -11,8 +12,7 @@ export class User extends Timestamp {
   password: string;
   role: Role;
   confirmedBy: User;
-
-  selected = false;
+  approvalStatus: ApprovalStatus;
 
   constructor(obj?) {
     super(obj);

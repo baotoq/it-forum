@@ -1,17 +1,21 @@
 .mat-column-title {
-  width: 900px;
+  max-width: 1500px;
 }
 
 .mat-column-views {
-  width: 80px;
+  max-width: 80px;
 }
 
 .mat-column-numberOfPosts {
-  width: 80px;
+  max-width: 80px;
 }
 
 .mat-column-lastActivity {
-  width: 140px;
+  max-width: 130px;
+}
+
+.mat-cell {
+  font-size: 13px;
 }
 
 .pinned {

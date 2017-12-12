@@ -1,22 +1,13 @@
 <div class="container-fluid mt-3">
   <div class="shadow-2">
-    <app-approve-user-search-input (searchOut)="onSearchOut($event)"
+    <app-approve-user-search-input (searchOut)="filter($event)"
                                    (approve)="onApprove()"
                                    (approveAll)="onApproveAll()"
                                    (decline)="onDecline()"
                                    (declineAll)="onDeclineAll()"
                                    [approveLoading]="approveLoading"></app-approve-user-search-input>
 
-    <mat-table #table [dataSource]="dataSource" matSort matSortStart="desc" [matSortDisableClear]="true">
-
-      <ng-container matColumnDef="check">
-        <mat-header-cell *matHeaderCellDef>
-          <mat-checkbox [formControl]="checkedAllControl" (change)="checkAllClick()"></mat-checkbox>
-        </mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <mat-checkbox [(ngModel)]="row.selected" clickStopPropagation></mat-checkbox>
-        </mat-cell>
-      </ng-container>
+    <mat-table #table [dataSource]="dataSource" matSort [matSortDisableClear]="true">
 
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef mat-sort-header start="asc">Name</mat-header-cell>
@@ -33,28 +24,19 @@
       </ng-container>
 
       <ng-container matColumnDef="dateCreated">
-        <mat-header-cell *matHeaderCellDef mat-sort-header start="desc">Register</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header start="desc">Registered</mat-header-cell>
         <mat-cell *matCellDef="let row">
           {{row.dateCreated | amTimeAgo}}
         </mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="row.selected = !row.selected"></mat-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onClick(row)"
+               [class.bg-secondary]="row.approvalStatus === 'Approved'"></mat-row>
 
     </mat-table>
 
-    <mat-card *ngIf="!behavior.value.length">
-      <mat-card-content class="justify-content-center d-flex py-5">
-        <span *ngIf="searchString">We couldn't find any user.</span>
-        <span *ngIf="!searchString">We don't have any user to approve yet.</span>
-      </mat-card-content>
-    </mat-card>
-
     <mat-paginator #paginator
-                   [hidden]="!behavior.value.length"
-                   [length]="behavior.value.length"
-                   [pageIndex]="0"
                    [pageSizeOptions]="[10, 20, 30]">
     </mat-paginator>
   </div>

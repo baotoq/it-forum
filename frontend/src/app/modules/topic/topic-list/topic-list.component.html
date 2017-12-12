@@ -8,7 +8,7 @@
       <div class="card-header py-1 px-2 text-white bg-dark">
         <strong>{{topic.name | uppercase}}</strong>
       </div>
-      <div class="card-body py-1 px-2" style="font-size: 10px; background-color: #efefef">
+      <div class="card-body py-1 px-2" style="font-size: 70%; background-color: #efefef">
         {{topic.description}}
       </div>
     </div>
@@ -16,7 +16,7 @@
       <div class="card-body py-1 px-0">
         <div *ngFor="let subTopic of topic.subTopics">
           <div class="row px-2 py-1">
-            <div class="col-12 col-md-8" style="font-weight: bold">
+            <div class="col-12 col-md-8 font-weight-bold">
               <span>
                 <i class="fa fa-comments fa-fw text-primary" style="font-size: 25px"></i>
               </span>
@@ -27,17 +27,17 @@
                     style="line-height: 10px">
                 {{subTopic.numberOfNewThreads}}
               </span>
-              <div style="font-size: 60%">
+              <div style="font-size: 70%">
                 {{subTopic.description}}
               </div>
             </div>
             <div class="d-none d-md-block col-md-4" style="font-size: 70%">
-              <div *ngFor="let thread of subTopic.threads | orderBy:'-lastActivity' | slice:0:2">
+              <div *ngFor="let thread of subTopic.threads | orderBy:'-lastActivity' | slice:0:3">
                 <a [routerLink]="['/thread', thread.id]">
                   {{thread.title | shorten: 45:'...'}}
                 </a>
                 <span class="text-muted">
-                {{thread.dateCreated | amTimeAgo}}
+                {{thread.lastActivity | amTimeAgo}}
               </span>
               </div>
             </div>

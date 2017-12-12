@@ -43,12 +43,18 @@ namespace ItForum.Controllers
             if (innerUser == null || innerUser.Password != _helperService.Hash(user.Password, innerUser.Salt))
                 return StatusCode(StatusCodes.Status401Unauthorized, "Invalid email or password!");
 
-            if (innerUser.ApprovedById == null)
-                return StatusCode(StatusCodes.Status401Unauthorized, "You need to be approved by admin!");
-
-            var token = _userService.GenerateJwt(innerUser);
-
-            return Ok(new {token});
+            switch (innerUser.ApprovalStatus)
+            {
+                case ApprovalStatus.Approved:
+                    var token = _userService.GenerateJwt(innerUser);
+                    return Ok(new {token});
+                case ApprovalStatus.Pending:
+                    return StatusCode(StatusCodes.Status401Unauthorized, "You need to be approved by admin!");
+                case ApprovalStatus.Declined:
+                    return new ForbidResult();
+                default:
+                    return new ForbidResult();
+            }
         }
 
         [HttpPost("register")]
@@ -86,10 +92,11 @@ namespace ItForum.Controllers
         }
 
         [Authorize(Roles = nameof(Role.Administrator))]
-        [HttpGet("unapprove")]
-        public IActionResult GetUnapprove()
+        [HttpGet("pending")]
+        public IActionResult GetPending()
         {
-            return Ok(_userService.GetUnapprove().ToList());
+            var dto = _mapper.Map<List<UserDto>>(_userService.FindPending().ToList());
+            return Ok(dto);
         }
 
         [Authorize(Roles = nameof(Role.Administrator))]
@@ -100,9 +107,10 @@ namespace ItForum.Controllers
             foreach (int id in payload.Data)
             {
                 var user = _userService.FindById(id);
-                if (user != null && user.ApprovedBy == null)
+                if (user != null && user.ApprovalStatus == ApprovalStatus.Pending)
                 {
-                    user.ApprovedById = CurrentUserId;
+                    user.ApprovalStatusModifiedById = CurrentUserId;
+                    user.ApprovalStatus = ApprovalStatus.Approved;
                     response.Add(id);
                 }
             }
@@ -118,9 +126,10 @@ namespace ItForum.Controllers
             foreach (int id in payload.Data)
             {
                 var user = _userService.FindById(id);
-                if (user != null && user.ApprovedBy == null)
+                if (user != null && user.ApprovalStatus == ApprovalStatus.Pending)
                 {
-                    _userService.Remove(user);
+                    user.ApprovalStatusModifiedById = CurrentUserId;
+                    user.ApprovalStatus = ApprovalStatus.Declined;
                     response.Add(id);
                 }
             }

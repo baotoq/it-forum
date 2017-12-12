@@ -4,7 +4,7 @@ export module API {
   export class USER {
     public static readonly URL = `${BASE_URL}/user`;
 
-    public static readonly UNAPPROVE = `${USER.URL}/unapprove`;
+    public static readonly PENDING = `${USER.URL}/pending`;
     public static readonly APPROVE = `${USER.URL}/approve`;
     public static readonly DECLINE = `${USER.URL}/decline`;
     public static readonly REGISTER = `${USER.URL}/register`;

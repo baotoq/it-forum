@@ -44,6 +44,7 @@ namespace ItForum.Data.Seeds
                 o.Email = f.Person.Email.ToLower();
                 o.Salt = _helperService.CreateSalt();
                 o.Password = _helperService.Hash("1", o.Salt);
+                o.ApprovalStatus = ApprovalStatus.Pending;
                 o.Role = f.PickRandom(o.Role);
                 o.DateCreated = f.Date.Past(4);
                 o.DateModified = o.DateCreated;
@@ -54,7 +55,8 @@ namespace ItForum.Data.Seeds
             admin.Role = Role.Administrator;
             _context.Add(admin);
             await _context.SaveChangesAsync();
-            admin.ApprovedBy = admin;
+            admin.ApprovalStatusModifiedBy = admin;
+            admin.ApprovalStatus = ApprovalStatus.Approved;
 
             var index = 1;
             var admins = userFaker.Generate(50);
@@ -63,7 +65,8 @@ namespace ItForum.Data.Seeds
                 x.Role = Role.Administrator;
                 x.Name = $"admin{index}";
                 x.Email = $"admin{index++}@gmail.com";
-                x.ApprovedBy = admin;
+                x.ApprovalStatusModifiedBy = admin;
+                x.ApprovalStatus = ApprovalStatus.Approved;
             });
             _context.Users.AddRange(admins);
             await _context.SaveChangesAsync();
@@ -75,7 +78,8 @@ namespace ItForum.Data.Seeds
                 x.Role = Role.Moderator;
                 x.Name = $"mod{index}";
                 x.Email = $"mod{index++}@gmail.com";
-                x.ApprovedBy = admin;
+                x.ApprovalStatusModifiedBy = admin;
+                x.ApprovalStatus = ApprovalStatus.Approved;
             });
             _context.Users.AddRange(mods);
             await _context.SaveChangesAsync();
@@ -87,7 +91,8 @@ namespace ItForum.Data.Seeds
                 x.Role = Role.None;
                 x.Name = $"user{index}";
                 x.Email = $"user{index++}@gmail.com";
-                x.ApprovedBy = admin;
+                x.ApprovalStatusModifiedBy = admin;
+                x.ApprovalStatus = ApprovalStatus.Approved;
             });
             _context.Users.AddRange(users);
             await _context.SaveChangesAsync();
