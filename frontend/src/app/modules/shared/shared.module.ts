@@ -11,6 +11,7 @@ import { IsManagementPipe } from './pipes/is-management';
 
 import { ClickStopPropagationDirective } from './directives/click-stop-propagation/click-stop-propagation.directive';
 import { PreventDefaultDirective } from './directives/prevent-default/prevent-default.directive';
+import { PreventScrollDirective } from './directives/prevent-scroll/prevent-scroll.directive';
 
 import { FontAwesomeSpinnerComponent } from './components/font-awesome-spinner/font-awesome-spinner.component';
 import { MaterialSpinnerComponent } from './components/material-spinner/material-spinner.component';
@@ -38,6 +39,7 @@ const PIPES = [
 const DIRECTIVES = [
   ClickStopPropagationDirective,
   PreventDefaultDirective,
+  PreventScrollDirective,
 ];
 
 const MODULES = [
