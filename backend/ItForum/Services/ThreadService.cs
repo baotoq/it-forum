@@ -24,11 +24,6 @@ namespace ItForum.Services
                 .SingleOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<Thread> GetUnapprove()
-        {
-            return null;
-        }
-
         public Thread FindWithPosts(int id)
         {
             return DbSet.Include(x => x.Posts).SingleOrDefault(x => x.Id == id);
@@ -38,6 +33,15 @@ namespace ItForum.Services
         {
             thread.ApprovalStatusModifiedById = userId;
             thread.ApprovalStatus = ApprovalStatus.Approved;
+        }
+
+        public IEnumerable<Thread> FindPending()
+        {
+            return DbSet.Include(x => x.CreatedBy)
+                .Include(x => x.Posts)
+                .Include(x => x.Topic)
+                .Include(x => x.ThreadTags).ThenInclude(x => x.Tag)
+                .Where(x => x.ApprovalStatus == ApprovalStatus.Pending);
         }
 
         public void IncreaseNumberOfPosts(int? id)

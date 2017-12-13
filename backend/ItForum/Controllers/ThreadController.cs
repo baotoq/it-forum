@@ -90,12 +90,21 @@ namespace ItForum.Controllers
 
             var createdBy = _userService.FindById(CurrentUserId);
             if (createdBy.Role == Role.Administrator || createdBy.Role == Role.Moderator)
-                ApproveThread(thread);
+                SetApprovalStatus(thread, ApprovalStatus.Approved);
 
             await _threadService.AddAsync(thread);
             await _unitOfWork.SaveChangesAsync();
 
             return StatusCode(StatusCodes.Status201Created, thread);
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpGet("pending")]
+        public IActionResult GetPendingThreads()
+        {
+            var threads = _threadService.FindPending().ToList();
+            var dto = _mapper.Map<List<ThreadDto>>(threads);
+            return Ok(dto);
         }
 
         [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
@@ -109,27 +118,53 @@ namespace ItForum.Controllers
 
             if (currentUser.Role == Role.Administrator)
             {
-                ApproveThread(thread);
+                SetApprovalStatus(thread, ApprovalStatus.Approved);
             }
             else
             {
                 var moderators = _userService.FindModerators(thread.TopicId.Value).ToList();
                 if (moderators.All(u => u.Id != currentUser.Id))
                     return new ForbidResult();
-                ApproveThread(thread);
+                SetApprovalStatus(thread, ApprovalStatus.Approved);
             }
 
             await _unitOfWork.SaveChangesAsync();
             return Ok();
         }
 
-        private void ApproveThread(Thread thread)
+        [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
+        [HttpPost("decline/{id}")]
+        public async Task<IActionResult> Decline(int id)
+        {
+            var thread = _threadService.FindWithPosts(id);
+            if (thread == null) return BadRequest();
+
+            var currentUser = _userService.FindById(CurrentUserId);
+
+            if (currentUser.Role == Role.Administrator)
+            {
+                SetApprovalStatus(thread, ApprovalStatus.Declined);
+            }
+            else
+            {
+                var moderators = _userService.FindModerators(thread.TopicId.Value).ToList();
+                if (moderators.All(u => u.Id != currentUser.Id))
+                    return new ForbidResult();
+                SetApprovalStatus(thread, ApprovalStatus.Declined);
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
+        }
+
+        private void SetApprovalStatus(Thread thread, ApprovalStatus approvalStatus)
         {
             if (thread.ApprovalStatus == ApprovalStatus.Pending)
             {
-                _threadService.SetApprovalStatus(CurrentUserId, thread, ApprovalStatus.Approved);
-                _postService.SetApprovalStatus(CurrentUserId, thread.Posts[0], ApprovalStatus.Approved);
-                _topicService.IncreaseNumberOfThreads(thread.TopicId);
+                _threadService.SetApprovalStatus(CurrentUserId, thread, approvalStatus);
+                _postService.SetApprovalStatus(CurrentUserId, thread.Posts[0], approvalStatus);
+                if (approvalStatus == ApprovalStatus.Approved)
+                    _topicService.IncreaseNumberOfThreads(thread.TopicId);
             }
         }
 

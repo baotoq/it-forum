@@ -1,4 +1,5 @@
 <div *ngIf="pendingPosts" class="container-fluid mt-3">
+
   <div class="clearfix">
     <ngb-pagination class="float-right"
                     [collectionSize]="pendingPosts.length"
@@ -6,18 +7,28 @@
                     [pageSize]="pageSize"
                     (pageChange)="onPageChange()"></ngb-pagination>
   </div>
+
   <div *ngFor="let post of paginatedData" class="mb-3">
     <mat-card>
       <mat-card-header>
+
         <a mat-card-avatar [routerLink]="['/']" [style.background-image]="'url(' + post.createdBy.avatar + ')'"></a>
-        <mat-card-subtitle class="mb-1">
+
+        <mat-card-title class="mb-1">
           <strong>
             <a href="#">{{post.createdBy.name}}</a>
           </strong>
-        </mat-card-subtitle>
-        <mat-card-title class="mb-1 text-muted" [title]="post.dateCreated | date:'MMM d y, h:mm a'">
-          {{post.dateCreated | amTimeAgo}}
+          <app-badge-role [user]="post.createdBy"></app-badge-role>
+          in
+          <a [routerLink]="['/thread', post.threadId]">
+            {{post.thread.title}}
+          </a>
         </mat-card-title>
+
+        <mat-card-subtitle class="mb-1" [title]="post.dateCreated | date:'MMM d y, h:mm a'">
+          {{post.dateCreated | amTimeAgo}}
+        </mat-card-subtitle>
+
         <div class="ml-auto">
           <button mat-icon-button class="btn-approve" (click)="approve(post)">
             <i class="fa fa-check fa-fw"></i>
@@ -26,13 +37,16 @@
             <i class="fa fa-close fa-fw"></i>
           </button>
         </div>
+
       </mat-card-header>
+
       <hr class="mt-2">
       <mat-card-content>
         <div [froalaView]="post.content"></div>
       </mat-card-content>
     </mat-card>
   </div>
+
   <div class="clearfix">
     <ngb-pagination class="float-right"
                     [collectionSize]="pendingPosts.length"

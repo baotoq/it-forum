@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { API } from '../../shared/common/api';
 import { User } from '../../../models/user';
 import { Post } from '../../../models/post';
+import { Thread } from '../../../models/thread';
 
 @Injectable()
 export class ApproveService {
@@ -39,7 +40,15 @@ export class ApproveService {
     return this.httpClient.post(`${API.POST.URL}/decline/${id}`, {});
   }
 
+  getPendingThreads(): Observable<Thread[]> {
+    return this.httpClient.get<Thread[]>(API.THREAD.PENDING);
+  }
+
   approveThread(id: number): Observable<any> {
     return this.httpClient.post(`${API.THREAD.URL}/approve/${id}`, {});
+  }
+
+  declineThread(id: number): Observable<any> {
+    return this.httpClient.post(`${API.THREAD.URL}/decline/${id}`, {});
   }
 }

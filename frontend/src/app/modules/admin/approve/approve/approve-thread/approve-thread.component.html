@@ -1,3 +1,66 @@
-<p>
-  approve-thread works!
-</p>
+<div *ngIf="pendingThreads" class="container-fluid mt-3">
+
+  <div class="clearfix">
+    <ngb-pagination class="float-right"
+                    [collectionSize]="pendingThreads.length"
+                    [(page)]="currentPage"
+                    [pageSize]="pageSize"
+                    (pageChange)="onPageChange()"></ngb-pagination>
+  </div>
+
+  <div *ngFor="let thread of paginatedData" class="mb-3">
+    <mat-card>
+      <mat-card-header>
+
+        <a mat-card-avatar [routerLink]="['/']" [style.background-image]="'url(' + thread.createdBy.avatar + ')'"></a>
+        <mat-card-title class="mb-1">
+          <strong>
+            {{thread.title}}
+          </strong>
+          <span class="text-muted">in</span>
+          <a [routerLink]="['/thread', thread.id]">
+            {{thread.topic.name}}
+          </a>
+        </mat-card-title>
+
+        <mat-card-subtitle class="mb-1">
+          by <a href="#">{{thread.createdBy.name}}</a>
+          <app-badge-role [user]="thread.createdBy"></app-badge-role>
+          <span [title]="thread.dateCreated | date:'MMM d y, h:mm a'">{{thread.dateCreated | amTimeAgo}}</span>
+        </mat-card-subtitle>
+
+        <div class="ml-auto">
+          <button mat-icon-button class="btn-approve" (click)="approve(thread)">
+            <i class="fa fa-check fa-fw"></i>
+          </button>
+          <button mat-icon-button class="btn-decline" (click)="decline(thread)">
+            <i class="fa fa-close fa-fw"></i>
+          </button>
+        </div>
+
+      </mat-card-header>
+      <div>
+        <mat-chip-list>
+          <mat-chip *ngFor="let tag of thread.tags" class="bg-primary text-white">
+            {{tag.name}}
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+
+      <hr class="mt-2">
+      <mat-card-content>
+        <div [froalaView]="thread.posts[0].content"></div>
+      </mat-card-content>
+
+    </mat-card>
+  </div>
+
+  <div class="clearfix">
+    <ngb-pagination class="float-right"
+                    [collectionSize]="pendingThreads.length"
+                    [(page)]="currentPage"
+                    [pageSize]="pageSize"
+                    (pageChange)="onPageChange()"></ngb-pagination>
+  </div>
+
+</div>

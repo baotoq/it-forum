@@ -67,13 +67,11 @@ namespace ItForum.Controllers
             return StatusCode(StatusCodes.Status201Created, dto);
         }
 
-        [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
+        [Authorize(Roles = nameof(Role.Administrator))]
         [HttpGet("pending")]
-        public async Task<IActionResult> GetPendingPosts()
+        public IActionResult GetPendingPosts()
         {
-            List<Post> posts;
-            var currentUser = _userService.FindById(CurrentUserId);
-            posts = _postService.GetPending().ToList();
+            var posts = _postService.FindPending().ToList();
             var dto = _mapper.Map<List<PostDto>>(posts);
             return Ok(dto);
         }
@@ -102,7 +100,7 @@ namespace ItForum.Controllers
             var post = _postService.FindWithThread(id);
             if (post == null) return BadRequest();
 
-            if (post.ApprovalStatus == ApprovalStatus.Pending)
+            if (post.ApprovalStatus == ApprovalStatus.Pending && post.Thread.ApprovalStatus == ApprovalStatus.Approved)
                 _postService.SetApprovalStatus(CurrentUserId, post, ApprovalStatus.Declined);
 
             await _unitOfWork.SaveChangesAsync();

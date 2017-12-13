@@ -1,3 +1,7 @@
+<mat-toolbar class="mat-toolbar-48 shadow-1" style="background-color: #fafafa">
+  <button mat-button color="primary">Search</button>
+</mat-toolbar>
+
 <div class="container-fluid mt-3">
 
   <mat-card *ngIf="subTopic" class="mb-3">
@@ -14,7 +18,7 @@
     </div>
     <div class="mt-2">
       <span class="mr-2">Mods:</span>
-      <span *ngFor="let mod of moderators">
+      <span *ngFor="let mod of $moderators | async">
         <a [matTooltip]="mod.name" matTooltipPosition="above"
            [routerLink]="['/']" class="mr-1" style="text-decoration: none">
           <img [src]="mod.avatar" [alt]="mod.name" class="img-fluid"
@@ -54,7 +58,7 @@
                 <button mat-menu-item (click)="approve(row)">
                   Approve
                 </button>
-                <button mat-menu-item>
+                <button mat-menu-item (click)="decline(row)">
                   Decline
                 </button>
                 <div class="divider"></div>
@@ -98,7 +102,7 @@
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"
                [routerLink]="['/thread', row.id]"
-               [class.pinned]="row.pinned">>
+               [class.pinned]="row.pinned">
       </mat-row>
 
     </mat-table>

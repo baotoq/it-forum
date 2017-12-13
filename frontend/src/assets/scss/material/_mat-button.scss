@@ -1,3 +1,5 @@
+@import "../variables";
+
 a[mat-raised-button] {
   text-decoration: none;
 }
@@ -20,4 +22,20 @@ button[mat-icon-button] {
   font-size: 15px;
   padding: 0 0;
   margin: 0;
+}
+
+.btn-approve {
+  color: $blur-color !important;
+
+  &:hover {
+    color: $mat-primary;
+  }
+}
+
+.btn-decline {
+  color: $blur-color !important;
+
+  &:hover {
+    color: $red;
+  }
 }

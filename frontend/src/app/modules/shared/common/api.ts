@@ -28,7 +28,8 @@ export module API {
     public static readonly URL = `${BASE_URL}/thread`;
 
     public static readonly VIEW = `${THREAD.URL}/view`;
-    public static readonly VOTE = `${THREAD.URL}/vote`;
+
+    public static readonly PENDING = `${THREAD.URL}/pending`;
   }
 
   export class POST {

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { OrderByPipe } from 'ngx-pipes';
 import { LoadingService } from '../../../../components/loading/loading.service';
 import { Thread } from '../../../../models/thread';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Topic } from '../../../../models/topic';
 import { TopicService } from '../../topic.service';
 import { Storage } from '../../../shared/common/constant';
@@ -15,6 +15,8 @@ import { AuthService } from '../../../auth/auth.service';
 import { Role } from '../../../../models/role';
 import { IsManagementPipe } from '../../../shared/pipes/is-management';
 import { ApproveService } from '../../../admin/approve/approve.service';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-sub-topic',
@@ -29,7 +31,7 @@ export class SubTopicComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) matSort: MatSort;
 
-  moderators: User[];
+  $moderators: Observable<User[]>;
 
   role = Role;
   approvalStatus = ApprovalStatus;
@@ -46,7 +48,8 @@ export class SubTopicComponent implements OnInit {
               private loadingService: LoadingService,
               private orderByPipe: OrderByPipe,
               private isExistPipe: IsExistPipe,
-              private isManagementPipe: IsManagementPipe) {
+              private isManagementPipe: IsManagementPipe,
+              public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -54,9 +57,7 @@ export class SubTopicComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.getSubTopic(params['subTopicId']);
 
-      this.userService.getModerators(params['subTopicId']).subscribe(resp => {
-        this.moderators = resp;
-      });
+      this.$moderators = this.userService.getModerators(params['subTopicId']);
     });
     this.matSort.sortChange.subscribe(() => this.filter());
   }
@@ -101,8 +102,8 @@ export class SubTopicComponent implements OnInit {
   }
 
   filter(searchString: string = '') {
-    this.paginator.pageIndex = 0;
-    const data = this.subTopic.threads.slice();
+    //this.paginator.pageIndex = 0;
+    const data = this.subTopic.threads.filter(item => item.approvalStatus !== this.approvalStatus.Declined);
     let config = this.matSort.direction === 'asc' ? '+' : '-';
     config += this.matSort.active;
     this.dataSource.data = this.orderByPipe.transform(data, ['-pinned', config]);
@@ -117,8 +118,23 @@ export class SubTopicComponent implements OnInit {
   }
 
   approve(thread: Thread) {
-    this.approveService.approveThread(thread.id).subscribe(resp => {
-      thread.approvalStatus = ApprovalStatus.Approved;
+    this.approveService.approveThread(thread.id)
+      .subscribe(() => {
+        thread.approvalStatus = ApprovalStatus.Approved;
+      });
+  }
+
+  decline(thread: Thread) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.approveService.declineThread(thread.id)
+          .subscribe(() => {
+            thread.approvalStatus = ApprovalStatus.Declined;
+            this.filter();
+          });
+      }
     });
   }
 }
