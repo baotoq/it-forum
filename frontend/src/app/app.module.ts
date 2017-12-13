@@ -60,7 +60,7 @@ import 'rxjs/add/observable/combineLatest';
         tokenGetter: () => {
           return localStorage.getItem(Storage.AUTH);
         },
-        whitelistedDomains: ['localhost:5000'],
+        whitelistedDomains: ['localhost:5000', 'tdtgame.azurewebsites.net'],
         skipWhenExpired: true,
       },
     }),

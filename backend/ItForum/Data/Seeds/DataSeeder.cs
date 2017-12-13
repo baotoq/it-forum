@@ -59,7 +59,7 @@ namespace ItForum.Data.Seeds
             admin.ApprovalStatus = ApprovalStatus.Approved;
 
             var index = 1;
-            var admins = userFaker.Generate(50);
+            var admins = userFaker.Generate(25);
             admins.ToList().ForEach(x =>
             {
                 x.Role = Role.Administrator;
@@ -72,7 +72,7 @@ namespace ItForum.Data.Seeds
             await _context.SaveChangesAsync();
 
             index = 1;
-            var mods = userFaker.Generate(50);
+            var mods = userFaker.Generate(25);
             mods.ToList().ForEach(x =>
             {
                 x.Role = Role.Moderator;
@@ -85,7 +85,7 @@ namespace ItForum.Data.Seeds
             await _context.SaveChangesAsync();
 
             index = 1;
-            var users = userFaker.Generate(100);
+            var users = userFaker.Generate(50);
             users.ToList().ForEach(x =>
             {
                 x.Role = Role.None;
@@ -112,7 +112,7 @@ namespace ItForum.Data.Seeds
 
                 var temp = new List<User>(users);
                 var votes = new List<Vote>();
-                for (var i = 0; i < f.Random.Number(0, 10); i++)
+                for (var i = 0; i < f.Random.Number(0, 5); i++)
                 {
                     var u = f.PickRandom(temp);
                     temp.Remove(u);
@@ -129,7 +129,7 @@ namespace ItForum.Data.Seeds
                 o.Views = f.Random.Number(1, 10000);
                 o.Pinned = false;
                 o.NumberOfPosts = 0;
-                o.Posts = postFaker.Generate(f.Random.Number(3, 30)).ToList();
+                o.Posts = postFaker.Generate(f.Random.Number(3, 10)).ToList();
                 o.NumberOfPosts += o.Posts.Count(x => x.ApprovalStatus == ApprovalStatus.Approved);
                 o.Posts.ForEach(x =>
                 {
@@ -151,7 +151,7 @@ namespace ItForum.Data.Seeds
 
                 var temp = new List<Tag>(tags);
                 var threadTags = new List<ThreadTag>();
-                for (var i = 0; i < f.Random.Number(2, 5); i++)
+                for (var i = 0; i < f.Random.Number(2, 4); i++)
                 {
                     var t = f.PickRandom(temp);
                     temp.Remove(t);
@@ -170,7 +170,7 @@ namespace ItForum.Data.Seeds
 
                 var temp = new List<User>(mods);
                 var managements = new List<Management>();
-                for (var i = 0; i < f.Random.Number(1, 5); i++)
+                for (var i = 0; i < f.Random.Number(1, 4); i++)
                 {
                     var u = f.PickRandom(temp);
                     temp.Remove(u);
@@ -179,14 +179,14 @@ namespace ItForum.Data.Seeds
                 o.Managements = managements.ToList();
             });
 
-            var topics = topicFaker.Generate(3);
+            var topics = topicFaker.Generate(2);
             topics.ForEach(x =>
             {
                 var f = new Faker();
                 x.SubTopics = topicFaker.Generate(f.Random.Number(2, 3)).ToList();
                 x.SubTopics.ForEach(s =>
                 {
-                    s.Threads = threadFaker.Generate(f.Random.Number(10, 30)).ToList();
+                    s.Threads = threadFaker.Generate(f.Random.Number(5, 20)).ToList();
                     for (var i = 0; i < f.Random.Number(1, 5); i++)
                     {
                         var t = f.PickRandom(s.Threads);

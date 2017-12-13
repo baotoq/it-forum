@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 using AutoMapper;
 using ItForum.Common;
 using ItForum.Data;
@@ -30,7 +32,7 @@ namespace ItForum
         {
             //services.AddDbContext<NeptuneContext>(options => options.UseSqlite("Data Source=neptune.db"));
             services.AddDbContext<NeptuneContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("TdtGame")));
 
             services.AddCors();
 
@@ -82,11 +84,27 @@ namespace ItForum
                 builder.WithOrigins("http://localhost:4200")
                     .AllowAnyHeader()
                     .AllowAnyMethod();
+                builder.WithOrigins("http://tdtgame.azurewebsites.net")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
             });
 
             app.UseAuthentication();
 
+            app.Use(async (context, next) => {
+                await next();
+                if (context.Response.StatusCode == 404 &&
+                    !Path.HasExtension(context.Request.Path.Value) &&
+                    !context.Request.Path.Value.StartsWith("/api/"))
+                {
+                    context.Request.Path = "/index.html";
+                    await next();
+                }
+            });
+
             app.UseMvc();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
         }
     }
 }
