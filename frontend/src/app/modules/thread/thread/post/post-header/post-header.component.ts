@@ -49,3 +49,4 @@ export class PostHeaderComponent implements OnInit {
       }
     });
   }
+}
