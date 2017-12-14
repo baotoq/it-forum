@@ -52,7 +52,7 @@
     <div class="btn-group">
       <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">
         <button class="btn btn-sm btn-default"
-                 title="Markdown Cheatsheet" *ngIf="!_hideIcons.Info">
+                title="Markdown Cheatsheet" *ngIf="!_hideIcons.Info">
           <i class="fa fa-info fa-fw"></i>
         </button>
       </a>
@@ -71,7 +71,10 @@
       </div>
     </div>
     <div [style.display]="showPreviewPanel ? 'block' : 'none'" (click)="previewPanelClick($event)">
-      <div class="preview-panel" [innerHtml]="_previewHtml" [style.height]="height"></div>
+      <div *ngIf="_previewHtml" class="preview-panel" [innerHtml]="_previewHtml" [style.height]="height"></div>
+      <div *ngIf="!_previewHtml" class="d-flex justify-content-center pt-2 pb-3">
+        <app-fa-spinner [size]="2"></app-fa-spinner>
+      </div>
     </div>
   </div>
   <div *ngIf="maxlength > 0 && mode != 'preview'">

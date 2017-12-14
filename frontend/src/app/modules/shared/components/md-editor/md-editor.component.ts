@@ -122,9 +122,9 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
   _previewHtml: any;
 
   _onChange = (_: any) => {
-  }
+  };
   _onTouched = () => {
-  }
+  };
 
   constructor(@Attribute('required') public required: boolean = false,
               @Attribute('maxlength') public maxlength: number = -1,
