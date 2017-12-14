@@ -57,3 +57,21 @@ app-reply {
 .text-mat-primary {
  color: $mat-primary;
 }
+
+* {
+  word-break: break-all;
+}
+
+md-editor[mode="preview"] {
+  .md-editor-container, .preview-panel {
+    border: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+app-reply {
+  .preview-panel {
+    background-color: #e9ebee !important;
+  }
+}

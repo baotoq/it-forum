@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 
@@ -14,6 +13,7 @@ import { ThreadService } from './thread.service';
 import { PostContentComponent } from './thread/post/post-content/post-content.component';
 import { PostHeaderComponent } from './thread/post/post-header/post-header.component';
 import { ReplyComponent } from './thread/reply/reply.component';
+import { ThreadPreviewComponent } from './thread-create/thread-preview/thread-preview.component';
 
 
 @NgModule({
@@ -21,8 +21,6 @@ import { ReplyComponent } from './thread/reply/reply.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    FroalaEditorModule,
-    FroalaViewModule,
     NgbModule,
     SharedModule,
     ThreadRoutingModule,
@@ -34,6 +32,7 @@ import { ReplyComponent } from './thread/reply/reply.component';
     PostContentComponent,
     PostHeaderComponent,
     ReplyComponent,
+    ThreadPreviewComponent,
   ],
   providers: [
     ThreadService,

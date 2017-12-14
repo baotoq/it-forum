@@ -48,8 +48,8 @@
       </div>
 
       <hr class="mt-2">
-      <mat-card-content>
-        <div [froalaView]="thread.posts[0].content"></div>
+      <mat-card-content class="m-0">
+        <md-editor [(ngModel)]="thread.posts[0].content" mode="preview" height="100%"></md-editor>
       </mat-card-content>
 
     </mat-card>

@@ -1,14 +1,14 @@
-<mat-card-content>
-  <div [froalaView]="post.content"></div>
+<mat-card-content class="m-0">
+  <md-editor class="m-0" [(ngModel)]="post.content" mode="preview" height="100%"></md-editor>
 </mat-card-content>
 
 <div *ngIf="showAction">
-  <hr>
+  <hr class="mt-0">
   <button *ngIf="!showEditor" mat-button (click)="onReply()">
     <i class="fa fa-reply fa-fw"></i>
     Reply
   </button>
-  <button *ngIf="showEditor" mat-button color="primary" class="mb-2"
+  <button *ngIf="showEditor" mat-button color="primary"
           (click)="onSubmit()" [disabled]="!editorContent || loading">
     <app-fa-spinner *ngIf="loading"></app-fa-spinner>
     <span *ngIf="!loading">Submit</span>
@@ -26,7 +26,7 @@
 
   <div *ngIf="showEditor">
     <hr>
-    <div [froalaEditor]="{height: 200}" [(froalaModel)]="editorContent"></div>
+    <md-editor [(ngModel)]="editorContent" required></md-editor>
   </div>
 </div>
 

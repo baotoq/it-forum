@@ -1,9 +1,13 @@
 <mat-chip style="background-color: #e9ebee" class="d-block" [selectable]="false">
-  <strong>
-    <a href="#">{{reply.createdBy.name}}</a>
-  </strong>
-  <app-badge-role [user]="reply.createdBy"></app-badge-role>
-  <app-badge-approval-status [status]="reply.approvalStatus"></app-badge-approval-status>
-  <span class="text-muted">{{reply.dateCreated | amTimeAgo}}</span>
-  <span [froalaView]="reply.content"></span>
+  <div class="mb-2">
+    <strong>
+      <a href="#">{{reply.createdBy.name}}</a>
+    </strong>
+    <app-badge-role [user]="reply.createdBy"></app-badge-role>
+    <app-badge-approval-status [status]="reply.approvalStatus"></app-badge-approval-status>
+    <span class="text-muted" [title]="reply.dateCreated | date:'MMM d y, h:mm a'">
+      {{reply.dateCreated | amTimeAgo}}
+    </span>
+  </div>
+  <md-editor [(ngModel)]="reply.content" mode="preview" height="100%"></md-editor>
 </mat-chip>

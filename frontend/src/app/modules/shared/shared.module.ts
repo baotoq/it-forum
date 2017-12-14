@@ -20,6 +20,7 @@ import { LineChartComponent } from './components/line-chart/line-chart.component
 import { BadgeRoleComponent } from './components/badge-role/badge-role.component';
 import { BadgeApprovalStatusComponent } from './components/badge-approval-status/badge-approval-status.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { MarkdownEditorComponent } from './components/md-editor/md-editor.component';
 
 const COMPONENTS = [
   FontAwesomeSpinnerComponent,
@@ -28,6 +29,7 @@ const COMPONENTS = [
   LineChartComponent,
   BadgeRoleComponent,
   BadgeApprovalStatusComponent,
+  MarkdownEditorComponent,
 ];
 
 const PIPES = [

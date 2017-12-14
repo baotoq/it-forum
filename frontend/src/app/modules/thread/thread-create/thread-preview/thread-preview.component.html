@@ -1,0 +1,31 @@
+<mat-card>
+  <mat-card-header>
+
+    <a mat-card-avatar [routerLink]="['/']" [style.background-image]="'url(' + thread.createdBy.avatar + ')'"></a>
+
+    <mat-card-title class="mb-1">
+      <strong>
+        <a href="#">{{thread.createdBy.name}}</a>
+      </strong>
+      <app-badge-role [user]="thread.createdBy"></app-badge-role>
+    </mat-card-title>
+
+    <mat-card-subtitle class="mb-1" [title]="thread.dateCreated | date:'MMM d y, h:mm a'">
+      {{thread.dateCreated | amTimeAgo}}
+    </mat-card-subtitle>
+
+  </mat-card-header>
+  <div>
+    <mat-chip-list>
+      <mat-chip *ngFor="let tag of thread.tags" class="bg-primary text-white">
+        {{tag.name}}
+      </mat-chip>
+    </mat-chip-list>
+  </div>
+
+  <hr class="mt-2">
+  <mat-card-content class="m-0">
+    <md-editor [(ngModel)]="thread.posts[0].content" mode="preview" height="100%"></md-editor>
+  </mat-card-content>
+
+</mat-card>

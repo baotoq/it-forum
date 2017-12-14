@@ -4,7 +4,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
 import { JwtModule } from '@auth0/angular-jwt';
-import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 import { NgbModule, NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
 
@@ -64,8 +63,6 @@ import 'rxjs/add/observable/combineLatest';
         skipWhenExpired: true,
       },
     }),
-    FroalaEditorModule.forRoot(),
-    FroalaViewModule.forRoot(),
     SnotifyModule.forRoot(),
     NgbModule.forRoot(),
     AppRoutingModule,

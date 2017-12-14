@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="mat-toolbar-48">
-  <span *ngIf="thread" class="m-auto">{{thread.title}}</span>
+  <span *ngIf="thread" class="m-auto">{{thread.title | shorten: 100:'...'}}</span>
 </mat-toolbar>
 
 <div *ngIf="thread" class="container pt-4">
@@ -47,7 +47,7 @@
                     size="md"></ngb-pagination>
   </div>
   <div *ngIf="showEditor">
-    <div [froalaEditor]="{height: 300}" [(froalaModel)]="editorContent"></div>
+    <md-editor [(ngModel)]="editorContent" required></md-editor>
   </div>
 
   <div class="mb-3">
