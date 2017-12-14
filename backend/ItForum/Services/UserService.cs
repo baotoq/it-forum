@@ -20,12 +20,12 @@ namespace ItForum.Services
 
         public User FindBy(string email)
         {
-            return SingleOrDefault(x => x.Email == email);
+            return SingleOrDefault(x => x.Email == email && x.ApprovalStatus != ApprovalStatus.Declined);
         }
 
         public bool IsExistEmail(string email)
         {
-            return Any(x => x.Email == email);
+            return Any(x => x.Email == email && x.ApprovalStatus != ApprovalStatus.Declined);
         }
 
         public IEnumerable<User> FindPending()

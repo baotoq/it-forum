@@ -9,6 +9,7 @@ using ItForum.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +33,7 @@ namespace ItForum
         {
             //services.AddDbContext<NeptuneContext>(options => options.UseSqlite("Data Source=neptune.db"));
             services.AddDbContext<NeptuneContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("TdtGame")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddCors();
 
@@ -93,7 +94,7 @@ namespace ItForum
 
             app.Use(async (context, next) => {
                 await next();
-                if (context.Response.StatusCode == 404 &&
+                if (context.Response.StatusCode == StatusCodes.Status404NotFound &&
                     !Path.HasExtension(context.Request.Path.Value) &&
                     !context.Request.Path.Value.StartsWith("/api/"))
                 {

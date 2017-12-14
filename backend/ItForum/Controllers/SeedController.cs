@@ -15,11 +15,11 @@ namespace ItForum.Controllers
             _dataSeeder = dataSeeder;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Init()
+        [HttpGet("{numberOfTopics}")]
+        public async Task<IActionResult> Seed(int numberOfTopics)
         {
-            await _dataSeeder.InitializeAsync();
-            return Ok();
+            await _dataSeeder.InitializeAsync(numberOfTopics);
+            return Ok("done");
         }
     }
 }

@@ -21,7 +21,7 @@ namespace ItForum.Data.Seeds
             _helperService = helperService;
         }
 
-        public async Task InitializeAsync()
+        public async Task InitializeAsync(int numberOfTopics)
         {
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
@@ -102,7 +102,7 @@ namespace ItForum.Data.Seeds
                 o.Content = f.Lorem.Paragraphs(f.Random.Number(1, 4), "<div></div>");
                 o.CreatedBy = f.PickRandom(users);
                 o.ApprovalStatus = ApprovalStatus.Pending;
-                if (f.Random.Number(0, 10) != 0)
+                if (f.Random.Number(0, 8) != 0)
                 {
                     o.ApprovalStatus = ApprovalStatus.Approved;
                     o.ApprovalStatusModifiedBy = admin;
@@ -129,11 +129,11 @@ namespace ItForum.Data.Seeds
                 o.Views = f.Random.Number(1, 10000);
                 o.Pinned = false;
                 o.NumberOfPosts = 0;
-                o.Posts = postFaker.Generate(f.Random.Number(3, 10)).ToList();
+                o.Posts = postFaker.Generate(f.Random.Number(3, 20)).ToList();
                 o.NumberOfPosts += o.Posts.Count(x => x.ApprovalStatus == ApprovalStatus.Approved);
                 o.Posts.ForEach(x =>
                 {
-                    x.Replies = postFaker.Generate(f.Random.Number(0, 3)).ToList();
+                    x.Replies = postFaker.Generate(f.Random.Number(0, 2)).ToList();
                     x.Replies.ForEach(y => y.Thread = o);
                     o.NumberOfPosts += x.Replies.Count(z => z.ApprovalStatus == ApprovalStatus.Approved);
                 });
@@ -143,10 +143,19 @@ namespace ItForum.Data.Seeds
                 o.DateModified = o.DateCreated;
                 o.LastActivity = o.Posts.OrderByDescending(x => x.DateCreated).FirstOrDefault().DateCreated.Value;
 
-                if (f.Random.Number(0, 10) != 0)
+                if (f.Random.Number(0, 5) != 0)
                 {
                     o.ApprovalStatus = ApprovalStatus.Approved;
                     o.ApprovalStatusModifiedBy = admin;
+                }
+                else
+                {
+                    p.ApprovalStatus = ApprovalStatus.Pending;
+                    p.Replies.Clear();
+                    o.Posts.Clear();
+                    o.Posts.Add(p);
+                    o.NumberOfPosts = 1;
+                    o.LastActivity = p.DateCreated.Value;
                 }
 
                 var temp = new List<Tag>(tags);
@@ -170,7 +179,7 @@ namespace ItForum.Data.Seeds
 
                 var temp = new List<User>(mods);
                 var managements = new List<Management>();
-                for (var i = 0; i < f.Random.Number(1, 4); i++)
+                for (var i = 0; i < f.Random.Number(1, 5); i++)
                 {
                     var u = f.PickRandom(temp);
                     temp.Remove(u);
@@ -179,14 +188,14 @@ namespace ItForum.Data.Seeds
                 o.Managements = managements.ToList();
             });
 
-            var topics = topicFaker.Generate(2);
+            var topics = topicFaker.Generate(numberOfTopics);
             topics.ForEach(x =>
             {
                 var f = new Faker();
                 x.SubTopics = topicFaker.Generate(f.Random.Number(2, 3)).ToList();
                 x.SubTopics.ForEach(s =>
                 {
-                    s.Threads = threadFaker.Generate(f.Random.Number(5, 20)).ToList();
+                    s.Threads = threadFaker.Generate(f.Random.Number(5, 40)).ToList();
                     for (var i = 0; i < f.Random.Number(1, 5); i++)
                     {
                         var t = f.PickRandom(s.Threads);
@@ -199,7 +208,7 @@ namespace ItForum.Data.Seeds
             });
             _context.AddRange(topics);
 
-            users = userFaker.Generate(50);
+            users = userFaker.Generate(100);
             users.ToList().ForEach(x =>
             {
                 x.Role = Role.None;
