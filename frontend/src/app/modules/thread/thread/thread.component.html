@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="mat-toolbar-48">
-  <span *ngIf="thread" class="m-auto">{{thread.title | shorten: 100:'...'}}</span>
+  <span *ngIf="thread" class="m-auto truncate">{{thread.title}}</span>
 </mat-toolbar>
 
 <div *ngIf="thread" class="container pt-4">
@@ -16,7 +16,7 @@
         <li class="breadcrumb-item">
           <a [routerLink]="['/topic', thread.topic.parent.id, 'sub', thread.topic.id]" style="text-decoration: none">{{thread.topic.name}}</a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">
+        <li class="breadcrumb-item active truncate" aria-current="page">
           {{thread.title}}
         </li>
       </ol>
@@ -51,7 +51,7 @@
   </div>
 
   <div class="mb-3">
-    <h3 class="thread-title">
+    <h3 class="thread-title truncate" [title]="thread.title">
       {{thread.title}}
       <span *ngIf="thread.pinned"
             class="badge badge-primary">

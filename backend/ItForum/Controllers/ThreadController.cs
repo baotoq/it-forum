@@ -123,9 +123,9 @@ namespace ItForum.Controllers
             else
             {
                 var moderators = _userService.FindModerators(thread.TopicId.Value).ToList();
-                if (moderators.All(u => u.Id != currentUser.Id))
-                    return new ForbidResult();
-                SetApprovalStatus(thread, ApprovalStatus.Approved);
+                if (moderators.Any(u => u.Id == currentUser.Id))
+                    SetApprovalStatus(thread, ApprovalStatus.Approved);
+                return new ForbidResult();
             }
 
             await _unitOfWork.SaveChangesAsync();
@@ -148,9 +148,9 @@ namespace ItForum.Controllers
             else
             {
                 var moderators = _userService.FindModerators(thread.TopicId.Value).ToList();
-                if (moderators.All(u => u.Id != currentUser.Id))
-                    return new ForbidResult();
-                SetApprovalStatus(thread, ApprovalStatus.Declined);
+                if (moderators.Any(u => u.Id == currentUser.Id))
+                    SetApprovalStatus(thread, ApprovalStatus.Declined);
+                return new ForbidResult();
             }
 
             await _unitOfWork.SaveChangesAsync();

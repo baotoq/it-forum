@@ -58,10 +58,6 @@ app-reply {
  color: $mat-primary;
 }
 
-* {
-  word-break: break-all;
-}
-
 md-editor[mode="preview"] {
   .md-editor-container, .preview-panel {
     border: 0 !important;
@@ -74,4 +70,22 @@ app-reply {
   .preview-panel {
     background-color: #e9ebee !important;
   }
+}
+
+.editor-container {
+  .preview-panel {
+    * {
+      word-break: break-all !important;
+    }
+
+    code {
+      width: 100% !important;
+    }
+  }
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
