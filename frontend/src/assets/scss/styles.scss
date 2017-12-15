@@ -9,6 +9,33 @@
 body {
   background-color: $app-back-ground-color;
   font-family: Roboto, Helvetica Neue, sans-serif;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #9E9E9E;
+  }
+}
+
+code {
+  &::-webkit-scrollbar {
+    height: 6px;
+    background-color: $app-back-ground-color;
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #9E9E9E;
+  }
 }
 
 .divider {
