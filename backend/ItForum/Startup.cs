@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using ItForum.Common;
 using ItForum.Data;
@@ -69,6 +68,7 @@ namespace ItForum
             services.AddTransient<PostService>();
             services.AddTransient<TagService>();
             services.AddTransient<UnitOfWork>();
+            services.AddTransient<EmailSender>();
             services.AddSingleton<HelperService>();
             services.AddTransient<DataSeeder>();
             services.AddAutoMapper();
@@ -92,7 +92,8 @@ namespace ItForum
 
             app.UseAuthentication();
 
-            app.Use(async (context, next) => {
+            app.Use(async (context, next) =>
+            {
                 await next();
                 if (context.Response.StatusCode == StatusCodes.Status404NotFound &&
                     !Path.HasExtension(context.Request.Path.Value) &&

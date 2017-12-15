@@ -18,6 +18,7 @@ import {
   Validator,
 } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Observable } from 'rxjs/Observable';
 
 declare let ace: any;
 declare let marked: any;
@@ -168,10 +169,11 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
     this.editor.getSession().setUseWrapMode(true);
     this.editor.getSession().setMode('ace/mode/markdown');
     this.editor.setValue(this.markdownValue || '');
+    this.editor.setOption('showPrintMargin', false);
 
-    this.editor.on('change', (e: any) => {
-      this.markdownValue = this.editor.getValue();
-    });
+    Observable.fromEvent(this.editor, 'change')
+      .debounceTime(500)
+      .subscribe(() =>  this.markdownValue = this.editor.getValue());
   }
 
   writeValue(value: any | Array<any>): void {

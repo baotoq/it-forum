@@ -40,6 +40,7 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/merge';
+import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/observable/combineLatest';
 
 @NgModule({

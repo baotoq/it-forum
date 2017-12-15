@@ -10,7 +10,7 @@ namespace ItForum.Common
 
         public static string Audience { get; } = "http://localhost:4200";
 
-        public static string Secret { get; } = "Sagittarius@16090446";
+        public static string Secret { get; } = "Sagittarius@2703";
 
         public static DateTime NotBefore => DateTime.Now;
 
