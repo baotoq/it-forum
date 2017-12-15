@@ -81,6 +81,10 @@ app-reply {
     code {
       width: 100% !important;
     }
+
+    p, code, pre {
+      margin-bottom: 0 !important;
+    }
   }
 }
 

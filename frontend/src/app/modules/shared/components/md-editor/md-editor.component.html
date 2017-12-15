@@ -65,7 +65,7 @@
     </div>
   </div>
   <div class="editor-container" style="width: 100%">
-    <div [style.display]="mode == 'preview' ? 'none' : null" style="width: 50%">
+    <div [hidden]="mode == 'preview'" style="width: 50%">
       <div class="editor-panel" [style.height]="height">
         <div class="ace-editor" #aceEditor></div>
       </div>

@@ -106,7 +106,7 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
       this._renderMarkTimeout = setTimeout(() => {
         const html = marked(value || '', this._markedOpt);
         this._previewHtml = this._domSanitizer.bypassSecurityTrustHtml(html);
-      }, 100);
+      }, 500);
     }
   }
 
@@ -173,7 +173,7 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
 
     Observable.fromEvent(this.editor, 'change')
       .debounceTime(500)
-      .subscribe(() =>  this.markdownValue = this.editor.getValue());
+      .subscribe(() => this.markdownValue = this.editor.getValue());
   }
 
   writeValue(value: any | Array<any>): void {
