@@ -9,7 +9,7 @@ export class Thread extends Timestamp {
   id: number;
   title: string;
   views = 0;
-  pinned = false;
+  pin = false;
   point = 0;
   highlight = false;
   numberOfPosts = 0;

@@ -10,7 +10,7 @@ namespace ItForum.Data.Entities
 
         public int Views { get; set; }
 
-        public bool Pinned { get; set; }
+        public bool Pin { get; set; }
 
         public int NumberOfPosts { get; set; }
 

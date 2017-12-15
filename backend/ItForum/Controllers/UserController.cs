@@ -51,9 +51,9 @@ namespace ItForum.Controllers
                 case ApprovalStatus.Pending:
                     return StatusCode(StatusCodes.Status401Unauthorized, "You need to be approved by admin!");
                 case ApprovalStatus.Declined:
-                    return new ForbidResult();
+                    return Forbid();
                 default:
-                    return new ForbidResult();
+                    return BadRequest();
             }
         }
 

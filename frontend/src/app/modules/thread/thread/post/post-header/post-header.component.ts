@@ -15,6 +15,7 @@ import { ConfirmDialogComponent } from '../../../../shared/components/confirm-di
 export class PostHeaderComponent implements OnInit {
   @Input() post: Post;
   @Input() management = false;
+  @Input() approveThread = false;
 
   role = Role;
   approvalStatus = ApprovalStatus;
@@ -31,10 +32,12 @@ export class PostHeaderComponent implements OnInit {
   }
 
   approve(post: Post) {
-    this.approveService.approvePost(post.id)
-      .subscribe(() => {
-        this.post.approvalStatus = ApprovalStatus.Approved;
-      });
+    let sub;
+    if (this.approveThread === true) sub = this.approveService.approveThread(post.threadId);
+    else sub = this.approveService.approvePost(post.id);
+    sub.subscribe(() => {
+      this.post.approvalStatus = ApprovalStatus.Approved;
+    });
   }
 
   decline(post: Post) {
@@ -42,10 +45,12 @@ export class PostHeaderComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        this.approveService.declineThread(post.id)
-          .subscribe(() => {
-            this.post.approvalStatus = ApprovalStatus.Declined;
-          });
+        let sub;
+        if (this.approveThread === true) sub = this.approveService.declineThread(post.threadId);
+        else sub = this.approveService.declinePost(post.id);
+        sub.subscribe(() => {
+          this.post.approvalStatus = ApprovalStatus.Declined;
+        });
       }
     });
   }

@@ -30,6 +30,7 @@ export module API {
     public static readonly VIEW = `${THREAD.URL}/view`;
 
     public static readonly PENDING = `${THREAD.URL}/pending`;
+    public static readonly PIN = `${THREAD.URL}/pin`;
   }
 
   export class POST {

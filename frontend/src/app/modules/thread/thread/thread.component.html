@@ -53,7 +53,7 @@
   <div class="mb-3">
     <h3 class="thread-title truncate" [title]="thread.title">
       {{thread.title}}
-      <span *ngIf="thread.pinned"
+      <span *ngIf="thread.pin"
             class="badge badge-primary">
         <i class="fa fa-thumb-tack"></i>
         Pinned
@@ -66,7 +66,8 @@
   </div>
 
   <div *ngFor="let post of paginatedData" class="mb-3">
-    <app-post [post]="post" [management]="management"></app-post>
+    <app-post [post]="post" [management]="management"
+              [approveThread]="thread.approvalStatus === approvalStatus.Pending"></app-post>
   </div>
 
   <div class="clearfix">

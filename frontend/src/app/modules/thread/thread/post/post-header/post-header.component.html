@@ -16,7 +16,7 @@
 
   <div *ngIf="authenticated" class="ml-auto">
     <ng-container
-      *ngIf="post.approvalStatus === approvalStatus.Pending && currentUser.role === role.Administrator || management">
+      *ngIf="post.approvalStatus === approvalStatus.Pending && (currentUser.role === role.Administrator || management)">
       <button mat-icon-button class="btn-approve" (click)="approve(post)">
         <i class="fa fa-check fa-fw"></i>
       </button>

@@ -63,5 +63,11 @@ namespace ItForum.Services
                 .Where(m => m.TopicId == topicId)
                 .Select(m => m.User);
         }
+
+        public bool IsManagement(int topicId, int userId)
+        {
+            var moderators = FindModerators(topicId).ToList();
+            return moderators.Any(u => u.Id == userId);
+        }
     }
 }

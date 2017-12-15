@@ -32,7 +32,7 @@ namespace ItForum.Services
         public void SetApprovalStatus(int userId, Thread thread, ApprovalStatus approvalStatus)
         {
             thread.ApprovalStatusModifiedById = userId;
-            thread.ApprovalStatus = ApprovalStatus.Approved;
+            thread.ApprovalStatus = approvalStatus;
         }
 
         public IEnumerable<Thread> FindPending()

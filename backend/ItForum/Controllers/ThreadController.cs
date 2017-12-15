@@ -112,21 +112,16 @@ namespace ItForum.Controllers
         public async Task<IActionResult> Approve(int id)
         {
             var thread = _threadService.FindWithPosts(id);
+
             if (thread == null) return BadRequest();
+            if (thread.ApprovalStatus == ApprovalStatus.Approved) return Ok();
 
             var currentUser = _userService.FindById(CurrentUserId);
+            if (currentUser.Role == Role.Moderator)
+                if (!_userService.IsManagement(thread.TopicId.Value, currentUser.Id))
+                    return Forbid();
 
-            if (currentUser.Role == Role.Administrator)
-            {
-                SetApprovalStatus(thread, ApprovalStatus.Approved);
-            }
-            else
-            {
-                var moderators = _userService.FindModerators(thread.TopicId.Value).ToList();
-                if (moderators.Any(u => u.Id == currentUser.Id))
-                    SetApprovalStatus(thread, ApprovalStatus.Approved);
-                return new ForbidResult();
-            }
+            SetApprovalStatus(thread, ApprovalStatus.Approved);
 
             await _unitOfWork.SaveChangesAsync();
             return Ok();
@@ -137,21 +132,16 @@ namespace ItForum.Controllers
         public async Task<IActionResult> Decline(int id)
         {
             var thread = _threadService.FindWithPosts(id);
+
             if (thread == null) return BadRequest();
+            if (thread.ApprovalStatus == ApprovalStatus.Declined) return Ok();
 
             var currentUser = _userService.FindById(CurrentUserId);
+            if (currentUser.Role == Role.Moderator)
+                if (!_userService.IsManagement(thread.TopicId.Value, currentUser.Id))
+                    return Forbid();
 
-            if (currentUser.Role == Role.Administrator)
-            {
-                SetApprovalStatus(thread, ApprovalStatus.Declined);
-            }
-            else
-            {
-                var moderators = _userService.FindModerators(thread.TopicId.Value).ToList();
-                if (moderators.Any(u => u.Id == currentUser.Id))
-                    SetApprovalStatus(thread, ApprovalStatus.Declined);
-                return new ForbidResult();
-            }
+            SetApprovalStatus(thread, ApprovalStatus.Declined);
 
             await _unitOfWork.SaveChangesAsync();
             return Ok();
@@ -159,13 +149,10 @@ namespace ItForum.Controllers
 
         private void SetApprovalStatus(Thread thread, ApprovalStatus approvalStatus)
         {
-            if (thread.ApprovalStatus == ApprovalStatus.Pending)
-            {
-                _threadService.SetApprovalStatus(CurrentUserId, thread, approvalStatus);
-                _postService.SetApprovalStatus(CurrentUserId, thread.Posts[0], approvalStatus);
-                if (approvalStatus == ApprovalStatus.Approved)
-                    _topicService.IncreaseNumberOfThreads(thread.TopicId);
-            }
+            _threadService.SetApprovalStatus(CurrentUserId, thread, approvalStatus);
+            _postService.SetApprovalStatus(CurrentUserId, thread.Posts[0], approvalStatus);
+            if (approvalStatus == ApprovalStatus.Approved)
+                _topicService.IncreaseNumberOfThreads(thread.TopicId);
         }
 
         [HttpPost("view/{id}")]
@@ -174,6 +161,17 @@ namespace ItForum.Controllers
             var thread = _threadService.FindById(id);
             if (thread == null) return BadRequest();
             thread.Views += 1;
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpPost("pin/{id}")]
+        public async Task<IActionResult> Pin(int id, bool pin)
+        {
+            var thread = _threadService.FindById(id);
+            if (thread == null) return BadRequest();
+            thread.Pin = pin;
             await _unitOfWork.SaveChangesAsync();
             return Ok();
         }

@@ -33,4 +33,8 @@ export class ThreadService {
   increaseView(id: number): Observable<any> {
     return this.httpClient.post(`${API.THREAD.VIEW}/${id}`, {});
   }
+
+  pin(id: number, pin: boolean): Observable<any> {
+    return this.httpClient.post(`${API.THREAD.PIN}/${id}?pin=${pin}`, {});
+  }
 }

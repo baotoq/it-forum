@@ -41,7 +41,7 @@
             <img [src]="row.createdBy.avatar" [alt]="row.createdBy.name" class="img-fluid"
                  style="width:30px; height: 30px">
           </a>
-          <span *ngIf="row.pinned" class="badge badge-primary badge-line-fix mr-1">
+          <span *ngIf="row.pin" class="badge badge-primary badge-line-fix mr-1">
             <i class="fa fa-thumb-tack"></i>
             Pinned
           </span>
@@ -49,7 +49,7 @@
           <app-badge-approval-status [status]="row.approvalStatus"></app-badge-approval-status>
           <span [class.font-weight-bold]="row.highlight">{{row.title | shorten: 100:'...'}}</span>
 
-          <ng-container *ngIf="authenticated && currentUser.role === role.Administrator || management">
+          <ng-container *ngIf="authenticated && (currentUser.role === role.Administrator || management)">
             <button mat-icon-button clickStopPropagation preventDefault [matMenuTriggerFor]="menu" class="menu d-none">
               <mat-icon>more_vert</mat-icon>
             </button>
@@ -63,14 +63,14 @@
                 </button>
                 <div class="divider"></div>
               </ng-container>
-              <button mat-menu-item>
-                Delete
-              </button>
-              <button mat-menu-item *ngIf="!row.pinned">
+              <button mat-menu-item *ngIf="!row.pin" (click)="pin(row, true)">
                 Pin
               </button>
-              <button mat-menu-item *ngIf="row.pinned">
+              <button mat-menu-item *ngIf="row.pin" (click)="pin(row, false)">
                 Unpin
+              </button>
+              <button mat-menu-item>
+                Move
               </button>
             </mat-menu>
           </ng-container>
@@ -102,7 +102,7 @@
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"
                [routerLink]="['/thread', row.id]"
-               [class.pinned]="row.pinned">
+               [class.pin]="row.pin">
       </mat-row>
 
     </mat-table>

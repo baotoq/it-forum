@@ -9,6 +9,10 @@ import { ApprovalStatus } from '../../../../models/approval-status';
           matTooltip="This post is waiting to be approved" matTooltipPosition="above">
       {{status}}
     </span>
+    <span *ngIf="status === approvalStatus.Declined"
+          class="badge badge-danger badge-line-fix">
+      {{status}}
+    </span>
   `,
 })
 export class BadgeApprovalStatusComponent implements OnInit {

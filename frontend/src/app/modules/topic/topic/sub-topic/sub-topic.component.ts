@@ -17,6 +17,7 @@ import { IsManagementPipe } from '../../../shared/pipes/is-management';
 import { ApproveService } from '../../../admin/approve/approve.service';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { Observable } from 'rxjs/Observable';
+import { ThreadService } from '../../../thread/thread.service';
 
 @Component({
   selector: 'app-sub-topic',
@@ -43,6 +44,7 @@ export class SubTopicComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private authService: AuthService,
               private topicService: TopicService,
+              private threadService: ThreadService,
               private userService: UserService,
               private approveService: ApproveService,
               private loadingService: LoadingService,
@@ -58,6 +60,7 @@ export class SubTopicComponent implements OnInit {
       this.getSubTopic(params['subTopicId']);
 
       this.$moderators = this.userService.getModerators(params['subTopicId']);
+      this.paginator.pageIndex = 0;
     });
     this.matSort.sortChange.subscribe(() => this.filter());
   }
@@ -102,11 +105,10 @@ export class SubTopicComponent implements OnInit {
   }
 
   filter(searchString: string = '') {
-    //this.paginator.pageIndex = 0;
-    const data = this.subTopic.threads.filter(item => item.approvalStatus !== this.approvalStatus.Declined);
+    const data = this.subTopic.threads;
     let config = this.matSort.direction === 'asc' ? '+' : '-';
     config += this.matSort.active;
-    this.dataSource.data = this.orderByPipe.transform(data, ['-pinned', config]);
+    this.dataSource.data = this.orderByPipe.transform(data, ['-pin', config]);
     this.dataSource.filter = searchString.trim().toLowerCase();
   }
 
@@ -132,9 +134,14 @@ export class SubTopicComponent implements OnInit {
         this.approveService.declineThread(thread.id)
           .subscribe(() => {
             thread.approvalStatus = ApprovalStatus.Declined;
-            this.filter();
           });
       }
+    });
+  }
+
+  pin(thread: Thread, pin: boolean) {
+    this.threadService.pin(thread.id, pin).subscribe(resp => {
+      thread.pin = pin;
     });
   }
 }

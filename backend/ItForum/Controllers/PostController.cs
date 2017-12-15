@@ -67,7 +67,7 @@ namespace ItForum.Controllers
             return StatusCode(StatusCodes.Status201Created, dto);
         }
 
-        [Authorize(Roles = nameof(Role.Administrator))]
+        [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
         [HttpGet("pending")]
         public IActionResult GetPendingPosts()
         {
@@ -76,32 +76,46 @@ namespace ItForum.Controllers
             return Ok(dto);
         }
 
-        [Authorize(Roles = nameof(Role.Administrator))]
+        [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
         [HttpPost("approve/{id}")]
         public async Task<IActionResult> Approve(int id)
         {
             var post = _postService.FindWithThread(id);
-            if (post == null) return BadRequest();
 
-            if (post.ApprovalStatus == ApprovalStatus.Pending && post.Thread.ApprovalStatus == ApprovalStatus.Approved)
-            {
-                _postService.SetApprovalStatus(CurrentUserId, post, ApprovalStatus.Approved);
-                _threadService.IncreaseNumberOfPosts(post.ThreadId);
-            }
+            if (post == null) return BadRequest();
+            if (post.Thread.ApprovalStatus != ApprovalStatus.Approved) return BadRequest();
+
+            if (post.ApprovalStatus == ApprovalStatus.Approved) return Ok();
+
+            var currentUser = _userService.FindById(CurrentUserId);
+            if (currentUser.Role == Role.Moderator)
+                if (!_userService.IsManagement(post.Thread.TopicId.Value, currentUser.Id))
+                    return Forbid();
+
+            _postService.SetApprovalStatus(CurrentUserId, post, ApprovalStatus.Approved);
+            _threadService.IncreaseNumberOfPosts(post.ThreadId);
 
             await _unitOfWork.SaveChangesAsync();
             return Ok();
         }
 
-        [Authorize(Roles = nameof(Role.Administrator))]
+        [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
         [HttpPost("decline/{id}")]
         public async Task<IActionResult> Decline(int id)
         {
             var post = _postService.FindWithThread(id);
-            if (post == null) return BadRequest();
 
-            if (post.ApprovalStatus == ApprovalStatus.Pending && post.Thread.ApprovalStatus == ApprovalStatus.Approved)
-                _postService.SetApprovalStatus(CurrentUserId, post, ApprovalStatus.Declined);
+            if (post == null) return BadRequest();
+            if (post.Thread.ApprovalStatus != ApprovalStatus.Approved) return BadRequest();
+
+            if (post.ApprovalStatus == ApprovalStatus.Declined) return Ok();
+
+            var currentUser = _userService.FindById(CurrentUserId);
+            if (currentUser.Role == Role.Moderator)
+                if (!_userService.IsManagement(post.Thread.TopicId.Value, currentUser.Id))
+                    return Forbid();
+
+            _postService.SetApprovalStatus(CurrentUserId, post, ApprovalStatus.Declined);
 
             await _unitOfWork.SaveChangesAsync();
             return Ok();

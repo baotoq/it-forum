@@ -1,5 +1,5 @@
-<mat-card *ngIf="post.approvalStatus !== approvalStatus.Declined">
-  <app-post-header [post]="post" [management]="management"></app-post-header>
+<mat-card>
+  <app-post-header [post]="post" [management]="management" [approveThread]="approveThread"></app-post-header>
   <hr class="mt-2">
   <app-post-content [post]="post" [showAction]="post.approvalStatus === approvalStatus.Approved"></app-post-content>
 </mat-card>

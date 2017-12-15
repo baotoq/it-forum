@@ -102,7 +102,7 @@ namespace ItForum.Data.Seeds
                 o.Content = f.Lorem.Paragraphs(f.Random.Number(1, 4), "<div></div>");
                 o.CreatedBy = f.PickRandom(users);
                 o.ApprovalStatus = ApprovalStatus.Pending;
-                if (f.Random.Number(0, 8) != 0)
+                if (f.Random.Number(0, 5) != 0)
                 {
                     o.ApprovalStatus = ApprovalStatus.Approved;
                     o.ApprovalStatusModifiedBy = admin;
@@ -127,7 +127,7 @@ namespace ItForum.Data.Seeds
                 o.Title = f.Lorem.Sentence();
                 o.CreatedBy = f.PickRandom(users);
                 o.Views = f.Random.Number(1, 10000);
-                o.Pinned = false;
+                o.Pin = false;
                 o.NumberOfPosts = 0;
                 o.Posts = postFaker.Generate(f.Random.Number(3, 20)).ToList();
                 o.NumberOfPosts += o.Posts.Count(x => x.ApprovalStatus == ApprovalStatus.Approved);
@@ -143,7 +143,7 @@ namespace ItForum.Data.Seeds
                 o.DateModified = o.DateCreated;
                 o.LastActivity = o.Posts.OrderByDescending(x => x.DateCreated).FirstOrDefault().DateCreated.Value;
 
-                if (f.Random.Number(0, 5) != 0)
+                if (f.Random.Number(0, 3) != 0)
                 {
                     o.ApprovalStatus = ApprovalStatus.Approved;
                     o.ApprovalStatusModifiedBy = admin;
@@ -200,7 +200,7 @@ namespace ItForum.Data.Seeds
                     {
                         var t = f.PickRandom(s.Threads);
                         s.Threads.Remove(t);
-                        t.Pinned = true;
+                        t.Pin = true;
                         s.Threads.Add(t);
                     }
                     s.NumberOfThreads = s.Threads.Count(th => th.ApprovalStatus == ApprovalStatus.Approved);
