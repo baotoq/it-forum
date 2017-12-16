@@ -1,10 +1,11 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { User } from '../../../../../models/user';
 import { LoadingService } from '../../../../../components/loading/loading.service';
 import { ApproveService } from '../../approve.service';
 import { ApprovalStatus } from '../../../../../models/approval-status';
 import { debounce } from '../../../../shared/common/decorators';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-approve-user',
@@ -23,7 +24,8 @@ export class ApproveUserComponent implements OnInit {
   approveLoading = false;
 
   constructor(private loadingService: LoadingService,
-              private approveService: ApproveService) {
+              private approveService: ApproveService,
+              private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -63,14 +65,33 @@ export class ApproveUserComponent implements OnInit {
       .subscribe(resp => this.ngOnInit());
   }
 
+  onDeclineDialog() {
+    this.dialog.open(ConfirmDialogComponent).afterClosed()
+      .subscribe(result => {
+        if (result === true) {
+          this.onDecline();
+        }
+      });
+  }
+
   onApproveAll() {
-    this.pendingUsers.forEach(item => item.approvalStatus = ApprovalStatus.Approved);
-    this.onApprove();
+    this.dialog.open(ConfirmDialogComponent).afterClosed()
+      .subscribe(result => {
+        if (result === true) {
+          this.pendingUsers.forEach(item => item.approvalStatus = ApprovalStatus.Approved);
+          this.onApprove();
+        }
+      });
   }
 
   onDeclineAll() {
-    this.pendingUsers.forEach(item => item.approvalStatus = ApprovalStatus.Approved);
-    this.onDecline();
+    this.dialog.open(ConfirmDialogComponent).afterClosed()
+      .subscribe(result => {
+        if (result === true) {
+          this.pendingUsers.forEach(item => item.approvalStatus = ApprovalStatus.Approved);
+          this.onDecline();
+        }
+      });
   }
 
   onClick(value: any) {

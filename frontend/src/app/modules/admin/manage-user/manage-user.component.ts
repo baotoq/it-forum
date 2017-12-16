@@ -3,7 +3,8 @@ import { ManageUserService } from './manage-user.service';
 import { User } from '../../../models/user';
 import { LoadingService } from '../../../components/loading/loading.service';
 import { debounce } from '../../shared/common/decorators';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { UserDetailDialogComponent } from '../../shared/components/user-detail-dialog/user-detail-dialog.component';
 
 @Component({
   selector: 'app-manage-user',
@@ -20,7 +21,8 @@ export class ManageUserComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private loadingService: LoadingService,
-              private manageUserService: ManageUserService) {
+              private manageUserService: ManageUserService,
+              private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -42,5 +44,18 @@ export class ManageUserComponent implements OnInit {
     if (window.innerWidth < 600) this.displayedColumns = ['email', 'role'];
     else if (window.innerWidth < 960) this.displayedColumns = ['email', 'role', 'dateCreated'];
     else this.displayedColumns = ['name', 'email', 'role', 'dateCreated'];
+  }
+
+  filter(searchString: string = '') {
+    this.paginator.pageIndex = 0;
+    this.dataSource.filter = searchString;
+  }
+
+  viewDetail(user: User) {
+    this.dialog.open(UserDetailDialogComponent, {
+      data: {
+        user: user,
+      },
+    });
   }
 }

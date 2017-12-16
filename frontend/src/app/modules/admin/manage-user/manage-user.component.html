@@ -4,6 +4,8 @@
 
 <div class="container-fluid mt-3">
   <div class="shadow-2">
+    <app-manage-user-search-input (searchOut)="filter($event)"></app-manage-user-search-input>
+
     <mat-table #table [dataSource]="dataSource" matSort [matSortDisableClear]="true">
 
       <ng-container matColumnDef="name">
@@ -39,7 +41,7 @@
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="viewDetail(row)"></mat-row>
 
     </mat-table>
 

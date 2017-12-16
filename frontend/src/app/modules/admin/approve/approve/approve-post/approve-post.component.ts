@@ -21,7 +21,7 @@ export class ApprovePostComponent implements OnInit {
   constructor(private loadingService: LoadingService,
               private approveService: ApproveService,
               private orderByPipe: OrderByPipe,
-              public dialog: MatDialog) {
+              private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -44,18 +44,17 @@ export class ApprovePostComponent implements OnInit {
   }
 
   decline(post: Post) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
-        this.approveService.declinePost(post.id)
-          .subscribe(() => {
-            const index = this.pendingPosts.indexOf(post);
-            this.pendingPosts.splice(index, 1);
-            this.onPageChange();
-          });
-      }
-    });
+    this.dialog.open(ConfirmDialogComponent).afterClosed()
+      .subscribe(result => {
+        if (result === true) {
+          this.approveService.declinePost(post.id)
+            .subscribe(() => {
+              const index = this.pendingPosts.indexOf(post);
+              this.pendingPosts.splice(index, 1);
+              this.onPageChange();
+            });
+        }
+      });
   }
 
   onPageChange() {

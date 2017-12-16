@@ -44,18 +44,17 @@ export class ApproveThreadComponent implements OnInit {
   }
 
   decline(thread: Thread) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
-        this.approveService.declineThread(thread.id)
-          .subscribe(() => {
-            const index = this.pendingThreads.indexOf(thread);
-            this.pendingThreads.splice(index, 1);
-            this.onPageChange();
-          });
-      }
-    });
+    this.dialog.open(ConfirmDialogComponent).afterClosed()
+      .subscribe(result => {
+        if (result === true) {
+          this.approveService.declineThread(thread.id)
+            .subscribe(() => {
+              const index = this.pendingThreads.indexOf(thread);
+              this.pendingThreads.splice(index, 1);
+              this.onPageChange();
+            });
+        }
+      });
   }
 
   onPageChange() {

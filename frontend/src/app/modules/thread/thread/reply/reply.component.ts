@@ -32,14 +32,13 @@ export class ReplyComponent implements OnInit {
   }
 
   decline() {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
-        this.approveService.declinePost(this.reply.id).subscribe(() => {
-          this.reply.approvalStatus = ApprovalStatus.Declined;
-        });
-      }
-    });
+    this.dialog.open(ConfirmDialogComponent).afterClosed()
+      .subscribe(result => {
+        if (result === true) {
+          this.approveService.declinePost(this.reply.id).subscribe(() => {
+            this.reply.approvalStatus = ApprovalStatus.Declined;
+          });
+        }
+      });
   }
 }

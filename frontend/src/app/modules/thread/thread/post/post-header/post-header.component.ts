@@ -41,17 +41,16 @@ export class PostHeaderComponent implements OnInit {
   }
 
   decline() {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
-        let sub;
-        if (this.approveThread === true) sub = this.approveService.declineThread(this.post.threadId);
-        else sub = this.approveService.declinePost(this.post.id);
-        sub.subscribe(() => {
-          this.post.approvalStatus = ApprovalStatus.Declined;
-        });
-      }
-    });
+    this.dialog.open(ConfirmDialogComponent).afterClosed()
+      .subscribe(result => {
+        if (result === true) {
+          let sub;
+          if (this.approveThread === true) sub = this.approveService.declineThread(this.post.threadId);
+          else sub = this.approveService.declinePost(this.post.id);
+          sub.subscribe(() => {
+            this.post.approvalStatus = ApprovalStatus.Declined;
+          });
+        }
+      });
   }
 }

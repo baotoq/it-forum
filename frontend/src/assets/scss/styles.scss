@@ -109,3 +109,15 @@ app-reply {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+app-thread-search-input, app-approve-user-search-input, app-manage-user-search-input {
+  mat-toolbar {
+    cursor: pointer;
+    border-bottom: 1px solid $border-color;
+  }
+  .search {
+    &:focus {
+      outline: none;
+    }
+  }
+}
