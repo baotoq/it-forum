@@ -9,6 +9,10 @@
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
         <mat-cell *matCellDef="let row">
+          <a [matTooltip]="row.name" matTooltipPosition="above"
+             [routerLink]="['/']" class="mr-1 avatar">
+            <img [src]="row.avatar" [alt]="" class="img-fluid">
+          </a>
           {{row.name}}
         </mat-cell>
       </ng-container>
@@ -23,7 +27,7 @@
       <ng-container matColumnDef="role">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Role</mat-header-cell>
         <mat-cell *matCellDef="let row">
-          {{row.role}}
+          <app-badge-role [user]="row" [showNone]="true"></app-badge-role>
         </mat-cell>
       </ng-container>
 

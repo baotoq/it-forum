@@ -1,3 +1,15 @@
-a[mat-card-avatar] {
-  background-size: cover;
+a[mat-card-avatar], .avatar {
+  text-decoration: none;
+
+  img {
+    background-size: cover;
+    border-radius: 50%;
+  }
+}
+
+.avatar {
+  img {
+    width:30px;
+    height: 30px;
+  }
 }

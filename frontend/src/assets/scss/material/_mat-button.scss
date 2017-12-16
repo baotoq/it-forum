@@ -8,8 +8,12 @@ a[mat-button] {
   text-decoration: none;
 }
 
-button[mat-icon-button] {
-  outline: none;
+button[mat-icon-button], .mat-sort-header-button {
+  outline: none !important;
+}
+
+.mat-header-cell.mat-sort-header-sorted {
+  color: black;
 }
 
 .mat-button.mat-small {

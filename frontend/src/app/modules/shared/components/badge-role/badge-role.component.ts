@@ -16,14 +16,16 @@ import { User } from '../../../../models/user';
       </span>
     </ng-container>
     <ng-container *ngIf="user.role === role.None">
-      <span *ngIf="newUser" class="badge badge-secondary badge-line-fix">
-         New user
+      <span *ngIf="showNone || newUser" class="badge badge-secondary badge-line-fix">
+         <span *ngIf="newUser">New User</span>
+         <span *ngIf="showNone">None</span>
       </span>
     </ng-container>
   `,
 })
 export class BadgeRoleComponent implements OnInit {
   @Input() user: User;
+  @Input() showNone = false;
   newUser = false;
 
   role = Role;
@@ -32,11 +34,13 @@ export class BadgeRoleComponent implements OnInit {
   }
 
   ngOnInit() {
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(new Date().getDate() - 30);
-    const d = new Date(this.user.dateCreated);
-    if (d >= thirtyDaysAgo) {
-      this.newUser = true;
+    if (!this.showNone) {
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(new Date().getDate() - 30);
+      const d = new Date(this.user.dateCreated);
+      if (d >= thirtyDaysAgo) {
+        this.newUser = true;
+      }
     }
   }
 }
