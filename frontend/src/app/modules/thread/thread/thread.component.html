@@ -16,9 +16,6 @@
         <li class="breadcrumb-item">
           <a [routerLink]="['/topic', thread.topic.parent.id, 'sub', thread.topic.id]" style="text-decoration: none">{{thread.topic.name}}</a>
         </li>
-        <li class="breadcrumb-item active truncate" aria-current="page">
-          {{thread.title}}
-        </li>
       </ol>
     </nav>
   </div>

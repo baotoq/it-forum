@@ -5,6 +5,7 @@ import { API } from '../../shared/common/api';
 import { User } from '../../../models/user';
 import { Post } from '../../../models/post';
 import { Thread } from '../../../models/thread';
+import { ApprovalStatus } from '../../../models/approval-status';
 
 @Injectable()
 export class ApproveService {
@@ -13,7 +14,7 @@ export class ApproveService {
   }
 
   getPendingUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>(API.USER.PENDING);
+    return this.httpClient.get<User[]>(`${API.USER.APPROVE_STATUS}?approvalStatus=${ApprovalStatus.Pending}`);
   }
 
   approveUsers(payload: number[]): Observable<any> {

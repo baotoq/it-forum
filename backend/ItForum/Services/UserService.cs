@@ -11,11 +11,8 @@ namespace ItForum.Services
 {
     public class UserService : Service<User>
     {
-        private readonly HelperService _helperService;
-
-        public UserService(NeptuneContext context, HelperService helperService) : base(context)
+        public UserService(NeptuneContext context) : base(context)
         {
-            _helperService = helperService;
         }
 
         public User FindBy(string email)
@@ -28,9 +25,9 @@ namespace ItForum.Services
             return Any(x => x.Email == email && x.ApprovalStatus != ApprovalStatus.Declined);
         }
 
-        public IEnumerable<User> FindPending()
+        public IEnumerable<User> FindBy(ApprovalStatus approvalStatus)
         {
-            return DbSet.Where(x => x.ApprovalStatus == ApprovalStatus.Pending);
+            return DbSet.Where(x => x.ApprovalStatus == approvalStatus);
         }
 
         public string GenerateJwt(User user)

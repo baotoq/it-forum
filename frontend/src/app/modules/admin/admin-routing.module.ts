@@ -5,6 +5,8 @@ import { ApproveComponent } from './approve/approve/approve.component';
 import { ApproveUserComponent } from './approve/approve/approve-user/approve-user.component';
 import { ApproveThreadComponent } from './approve/approve/approve-thread/approve-thread.component';
 import { ApprovePostComponent } from './approve/approve/approve-post/approve-post.component';
+import { ManageTopicComponent } from './manage-topic/manage-topic.component';
+import { ManageUserComponent } from './manage-user/manage-user.component';
 
 const routes: Routes = [
   {
@@ -36,6 +38,14 @@ const routes: Routes = [
         component: ApprovePostComponent,
       },
     ],
+  },
+  {
+    path: 'topics',
+    component: ManageTopicComponent,
+  },
+  {
+    path: 'users',
+    component: ManageUserComponent,
   },
 ];
 

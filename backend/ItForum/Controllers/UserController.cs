@@ -92,10 +92,10 @@ namespace ItForum.Controllers
         }
 
         [Authorize(Roles = nameof(Role.Administrator))]
-        [HttpGet("pending")]
-        public IActionResult GetPending()
+        [HttpGet("approval-status")]
+        public IActionResult GetPending(ApprovalStatus approvalStatus)
         {
-            var dto = _mapper.Map<List<UserDto>>(_userService.FindPending().ToList());
+            var dto = _mapper.Map<List<UserDto>>(_userService.FindBy(approvalStatus).ToList());
             return Ok(dto);
         }
 
