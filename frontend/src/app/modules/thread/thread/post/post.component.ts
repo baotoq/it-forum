@@ -9,7 +9,7 @@ import { ApprovalStatus } from '../../../../models/approval-status';
 })
 export class PostComponent implements OnInit {
   @Input() post: Post;
-  @Input() management = false;
+  @Input() permission = false;
   @Input() approveThread = false;
 
   approvalStatus = ApprovalStatus;

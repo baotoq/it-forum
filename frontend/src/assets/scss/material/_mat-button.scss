@@ -28,7 +28,7 @@ button[mat-icon-button] {
   color: $blur-color !important;
 
   &:hover {
-    color: $mat-primary;
+    color: $mat-primary !important;
   }
 }
 
@@ -36,6 +36,6 @@ button[mat-icon-button] {
   color: $blur-color !important;
 
   &:hover {
-    color: $red;
+    color: $red !important;
   }
 }

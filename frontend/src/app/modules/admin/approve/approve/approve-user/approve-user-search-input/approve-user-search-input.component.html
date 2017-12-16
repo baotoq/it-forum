@@ -3,7 +3,7 @@
                class="mat-toolbar-56 text-muted position-absolute" style="background-color: #EEEEEE">
     <mat-icon class="mr-2">search</mat-icon>
     <span *ngIf="!searchControl.value">
-      Search by name, email
+      Search
     </span>
     <mat-chip-list *ngIf="searchControl.value">
       <mat-chip class="bg-primary text-white" (remove)="searchControl.setValue(''); onSearchOut()">
@@ -26,7 +26,7 @@
   <mat-toolbar [class.shadow-2]="search"
                class="bg-white mat-toolbar-56" style="position: static">
     <mat-icon class="mr-2">search</mat-icon>
-    <input class="w-100 border-0 search" #searchInput placeholder="Search by name, email"
+    <input class="w-100 border-0 search" #searchInput placeholder="Search"
            (focusout)="onSearchOut()" (keyup.enter)="onSearchOut()"
            [formControl]="searchControl">
   </mat-toolbar>

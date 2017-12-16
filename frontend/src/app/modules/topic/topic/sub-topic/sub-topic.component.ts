@@ -18,6 +18,7 @@ import { ApproveService } from '../../../admin/approve/approve.service';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { Observable } from 'rxjs/Observable';
 import { ThreadService } from '../../../thread/thread.service';
+import { debounce } from '../../../shared/common/decorators';
 
 @Component({
   selector: 'app-sub-topic',
@@ -113,6 +114,7 @@ export class SubTopicComponent implements OnInit {
   }
 
   @HostListener('window:resize')
+  @debounce()
   onResize() {
     const smallScreen = window.innerWidth < 960;
     if (smallScreen) this.displayedColumns = ['title'];

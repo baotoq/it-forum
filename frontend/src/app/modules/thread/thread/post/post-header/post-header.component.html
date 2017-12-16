@@ -16,11 +16,11 @@
 
   <div *ngIf="authenticated" class="ml-auto">
     <ng-container
-      *ngIf="post.approvalStatus === approvalStatus.Pending && (currentUser.role === role.Administrator || management)">
-      <button mat-icon-button class="btn-approve" (click)="approve(post)">
+      *ngIf="post.approvalStatus === approvalStatus.Pending && permission">
+      <button mat-icon-button class="btn-approve" (click)="approve()">
         <i class="fa fa-check fa-fw"></i>
       </button>
-      <button mat-icon-button class="btn-decline" (click)="decline(post)">
+      <button mat-icon-button class="btn-decline" (click)="decline()">
         <i class="fa fa-close fa-fw"></i>
       </button>
     </ng-container>
@@ -29,7 +29,7 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #postMenu>
-      <button *ngIf="currentUser.role === role.Administrator || mod" mat-menu-item>
+      <button *ngIf="permission" mat-menu-item>
         Delete
       </button>
       <button mat-menu-item>

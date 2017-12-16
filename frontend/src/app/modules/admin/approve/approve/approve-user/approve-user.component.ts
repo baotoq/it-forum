@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { User } from '../../../../../models/user';
 import { LoadingService } from '../../../../../components/loading/loading.service';
 import { ApproveService } from '../../approve.service';
 import { ApprovalStatus } from '../../../../../models/approval-status';
+import { debounce } from '../../../../shared/common/decorators';
 
 @Component({
   selector: 'app-approve-user',
@@ -13,7 +14,7 @@ import { ApprovalStatus } from '../../../../../models/approval-status';
 export class ApproveUserComponent implements OnInit {
   pendingUsers: User[];
 
-  displayedColumns = ['name', 'email', 'dateCreated'];
+  displayedColumns;
 
   dataSource: MatTableDataSource<User>;
   @ViewChild(MatSort) matSort: MatSort;
@@ -26,6 +27,7 @@ export class ApproveUserComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.onResize();
     this.loadingService.spinnerStart();
     this.approveService.getPendingUsers()
       .finally(() => this.loadingService.spinnerStop())
@@ -76,5 +78,13 @@ export class ApproveUserComponent implements OnInit {
       value.approvalStatus = ApprovalStatus.Approved;
     else if (value.approvalStatus === ApprovalStatus.Approved)
       value.approvalStatus = ApprovalStatus.Pending;
+  }
+
+  @HostListener('window:resize')
+  @debounce()
+  onResize() {
+    if (window.innerWidth < 600) this.displayedColumns = ['email'];
+    else if (window.innerWidth < 960) this.displayedColumns = ['email', 'dateCreated'];
+    else this.displayedColumns = ['name', 'email', 'dateCreated'];
   }
 }

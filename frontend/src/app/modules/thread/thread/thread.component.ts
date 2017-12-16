@@ -19,7 +19,7 @@ import { ApprovalStatus } from '../../../models/approval-status';
 })
 export class ThreadComponent implements OnInit {
   thread: Thread;
-  management = false;
+  permission = false;
 
   currentPage = 1;
   pageSize = 10;
@@ -51,9 +51,9 @@ export class ThreadComponent implements OnInit {
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.thread = resp;
-        this.management = this.isManagementPipe.transform(this.currentUser, this.thread.topic.managements);
         this.thread.posts = this.orderByPipe.transform(this.thread.posts, ['dateCreated']);
         this.threadService.increaseView(this.thread.id).subscribe();
+        this.checkPermission();
         this.onPageChange();
         this.setStorage();
       });
@@ -85,6 +85,13 @@ export class ThreadComponent implements OnInit {
         this.thread.posts.push(resp);
         this.onPageChange();
       });
+  }
+
+  checkPermission() {
+    if (this.authService.isAuthenticated()) {
+      if (this.authService.isAdmin()) this.permission = true;
+      else this.permission = this.isManagementPipe.transform(this.currentUser, this.thread.topic.managements);
+    }
   }
 
   setStorage() {

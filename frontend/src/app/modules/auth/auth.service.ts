@@ -6,9 +6,12 @@ import { Storage } from '../shared/common/constant';
 import { User } from '../../models/user';
 import { API } from '../shared/common/api';
 import { Observable } from 'rxjs/Observable';
+import { Role } from '../../models/role';
 
 @Injectable()
 export class AuthService {
+  role = Role;
+
   constructor(private httpClient: HttpClient,
               private router: Router,
               private jwtHelperService: JwtHelperService) {
@@ -41,6 +44,14 @@ export class AuthService {
     if (!this.isAuthenticated()) return null;
     const rawData = this.jwtHelperService.decodeToken(localStorage.getItem(Storage.AUTH));
     return new User(rawData);
+  }
+
+  isAdmin(): boolean {
+    return this.currentUser().role === this.role.Administrator;
+  }
+
+  isMod(): boolean {
+    return this.currentUser().role === this.role.Moderator;
   }
 
   isAuthenticated(): boolean {

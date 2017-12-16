@@ -14,7 +14,7 @@ import { ConfirmDialogComponent } from '../../../../shared/components/confirm-di
 })
 export class PostHeaderComponent implements OnInit {
   @Input() post: Post;
-  @Input() management = false;
+  @Input() permission = false;
   @Input() approveThread = false;
 
   role = Role;
@@ -31,23 +31,23 @@ export class PostHeaderComponent implements OnInit {
   ngOnInit() {
   }
 
-  approve(post: Post) {
+  approve() {
     let sub;
-    if (this.approveThread === true) sub = this.approveService.approveThread(post.threadId);
-    else sub = this.approveService.approvePost(post.id);
+    if (this.approveThread === true) sub = this.approveService.approveThread(this.post.threadId);
+    else sub = this.approveService.approvePost(this.post.id);
     sub.subscribe(() => {
       this.post.approvalStatus = ApprovalStatus.Approved;
     });
   }
 
-  decline(post: Post) {
+  decline() {
     const dialogRef = this.dialog.open(ConfirmDialogComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
         let sub;
-        if (this.approveThread === true) sub = this.approveService.declineThread(post.threadId);
-        else sub = this.approveService.declinePost(post.id);
+        if (this.approveThread === true) sub = this.approveService.declineThread(this.post.threadId);
+        else sub = this.approveService.declinePost(this.post.id);
         sub.subscribe(() => {
           this.post.approvalStatus = ApprovalStatus.Declined;
         });

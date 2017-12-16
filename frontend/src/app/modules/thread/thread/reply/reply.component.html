@@ -8,6 +8,11 @@
     <span class="text-muted" [title]="reply.dateCreated | date:'MMM d y, h:mm a'">
       {{reply.dateCreated | amTimeAgo}}
     </span>
+    <ng-container
+      *ngIf="reply.approvalStatus === approvalStatus.Pending && permission">
+      <i class="fa fa-check fa-fw px-2 py-1 btn-approve" (click)="approve()"></i>
+      <i class="fa fa-close fa-fw px-2 py-1 ml-1 btn-decline" (click)="decline()"></i>
+    </ng-container>
   </div>
   <md-editor [(ngModel)]="reply.content" mode="preview" height="100%"></md-editor>
 </mat-chip>
