@@ -25,7 +25,7 @@ export class NavbarComponent implements OnInit {
   }
 
   gotoProfile() {
-    this.router.navigate(['/user/profile']);
+    this.router.navigate(['/user/settings']);
   }
 
   logout() {

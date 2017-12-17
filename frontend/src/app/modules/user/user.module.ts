@@ -4,10 +4,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 
 import { UserRoutingModule } from './user-routing.module';
-import { ProfileComponent } from './user/profile/profile.component';
-import { AccountComponent } from './user/account/account.component';
+import { ProfileComponent } from './settings/profile/profile.component';
+import { AccountComponent } from './settings/account/account.component';
 import { UserComponent } from './user/user.component';
 import { UserService } from './user.service';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,7 @@ import { UserService } from './user.service';
     SharedModule,
     UserRoutingModule,
   ],
-  declarations: [ProfileComponent, AccountComponent, UserComponent],
+  declarations: [ProfileComponent, AccountComponent, UserComponent, SettingsComponent],
   providers: [UserService],
 })
 export class UserModule {

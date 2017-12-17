@@ -1,5 +1,6 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { DashboardComponent } from '../../modules/admin/dashboard/dashboard/dashboard.component';
+import { debounce } from '../../modules/shared/common/decorators';
 
 @Component({
   template: `
@@ -23,6 +24,7 @@ export class AdminLayoutComponent implements OnInit {
   @ViewChild('sidenav') sidenav;
 
   @HostListener('window:resize')
+  @debounce()
   onResize() {
     this.smallScreen = window.innerWidth < 960;
     if (this.smallScreen) this.mode = 'over';
