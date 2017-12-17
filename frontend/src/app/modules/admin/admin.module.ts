@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 
 import { AdminRoutingModule } from './admin-routing.module';
@@ -16,6 +17,7 @@ import { ManageUserSearchInputComponent } from './manage-user/manage-user-search
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbModule,
     SharedModule,
     AdminRoutingModule,
     DashboardModule,

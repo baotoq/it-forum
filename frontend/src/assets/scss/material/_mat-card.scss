@@ -1,5 +1,7 @@
 a[mat-card-avatar], .avatar {
-  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
   background-size: cover;
 
   img {

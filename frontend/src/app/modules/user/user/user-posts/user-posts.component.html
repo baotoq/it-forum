@@ -1,3 +1,22 @@
-<div *ngFor="let post of posts">
-  {{post.content}}
+<div>
+  <div class="clearfix">
+    <ngb-pagination class="float-right"
+                    [collectionSize]="posts?.length"
+                    [(page)]="currentPage"
+                    [pageSize]="pageSize"
+                    (pageChange)="onPageChange()"></ngb-pagination>
+  </div>
+
+  <div *ngFor="let post of paginatedData">
+    <div></div>
+    <md-editor [(ngModel)]="post.content" mode="preview" height="100%"></md-editor>
+  </div>
+
+  <div class="clearfix">
+    <ngb-pagination class="float-right"
+                    [collectionSize]="posts?.length"
+                    [(page)]="currentPage"
+                    [pageSize]="pageSize"
+                    (pageChange)="onPageChange()"></ngb-pagination>
+  </div>
 </div>

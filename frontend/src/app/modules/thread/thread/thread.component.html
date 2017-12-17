@@ -40,8 +40,7 @@
                     [collectionSize]="thread.posts.length"
                     [(page)]="currentPage"
                     [pageSize]="pageSize"
-                    (pageChange)="onPageChange()"
-                    size="md"></ngb-pagination>
+                    (pageChange)="onPageChange()"></ngb-pagination>
   </div>
   <div *ngIf="showEditor">
     <md-editor [(ngModel)]="editorContent" required></md-editor>
@@ -71,7 +70,7 @@
     <ngb-pagination class="float-right"
                     [collectionSize]="thread.posts.length"
                     [(page)]="currentPage"
-                    [maxSize]="pageSize"
+                    [pageSize]="pageSize"
                     (pageChange)="onPageChange()"></ngb-pagination>
   </div>
 

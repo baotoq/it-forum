@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 
 import { UserRoutingModule } from './user-routing.module';
@@ -17,10 +18,18 @@ import { UserThreadsComponent } from './user/user-threads/user-threads.component
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbModule,
     SharedModule,
     UserRoutingModule,
   ],
-  declarations: [ProfileComponent, AccountComponent, UserComponent, SettingsComponent, UserPostsComponent, UserThreadsComponent],
+  declarations: [
+    ProfileComponent,
+    AccountComponent,
+    UserComponent,
+    SettingsComponent,
+    UserPostsComponent,
+    UserThreadsComponent,
+  ],
   providers: [UserService],
 })
 export class UserModule {

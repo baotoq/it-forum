@@ -12,6 +12,10 @@ import { ActivatedRoute } from '@angular/router';
 export class UserPostsComponent implements OnInit {
   posts: Post[];
 
+  currentPage = 1;
+  pageSize = 10;
+  paginatedData = [];
+
   constructor(private route: ActivatedRoute,
               private loadingService: LoadingService,
               private userService: UserService) {
@@ -23,6 +27,12 @@ export class UserPostsComponent implements OnInit {
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.posts = resp;
+        this.onPageChange();
       });
+  }
+
+  onPageChange() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    this.paginatedData = this.posts.slice(startIndex, startIndex + this.pageSize);
   }
 }
