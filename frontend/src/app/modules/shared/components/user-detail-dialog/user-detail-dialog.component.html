@@ -1,1 +1,36 @@
-{{data.user.name}}
+<div class="pl-2">
+  <span class="avatar position-absolute">
+    <img [src]="user.avatar" [alt]="" class="img-fluid" style="height: 80px; width: 80px">
+  </span>
+  <div class="d-inline-block" style="margin-left: 90px">
+    <div>
+      <h3 class="d-inline-block mb-0">
+        {{user.name}}
+      </h3>
+      <h4 class="d-inline-block mb-0">
+        <app-badge-role [user]="user" class="position-relative" style="top: -3px"></app-badge-role>
+      </h4>
+    </div>
+    <div class="text-muted">Email: <span class="text-mat-primary">{{user.email}}</span></div>
+    <div class="text-muted">Joined since {{user.dateCreated | date}}</div>
+  </div>
+  <hr>
+  <div class="row no-gutters">
+    <div class="col-4" align="center">
+      <strong class="text-muted">THREADS</strong>
+      <div class="font-weight-bold text-mat-primary">800</div>
+    </div>
+    <div class="col-4" align="center">
+      <strong class="text-muted">POSTS</strong>
+      <div class="font-weight-bold text-mat-primary">800</div>
+    </div>
+    <div class="col-4" align="center">
+      <strong class="text-muted">REPUTATIONS</strong>
+      <div class="font-weight-bold text-mat-primary">800</div>
+    </div>
+  </div>
+  <hr>
+  <div class="float-right">
+    <button mat-button color="primary" tabindex="-1">View Profile</button>
+  </div>
+</div>

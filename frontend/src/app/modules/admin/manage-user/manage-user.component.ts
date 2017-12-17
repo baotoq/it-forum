@@ -56,6 +56,7 @@ export class ManageUserComponent implements OnInit {
       data: {
         user: user,
       },
+      width: '600px',
     });
   }
 }
