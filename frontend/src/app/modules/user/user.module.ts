@@ -9,6 +9,8 @@ import { AccountComponent } from './settings/account/account.component';
 import { UserComponent } from './user/user.component';
 import { UserService } from './user.service';
 import { SettingsComponent } from './settings/settings.component';
+import { UserPostsComponent } from './user/user-posts/user-posts.component';
+import { UserThreadsComponent } from './user/user-threads/user-threads.component';
 
 @NgModule({
   imports: [
@@ -18,7 +20,7 @@ import { SettingsComponent } from './settings/settings.component';
     SharedModule,
     UserRoutingModule,
   ],
-  declarations: [ProfileComponent, AccountComponent, UserComponent, SettingsComponent],
+  declarations: [ProfileComponent, AccountComponent, UserComponent, SettingsComponent, UserPostsComponent, UserThreadsComponent],
   providers: [UserService],
 })
 export class UserModule {

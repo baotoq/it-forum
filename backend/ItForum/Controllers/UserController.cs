@@ -75,7 +75,6 @@ namespace ItForum.Controllers
             return StatusCode(StatusCodes.Status201Created, user);
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
