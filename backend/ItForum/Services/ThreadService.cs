@@ -14,12 +14,12 @@ namespace ItForum.Services
 
         public Thread FindWithCreatedByTagsAndReplies(int id)
         {
-            return DbSet.Include(x => x.CreatedBy)
+            return DbSet.AsNoTracking().Include(x => x.CreatedBy)
                 .Include(x => x.ThreadTags).ThenInclude(x => x.Tag)
                 .Include(x => x.Posts).ThenInclude(x => x.CreatedBy)
                 .Include(x => x.Posts).ThenInclude(x => x.Replies).ThenInclude(x => x.CreatedBy)
-                .Include(x => x.Topic).ThenInclude(x => x.Parent)
-                .Include(x => x.Topic).ThenInclude(x => x.Managements)
+                .Include(x => x.Topic.Parent)
+                .Include(x => x.Topic.Managements)
                 .Include(x => x.Posts).ThenInclude(x => x.Votes)
                 .SingleOrDefault(x => x.Id == id);
         }
@@ -37,7 +37,7 @@ namespace ItForum.Services
 
         public IEnumerable<Thread> FindPending()
         {
-            return DbSet.Include(x => x.CreatedBy)
+            return DbSet.AsNoTracking().Include(x => x.CreatedBy)
                 .Include(x => x.Posts)
                 .Include(x => x.Topic)
                 .Include(x => x.ThreadTags).ThenInclude(x => x.Tag)

@@ -26,29 +26,29 @@ namespace ItForum.Controllers
         [HttpGet("threads-per-topic")]
         public IActionResult ThreadsPerTopic()
         {
-            var topics = _topicService.FindBy(x => x.ParentId != null);
+            var topics = _topicService.FindByNoTracking(x => x.ParentId != null);
             return Ok(topics.Select(x => new
             {
                 Key = x.Name,
                 Value = x.NumberOfThreads
-            }).OrderBy(x => x.Value));
+            }).OrderBy(x => x.Value).TakeLast(7));
         }
 
         [HttpGet("posts-per-topic")]
         public IActionResult PostsPerTopic()
         {
-            var topics = _topicService.FindBy(x => x.ParentId != null, "Threads");
+            var topics = _topicService.FindByNoTracking(x => x.ParentId != null, "Threads");
             return Ok(topics.Select(x => new
             {
                 Key = x.Name,
                 Value = x.Threads.Sum(t => t.NumberOfPosts)
-            }).OrderBy(x => x.Value));
+            }).OrderBy(x => x.Value).TakeLast(7));
         }
 
         [HttpGet("threads-per-month")]
         public IActionResult ThreadsPerMonth()
         {
-            var threads = _threadService.FindAll();
+            var threads = _threadService.FindAllNoTracking();
             return Ok(threads.GroupBy(x => new DateTime(x.DateCreated.Value.Year, x.DateCreated.Value.Month, 1))
                 .Select(x => new
                 {
@@ -64,7 +64,7 @@ namespace ItForum.Controllers
         [HttpGet("posts-per-month")]
         public IActionResult PostsPerMonth()
         {
-            var posts = _postService.FindAll();
+            var posts = _postService.FindAllNoTracking();
             return Ok(posts.GroupBy(x => new DateTime(x.DateCreated.Value.Year, x.DateCreated.Value.Month, 1))
                 .Select(x => new
                 {

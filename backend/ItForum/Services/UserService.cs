@@ -30,6 +30,11 @@ namespace ItForum.Services
             return DbSet.Where(x => x.ApprovalStatus == approvalStatus);
         }
 
+        public IEnumerable<User> FindByNoTracking(ApprovalStatus approvalStatus)
+        {
+            return DbSet.AsNoTracking().Where(x => x.ApprovalStatus == approvalStatus);
+        }
+
         public string GenerateJwt(User user)
         {
             var claims = new[]
@@ -65,6 +70,12 @@ namespace ItForum.Services
         {
             var moderators = FindModerators(topicId).ToList();
             return moderators.Any(u => u.Id == userId);
+        }
+
+        public IEnumerable<Post> FindUserPosts(int id)
+        {
+            return DbSet.AsNoTracking().Include(x => x.Posts).ThenInclude(x => x.Thread)
+                .SingleOrDefault(x => x.Id == id)?.Posts;
         }
     }
 }

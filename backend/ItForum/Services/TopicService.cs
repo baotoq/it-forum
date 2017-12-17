@@ -24,7 +24,7 @@ namespace ItForum.Services
 
         public IEnumerable<Topic> FindParentWithSubTopicsAndThreads()
         {
-            return DbSet.Include(x => x.SubTopics).ThenInclude(x => x.Threads)
+            return DbSet.AsNoTracking().Include(x => x.SubTopics).ThenInclude(x => x.Threads)
                 .Where(x => x.ParentId == null);
         }
 
@@ -36,7 +36,7 @@ namespace ItForum.Services
 
         public Topic FindWithThreadsCreatedBy(int id)
         {
-            return DbSet.Include(x => x.Threads).ThenInclude(x => x.CreatedBy)
+            return DbSet.AsNoTracking().Include(x => x.Threads).ThenInclude(x => x.CreatedBy)
                 .Include(x => x.Managements)
                 .SingleOrDefault(x => x.Id == id);
         }

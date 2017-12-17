@@ -92,9 +92,9 @@ namespace ItForum.Controllers
 
         [Authorize(Roles = nameof(Role.Administrator))]
         [HttpGet("approval-status")]
-        public IActionResult GetPending(ApprovalStatus approvalStatus)
+        public IActionResult GetByApprovalStatus(ApprovalStatus approvalStatus)
         {
-            var dto = _mapper.Map<List<UserDto>>(_userService.FindBy(approvalStatus).ToList());
+            var dto = _mapper.Map<List<UserDto>>(_userService.FindByNoTracking(approvalStatus).ToList());
             return Ok(dto);
         }
 
@@ -141,6 +141,14 @@ namespace ItForum.Controllers
         {
             var moderators = _userService.FindModerators(topicId).ToList();
             var dto = _mapper.Map<List<User>>(moderators);
+            return Ok(dto);
+        }
+
+        [HttpGet("posts/{id}")]
+        public IActionResult GetUserPosts(int id)
+        {
+            var posts = _userService.FindUserPosts(id);
+            var dto = _mapper.Map<List<PostDto>>(posts.ToList());
             return Ok(dto);
         }
     }

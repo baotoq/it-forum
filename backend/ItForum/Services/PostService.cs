@@ -12,15 +12,15 @@ namespace ItForum.Services
         {
         }
 
-        public Post FindWithCreatedBy(object id)
+        public Post FindWithCreatedBy(int id)
         {
             return DbSet.Include(x => x.CreatedBy)
-                .SingleOrDefault(x => x.Id == (int) id);
+                .SingleOrDefault(x => x.Id == id);
         }
 
         public IEnumerable<Post> FindPending()
         {
-            return DbSet.Include(x => x.CreatedBy)
+            return DbSet.AsNoTracking().Include(x => x.CreatedBy)
                 .Include(x => x.Thread)
                 .Where(x => x.Thread.ApprovalStatus == ApprovalStatus.Approved)
                 .Where(x => x.ApprovalStatus == ApprovalStatus.Pending).Take(100);

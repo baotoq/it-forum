@@ -12,7 +12,7 @@ namespace ItForum.Data.Entities
 
         public string Avatar { get; set; }
 
-        public DateTime Birthday { get; set; }
+        public DateTime Birthdate { get; set; }
 
         public string Email { get; set; }
 

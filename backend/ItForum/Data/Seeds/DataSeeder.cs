@@ -39,7 +39,7 @@ namespace ItForum.Data.Seeds
             {
                 o.Name = f.Name.FindName();
                 o.Phone = f.Person.Phone;
-                o.Birthday = f.Person.DateOfBirth;
+                o.Birthdate = f.Person.DateOfBirth;
                 o.Avatar = f.Internet.Avatar();
                 o.Email = f.Person.Email.ToLower();
                 o.Salt = _helperService.CreateSalt();

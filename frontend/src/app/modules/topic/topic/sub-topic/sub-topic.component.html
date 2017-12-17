@@ -20,7 +20,7 @@
       <span class="mr-2">Mods:</span>
       <span *ngFor="let mod of $moderators | async">
         <a [matTooltip]="mod.name" matTooltipPosition="above"
-           [routerLink]="['/']" class="mr-1 avatar">
+           [routerLink]="['/user', mod.id]" class="mr-1 avatar">
           <img [src]="mod.avatar" [alt]="mod.name" class="img-fluid"
                style="width:40px; height: 40px">
         </a>
@@ -37,7 +37,7 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header start="asc">Title</mat-header-cell>
         <mat-cell *matCellDef="let row" [title]="row.title">
           <a [matTooltip]="row.createdBy.name" matTooltipPosition="above"
-             [routerLink]="['/']" class="mr-1 avatar">
+             [routerLink]="['/user', row.createdBy.id]" class="mr-1 avatar">
             <img [src]="row.createdBy.avatar" [alt]="row.createdBy.name" class="img-fluid">
           </a>
           <span *ngIf="row.pin" class="badge badge-primary badge-line-fix mr-1">

@@ -6,7 +6,7 @@ export class User extends Timestamp {
   id: number;
   name: string;
   phone: string;
-  birthday: Date;
+  birthdate: Date;
   avatar: string;
   email: string;
   password: string;
@@ -20,7 +20,7 @@ export class User extends Timestamp {
       this.id = obj.id;
       this.name = obj.name;
       this.phone = obj.phone;
-      this.birthday = obj.birthday;
+      this.birthdate = obj.birthdate;
       this.avatar = obj.avatar;
       this.email = obj.email;
       this.password = obj.password;

@@ -30,12 +30,25 @@ namespace ItForum.Services
             return DbSet.Where(predicate);
         }
 
+        public IEnumerable<TEntity> FindByNoTracking(Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.AsNoTracking().Where(predicate);
+        }
+
         public IEnumerable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate,
             string navigationPropertyPath)
         {
             if (string.IsNullOrEmpty(navigationPropertyPath)) throw new ArgumentNullException();
 
-            return DbSet.Include(navigationPropertyPath).Where(predicate);
+            return DbSet.AsNoTracking().Include(navigationPropertyPath).Where(predicate);
+        }
+
+        public IEnumerable<TEntity> FindByNoTracking(Expression<Func<TEntity, bool>> predicate,
+            string navigationPropertyPath)
+        {
+            if (string.IsNullOrEmpty(navigationPropertyPath)) throw new ArgumentNullException();
+
+            return DbSet.AsNoTracking().Include(navigationPropertyPath).Where(predicate);
         }
 
         public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
@@ -88,11 +101,23 @@ namespace ItForum.Services
             return DbSet.AsEnumerable();
         }
 
+        public IEnumerable<TEntity> FindAllNoTracking()
+        {
+            return DbSet.AsNoTracking();
+        }
+
         public IEnumerable<TEntity> FindAll(string navigationPropertyPath)
         {
             if (string.IsNullOrEmpty(navigationPropertyPath)) throw new ArgumentNullException();
 
             return DbSet.Include(navigationPropertyPath);
+        }
+
+        public IEnumerable<TEntity> FindAllNoTracking(string navigationPropertyPath)
+        {
+            if (string.IsNullOrEmpty(navigationPropertyPath)) throw new ArgumentNullException();
+
+            return DbSet.AsNoTracking().Include(navigationPropertyPath);
         }
 
         public int Count()

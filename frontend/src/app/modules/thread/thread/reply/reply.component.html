@@ -1,7 +1,7 @@
 <mat-chip style="background-color: #e9ebee" class="d-block" [selectable]="false">
   <div class="m-0">
     <strong>
-      <a href="#">{{reply.createdBy.name}}</a>
+      <a [routerLink]="['/user', reply.createdBy.id]">{{reply.createdBy.name}}</a>
     </strong>
     <app-badge-role [user]="reply.createdBy"></app-badge-role>
     <app-badge-approval-status [status]="reply.approvalStatus"></app-badge-approval-status>
