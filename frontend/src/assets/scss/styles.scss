@@ -8,7 +8,7 @@
 
 body {
   background-color: $app-back-ground-color;
-  font-family: Roboto, Helvetica Neue, sans-serif;
+  font-family: Roboto, Helvetica Neue, sans-serif !important;
 }
 
 body, code {
@@ -33,12 +33,6 @@ body, code {
   background: #e0e0e0;
 }
 
-.fr-view {
-  p {
-    margin-bottom: 0;
-  }
-}
-
 .mat-expansion-panel:not([class*=mat-elevation-z]) {
   box-shadow: none !important;
 }
@@ -54,20 +48,6 @@ body, code {
 .badge-line-fix {
   position: relative;
   top: -1px;
-}
-
-app-approve-user {
-  .mat-checkbox-layout {
-    margin-bottom: 0;
-  }
-}
-
-app-reply {
-  .fr-view {
-    p {
-      display: inline-block;
-    }
-  }
 }
 
 .text-mat-primary {
@@ -118,6 +98,21 @@ app-thread-search-input, app-approve-user-search-input, app-manage-user-search-i
   .search {
     &:focus {
       outline: none;
+    }
+  }
+}
+
+app-user-posts {
+  .list-group-item-action {
+    &:hover, &:focus {
+      .preview-panel {
+        background-color: $list-group-hover-bg !important;
+      }
+    }
+    &:active {
+      .preview-panel {
+        background-color: $list-group-action-active-bg !important;
+      }
     }
   }
 }

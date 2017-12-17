@@ -1,4 +1,4 @@
-<div>
+<div class="container-fluid">
   <div class="clearfix">
     <ngb-pagination class="float-right"
                     [collectionSize]="posts?.length"
@@ -7,9 +7,19 @@
                     (pageChange)="onPageChange()"></ngb-pagination>
   </div>
 
-  <div *ngFor="let post of paginatedData">
-    <div></div>
-    <md-editor [(ngModel)]="post.content" mode="preview" height="100%"></md-editor>
+  <div class="list-group">
+    <div *ngFor="let post of paginatedData">
+      <a [routerLink]="['/thread', post.threadId]" style="font-size: 70%"
+         class="list-group-item list-group-item-action flex-column align-items-start mb-2">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1 text-mat-primary">{{post.thread.title}}</h5>
+          <small>{{post.dateCreated | amTimeAgo}}</small>
+        </div>
+        <p class="mb-1">
+          <md-editor [(ngModel)]="post.content" mode="preview" height="100%"></md-editor>
+        </p>
+      </a>
+    </div>
   </div>
 
   <div class="clearfix">

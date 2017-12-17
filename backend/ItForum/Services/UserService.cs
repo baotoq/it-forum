@@ -74,7 +74,8 @@ namespace ItForum.Services
 
         public IEnumerable<Post> FindUserPosts(int id)
         {
-            return DbSet.AsNoTracking().Include(x => x.Posts).ThenInclude(x => x.Thread)
+            return DbSet.AsNoTracking()
+                .Include(x => x.Posts).ThenInclude(x => x.Thread)
                 .SingleOrDefault(x => x.Id == id)?.Posts;
         }
     }

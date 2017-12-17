@@ -3,6 +3,7 @@ import { Post } from '../../../../models/post';
 import { UserService } from '../../user.service';
 import { LoadingService } from '../../../../components/loading/loading.service';
 import { ActivatedRoute } from '@angular/router';
+import { OrderByPipe } from 'ngx-pipes';
 
 @Component({
   selector: 'app-user-posts',
@@ -18,7 +19,8 @@ export class UserPostsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private loadingService: LoadingService,
-              private userService: UserService) {
+              private userService: UserService,
+              private orderByPipe: OrderByPipe) {
   }
 
   ngOnInit() {
@@ -26,7 +28,7 @@ export class UserPostsComponent implements OnInit {
     this.userService.getUserPosts(this.route.parent.snapshot.params['userId'])
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
-        this.posts = resp;
+        this.posts = this.orderByPipe.transform(resp, ['-dateCreated']);
         this.onPageChange();
       });
   }
