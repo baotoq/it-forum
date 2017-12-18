@@ -4,17 +4,20 @@
 
 <div class="container-fluid mt-3">
   <div *ngIf="user" class="row no-gutters">
-    <div class="col-md-3" align="center">
+    <div class="col-md-3 col-lg-2" align="center" style="font-size: 90%">
       <mat-card class="p-2">
         <div class="avatar">
           <img [src]="user.avatar" [alt]="" class="img-fluid" style="height: 130px; width: 130px">
         </div>
-        <div class="mt-2">
+        <div class="mt-2" style="font-size: 120%">
           <span ngbTooltip="Reputations" style="color: #E91E63">
-            <i class="fa fa-star"></i> 500
+            <i class="fa fa-star"></i> {{user.reputations}}
           </span>
-          <span ngbTooltip="Posts" style="color: #2196F3">
-            <i class="fa fa-comments"></i> 500
+          <span ngbTooltip="Threads" style="color: #2196F3" class="mx-2">
+            <i class="fa fa-comment"></i> {{user.numberOfThreads}}
+          </span>
+          <span ngbTooltip="Posts" style="color: #009688">
+            <i class="fa fa-commenting"></i> {{user.numberOfPosts}}
           </span>
         </div>
         <hr class="mt-1">
@@ -29,7 +32,7 @@
         <div class="text-muted">Joined: <strong>{{user.dateCreated | date}}</strong></div>
       </mat-card>
     </div>
-    <div class="col-md-9 pl-2">
+    <div class="col-md-9 col-lg-10 pl-md-2 mt-2 mt-md-0">
       <mat-card class="p-0">
         <nav mat-tab-nav-bar>
           <a mat-tab-link

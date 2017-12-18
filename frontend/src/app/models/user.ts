@@ -14,6 +14,10 @@ export class User extends Timestamp {
   confirmedBy: User;
   approvalStatus: ApprovalStatus;
 
+  numberOfPosts = 0;
+  numberOfThreads = 0;
+  reputations = 0;
+
   constructor(obj?) {
     super(obj);
     if (obj) {

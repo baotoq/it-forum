@@ -5,14 +5,18 @@ using System.Security.Claims;
 using ItForum.Common;
 using ItForum.Data;
 using ItForum.Data.Domains;
+using ItForum.Data.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace ItForum.Services
 {
     public class UserService : Service<User>
     {
-        public UserService(NeptuneContext context) : base(context)
+        private readonly HelperService _helperService;
+
+        public UserService(NeptuneContext context, HelperService helperService) : base(context)
         {
+            _helperService = helperService;
         }
 
         public User FindBy(string email)
@@ -72,11 +76,44 @@ namespace ItForum.Services
             return moderators.Any(u => u.Id == userId);
         }
 
-        public IEnumerable<Post> FindUserPosts(int id)
+        public IEnumerable<Post> FindUserPosts(int id, ApprovalStatus approvalStatus)
         {
-            return DbSet.AsNoTracking()
-                .Include(x => x.Posts).ThenInclude(x => x.Thread)
-                .SingleOrDefault(x => x.Id == id)?.Posts;
+            return Context.Posts.AsNoTracking()
+                .Include(x => x.Thread)
+                .Where(x => x.CreatedById == id && x.ApprovalStatus == approvalStatus);
+        }
+
+        public IEnumerable<Post> FindUserPostsWithVote(int id, ApprovalStatus approvalStatus)
+        {
+            return Context.Posts.AsNoTracking()
+                .Include(x => x.Votes)
+                .Where(x => x.CreatedById == id && x.ApprovalStatus == approvalStatus);
+        }
+
+        public IEnumerable<Thread> FindUserThreads(int id, ApprovalStatus approvalStatus)
+        {
+            return Context.Threads.AsNoTracking()
+                .Where(x => x.CreatedById == id && x.ApprovalStatus == approvalStatus);
+        }
+
+        public IEnumerable<Thread> FindUserThreadsWithPostsAndTopic(int id, ApprovalStatus approvalStatus)
+        {
+            return Context.Threads.AsNoTracking()
+                .Include(x => x.Topic)
+                .Include(x => x.Posts)
+                .Where(x => x.CreatedById == id && x.ApprovalStatus == approvalStatus);
+        }
+
+        public void CaculateReputationsNumberOfPostsThreads(int id, UserDto userDto)
+        {
+            var posts = FindUserPostsWithVote(id, ApprovalStatus.Approved).ToList();
+
+            userDto.Reputations = 0;
+
+            posts.ForEach(p => { userDto.Reputations += _helperService.CaculatePoint(p.Votes); });
+
+            userDto.NumberOfPosts = posts.Count;
+            userDto.NumberOfThreads = FindUserThreads(id, ApprovalStatus.Approved).ToList().Count;
         }
     }
 }

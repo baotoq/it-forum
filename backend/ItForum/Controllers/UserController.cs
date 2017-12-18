@@ -10,6 +10,7 @@ using ItForum.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MoreLinq;
 
 namespace ItForum.Controllers
 {
@@ -80,6 +81,7 @@ namespace ItForum.Controllers
         {
             var user = _userService.FindById(id);
             var dto = _mapper.Map<UserDto>(user);
+            _userService.CaculateReputationsNumberOfPostsThreads(user.Id, dto);
             return Ok(dto);
         }
 
@@ -147,8 +149,22 @@ namespace ItForum.Controllers
         [HttpGet("posts/{id}")]
         public IActionResult GetUserPosts(int id)
         {
-            var posts = _userService.FindUserPosts(id);
+            var posts = _userService.FindUserPosts(id, ApprovalStatus.Approved);
             var dto = _mapper.Map<List<PostDto>>(posts.ToList());
+            return Ok(dto);
+        }
+
+        [HttpGet("threads/{id}")]
+        public IActionResult GetUserThreads(int id)
+        {
+            var threads = _userService.FindUserThreadsWithPostsAndTopic(id, ApprovalStatus.Approved);
+            threads.ForEach(t =>
+            {
+                var temp = t.Posts.OrderByDescending(p => p.CreatedBy).FirstOrDefault();
+                t.Posts.Clear();
+                t.Posts.Add(temp);
+            });
+            var dto = _mapper.Map<List<ThreadDto>>(threads);
             return Ok(dto);
         }
     }

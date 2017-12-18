@@ -16,7 +16,7 @@
           <small>{{post.dateCreated | amTimeAgo}}</small>
         </div>
         <p class="mb-1">
-          <md-editor [(ngModel)]="post.content" mode="preview" height="100%"></md-editor>
+          {{post.content | shorten:150:'...'}}
         </p>
       </a>
     </div>

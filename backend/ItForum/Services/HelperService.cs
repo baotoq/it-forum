@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using ItForum.Data.Domains;
+using MoreLinq;
 
 namespace ItForum.Services
 {
     public class HelperService
     {
-        public int CaculatePoint(List<Vote> votes)
+        public int CaculatePoint(IEnumerable<Vote> votes)
         {
             var point = 0;
             votes.ForEach(x =>

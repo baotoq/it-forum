@@ -9,6 +9,12 @@ namespace ItForum.Data.Dtos
     {
         public List<Management> Managements { get; set; }
 
+        public int NumberOfPosts { get; set; }
+
+        public int NumberOfThreads { get; set; }
+
+        public int Reputations { get; set; }
+
         public class ManagementDto
         {
             public int TopicId { get; set; }

@@ -1,7 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Post } from '../../../../../models/post';
-import { Router } from '@angular/router';
-import { LoadingService } from '../../../../../components/loading/loading.service';
 import { CoreService } from '../../../../core/core.service';
 import { AuthService } from '../../../../auth/auth.service';
 import { ThreadService } from '../../../thread.service';
@@ -24,9 +22,10 @@ export class PostContentComponent implements OnInit {
   like = false;
   dislike = false;
 
-  constructor(private router: Router,
-              private loadingService: LoadingService,
-              private coreService: CoreService,
+  currentUser = this.authService.currentUser();
+  authenticated = this.authService.isAuthenticated();
+
+  constructor(private coreService: CoreService,
               private authService: AuthService,
               private threadService: ThreadService,
               private orderByPipe: OrderByPipe) {
@@ -70,24 +69,18 @@ export class PostContentComponent implements OnInit {
 
   onVote(like: boolean) {
     this.authService.checkLogin();
-    this.threadService.vote(this.post.id, like).subscribe(resp => {
-      if (resp.message) this.post.point = resp.point;
-      if (resp.message === 'up') this.setVote(true, false);
-      if (resp.message === 'down') this.setVote(false, true);
-      if (resp.message === 'remove') this.setVote(false, false);
-    });
+    if (this.authenticated && this.post.createdById != this.currentUser.id) {
+      this.threadService.vote(this.post.id, like).subscribe(resp => {
+        if (resp.message) this.post.point = resp.point;
+        if (resp.message === 'up') this.setVote(true, false);
+        if (resp.message === 'down') this.setVote(false, true);
+        if (resp.message === 'remove') this.setVote(false, false);
+      });
+    }
   }
 
   setVote(up: boolean, down: boolean) {
     this.like = up;
     this.dislike = down;
-  }
-
-  get currentUser() {
-    return this.authService.currentUser();
-  }
-
-  get authenticated() {
-    return this.authService.isAuthenticated();
   }
 }

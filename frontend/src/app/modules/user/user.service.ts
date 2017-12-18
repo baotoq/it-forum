@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { API } from '../shared/common/api';
 import { User } from '../../models/user';
 import { Post } from '../../models/post';
+import { Thread } from '../../models/thread';
 
 @Injectable()
 export class UserService {
@@ -17,6 +18,10 @@ export class UserService {
 
   getUserPosts(id: number): Observable<Post[]> {
     return this.httpClient.get<Post[]>(`${API.USER.URL}/posts/${id}`);
+  }
+
+  getUserThreads(id: number): Observable<Thread[]> {
+    return this.httpClient.get<Thread[]>(`${API.USER.URL}/threads/${id}`);
   }
 
   getModerators(topicId: number): Observable<User[]> {

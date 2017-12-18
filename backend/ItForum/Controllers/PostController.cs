@@ -125,13 +125,16 @@ namespace ItForum.Controllers
         [HttpPost("vote")]
         public async Task<IActionResult> Vote([FromBody] Vote vote)
         {
+            var post = _postService.FindWithVotes(vote.PostId);
+            if (post.CreatedById == CurrentUserId) return BadRequest();
+
             var message = vote.Like ? "up" : "down";
             vote.UserId = CurrentUserId;
-            var oldVote = _postService.FindVote(vote.PostId, vote.UserId);
+            var oldVote = post.Votes.SingleOrDefault(p => p.UserId == vote.UserId);
 
             if (oldVote == null)
             {
-                _postService.Add(vote);
+                post.Votes.Add(vote);
             }
             else if (oldVote.Like != vote.Like)
             {
@@ -140,11 +143,9 @@ namespace ItForum.Controllers
             else
             {
                 message = "remove";
-                _postService.Remove(oldVote);
-                await _unitOfWork.SaveChangesAsync();
+                post.Votes.Remove(oldVote);
             }
 
-            var post = _postService.FindWithVotes(vote.PostId);
             post.Point = _helperService.CaculatePoint(post.Votes);
 
             await _unitOfWork.SaveChangesAsync();
