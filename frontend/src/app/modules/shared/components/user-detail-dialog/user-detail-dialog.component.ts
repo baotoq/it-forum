@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { User } from '../../../../models/user';
+import { UserService } from '../../../user/user.service';
 
 @Component({
   selector: 'app-user-detail-dialog',
@@ -10,11 +11,13 @@ import { User } from '../../../../models/user';
 export class UserDetailDialogComponent implements OnInit {
   user: User;
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data: any) {
+  constructor(@Inject(MAT_DIALOG_DATA) private data: any,
+              private userService: UserService) {
   }
 
   ngOnInit() {
-    this.user = this.data.user;
+    this.userService.get(this.data).subscribe(resp => {
+      this.user = resp;
+    });
   }
-
 }

@@ -12,15 +12,16 @@
     <mat-card>
       <mat-card-header>
 
-        <a mat-card-avatar [routerLink]="['/']" [style.background-image]="'url(' + post.createdBy.avatar + ')'"></a>
+        <a mat-card-avatar [routerLink]="['/user', post.createdById]" target="_blank"
+           [style.background-image]="'url(' + post.createdBy.avatar + ')'"></a>
 
         <mat-card-title class="mb-1">
           <strong>
-            <a href="#">{{post.createdBy.name}}</a>
+            <a [routerLink]="['/user', post.createdById]" target="_blank">{{post.createdBy.name}}</a>
           </strong>
           <app-badge-role [user]="post.createdBy"></app-badge-role>
           in
-          <a [routerLink]="['/thread', post.threadId]">
+          <a [routerLink]="['/thread', post.threadId]" target="_blank">
             {{post.thread.title}}
           </a>
         </mat-card-title>

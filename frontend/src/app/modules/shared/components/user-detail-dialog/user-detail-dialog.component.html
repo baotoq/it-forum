@@ -1,4 +1,8 @@
-<div class="pl-2">
+<div *ngIf="!user" class="d-flex justify-content-center py-5">
+  <mat-spinner [diameter]="50" [strokeWidth]="4"></mat-spinner>
+</div>
+
+<div class="pl-2" *ngIf="user">
   <span class="avatar position-absolute">
     <img [src]="user.avatar" [alt]="" class="img-fluid" style="height: 80px; width: 80px">
   </span>
@@ -17,20 +21,21 @@
   <hr>
   <div class="row no-gutters">
     <div class="col-sm-4" align="center">
-      <div class="font-weight-bold text-mat-primary">800</div>
+      <div class="font-weight-bold text-mat-primary">{{user.reputations}}</div>
+      <strong class="text-muted">REPUTATIONS</strong>
+    </div>
+    <div class="col-sm-4" align="center">
+      <div class="font-weight-bold text-mat-primary">{{user.numberOfThreads}}</div>
       <strong class="text-muted">THREADS</strong>
     </div>
     <div class="col-sm-4" align="center">
-      <div class="font-weight-bold text-mat-primary">800</div>
+      <div class="font-weight-bold text-mat-primary">{{user.numberOfPosts}}</div>
       <strong class="text-muted">POSTS</strong>
-    </div>
-    <div class="col-sm-4" align="center">
-      <div class="font-weight-bold text-mat-primary">800</div>
-      <strong class="text-muted">REPUTATIONS</strong>
     </div>
   </div>
   <hr>
   <div class="float-right">
-    <button mat-button color="primary" tabindex="-1">View Profile</button>
+    <a mat-button color="primary" [routerLink]="['/user', user.id]" target="_blank"
+       tabindex="-1">View Profile</a>
   </div>
 </div>

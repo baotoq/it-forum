@@ -12,19 +12,20 @@
     <mat-card>
       <mat-card-header>
 
-        <a mat-card-avatar [routerLink]="['/']" [style.background-image]="'url(' + thread.createdBy.avatar + ')'"></a>
+        <a mat-card-avatar [routerLink]="['/user', thread.createdById]" target="_blank"
+           [style.background-image]="'url(' + thread.createdBy.avatar + ')'"></a>
         <mat-card-title class="mb-1">
           <strong>
             {{thread.title}}
           </strong>
           <span class="text-muted">in</span>
-          <a [routerLink]="['/thread', thread.id]">
+          <a [routerLink]="['/thread', thread.id]" target="_blank">
             {{thread.topic.name}}
           </a>
         </mat-card-title>
 
         <mat-card-subtitle class="mb-1">
-          by <a href="#">{{thread.createdBy.name}}</a>
+          by <a [routerLink]="['/user', thread.createdById]" target="_blank">{{thread.createdBy.name}}</a>
           <app-badge-role [user]="thread.createdBy"></app-badge-role>
           <span [title]="thread.dateCreated | date:'MMM d y, h:mm a'">{{thread.dateCreated | amTimeAgo}}</span>
         </mat-card-subtitle>

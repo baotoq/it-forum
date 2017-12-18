@@ -53,9 +53,7 @@ export class ManageUserComponent implements OnInit {
 
   viewDetail(user: User) {
     this.dialog.open(UserDetailDialogComponent, {
-      data: {
-        user: user,
-      },
+      data: user.id,
       width: '600px',
     });
   }
