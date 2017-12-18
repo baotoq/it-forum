@@ -1,6 +1,7 @@
 import { Role } from './role';
 import { Timestamp } from './timestamp';
 import { ApprovalStatus } from './approval-status';
+import { Management } from './management';
 
 export class User extends Timestamp {
   id: number;
@@ -13,6 +14,7 @@ export class User extends Timestamp {
   role: Role;
   confirmedBy: User;
   approvalStatus: ApprovalStatus;
+  managements: Management[];
 
   numberOfPosts = 0;
   numberOfThreads = 0;

@@ -8,7 +8,9 @@ a[mat-button] {
   text-decoration: none;
 }
 
-button[mat-icon-button], .mat-sort-header-button {
+button[mat-button], button[mat-raised-button], button[mat-icon-button],
+a[mat-button], a[mat-raised-button],
+.mat-sort-header-button {
   outline: none !important;
 }
 

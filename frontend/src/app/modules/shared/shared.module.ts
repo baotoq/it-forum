@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from './modules/material/material.module';
 import { FilterByPipe, NgPipesModule, OrderByPipe } from 'ngx-pipes';
@@ -55,6 +56,7 @@ const MODULES = [
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     RouterModule,
     Ng2GoogleChartsModule,
     MODULES,

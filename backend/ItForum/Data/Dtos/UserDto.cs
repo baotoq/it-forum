@@ -7,7 +7,7 @@ namespace ItForum.Data.Dtos
 {
     public class UserDto : UserEntity
     {
-        public List<Management> Managements { get; set; }
+        public List<ManagementDto> Managements { get; set; }
 
         public int NumberOfPosts { get; set; }
 
@@ -19,7 +19,11 @@ namespace ItForum.Data.Dtos
         {
             public int TopicId { get; set; }
 
-            public Topic Topic { get; set; }
+            public TopicDto Topic { get; set; }
+        }
+
+        public class TopicDto : TopicEntity
+        {
         }
     }
 
@@ -28,8 +32,10 @@ namespace ItForum.Data.Dtos
         public UserMapperProfile()
         {
             CreateMap<User, UserDto>()
-                .ForMember(d => d.Password, s => s.Ignore());
+                .ForMember(d => d.Password, s => s.Ignore())
+                .ForMember(d => d.Salt, s => s.Ignore());
             CreateMap<Management, UserDto.ManagementDto>();
+            CreateMap<Topic, UserDto.TopicDto>();
         }
     }
 }

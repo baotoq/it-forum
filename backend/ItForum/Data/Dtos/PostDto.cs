@@ -38,7 +38,8 @@ namespace ItForum.Data.Dtos
         {
             CreateMap<Post, PostDto>();
             CreateMap<User, PostDto.UserDto>()
-                .ForMember(d => d.Password, s => s.Ignore());
+                .ForMember(d => d.Password, s => s.Ignore())
+                .ForMember(d => d.Salt, s => s.Ignore());
             CreateMap<Vote, PostDto.VoteDto>();
             CreateMap<Thread, PostDto.ThreadDto>();
         }

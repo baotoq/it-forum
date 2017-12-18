@@ -37,7 +37,8 @@ namespace ItForum.Data.Dtos
             CreateMap<Topic, TopicDto>();
             CreateMap<Thread, TopicDto.ThreadDto>();
             CreateMap<User, TopicDto.UserDto>()
-                .ForMember(d => d.Password, s => s.Ignore());
+                .ForMember(d => d.Password, s => s.Ignore())
+                .ForMember(d => d.Salt, s => s.Ignore());
             CreateMap<Management, TopicDto.ManagementDto>();
         }
     }

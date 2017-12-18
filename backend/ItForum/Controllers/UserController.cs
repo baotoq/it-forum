@@ -85,6 +85,44 @@ namespace ItForum.Controllers
             return Ok(dto);
         }
 
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpGet("managements/{id}")]
+        public IActionResult GetWithManagements(int id)
+        {
+            var user = _userService.FindNoTrackingWithManagements(id);
+            var dto = _mapper.Map<UserDto>(user);
+            _userService.CaculateReputationsNumberOfPostsThreads(user.Id, dto);
+            return Ok(dto);
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpPost("managements/{id}")]
+        public async Task<IActionResult> EditUserManagements(int id, [FromBody] Payload payload)
+        {
+            var user = _userService.FindWithManagements(id);
+            if (user == null) return BadRequest();
+
+            user.Managements.Clear();
+            await _unitOfWork.SaveChangesAsync();
+
+            foreach (var topicId in payload.Data)
+                user.Managements.Add(new Management {TopicId = topicId});
+
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpPost("role/{id}")]
+        public async Task<IActionResult> EditRole(int id, [FromQuery] Role role)
+        {
+            var user = _userService.FindById(id);
+            if (user == null) return BadRequest();
+            user.Role = role;
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
+        }
+
         [HttpPost("exist-email")]
         public IActionResult IsExistEmail(string email)
         {
@@ -94,7 +132,7 @@ namespace ItForum.Controllers
 
         [Authorize(Roles = nameof(Role.Administrator))]
         [HttpGet("approval-status")]
-        public IActionResult GetByApprovalStatus(ApprovalStatus approvalStatus)
+        public IActionResult GetByApprovalStatus([FromQuery] ApprovalStatus approvalStatus)
         {
             var dto = _mapper.Map<List<UserDto>>(_userService.FindByNoTracking(approvalStatus).ToList());
             return Ok(dto);

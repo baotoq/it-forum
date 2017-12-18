@@ -14,6 +14,8 @@ export class Topic extends Timestamp {
   threads: Thread[];
   managements: Management[];
 
+  checked = false;
+
   constructor(obj?) {
     super(obj);
     if (obj) {

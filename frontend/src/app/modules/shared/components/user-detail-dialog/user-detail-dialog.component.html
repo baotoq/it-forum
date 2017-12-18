@@ -2,7 +2,7 @@
   <mat-spinner [diameter]="50" [strokeWidth]="4"></mat-spinner>
 </div>
 
-<div class="pl-2" *ngIf="user">
+<div *ngIf="user">
   <span class="avatar position-absolute">
     <img [src]="user.avatar" [alt]="" class="img-fluid" style="height: 80px; width: 80px">
   </span>
@@ -12,7 +12,7 @@
         {{user.name}}
       </h3>
       <h4 class="d-inline-block mb-0">
-        <app-badge-role [user]="user" class="position-relative" style="top: -3px"></app-badge-role>
+        <app-badge-role [user]="user" [showNone]="true" class="position-relative" style="top: -3px"></app-badge-role>
       </h4>
     </div>
     <div class="text-muted">Email: <span class="text-mat-primary">{{user.email}}</span></div>
@@ -34,8 +34,43 @@
     </div>
   </div>
   <hr>
-  <div class="float-right">
-    <a mat-button color="primary" [routerLink]="['/user', user.id]" target="_blank"
-       tabindex="-1">View Profile</a>
+
+  <ng-container *ngIf="user.role === role.Moderator">
+    <div class="row">
+      <div *ngFor="let topic of displayTopics | orderBy:'name'" class="col-sm-6">
+        <mat-slide-toggle [(ngModel)]="topic.checked" (change)="edit = true">{{topic.name}}</mat-slide-toggle>
+      </div>
+    </div>
+
+    <hr>
+  </ng-container>
+
+  <div class="clearfix" cdkFocusRegionstart>
+    <ng-container *ngIf="edit">
+      <button mat-button color="primary" (click)="onSave()" [disabled]="loading">
+        <app-fa-spinner *ngIf="loading"></app-fa-spinner>
+        <ng-container *ngIf="!loading">Save</ng-container>
+      </button>
+      <button mat-button color="accent" (click)="onCancel()" [disabled]="loading">Cancel</button>
+    </ng-container>
+    <div class="float-right">
+      <a mat-button [routerLink]="['/user', user.id]" target="_blank">View Profile</a>
+      <button mat-button [matMenuTriggerFor]="menu">Edit Role</button>
+    </div>
   </div>
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item *ngIf="user.role !== role.Administrator"
+            (click)="editRole(role.Administrator)">
+      Make Admin
+    </button>
+    <button mat-menu-item *ngIf="user.role !== role.Moderator"
+            (click)="editRole(role.Moderator)">
+      Make Moderator
+    </button>
+    <button mat-menu-item *ngIf="user.role !== role.None"
+            (click)="editRole(role.None)">
+      Remove
+    </button>
+  </mat-menu>
 </div>

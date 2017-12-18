@@ -5,6 +5,8 @@ import { API } from '../shared/common/api';
 import { User } from '../../models/user';
 import { Post } from '../../models/post';
 import { Thread } from '../../models/thread';
+import { Role } from '../../models/role';
+import { Management } from '../../models/management';
 
 @Injectable()
 export class UserService {
@@ -14,6 +16,10 @@ export class UserService {
 
   get(id: number): Observable<User> {
     return this.httpClient.get<User>(`${API.USER.URL}/${id}`);
+  }
+
+  getWithManagements(id: number): Observable<User> {
+    return this.httpClient.get<User>(`${API.USER.MANAGEMENT}/${id}`);
   }
 
   getUserPosts(id: number): Observable<Post[]> {
@@ -26,5 +32,15 @@ export class UserService {
 
   getModerators(topicId: number): Observable<User[]> {
     return this.httpClient.get<User[]>(`${API.USER.URL}/moderators/${topicId}`);
+  }
+
+  editRole(id: number, role: Role): Observable<any> {
+    return this.httpClient.post(`${API.USER.ROLE}/${id}?role=${role}`, {});
+  }
+
+  editManagements(id: number, managements: number[]): Observable<any> {
+    return this.httpClient.post(`${API.USER.MANAGEMENT}/${id}`, {
+      data: managements
+    });
   }
 }

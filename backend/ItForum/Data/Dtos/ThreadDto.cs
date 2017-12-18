@@ -64,7 +64,8 @@ namespace ItForum.Data.Dtos
             CreateMap<Thread, ThreadDto>()
                 .ForMember(d => d.Tags, s => s.MapFrom(t => t.ThreadTags.Select(tt => tt.Tag)));
             CreateMap<User, ThreadDto.UserDto>()
-                .ForMember(d => d.Password, s => s.Ignore());
+                .ForMember(d => d.Password, s => s.Ignore())
+                .ForMember(d => d.Salt, s => s.Ignore());
             CreateMap<Post, ThreadDto.PostDto>();
             CreateMap<Tag, ThreadDto.TagDto>();
             CreateMap<Topic, ThreadDto.TopicDto>();

@@ -18,13 +18,13 @@ namespace ItForum.Controllers
         private readonly UnitOfWork _unitOfWork;
         private readonly UserService _userService;
 
-        public TopicController(TopicService topicService, UnitOfWork unitOfWork, IMapper mapper,
-            UserService userService)
+        public TopicController(IMapper mapper, TopicService topicService, UserService userService,
+            UnitOfWork unitOfWork)
         {
-            _topicService = topicService;
-            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userService = userService;
+            _topicService = topicService;
+            _unitOfWork = unitOfWork;
         }
 
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
@@ -67,6 +67,14 @@ namespace ItForum.Controllers
                 text = x.Name,
                 title = x.Description
             }));
+        }
+
+        [HttpGet("all-sub-topics")]
+        public IActionResult GetAllSubTopics()
+        {
+            var topics = _topicService.FindByNoTracking(x => x.Parent != null).ToList();
+            var dto = _mapper.Map<List<TopicDto>>(topics);
+            return Ok(dto);
         }
 
         [HttpGet("threads-created/{id}")]

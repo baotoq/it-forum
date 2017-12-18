@@ -76,6 +76,19 @@ namespace ItForum.Services
             return moderators.Any(u => u.Id == userId);
         }
 
+        public User FindWithManagements(int id)
+        {
+            return DbSet.Include(x => x.Managements)
+                .SingleOrDefault(u => u.Id == id);
+        }
+
+        public User FindNoTrackingWithManagements(int id)
+        {
+            return DbSet.AsNoTracking()
+                .Include(x => x.Managements)
+                .SingleOrDefault(u => u.Id == id);
+        }
+
         public IEnumerable<Post> FindUserPosts(int id, ApprovalStatus approvalStatus)
         {
             return Context.Posts.AsNoTracking()
@@ -114,6 +127,11 @@ namespace ItForum.Services
 
             userDto.NumberOfPosts = posts.Count;
             userDto.NumberOfThreads = FindUserThreads(id, ApprovalStatus.Approved).ToList().Count;
+        }
+
+        public void Attach(Management management)
+        {
+            Context.Managements.Attach(management);
         }
     }
 }

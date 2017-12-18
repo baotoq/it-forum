@@ -10,6 +10,8 @@ export module API {
     public static readonly REGISTER = `${USER.URL}/register`;
     public static readonly LOGIN = `${USER.URL}/login`;
     public static readonly EXIST_EMAIL = `${USER.URL}/exist-email`;
+    public static readonly ROLE = `${USER.URL}/role`;
+    public static readonly MANAGEMENT = `${USER.URL}/managements`;
   }
 
   export class TOPIC {

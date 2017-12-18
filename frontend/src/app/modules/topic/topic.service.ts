@@ -30,4 +30,8 @@ export class TopicService {
   getSubOptions(id: number): Observable<any> {
     return this.httpClient.get(`${API.TOPIC.URL}/sub-options/${id}`);
   }
+
+  getAllSubTopics(): Observable<Topic[]> {
+    return this.httpClient.get<Topic[]>(`${API.TOPIC.URL}/all-sub-topics`);
+  }
 }
