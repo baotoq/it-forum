@@ -116,9 +116,13 @@ namespace ItForum.Controllers
         [HttpPost("role/{id}")]
         public async Task<IActionResult> EditRole(int id, [FromQuery] Role role)
         {
-            var user = _userService.FindById(id);
+            var user = _userService.FindWithManagements(id);
             if (user == null) return BadRequest();
             user.Role = role;
+            if (role != Role.Moderator)
+            {
+                user.Managements.Clear();
+            }
             await _unitOfWork.SaveChangesAsync();
             return Ok();
         }

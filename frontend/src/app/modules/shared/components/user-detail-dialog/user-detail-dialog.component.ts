@@ -1,11 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { User } from '../../../../models/user';
 import { UserService } from '../../../user/user.service';
 import { Role } from '../../../../models/role';
 import { TopicService } from '../../../topic/topic.service';
 import { Topic } from '../../../../models/topic';
-import { Management } from '../../../../models/management';
+import { CoreService } from '../../../core/core.service';
 
 @Component({
   selector: 'app-user-detail-dialog',
@@ -23,6 +23,8 @@ export class UserDetailDialogComponent implements OnInit {
   role = Role;
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any,
+              private snackBar: MatSnackBar,
+              private coreService: CoreService,
               private userService: UserService,
               private topicService: TopicService) {
   }
@@ -46,7 +48,8 @@ export class UserDetailDialogComponent implements OnInit {
 
   editRole(role: Role) {
     this.userService.editRole(this.user.id, role).subscribe(() => {
-      this.user.role = role;
+      this.ngOnInit();
+      this.snackBar.open('Success', '', {duration: 1000});
     });
   }
 
@@ -60,8 +63,11 @@ export class UserDetailDialogComponent implements OnInit {
     const selected = this.displayTopics.filter(item => item.checked);
     this.userService.editManagements(this.user.id, selected.map(item => item.id))
       .finally(() => this.loading = false)
-      .subscribe(resp => {
+      .subscribe(() => {
         this.edit = false;
+        this.topics = this.displayTopics.map(x => Object.assign({}, x));
+        this.snackBar.open('Success', '', {duration: 1000});
       });
   }
+
 }

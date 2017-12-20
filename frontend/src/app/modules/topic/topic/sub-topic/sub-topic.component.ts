@@ -109,7 +109,7 @@ export class SubTopicComponent implements OnInit {
     const data = this.subTopic.threads;
     let config = this.matSort.direction === 'asc' ? '+' : '-';
     config += this.matSort.active;
-    this.dataSource.data = this.orderByPipe.transform(data, ['-pin', config]);
+    this.dataSource.data = this.orderByPipe.transform(data, ['-pin', '-approvalStatus', config]);
     this.dataSource.filter = searchString.trim().toLowerCase();
   }
 

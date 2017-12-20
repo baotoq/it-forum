@@ -6,7 +6,6 @@ import { User } from '../../models/user';
 import { Post } from '../../models/post';
 import { Thread } from '../../models/thread';
 import { Role } from '../../models/role';
-import { Management } from '../../models/management';
 
 @Injectable()
 export class UserService {
@@ -40,7 +39,7 @@ export class UserService {
 
   editManagements(id: number, managements: number[]): Observable<any> {
     return this.httpClient.post(`${API.USER.MANAGEMENT}/${id}`, {
-      data: managements
+      data: managements,
     });
   }
 }

@@ -5,6 +5,7 @@ import { LoadingService } from '../../../components/loading/loading.service';
 import { debounce } from '../../shared/common/decorators';
 import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { UserDetailDialogComponent } from '../../shared/components/user-detail-dialog/user-detail-dialog.component';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-manage-user',
@@ -21,6 +22,7 @@ export class ManageUserComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private loadingService: LoadingService,
+              private authService: AuthService,
               private manageUserService: ManageUserService,
               private dialog: MatDialog) {
   }
@@ -32,6 +34,7 @@ export class ManageUserComponent implements OnInit {
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.users = resp;
+        this.users.splice(this.users.findIndex(item => item.id == this.authService.currentUser().id), 1);
         this.dataSource = new MatTableDataSource(this.users);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.matSort;
@@ -52,9 +55,13 @@ export class ManageUserComponent implements OnInit {
   }
 
   viewDetail(user: User) {
-    this.dialog.open(UserDetailDialogComponent, {
+    const dialogRef = this.dialog.open(UserDetailDialogComponent, {
       data: user.id,
       width: '600px',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      user.role = dialogRef.componentInstance.user.role;
     });
   }
 }

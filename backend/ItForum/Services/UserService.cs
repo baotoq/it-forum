@@ -67,6 +67,7 @@ namespace ItForum.Services
         {
             return Context.Managements.Include(m => m.User)
                 .Where(m => m.TopicId == topicId)
+                .Where(m => m.User.Role == Role.Moderator)
                 .Select(m => m.User);
         }
 
