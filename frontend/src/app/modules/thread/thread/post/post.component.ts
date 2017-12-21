@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Post } from '../../../../models/post';
 import { ApprovalStatus } from '../../../../models/approval-status';
 
@@ -10,7 +10,9 @@ import { ApprovalStatus } from '../../../../models/approval-status';
 export class PostComponent implements OnInit {
   @Input() post: Post;
   @Input() permission = false;
-  @Input() approveThread = false;
+  @Input() threadApprovalStatus: ApprovalStatus;
+
+  @Output() threadApprovalChange = new EventEmitter<any>();
 
   approvalStatus = ApprovalStatus;
 

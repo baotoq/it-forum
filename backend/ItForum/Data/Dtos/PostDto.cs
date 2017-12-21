@@ -9,13 +9,13 @@ namespace ItForum.Data.Dtos
     {
         public UserDto CreatedBy { get; set; }
 
-        public UserDto ApprovedBy { get; set; }
-
         public List<PostDto> Replies { get; set; }
 
         public List<VoteDto> Votes { get; set; }
 
         public ThreadDto Thread { get; set; }
+
+        public UserDto ApprovalStatusModifiedBy { get; set; }
 
         public class UserDto : UserEntity
         {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Role } from '../../../../../models/role';
 import { Post } from '../../../../../models/post';
 import { ApprovalStatus } from '../../../../../models/approval-status';
@@ -15,7 +15,9 @@ import { ConfirmDialogComponent } from '../../../../shared/components/confirm-di
 export class PostHeaderComponent implements OnInit {
   @Input() post: Post;
   @Input() permission = false;
-  @Input() approveThread = false;
+  @Input() threadApprovalStatus: ApprovalStatus;
+
+  @Output() threadApprovalChange = new EventEmitter<any>();
 
   role = Role;
   approvalStatus = ApprovalStatus;
@@ -32,12 +34,16 @@ export class PostHeaderComponent implements OnInit {
   }
 
   approve() {
-    let sub;
-    if (this.approveThread === true) sub = this.approveService.approveThread(this.post.threadId);
-    else sub = this.approveService.approvePost(this.post.id);
-    sub.subscribe(() => {
-      this.post.approvalStatus = ApprovalStatus.Approved;
-    });
+    if (this.threadApprovalStatus !== this.approvalStatus.Approved) {
+      this.approveService.approveThread(this.post.threadId).subscribe(() => {
+        this.post.approvalStatus = ApprovalStatus.Approved;
+        this.threadApprovalChange.emit(ApprovalStatus.Approved);
+      });
+    } else {
+      this.approveService.approvePost(this.post.id).subscribe(() => {
+        this.post.approvalStatus = ApprovalStatus.Approved;
+      });
+    }
   }
 
   decline() {
@@ -45,7 +51,8 @@ export class PostHeaderComponent implements OnInit {
       .subscribe(result => {
         if (result === true) {
           let sub;
-          if (this.approveThread === true) sub = this.approveService.declineThread(this.post.threadId);
+          if (this.threadApprovalStatus !== this.approvalStatus.Approved)
+            sub = this.approveService.declineThread(this.post.threadId);
           else sub = this.approveService.declinePost(this.post.id);
           sub.subscribe(() => {
             this.post.approvalStatus = ApprovalStatus.Declined;

@@ -12,16 +12,30 @@ namespace ItForum.Services
         {
         }
 
-        public Thread FindWithCreatedByTagsAndReplies(int id)
+        public Thread FindWithCreatedByAndTags(int id)
         {
             return DbSet.AsNoTracking().Include(x => x.CreatedBy)
                 .Include(x => x.ThreadTags).ThenInclude(x => x.Tag)
-                .Include(x => x.Posts).ThenInclude(x => x.CreatedBy)
-                .Include(x => x.Posts).ThenInclude(x => x.Replies).ThenInclude(x => x.CreatedBy)
                 .Include(x => x.Topic.Parent)
                 .Include(x => x.Topic.Managements)
                 .Include(x => x.Posts).ThenInclude(x => x.Votes)
                 .SingleOrDefault(x => x.Id == id);
+        }
+
+        public IEnumerable<Post> FindThreadPostsWithReplies(int id)
+        {
+            return DbSet.AsNoTracking().Include(x => x.CreatedBy)
+                .Include(x => x.Posts).ThenInclude(x => x.CreatedBy)
+                .Include(x => x.Posts).ThenInclude(x => x.Replies).ThenInclude(x => x.CreatedBy)
+                .SingleOrDefault(x => x.Id == id)?.Posts;
+        }
+
+        public IEnumerable<Post> FindThreadPosts(int id)
+        {
+            return DbSet.AsNoTracking().Include(x => x.CreatedBy)
+                .Include(x => x.ApprovalStatusModifiedBy)
+                .Include(x => x.Posts).ThenInclude(x => x.CreatedBy)
+                .SingleOrDefault(x => x.Id == id)?.Posts;
         }
 
         public Thread FindWithPosts(int id)

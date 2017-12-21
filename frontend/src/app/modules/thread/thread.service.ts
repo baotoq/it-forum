@@ -12,7 +12,23 @@ export class ThreadService {
   }
 
   getWithCreatedByTagsAndReplies(id: number): Observable<Thread> {
-    return this.httpClient.get<Thread>(`${API.THREAD.URL}/created-tags-replies/${id}`);
+    return this.httpClient.get<Thread>(`${API.THREAD.URL}/created-tags/${id}`);
+  }
+
+  getPendingPosts(id: number): Observable<Post[]> {
+    return this.httpClient.get<Post[]>(`${API.THREAD.URL}/pending-posts/${id}`);
+  }
+
+  getApprovedPosts(id: number): Observable<Post[]> {
+    return this.httpClient.get<Post[]>(`${API.THREAD.URL}/approved-posts-replies/${id}`);
+  }
+
+  getDeclinedPosts(id: number): Observable<Post[]> {
+    return this.httpClient.get<Post[]>(`${API.THREAD.URL}/declined-posts/${id}`);
+  }
+
+  getApprovedPendingPostsWithReplies(id: number): Observable<Post[]> {
+    return this.httpClient.get<Post[]>(`${API.THREAD.URL}/approved-pending-posts-replies/${id}`);
   }
 
   create(thread: Thread): Observable<Thread> {

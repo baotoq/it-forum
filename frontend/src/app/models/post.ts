@@ -14,6 +14,7 @@ export class Post extends Timestamp {
   parentId: number;
   replies: Post[];
   approvalStatus: ApprovalStatus;
+  approvalStatusModifiedBy: User;
   votes: Vote[];
 
   constructor(obj?) {

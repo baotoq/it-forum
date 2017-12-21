@@ -9,7 +9,6 @@ import { TopicService } from '../../topic.service';
 import { Storage } from '../../../shared/common/constant';
 import { User } from '../../../../models/user';
 import { UserService } from '../../../user/user.service';
-import { IsExistPipe } from '../../../shared/pipes/is-exist.pipe';
 import { ApprovalStatus } from '../../../../models/approval-status';
 import { AuthService } from '../../../auth/auth.service';
 import { Role } from '../../../../models/role';
@@ -50,7 +49,6 @@ export class SubTopicComponent implements OnInit {
               private approveService: ApproveService,
               private loadingService: LoadingService,
               private orderByPipe: OrderByPipe,
-              private isExistPipe: IsExistPipe,
               private isManagementPipe: IsManagementPipe,
               public dialog: MatDialog) {
   }
@@ -88,14 +86,15 @@ export class SubTopicComponent implements OnInit {
   }
 
   highlightRecently() {
-    const recentlyThreads = JSON.parse(localStorage.getItem(Storage.RECENTLY_THREADS));
+    let recentlyThreads = JSON.parse(localStorage.getItem(Storage.RECENTLY_THREADS));
+    if (!recentlyThreads) recentlyThreads = [];
 
     const threeDaysAgo = new Date();
     threeDaysAgo.setDate(new Date().getDate() - 3);
 
     this.subTopic.threads.forEach(th => {
       const d = new Date(th.dateCreated);
-      if (d >= threeDaysAgo && !this.isExistPipe.transform(recentlyThreads, th.id)) {
+      if (d >= threeDaysAgo && !recentlyThreads.some(id => id === th.id)) {
         th.highlight = true;
       }
     });

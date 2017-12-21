@@ -8,9 +8,9 @@ import { Storage } from '../../shared/common/constant';
 import { Post } from '../../../models/post';
 import { CoreService } from '../../core/core.service';
 import { AuthService } from '../../auth/auth.service';
-import { IsExistPipe } from '../../shared/pipes/is-exist.pipe';
 import { IsManagementPipe } from '../../shared/pipes/is-management';
 import { ApprovalStatus } from '../../../models/approval-status';
+import { Role } from '../../../models/role';
 
 @Component({
   selector: 'app-thread',
@@ -19,6 +19,7 @@ import { ApprovalStatus } from '../../../models/approval-status';
 })
 export class ThreadComponent implements OnInit {
   thread: Thread;
+  posts: Post[];
   permission = false;
 
   currentPage = 1;
@@ -32,6 +33,7 @@ export class ThreadComponent implements OnInit {
   currentUser = this.authService.currentUser();
 
   approvalStatus = ApprovalStatus;
+  role = Role;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -40,7 +42,6 @@ export class ThreadComponent implements OnInit {
               private loadingService: LoadingService,
               private threadService: ThreadService,
               private orderByPipe: OrderByPipe,
-              private isExistPipe: IsExistPipe,
               private isManagementPipe: IsManagementPipe) {
   }
 
@@ -48,20 +49,22 @@ export class ThreadComponent implements OnInit {
     this.loadingService.spinnerStart();
     const threadId = this.route.snapshot.params['threadId'];
     this.threadService.getWithCreatedByTagsAndReplies(threadId)
-      .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.thread = resp;
-        this.thread.posts = this.orderByPipe.transform(this.thread.posts, ['dateCreated']);
+        if (this.thread.approvalStatus === this.approvalStatus.Declined) {
+          this.declinedFilter();
+        } else {
+          this.defaultFilter();
+        }
         this.threadService.increaseView(this.thread.id).subscribe();
         this.checkPermission();
-        this.onPageChange();
         this.setStorage();
       });
   }
 
   onPageChange() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
-    this.paginatedData = this.thread.posts.slice(startIndex, startIndex + this.pageSize);
+    this.paginatedData = this.posts.slice(startIndex, startIndex + this.pageSize);
   }
 
   onPost() {
@@ -81,9 +84,8 @@ export class ThreadComponent implements OnInit {
       .subscribe(resp => {
         this.showEditor = false;
         this.editorContent = '';
+        this.defaultFilter();
         this.coreService.notifySuccess();
-        this.thread.posts.push(resp);
-        this.onPageChange();
       });
   }
 
@@ -97,8 +99,56 @@ export class ThreadComponent implements OnInit {
   setStorage() {
     let recentlyThreads = JSON.parse(localStorage.getItem(Storage.RECENTLY_THREADS));
     if (!recentlyThreads) recentlyThreads = [];
-    if (!this.isExistPipe.transform(recentlyThreads, this.thread.id))
+    if (!recentlyThreads.some(item => item === this.thread.id))
       recentlyThreads.push(this.thread.id);
     localStorage.setItem(Storage.RECENTLY_THREADS, JSON.stringify(recentlyThreads));
+  }
+
+  defaultFilter() {
+    this.loadingService.spinnerStart();
+    this.threadService.getApprovedPendingPostsWithReplies(this.thread.id)
+      .finally(() => this.loadingService.spinnerStop())
+      .subscribe(resp => {
+        this.posts = this.orderByPipe.transform(resp, ['dateCreated']);
+        this.onPageChange();
+        this.currentPage = 1;
+      });
+  }
+
+  approvedFilter() {
+    this.loadingService.spinnerStart();
+    this.threadService.getApprovedPosts(this.thread.id)
+      .finally(() => this.loadingService.spinnerStop())
+      .subscribe(resp => {
+        this.posts = this.orderByPipe.transform(resp, ['dateCreated']);
+        this.onPageChange();
+        this.currentPage = 1;
+      });
+  }
+
+  pendingFilter() {
+    this.loadingService.spinnerStart();
+    this.threadService.getPendingPosts(this.thread.id)
+      .finally(() => this.loadingService.spinnerStop())
+      .subscribe(resp => {
+        this.posts = this.orderByPipe.transform(resp, ['dateCreated']);
+        this.onPageChange();
+        this.currentPage = 1;
+      });
+  }
+
+  declinedFilter() {
+    this.loadingService.spinnerStart();
+    this.threadService.getDeclinedPosts(this.thread.id)
+      .finally(() => this.loadingService.spinnerStop())
+      .subscribe(resp => {
+        this.posts = this.orderByPipe.transform(resp, ['dateCreated']);
+        this.onPageChange();
+        this.currentPage = 1;
+      });
+  }
+
+  threadApprovalChange($event) {
+    this.thread.approvalStatus = $event;
   }
 }

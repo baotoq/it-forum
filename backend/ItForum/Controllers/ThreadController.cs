@@ -37,14 +37,23 @@ namespace ItForum.Controllers
 
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
 
-        [HttpGet("created-tags-replies/{id}")]
-        public IActionResult GetWithCreatedByTagsAndRepliesAsync(int id)
+        [HttpGet("created-tags/{id}")]
+        public IActionResult GetWithCreatedByAndTags(int id)
         {
-            var thread = _threadService.FindWithCreatedByTagsAndReplies(id);
+            var thread = _threadService.FindWithCreatedByAndTags(id);
 
-            thread.Posts.RemoveAll(p => p.ParentId != null || p.ApprovalStatus == ApprovalStatus.Declined);
+            var dto = _mapper.Map<ThreadDto>(thread);
+            return Ok(dto);
+        }
 
-            thread.Posts.ForEach(p => p.Replies.RemoveAll(r => r.ApprovalStatus == ApprovalStatus.Declined));
+        [HttpGet("approved-pending-posts-replies/{id}")]
+        public IActionResult GetApprovedPendingPostsWithReplies(int id)
+        {
+            var posts = _threadService.FindThreadPostsWithReplies(id).ToList();
+
+            posts.RemoveAll(p => p.ParentId != null || p.ApprovalStatus == ApprovalStatus.Declined);
+
+            posts.ForEach(p => p.Replies.RemoveAll(r => r.ApprovalStatus == ApprovalStatus.Declined));
 
             if (User.Identity.IsAuthenticated)
             {
@@ -55,19 +64,55 @@ namespace ItForum.Controllers
                     var predicate = new Predicate<Post>(p =>
                         p.ApprovalStatus == ApprovalStatus.Pending && p.CreatedById != CurrentUserId);
 
-                    thread.Posts.RemoveAll(predicate);
-                    thread.Posts.ForEach(p => p.Replies.RemoveAll(predicate));
+                    posts.RemoveAll(predicate);
+                    posts.ForEach(p => p.Replies.RemoveAll(predicate));
                 }
             }
             else
             {
                 var predicate = new Predicate<Post>(p => p.ApprovalStatus == ApprovalStatus.Pending);
 
-                thread.Posts.RemoveAll(predicate);
-                thread.Posts.ForEach(p => p.Replies.RemoveAll(predicate));
+                posts.RemoveAll(predicate);
+                posts.ForEach(p => p.Replies.RemoveAll(predicate));
             }
 
-            var dto = _mapper.Map<ThreadDto>(thread);
+            var dto = _mapper.Map<List<PostDto>>(posts);
+            return Ok(dto);
+        }
+
+        [HttpGet("approved-posts-replies/{id}")]
+        public IActionResult GetApprovedPostsWithReplies(int id)
+        {
+            var posts = _threadService.FindThreadPostsWithReplies(id).ToList();
+
+            posts.RemoveAll(p => p.ParentId != null || p.ApprovalStatus != ApprovalStatus.Approved);
+            posts.ForEach(p => p.Replies.RemoveAll(r => r.ApprovalStatus != ApprovalStatus.Approved));
+
+            var dto = _mapper.Map<List<PostDto>>(posts);
+            return Ok(dto);
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
+        [HttpGet("pending-posts/{id}")]
+        public IActionResult GetPendingPosts(int id)
+        {
+            var posts = _threadService.FindThreadPosts(id);
+
+            posts = posts.Where(p => p.ApprovalStatus == ApprovalStatus.Pending);
+
+            var dto = _mapper.Map<List<PostDto>>(posts.ToList());
+            return Ok(dto);
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
+        [HttpGet("declined-posts/{id}")]
+        public IActionResult GetDeclinedPosts(int id)
+        {
+            var posts = _threadService.FindThreadPosts(id);
+
+            posts = posts.Where(p => p.ApprovalStatus == ApprovalStatus.Declined);
+
+            var dto = _mapper.Map<List<PostDto>>(posts.ToList());
             return Ok(dto);
         }
 

@@ -3,7 +3,6 @@ import { TopicService } from '../topic.service';
 import { Topic } from '../../../models/topic';
 import { LoadingService } from '../../../components/loading/loading.service';
 import { Storage } from '../../shared/common/constant';
-import { IsExistPipe } from '../../shared/pipes/is-exist.pipe';
 
 @Component({
   selector: 'app-topic-list',
@@ -15,8 +14,7 @@ export class TopicListComponent implements OnInit, OnDestroy {
   subscription: any;
 
   constructor(private loadingService: LoadingService,
-              private topicService: TopicService,
-              private isExistPipe: IsExistPipe) {
+              private topicService: TopicService) {
   }
 
   ngOnInit() {
@@ -39,7 +37,8 @@ export class TopicListComponent implements OnInit, OnDestroy {
   }
 
   countUnread() {
-    const recentlyThreads = JSON.parse(localStorage.getItem(Storage.RECENTLY_THREADS));
+    let recentlyThreads = JSON.parse(localStorage.getItem(Storage.RECENTLY_THREADS));
+    if (!recentlyThreads) recentlyThreads = [];
 
     const threeDaysAgo = new Date();
     threeDaysAgo.setDate(new Date().getDate() - 3);
@@ -49,7 +48,7 @@ export class TopicListComponent implements OnInit, OnDestroy {
         st.numberOfNewThreads = 0;
         st.threads.forEach(th => {
           const d = new Date(th.dateCreated);
-          if (d >= threeDaysAgo && !this.isExistPipe.transform(recentlyThreads, th.id)) {
+          if (d >= threeDaysAgo && !recentlyThreads.some(id => id === th.id)) {
             st.numberOfNewThreads += 1;
           }
         });
