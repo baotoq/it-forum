@@ -26,6 +26,7 @@ import { debounce } from '../../../shared/common/decorators';
 })
 export class SubTopicComponent implements OnInit {
   subTopic: Topic;
+  threads = [];
 
   displayedColumns;
   dataSource: MatTableDataSource<Thread>;
@@ -75,7 +76,7 @@ export class SubTopicComponent implements OnInit {
 
         this.dataSource = new MatTableDataSource([]);
         this.dataSource.paginator = this.paginator;
-        this.filter();
+        this.defaultFilter();
 
         if (this.matSort.active !== 'lastActivity') {
           this.matSort.sort({id: 'lastActivity', start: 'desc', disableClear: true});
@@ -105,7 +106,7 @@ export class SubTopicComponent implements OnInit {
   }
 
   filter(searchString: string = '') {
-    const data = this.subTopic.threads;
+    const data = this.threads;
     let config = this.matSort.direction === 'asc' ? '+' : '-';
     config += this.matSort.active;
     this.dataSource.data = this.orderByPipe.transform(data, ['-pin', '-approvalStatus', config]);
@@ -144,5 +145,48 @@ export class SubTopicComponent implements OnInit {
     this.threadService.pin(thread.id, pin).subscribe(resp => {
       thread.pin = pin;
     });
+  }
+
+  defaultFilter() {
+    this.loadingService.spinnerStart();
+    this.topicService.getDefaultThreads(this.subTopic.id)
+      .finally(() => this.loadingService.spinnerStop())
+      .subscribe(resp => {
+        this.threads = resp;
+        this.paginator.pageIndex = 0;
+        this.filter();
+      });
+  }
+
+  approvedFilter() {
+    this.loadingService.spinnerStart();
+    this.topicService.getApprovedThreads(this.subTopic.id)
+      .finally(() => this.loadingService.spinnerStop())
+      .subscribe(resp => {
+        this.threads = resp;
+        this.filter();
+      });
+  }
+
+  pendingFilter() {
+    this.loadingService.spinnerStart();
+    this.topicService.getPendingThreads(this.subTopic.id)
+      .finally(() => this.loadingService.spinnerStop())
+      .subscribe(resp => {
+        this.threads = resp;
+        this.paginator.pageIndex = 0;
+        this.filter();
+      });
+  }
+
+  declinedFilter() {
+    this.loadingService.spinnerStart();
+    this.topicService.getDeclinedThreads(this.subTopic.id)
+      .finally(() => this.loadingService.spinnerStop())
+      .subscribe(resp => {
+        this.threads = resp;
+        this.paginator.pageIndex = 0;
+        this.filter();
+      });
   }
 }

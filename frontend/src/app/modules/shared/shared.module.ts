@@ -6,6 +6,7 @@ import { MaterialModule } from './modules/material/material.module';
 import { FilterByPipe, NgPipesModule, OrderByPipe } from 'ngx-pipes';
 import { MomentModule } from 'angular2-moment';
 import { Ng2GoogleChartsModule } from 'ng2-google-charts';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { HasErrorPipe } from './pipes/has-error.pipe';
 import { IsExistPipe } from './pipes/is-exist.pipe';
@@ -51,6 +52,7 @@ const MODULES = [
   NgPipesModule,
   MomentModule,
   MaterialModule,
+  NgbModule,
 ];
 
 @NgModule({

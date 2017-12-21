@@ -210,13 +210,20 @@ namespace ItForum.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = nameof(Role.Administrator))]
+        [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
         [HttpPost("pin/{id}")]
         public async Task<IActionResult> Pin(int id, bool pin)
         {
             var thread = _threadService.FindById(id);
             if (thread == null) return BadRequest();
+            
+            var currentUser = _userService.FindById(CurrentUserId);
+            if (currentUser.Role == Role.Moderator)
+                if (!_userService.IsManagement(thread.TopicId.Value, currentUser.Id))
+                    return Forbid();
+
             thread.Pin = pin;
+
             await _unitOfWork.SaveChangesAsync();
             return Ok();
         }

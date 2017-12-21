@@ -31,6 +31,7 @@ export class ThreadComponent implements OnInit {
   editorContent;
 
   currentUser = this.authService.currentUser();
+  authenticated = this.authService.isAuthenticated();
 
   approvalStatus = ApprovalStatus;
   role = Role;

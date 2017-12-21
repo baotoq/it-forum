@@ -17,6 +17,18 @@
       <i class="fa fa-plus"></i>
       Thread
     </a>
+    <ng-container *ngIf="showFilter">
+      <button mat-icon-button [matMenuTriggerFor]="menu" class="ml-2" clickStopPropagation="">
+        <mat-icon>filter_list</mat-icon>
+
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="defaultFilter.emit()">Default</button>
+        <button mat-menu-item (click)="approvedFilter.emit()">Approved</button>
+        <button mat-menu-item (click)="pendingFilter.emit()">Pending</button>
+        <button mat-menu-item (click)="declinedFilter.emit()">Declined</button>
+      </mat-menu>
+    </ng-container>
   </mat-toolbar>
   <mat-toolbar [class.shadow-2]="search"
                class="bg-white mat-toolbar-56" style="position: static">

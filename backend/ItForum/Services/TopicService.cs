@@ -34,11 +34,18 @@ namespace ItForum.Services
                 .SingleOrDefault(x => x.Id == id);
         }
 
-        public Topic FindWithThreadsCreatedBy(int id)
+        public Topic FindWithManaments(int id)
         {
-            return DbSet.AsNoTracking().Include(x => x.Threads).ThenInclude(x => x.CreatedBy)
+            return DbSet.AsNoTracking()
                 .Include(x => x.Managements)
                 .SingleOrDefault(x => x.Id == id);
+        }
+
+        public IEnumerable<Thread> FindTopicThreads(int id)
+        {
+            return DbSet.AsNoTracking()
+                .Include(x => x.Threads).ThenInclude(x => x.CreatedBy)
+                .SingleOrDefault(x => x.Id == id)?.Threads;
         }
 
         public void IncreaseNumberOfThreads(int? id)

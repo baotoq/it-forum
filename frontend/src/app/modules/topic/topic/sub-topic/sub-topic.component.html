@@ -28,14 +28,19 @@
   </mat-card>
 
   <div class="shadow-2">
-    <app-thread-search-input (searchOut)="onSearchOut($event)"></app-thread-search-input>
+    <app-thread-search-input (searchOut)="onSearchOut($event)"
+                             [showFilter]="authenticated && currentUser.role !== role.None"
+                             (defaultFilter)="defaultFilter()"
+                             (approvedFilter)="approvedFilter()"
+                             (declinedFilter)="declinedFilter()"
+                             (pendingFilter)="pendingFilter()"></app-thread-search-input>
 
     <mat-table #table [dataSource]="dataSource" matSort matSortStart="desc" [matSortDisableClear]="true">
 
       <ng-container matColumnDef="title">
         <mat-header-cell *matHeaderCellDef mat-sort-header start="asc">Title</mat-header-cell>
         <mat-cell *matCellDef="let row" [title]="row.title">
-          <a [ngbTooltip]="row.createdBy.name" placement="right"
+          <a [ngbTooltip]="row.createdBy.name" placement="right" container="body"
              [routerLink]="['/user', row.createdBy.id]" class="mr-1 avatar">
             <img [src]="row.createdBy.avatar" [alt]="row.createdBy.name" class="img-fluid">
           </a>
@@ -47,7 +52,7 @@
           <app-badge-approval-status [status]="row.approvalStatus"></app-badge-approval-status>
           <span [class.font-weight-bold]="row.highlight">{{row.title | shorten: 100:'...'}}</span>
 
-          <ng-container *ngIf="authenticated && (currentUser.role === role.Administrator || management)">
+          <ng-container *ngIf="currentUser?.role === role.Administrator || management">
             <button mat-icon-button clickStopPropagation preventDefault [matMenuTriggerFor]="menu" class="menu d-none">
               <mat-icon>more_vert</mat-icon>
             </button>
@@ -58,6 +63,12 @@
                 </button>
                 <button mat-menu-item (click)="decline(row)">
                   Decline
+                </button>
+                <div class="divider"></div>
+              </ng-container>
+              <ng-container *ngIf="row.approvalStatus == approvalStatus.Declined">
+                <button mat-menu-item (click)="approve(row)">
+                  Approve
                 </button>
                 <div class="divider"></div>
               </ng-container>

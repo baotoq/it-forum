@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
@@ -13,6 +13,12 @@ export class ThreadSearchInputComponent implements OnInit {
   @ViewChild('searchInput') searchInput: ElementRef;
 
   @Output() searchOut = new EventEmitter<any>();
+  @Output() defaultFilter = new EventEmitter<any>();
+  @Output() pendingFilter = new EventEmitter<any>();
+  @Output() approvedFilter = new EventEmitter<any>();
+  @Output() declinedFilter = new EventEmitter<any>();
+
+  @Input() showFilter = false;
 
   constructor(private route: ActivatedRoute) {
   }
