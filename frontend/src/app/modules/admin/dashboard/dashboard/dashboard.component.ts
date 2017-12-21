@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { DashboardService } from '../dashboard.service';
 import { LoadingService } from '../../../../components/loading/loading.service';
+import { LineChartComponent } from '../../../shared/components/line-chart/line-chart.component';
+import { ColumnChartComponent } from '../../../shared/components/column-chart/column-chart.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,10 +10,9 @@ import { LoadingService } from '../../../../components/loading/loading.service';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  @ViewChild('chart1') chart1;
-  @ViewChild('chart2') chart2;
-  @ViewChild('chart3') chart3;
-  @ViewChild('chart4') chart4;
+
+  @ViewChildren(LineChartComponent) lineCharts: QueryList<LineChartComponent>;
+  @ViewChildren(ColumnChartComponent) columnCharts: QueryList<ColumnChartComponent>;
 
   threadsDataTable;
   postsDataTable;
@@ -53,5 +54,10 @@ export class DashboardComponent implements OnInit {
       ...data.map(item => [new Date(item.key.year, item.key.month - 1), item.value])
     ];
     return data;
+  }
+
+  redraw() {
+    this.lineCharts.forEach(item => item.redraw());
+    this.columnCharts.forEach(item => item.redraw());
   }
 }

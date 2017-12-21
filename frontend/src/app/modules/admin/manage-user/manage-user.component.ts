@@ -6,6 +6,7 @@ import { debounce } from '../../shared/common/decorators';
 import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { UserDetailDialogComponent } from '../../shared/components/user-detail-dialog/user-detail-dialog.component';
 import { AuthService } from '../../auth/auth.service';
+import { UserService } from '../../user/user.service';
 
 @Component({
   selector: 'app-manage-user',
@@ -23,6 +24,7 @@ export class ManageUserComponent implements OnInit {
 
   constructor(private loadingService: LoadingService,
               private authService: AuthService,
+              private userService: UserService,
               private manageUserService: ManageUserService,
               private dialog: MatDialog) {
   }
@@ -60,8 +62,7 @@ export class ManageUserComponent implements OnInit {
       width: '600px',
     });
 
-    dialogRef.afterClosed().subscribe(() => {
-      user.role = dialogRef.componentInstance.user.role;
-    });
+    dialogRef.afterClosed().flatMap(() => this.userService.get(user.id))
+      .subscribe(resp => user.role = resp.role);
   }
 }

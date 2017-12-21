@@ -101,7 +101,8 @@ namespace ItForum.Controllers
         {
             var user = _userService.FindWithManagements(id);
             if (user == null) return BadRequest();
-
+            if (user.Role != Role.Moderator) return BadRequest();
+            
             user.Managements.Clear();
             await _unitOfWork.SaveChangesAsync();
 

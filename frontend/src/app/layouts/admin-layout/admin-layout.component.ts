@@ -55,10 +55,7 @@ export class AdminLayoutComponent implements OnInit {
 
   redraw() {
     if (this.dashboardComponent) {
-      this.dashboardComponent.chart1.redraw();
-      this.dashboardComponent.chart2.redraw();
-      this.dashboardComponent.chart3.redraw();
-      this.dashboardComponent.chart4.redraw();
+      this.dashboardComponent.redraw();
     }
   }
 }

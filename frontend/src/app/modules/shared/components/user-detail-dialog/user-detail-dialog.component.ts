@@ -1,11 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
-import { User } from '../../../../models/user';
 import { UserService } from '../../../user/user.service';
-import { Role } from '../../../../models/role';
 import { TopicService } from '../../../topic/topic.service';
-import { Topic } from '../../../../models/topic';
 import { CoreService } from '../../../core/core.service';
+import { Topic } from '../../../../models/topic';
+import { Role } from '../../../../models/role';
+import { User } from '../../../../models/user';
 
 @Component({
   selector: 'app-user-detail-dialog',
@@ -14,8 +14,8 @@ import { CoreService } from '../../../core/core.service';
 })
 export class UserDetailDialogComponent implements OnInit {
   user: User;
+  oldRole: Role;
   topics: Topic[];
-  displayTopics: Topic[];
 
   edit = false;
   loading = false;
@@ -30,8 +30,11 @@ export class UserDetailDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.edit = false;
+    this.loading = false;
     this.userService.getWithManagements(this.data).flatMap(resp => {
       this.user = resp;
+      this.oldRole = this.user.role;
       return this.topicService.getAllSubTopics();
     }).subscribe(resp => {
       this.topics = resp;
@@ -41,33 +44,34 @@ export class UserDetailDialogComponent implements OnInit {
         const index = this.topics.findIndex(t => t.id === item.topicId);
         if (index >= 0) this.topics[index].checked = true;
       });
-
-      this.displayTopics = this.topics.map(x => Object.assign({}, x));
     });
   }
 
   editRole(role: Role) {
-    this.userService.editRole(this.user.id, role).subscribe(() => {
-      this.ngOnInit();
-      this.snackBar.open('Success', '', {duration: 1000});
-    });
+    this.edit = true;
+    this.user.role = role;
   }
 
   onCancel() {
-    this.edit = false;
-    this.displayTopics = this.topics.map(x => Object.assign({}, x));
+    this.ngOnInit();
   }
 
   onSave() {
     this.loading = true;
-    const selected = this.displayTopics.filter(item => item.checked);
-    this.userService.editManagements(this.user.id, selected.map(item => item.id))
-      .finally(() => this.loading = false)
-      .subscribe(() => {
-        this.edit = false;
-        this.topics = this.displayTopics.map(x => Object.assign({}, x));
-        this.snackBar.open('Success', '', {duration: 1000});
-      });
+    if (this.user.role === this.role.Moderator) {
+      const selected = this.topics.filter(item => item.checked);
+      this.userService.editRole(this.user.id, this.user.role)
+        .flatMap(() => this.userService.editManagements(this.user.id, selected.map(item => item.id)))
+        .subscribe(() => {
+          this.ngOnInit();
+          this.snackBar.open('Success', '', {duration: 2000});
+        });
+    } else {
+      this.userService.editRole(this.user.id, this.user.role)
+        .subscribe(() => {
+          this.ngOnInit();
+        });
+    }
   }
 
 }

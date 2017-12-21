@@ -6,23 +6,23 @@
   <app-widget></app-widget>
 </div>
 
-<app-column-chart #chart1 class="w-100"
+<app-column-chart class="w-100"
                   hAxis="Topic"
                   position="top"
                   [dataTable]="threadsDataTable"></app-column-chart>
 
-<app-line-chart #chart2 class="w-100"
+<app-line-chart class="w-100"
                 hAxis="Month"
                 position="top"
                 [colors]="['#dc3912']"
                 [dataTable]="threadLifetimeDataTable"></app-line-chart>
 
-<app-column-chart #chart3 class="w-100"
+<app-column-chart class="w-100"
                   hAxis="Topic"
                   position="top"
                   [dataTable]="postsDataTable"></app-column-chart>
 
-<app-line-chart #chart4 class="w-100"
+<app-line-chart class="w-100"
                 hAxis="Month"
                 position="top"
                 [colors]="['#dc3912']"

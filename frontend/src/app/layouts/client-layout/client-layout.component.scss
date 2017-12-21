@@ -1,11 +1,9 @@
-.main {
-  margin-top: 64px !important;
-
-  min-height: 600px;
+mat-sidenav-container {
+  top: 64px !important;
 }
 
 @media screen and (max-width: 600px) {
-  .main {
-    margin-top: 56px !important;
+  mat-sidenav-container {
+    top: 56px !important;
   }
 }
