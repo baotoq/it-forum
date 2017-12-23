@@ -12,16 +12,20 @@ export class TopicService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getAll(): Observable<Topic[]> {
-    return this.httpClient.get<Topic[]>(API.TOPIC.URL);
+  getAllWithSubTopicsAndThreads(level: number): Observable<Topic[]> {
+    return this.httpClient.get<Topic[]>(`${API.TOPIC.URL}/sub-threads?level=${level}`);
+  }
+
+  getAll(level: number): Observable<Topic[]> {
+    return this.httpClient.get<Topic[]>(`${API.TOPIC.URL}?level=${level}`);
   }
 
   getWithSubTopics(id: number): Observable<Topic> {
-    return this.httpClient.get<Topic>(`${API.TOPIC.URL}/sub-topics/${id}`);
+    return this.httpClient.get<Topic>(`${API.TOPIC.URL}/subs/${id}`);
   }
 
-  getWithThreads(id: number): Observable<Topic> {
-    return this.httpClient.get<Topic>(`${API.TOPIC.URL}/threads-created/${id}`);
+  getWithManagements(id: number): Observable<Topic> {
+    return this.httpClient.get<Topic>(`${API.TOPIC.URL}/managements/${id}`);
   }
 
   getParentOptions(): Observable<any> {
@@ -30,10 +34,6 @@ export class TopicService {
 
   getSubOptions(id: number): Observable<any> {
     return this.httpClient.get(`${API.TOPIC.URL}/sub-options/${id}`);
-  }
-
-  getAllSubTopics(): Observable<Topic[]> {
-    return this.httpClient.get<Topic[]>(`${API.TOPIC.URL}/all-sub-topics`);
   }
 
   getDefaultThreads(id: number): Observable<Thread[]> {

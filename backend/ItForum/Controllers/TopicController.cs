@@ -30,7 +30,7 @@ namespace ItForum.Controllers
 
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
 
-        [HttpGet]
+        [HttpGet("sub-threads")]
         public IActionResult GetAllWithSubTopicsAndThreads(int level = 0)
         {
             var topics = _topicService.FindWithSubTopicsAndThreads(level).ToList();
@@ -38,7 +38,15 @@ namespace ItForum.Controllers
             return Ok(dto);
         }
 
-        [HttpGet("sub-topics/{id}")]
+        [HttpGet]
+        public IActionResult GetAll(int level = 0)
+        {
+            var topics = _topicService.FindByNoTracking(x => x.Level == level).ToList();
+            var dto = _mapper.Map<List<TopicDto>>(topics);
+            return Ok(dto);
+        }
+
+        [HttpGet("subs/{id}")]
         public IActionResult GetWithSubTopics(int id)
         {
             var topic = _topicService.FindWithSubTopics(id);
@@ -70,16 +78,8 @@ namespace ItForum.Controllers
             }));
         }
 
-        [HttpGet("all-sub-topics")]
-        public IActionResult GetAllSubTopics()
-        {
-            var topics = _topicService.FindByNoTracking(x => x.Parent != null).ToList();
-            var dto = _mapper.Map<List<TopicDto>>(topics);
-            return Ok(dto);
-        }
-
-        [HttpGet("threads-created/{id}")]
-        public IActionResult GetWithThreadsCreatedBy(int id)
+        [HttpGet("managements/{id}")]
+        public IActionResult GetWithManagements(int id)
         {
             var topic = _topicService.FindWithManaments(id);
             var dto = _mapper.Map<TopicDto>(topic);
@@ -108,12 +108,6 @@ namespace ItForum.Controllers
 
             var dto = _mapper.Map<List<ThreadDto>>(threads);
 
-            for (int i = 0; i < dto.Count; i++)
-            {
-                dto[i].NumberOfPendings = threads[i].Posts.Count(x => x.ApprovalStatus == ApprovalStatus.Pending);
-                dto[i].Posts.Clear();
-            }
-
             return Ok(dto);
         }
 
@@ -126,12 +120,6 @@ namespace ItForum.Controllers
             threads = threads.Where(p => p.ApprovalStatus == ApprovalStatus.Approved).ToList();
 
             var dto = _mapper.Map<List<ThreadDto>>(threads);
-
-            for (int i = 0; i < dto.Count; i++)
-            {
-                dto[i].NumberOfPendings = threads[i].Posts.Count(x => x.ApprovalStatus == ApprovalStatus.Pending);
-                dto[i].Posts.Clear();
-            }
 
             return Ok(dto);
         }

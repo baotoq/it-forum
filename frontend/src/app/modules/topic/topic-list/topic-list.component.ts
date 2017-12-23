@@ -27,7 +27,7 @@ export class TopicListComponent implements OnInit, OnDestroy {
 
   getTopic() {
     this.loadingService.spinnerStart();
-    this.subscription = this.topicService.getAll()
+    this.subscription = this.topicService.getAllWithSubTopicsAndThreads(0)
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.topics = resp;

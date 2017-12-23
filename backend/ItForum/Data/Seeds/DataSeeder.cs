@@ -23,8 +23,8 @@ namespace ItForum.Data.Seeds
 
         public async Task InitializeAsync(int numberOfTopics)
         {
-            //_context.Database.EnsureDeleted();
-            //_context.Database.EnsureCreated();
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
 
             var tagFaker = new Faker<Tag>().Rules((f, o) =>
             {
@@ -72,8 +72,8 @@ namespace ItForum.Data.Seeds
             await _context.SaveChangesAsync();
 
             index = 1;
-            var mods = userFaker.Generate(25);
-            mods.ToList().ForEach(x =>
+            var mods = userFaker.Generate(25).ToList();
+            mods.ForEach(x =>
             {
                 x.Role = Role.Moderator;
                 x.Name = $"mod{index}";
@@ -85,8 +85,8 @@ namespace ItForum.Data.Seeds
             await _context.SaveChangesAsync();
 
             index = 1;
-            var users = userFaker.Generate(25);
-            users.ToList().ForEach(x =>
+            var users = userFaker.Generate(25).ToList();
+            users.ForEach(x =>
             {
                 x.Role = Role.None;
                 x.Name = $"user{index}";
@@ -96,11 +96,6 @@ namespace ItForum.Data.Seeds
             });
             _context.Users.AddRange(users);
             await _context.SaveChangesAsync();
-
-
-            users = _context.Users.ToList();
-            mods = users.Where(x => x.Role == Role.Moderator).ToList();
-            admin = users.ToList().Find(x => x.Email == "admin@gmail.com");
 
             var postFaker = new Faker<Post>().Rules((f, o) =>
             {
@@ -188,7 +183,7 @@ namespace ItForum.Data.Seeds
                 {
                     var u = f.PickRandom(temp);
                     temp.Remove(u);
-                    managements.Add(new Management { User = u });
+                    managements.Add(new Management {User = u});
                 }
                 o.Managements = managements.ToList();
             });
@@ -246,8 +241,8 @@ namespace ItForum.Data.Seeds
 
             _context.AddRange(topics);
 
-            users = userFaker.Generate(20);
-            users.ToList().ForEach(x =>
+            users = userFaker.Generate(20).ToList();
+            users.ForEach(x =>
             {
                 x.Role = Role.None;
                 x.Name = $"user{index}";

@@ -67,7 +67,7 @@ export class SubTopicComponent implements OnInit {
 
   getSubTopic(id: number) {
     this.loadingService.spinnerStart();
-    this.topicService.getWithThreads(id)
+    this.topicService.getWithManagements(id)
       .subscribe(resp => {
         this.subTopic = resp;
 

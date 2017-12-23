@@ -3,7 +3,6 @@ using System.Linq;
 using AutoMapper;
 using ItForum.Data.Domains;
 using ItForum.Data.Entities;
-using Remotion.Linq.Parsing.Structure.IntermediateModel;
 
 namespace ItForum.Data.Dtos
 {
@@ -65,6 +64,8 @@ namespace ItForum.Data.Dtos
         public ThreadMapperProfile()
         {
             CreateMap<Thread, ThreadDto>()
+                .ForMember(d => d.NumberOfPendings,
+                    s => s.MapFrom(t => t.Posts.Count(p => p.ApprovalStatus == ApprovalStatus.Pending)))
                 .ForMember(d => d.Tags, s => s.MapFrom(t => t.ThreadTags.Select(tt => tt.Tag)));
             CreateMap<User, ThreadDto.UserDto>()
                 .ForMember(d => d.Password, s => s.Ignore())

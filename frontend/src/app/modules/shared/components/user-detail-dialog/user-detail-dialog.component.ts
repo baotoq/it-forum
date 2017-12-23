@@ -35,7 +35,7 @@ export class UserDetailDialogComponent implements OnInit {
     this.userService.getWithManagements(this.data).flatMap(resp => {
       this.user = resp;
       this.oldRole = this.user.role;
-      return this.topicService.getAllSubTopics();
+      return this.topicService.getAll(1);
     }).subscribe(resp => {
       this.topics = resp;
       this.topics.forEach(item => item.checked = false);

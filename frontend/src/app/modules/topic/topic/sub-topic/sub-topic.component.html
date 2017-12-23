@@ -17,7 +17,7 @@
       {{subTopic.description}}
     </div>
     <div class="mt-2">
-      <span class="mr-2">Mods:</span>
+      <span class="badge badge-dark mr-2">Moderators:</span>
       <span *ngFor="let mod of $moderators | async" [ngbTooltip]="mod.name">
         <a [routerLink]="['/user', mod.id]" class="mr-1 avatar">
           <img [src]="mod.avatar" [alt]="mod.name" class="img-fluid"
