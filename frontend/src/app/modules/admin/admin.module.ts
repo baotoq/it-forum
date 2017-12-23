@@ -11,6 +11,7 @@ import { ApproveModule } from './approve/approve.module';
 import { ManageUserComponent } from './manage-user/manage-user.component';
 import { ManageTopicComponent } from './manage-topic/manage-topic.component';
 import { ManageUserSearchInputComponent } from './manage-user/manage-user-search-input/manage-user-search-input.component';
+import { CreateTopicDialogComponent } from './manage-topic/create-topic-dialog/create-topic-dialog.component';
 
 @NgModule({
   imports: [
@@ -27,6 +28,10 @@ import { ManageUserSearchInputComponent } from './manage-user/manage-user-search
     ManageUserComponent,
     ManageTopicComponent,
     ManageUserSearchInputComponent,
+    CreateTopicDialogComponent,
+  ],
+  entryComponents: [
+    CreateTopicDialogComponent,
   ],
 })
 export class AdminModule {

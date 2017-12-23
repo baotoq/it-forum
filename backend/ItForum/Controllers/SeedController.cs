@@ -18,10 +18,10 @@ namespace ItForum.Controllers
             _emailSender = emailSender;
         }
 
-        [HttpGet("{numberOfTopics?}")]
-        public async Task<IActionResult> Seed(int numberOfTopics = 3)
+        [HttpGet]
+        public async Task<IActionResult> Seed()
         {
-            await _dataSeeder.InitializeAsync(numberOfTopics);
+            await _dataSeeder.InitializeAsync();
             return Ok("done");
         }
 

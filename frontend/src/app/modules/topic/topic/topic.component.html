@@ -1,5 +1,5 @@
 <mat-toolbar *ngIf="topic" color="primary" class="mat-toolbar-48">
-  <span class="m-auto">{{topic.name | uppercase}}</span>
+  <span class="m-auto">{{topic.name}}</span>
 </mat-toolbar>
 <mat-tab-group (focusChange)="focusChange($event)">
   <mat-tab *ngFor="let subTopic of topic?.subTopics" [label]="subTopic.name"></mat-tab>

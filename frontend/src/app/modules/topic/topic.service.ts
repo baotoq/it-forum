@@ -12,12 +12,16 @@ export class TopicService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getAllWithSubTopicsAndThreads(level: number): Observable<Topic[]> {
-    return this.httpClient.get<Topic[]>(`${API.TOPIC.URL}/sub-threads?level=${level}`);
-  }
-
   getAll(level: number): Observable<Topic[]> {
     return this.httpClient.get<Topic[]>(`${API.TOPIC.URL}?level=${level}`);
+  }
+
+  getAllWithSubTopics(level: number): Observable<Topic[]> {
+    return this.httpClient.get<Topic[]>(`${API.TOPIC.URL}/subs?level=${level}`);
+  }
+
+  getAllWithSubTopicsAndThreads(level: number): Observable<Topic[]> {
+    return this.httpClient.get<Topic[]>(`${API.TOPIC.URL}/sub-threads?level=${level}`);
   }
 
   getWithSubTopics(id: number): Observable<Topic> {
@@ -50,5 +54,13 @@ export class TopicService {
 
   getDeclinedThreads(id: number): Observable<Thread[]> {
     return this.httpClient.get<Thread[]>(`${API.TOPIC.URL}/declined-threads/${id}`);
+  }
+
+  create(topic: Topic): Observable<any> {
+    return this.httpClient.post(API.TOPIC.URL, topic);
+  }
+
+  delete(id: number): Observable<any> {
+    return this.httpClient.delete(`${API.TOPIC.URL}/${id}`);
   }
 }

@@ -21,7 +21,7 @@ namespace ItForum.Data.Seeds
             _helperService = helperService;
         }
 
-        public async Task InitializeAsync(int numberOfTopics)
+        public async Task InitializeAsync()
         {
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();

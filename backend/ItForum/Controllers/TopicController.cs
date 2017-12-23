@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using ItForum.Data;
 using ItForum.Data.Domains;
@@ -42,6 +43,14 @@ namespace ItForum.Controllers
         public IActionResult GetAll(int level = 0)
         {
             var topics = _topicService.FindByNoTracking(x => x.Level == level).ToList();
+            var dto = _mapper.Map<List<TopicDto>>(topics);
+            return Ok(dto);
+        }
+
+        [HttpGet("subs")]
+        public IActionResult GetAllWithSubTopics(int level = 0)
+        {
+            var topics = _topicService.FindByNoTracking(x => x.Level == level, "SubTopics").ToList();
             var dto = _mapper.Map<List<TopicDto>>(topics);
             return Ok(dto);
         }
@@ -146,6 +155,27 @@ namespace ItForum.Controllers
 
             var dto = _mapper.Map<List<ThreadDto>>(threads.ToList());
             return Ok(dto);
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] Topic topic)
+        {
+            if (topic == null) return BadRequest();
+            _topicService.Add(topic);
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var topic = _topicService.FindById(id);
+            if (topic == null) return BadRequest();
+            _topicService.Remove(topic);
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
         }
     }
 }
