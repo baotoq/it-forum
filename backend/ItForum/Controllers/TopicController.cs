@@ -7,6 +7,7 @@ using ItForum.Data.Domains;
 using ItForum.Data.Dtos;
 using ItForum.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ItForum.Controllers
@@ -164,7 +165,7 @@ namespace ItForum.Controllers
             if (topic == null) return BadRequest();
             _topicService.Add(topic);
             await _unitOfWork.SaveChangesAsync();
-            return Ok();
+            return StatusCode(StatusCodes.Status201Created, topic);
         }
 
         [Authorize(Roles = nameof(Role.Administrator))]

@@ -1,7 +1,20 @@
 i {
-  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
+  padding: 5px;
+}
+
+.i-topic {
+  color: rgba(255, 255, 255, 0.7);
+
   &:hover {
     color: white;
+  }
+}
+
+.i-sub {
+  color: rgba(0, 0, 0, 0.7);
+
+  &:hover {
+    color: black;
   }
 }

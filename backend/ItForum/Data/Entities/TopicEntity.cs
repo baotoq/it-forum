@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using ItForum.Data.Entities.Core;
 
 namespace ItForum.Data.Entities

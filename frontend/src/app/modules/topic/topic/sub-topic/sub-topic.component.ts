@@ -33,7 +33,7 @@ export class SubTopicComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) matSort: MatSort;
 
-  $moderators: Observable<User[]>;
+  moderators$: Observable<User[]>;
 
   role = Role;
   approvalStatus = ApprovalStatus;
@@ -59,7 +59,7 @@ export class SubTopicComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.getSubTopic(params['subTopicId']);
 
-      this.$moderators = this.userService.getModerators(params['subTopicId']);
+      this.moderators$ = this.userService.getModerators(params['subTopicId']);
       this.paginator.pageIndex = 0;
     });
     this.matSort.sortChange.subscribe(() => this.filter());

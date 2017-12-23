@@ -29,10 +29,15 @@ export class ManageTopicComponent implements OnInit {
   }
 
   createSub(topic: Topic) {
-    const dialogRef = this.dialog.open(CreateTopicDialogComponent, {
+    this.dialog.open(CreateTopicDialogComponent, {
       data: topic,
       width: '600px',
-    });
+    }).afterClosed()
+      .subscribe(result => {
+        if (result) {
+          topic.subTopics.push(result);
+        }
+      });
   }
 
   deleteTopic(topic: Topic) {
@@ -44,7 +49,12 @@ export class ManageTopicComponent implements OnInit {
             .finally(() => this.loadingService.progressBarStop())
             .subscribe(() => {
               const index = this.topics.indexOf(topic);
-              this.topics.splice(index, 1);
+              if (index === -1) {
+                const t = this.topics.find(item => item.id === topic.parentId);
+                t.subTopics.splice(index, 1);
+              } else {
+                this.topics.splice(index, 1);
+              }
             });
         }
       });
