@@ -68,7 +68,6 @@ export class SubTopicComponent implements OnInit {
   getSubTopic(id: number) {
     this.loadingService.spinnerStart();
     this.topicService.getWithThreads(id)
-      .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.subTopic = resp;
 
@@ -109,7 +108,7 @@ export class SubTopicComponent implements OnInit {
     const data = this.threads;
     let config = this.matSort.direction === 'asc' ? '+' : '-';
     config += this.matSort.active;
-    this.dataSource.data = this.orderByPipe.transform(data, ['-pin', '-approvalStatus', config]);
+    this.dataSource.data = this.orderByPipe.transform(data, ['-pin', '-approvalStatus', '-numberOfPendings', config]);
     this.dataSource.filter = searchString.trim().toLowerCase();
   }
 

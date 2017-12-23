@@ -15,6 +15,8 @@ namespace ItForum.Data.Entities
 
         public int? ParentId { get; set; }
 
+        public int Level { get; set; }
+
         public int Id { get; set; }
 
         public DateTime? DateCreated { get; set; }

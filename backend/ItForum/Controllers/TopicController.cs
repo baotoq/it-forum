@@ -31,9 +31,9 @@ namespace ItForum.Controllers
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
 
         [HttpGet]
-        public IActionResult GetAllParent()
+        public IActionResult GetAllWithSubTopicsAndThreads(int level = 0)
         {
-            var topics = _topicService.FindParentWithSubTopicsAndThreads().ToList();
+            var topics = _topicService.FindWithSubTopicsAndThreads(level).ToList();
             var dto = _mapper.Map<List<TopicDto>>(topics);
             return Ok(dto);
         }
@@ -47,9 +47,9 @@ namespace ItForum.Controllers
         }
 
         [HttpGet("parent-options")]
-        public IActionResult GetParentOptions()
+        public IActionResult GetParentOptions(int level = 0)
         {
-            var topics = _topicService.FindParent();
+            var topics = _topicService.Find(level);
             return Ok(topics.Select(x => new
             {
                 value = x.Id,
@@ -85,11 +85,11 @@ namespace ItForum.Controllers
             var dto = _mapper.Map<TopicDto>(topic);
             return Ok(dto);
         }
-        
+
         [HttpGet("default-threads/{id}")]
         public IActionResult GetDefaultThreads(int id)
         {
-            var threads = _topicService.FindTopicThreads(id).ToList();
+            var threads = _topicService.FindTopicThreadsWithPosts(id).ToList();
 
             threads.RemoveAll(th => th.ApprovalStatus == ApprovalStatus.Declined);
 
@@ -106,7 +106,14 @@ namespace ItForum.Controllers
                 threads.RemoveAll(th => th.ApprovalStatus == ApprovalStatus.Pending);
             }
 
-            var dto = _mapper.Map<List<ThreadDto>>(threads.ToList());
+            var dto = _mapper.Map<List<ThreadDto>>(threads);
+
+            for (int i = 0; i < dto.Count; i++)
+            {
+                dto[i].NumberOfPendings = threads[i].Posts.Count(x => x.ApprovalStatus == ApprovalStatus.Pending);
+                dto[i].Posts.Clear();
+            }
+
             return Ok(dto);
         }
 
@@ -114,11 +121,18 @@ namespace ItForum.Controllers
         [HttpGet("approved-threads/{id}")]
         public IActionResult GetApprovedThreads(int id)
         {
-            var threads = _topicService.FindTopicThreads(id);
+            var threads = _topicService.FindTopicThreadsWithPosts(id).ToList();
 
-            threads = threads.Where(p => p.ApprovalStatus == ApprovalStatus.Approved);
+            threads = threads.Where(p => p.ApprovalStatus == ApprovalStatus.Approved).ToList();
 
-            var dto = _mapper.Map<List<ThreadDto>>(threads.ToList());
+            var dto = _mapper.Map<List<ThreadDto>>(threads);
+
+            for (int i = 0; i < dto.Count; i++)
+            {
+                dto[i].NumberOfPendings = threads[i].Posts.Count(x => x.ApprovalStatus == ApprovalStatus.Pending);
+                dto[i].Posts.Clear();
+            }
+
             return Ok(dto);
         }
 

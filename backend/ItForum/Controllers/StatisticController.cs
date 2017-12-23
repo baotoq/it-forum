@@ -26,7 +26,7 @@ namespace ItForum.Controllers
         [HttpGet("threads-per-topic")]
         public IActionResult ThreadsPerTopic()
         {
-            var topics = _topicService.FindByNoTracking(x => x.ParentId != null);
+            var topics = _topicService.FindByNoTracking(x => x.Level == 1);
             return Ok(topics.Select(x => new
             {
                 Key = x.Name,
@@ -37,7 +37,7 @@ namespace ItForum.Controllers
         [HttpGet("posts-per-topic")]
         public IActionResult PostsPerTopic()
         {
-            var topics = _topicService.FindByNoTracking(x => x.ParentId != null, "Threads");
+            var topics = _topicService.FindByNoTracking(x => x.Level == 0, "Threads");
             return Ok(topics.Select(x => new
             {
                 Key = x.Name,

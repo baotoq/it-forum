@@ -12,9 +12,9 @@ namespace ItForum.Services
         {
         }
 
-        public IEnumerable<Topic> FindParent()
+        public IEnumerable<Topic> Find(int level)
         {
-            return DbSet.Where(x => x.ParentId == null);
+            return DbSet.Where(x => x.Level == level);
         }
 
         public IEnumerable<Topic> FindWithThreads()
@@ -22,10 +22,10 @@ namespace ItForum.Services
             return DbSet.Include(x => x.Threads);
         }
 
-        public IEnumerable<Topic> FindParentWithSubTopicsAndThreads()
+        public IEnumerable<Topic> FindWithSubTopicsAndThreads(int level)
         {
             return DbSet.AsNoTracking().Include(x => x.SubTopics).ThenInclude(x => x.Threads)
-                .Where(x => x.ParentId == null);
+                .Where(x => x.Level == level);
         }
 
         public Topic FindWithSubTopics(int id)
@@ -45,6 +45,14 @@ namespace ItForum.Services
         {
             return DbSet.AsNoTracking()
                 .Include(x => x.Threads).ThenInclude(x => x.CreatedBy)
+                .SingleOrDefault(x => x.Id == id)?.Threads;
+        }
+
+        public IEnumerable<Thread> FindTopicThreadsWithPosts(int id)
+        {
+            return DbSet.AsNoTracking()
+                .Include(x => x.Threads).ThenInclude(x => x.CreatedBy)
+                .Include(x => x.Threads).ThenInclude(x => x.Posts)
                 .SingleOrDefault(x => x.Id == id)?.Threads;
         }
 

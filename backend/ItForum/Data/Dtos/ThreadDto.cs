@@ -3,6 +3,7 @@ using System.Linq;
 using AutoMapper;
 using ItForum.Data.Domains;
 using ItForum.Data.Entities;
+using Remotion.Linq.Parsing.Structure.IntermediateModel;
 
 namespace ItForum.Data.Dtos
 {
@@ -17,6 +18,8 @@ namespace ItForum.Data.Dtos
         public List<PostDto> Posts { get; set; }
 
         public List<TagDto> Tags { get; set; }
+
+        public int NumberOfPendings { get; set; }
 
         public class PostDto : PostEntity
         {

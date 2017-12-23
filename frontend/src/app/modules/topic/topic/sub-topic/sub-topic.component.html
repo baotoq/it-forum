@@ -51,8 +51,9 @@
           <app-badge-role [user]="row.createdBy"></app-badge-role>
           <app-badge-approval-status [status]="row.approvalStatus"></app-badge-approval-status>
           <span [class.font-weight-bold]="row.highlight">{{row.title | shorten: 100:'...'}}</span>
-
           <ng-container *ngIf="currentUser?.role === role.Administrator || management">
+            <span class="badge badge-secondary"
+                  *ngIf="row.approvalStatus === approvalStatus.Approved && row.numberOfPendings > 0">{{row.numberOfPendings}}</span>
             <button mat-icon-button clickStopPropagation preventDefault [matMenuTriggerFor]="menu" class="menu d-none">
               <mat-icon>more_vert</mat-icon>
             </button>

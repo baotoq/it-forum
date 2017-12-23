@@ -21,6 +21,7 @@ export class Thread extends Timestamp {
   tags: Tag[];
   topic: Topic;
   approvalStatus: ApprovalStatus;
+  numberOfPendings = 0;
 
   constructor(obj?) {
     super(obj);

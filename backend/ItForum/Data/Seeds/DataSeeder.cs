@@ -23,8 +23,8 @@ namespace ItForum.Data.Seeds
 
         public async Task InitializeAsync(int numberOfTopics)
         {
-            _context.Database.EnsureDeleted();
-            _context.Database.EnsureCreated();
+            //_context.Database.EnsureDeleted();
+            //_context.Database.EnsureCreated();
 
             var tagFaker = new Faker<Tag>().Rules((f, o) =>
             {
@@ -85,7 +85,7 @@ namespace ItForum.Data.Seeds
             await _context.SaveChangesAsync();
 
             index = 1;
-            var users = userFaker.Generate(50);
+            var users = userFaker.Generate(25);
             users.ToList().ForEach(x =>
             {
                 x.Role = Role.None;
@@ -96,6 +96,11 @@ namespace ItForum.Data.Seeds
             });
             _context.Users.AddRange(users);
             await _context.SaveChangesAsync();
+
+
+            users = _context.Users.ToList();
+            mods = users.Where(x => x.Role == Role.Moderator).ToList();
+            admin = users.ToList().Find(x => x.Email == "admin@gmail.com");
 
             var postFaker = new Faker<Post>().Rules((f, o) =>
             {
@@ -183,19 +188,51 @@ namespace ItForum.Data.Seeds
                 {
                     var u = f.PickRandom(temp);
                     temp.Remove(u);
-                    managements.Add(new Management {User = u});
+                    managements.Add(new Management { User = u });
                 }
                 o.Managements = managements.ToList();
             });
 
-            var topics = topicFaker.Generate(numberOfTopics);
+            var topics = topicFaker.Generate(4);
+            topics.ForEach(x => x.Level = 0);
+
+            topics[0].Name = "C++";
+            topics[0].SubTopics = topicFaker.Generate(3).ToList();
+            topics[0].SubTopics[0].Name = "C++ For Beginner";
+            topics[0].SubTopics[1].Name = "Advanced C++";
+            topics[0].SubTopics[2].Name = "Linux-Unix";
+
+            topics[1].Name = "C#";
+            topics[1].SubTopics = topicFaker.Generate(6).ToList();
+            topics[1].SubTopics[0].Name = "C# For Beginner";
+            topics[1].SubTopics[1].Name = "Advanced C#";
+            topics[1].SubTopics[2].Name = "Unity";
+            topics[1].SubTopics[3].Name = "Windows Forms";
+            topics[1].SubTopics[3].Description = "Discussion related to Winforms application development";
+            topics[1].SubTopics[4].Name = "ASP.NET";
+            topics[1].SubTopics[4].Description = "General discussion on ASP.NET development with C#";
+            topics[1].SubTopics[5].Name = "Design / CSS";
+            topics[1].SubTopics[5].Description = "Web Page Design, Cascading Style Sheets, etc.";
+
+            topics[2].Name = "Java";
+            topics[2].SubTopics = topicFaker.Generate(2).ToList();
+            topics[2].SubTopics[0].Name = "Java For Beginner";
+            topics[2].SubTopics[1].Name = "Advanced Java";
+
+            topics[3].Name = "Database";
+            topics[3].SubTopics = topicFaker.Generate(2).ToList();
+            topics[3].SubTopics[0].Name = "SQL Server";
+            topics[3].SubTopics[0].Description = "Discussion related to SQL Server";
+            topics[3].SubTopics[1].Name = "MySQL Server";
+            topics[3].SubTopics[1].Description = "Discussion related to MySQL Server";
+
             topics.ForEach(x =>
             {
                 var f = new Faker();
-                x.SubTopics = topicFaker.Generate(f.Random.Number(2, 3)).ToList();
                 x.SubTopics.ForEach(s =>
                 {
-                    s.Threads = threadFaker.Generate(f.Random.Number(5, 40)).ToList();
+                    s.Level = 1;
+                    s.Threads = threadFaker.Generate(f.Random.Number(5, 20)).ToList();
                     for (var i = 0; i < f.Random.Number(1, 5); i++)
                     {
                         var t = f.PickRandom(s.Threads);
@@ -206,9 +243,10 @@ namespace ItForum.Data.Seeds
                     s.NumberOfThreads = s.Threads.Count(th => th.ApprovalStatus == ApprovalStatus.Approved);
                 });
             });
+
             _context.AddRange(topics);
 
-            users = userFaker.Generate(100);
+            users = userFaker.Generate(20);
             users.ToList().ForEach(x =>
             {
                 x.Role = Role.None;
