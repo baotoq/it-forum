@@ -11,8 +11,9 @@
           <span style="font-size: 70%; color: rgba(255, 255, 255, 0.7)">{{topic.description}}</span>
         </div>
         <div class="col-sm-2" align="right">
-          <i class="fa fa-plus fa-fw i-topic" (click)="createSub(topic)"></i>
-          <i class="fa fa-trash fa-fw i-topic" (click)="deleteTopic(topic)"></i>
+          <i class="fa fa-plus fa-fw i-topic" clickStopPropagation (click)="createSub(topic)"></i>
+          <i class="fa fa-pencil fa-fw i-topic" clickStopPropagation (click)="editTopic(topic)"></i>
+          <i class="fa fa-trash fa-fw i-topic" clickStopPropagation (click)="deleteTopic(topic)"></i>
         </div>
       </div>
     </mat-card>
@@ -24,6 +25,7 @@
             <span class="text-muted" style="font-size: 70%">{{sub.description}}</span>
           </div>
           <div class="col-sm-2" align="right">
+            <i class="fa fa-pencil fa-fw i-sub" (click)="editTopic(sub)"></i>
             <i class="fa fa-trash fa-fw i-sub" (click)="deleteTopic(sub)"></i>
           </div>
         </div>

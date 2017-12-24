@@ -52,15 +52,25 @@ export class ThreadComponent implements OnInit {
     this.threadService.getWithCreatedByTagsAndReplies(threadId)
       .subscribe(resp => {
         this.thread = resp;
-        if (this.thread.approvalStatus === this.approvalStatus.Declined) {
-          this.declinedFilter();
-        } else {
-          this.defaultFilter();
-        }
-        this.threadService.increaseView(this.thread.id).subscribe();
+        this.checkThreadStatus();
         this.checkPermission();
         this.setStorage();
       });
+  }
+
+  checkThreadStatus() {
+    if (this.thread.approvalStatus === this.approvalStatus.Declined) {
+      this.declinedFilter();
+    } else if (this.thread.approvalStatus === this.approvalStatus.Pending) {
+      if (this.authenticated && this.currentUser.role !== this.role.None) {
+        this.pendingFilter();
+      } else {
+        this.router.navigate(['/']);
+      }
+    } else {
+      this.defaultFilter();
+      this.threadService.increaseView(this.thread.id).subscribe();
+    }
   }
 
   onPageChange() {
@@ -106,42 +116,24 @@ export class ThreadComponent implements OnInit {
   }
 
   defaultFilter() {
-    this.loadingService.spinnerStart();
-    this.threadService.getApprovedPendingPostsWithReplies(this.thread.id)
-      .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => {
-        this.posts = this.orderByPipe.transform(resp, ['dateCreated']);
-        this.onPageChange();
-        this.currentPage = 1;
-      });
+    this.filter(this.threadService.getApprovedPendingPostsWithReplies(this.thread.id));
   }
 
   approvedFilter() {
-    this.loadingService.spinnerStart();
-    this.threadService.getApprovedPosts(this.thread.id)
-      .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => {
-        this.posts = this.orderByPipe.transform(resp, ['dateCreated']);
-        this.onPageChange();
-        this.currentPage = 1;
-      });
+    this.filter(this.threadService.getApprovedPosts(this.thread.id));
   }
 
   pendingFilter() {
-    this.loadingService.spinnerStart();
-    this.threadService.getPendingPosts(this.thread.id)
-      .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => {
-        this.posts = this.orderByPipe.transform(resp, ['dateCreated']);
-        this.onPageChange();
-        this.currentPage = 1;
-      });
+    this.filter(this.threadService.getPendingPosts(this.thread.id));
   }
 
   declinedFilter() {
+    this.filter(this.threadService.getDeclinedPosts(this.thread.id));
+  }
+
+  filter(sub) {
     this.loadingService.spinnerStart();
-    this.threadService.getDeclinedPosts(this.thread.id)
-      .finally(() => this.loadingService.spinnerStop())
+    sub.finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.posts = this.orderByPipe.transform(resp, ['dateCreated']);
         this.onPageChange();

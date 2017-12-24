@@ -1,13 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { TopicService } from '../../../topic/topic.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { Topic } from '../../../../models/topic';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Topic } from '../../../../models/topic';
+import { TopicService } from '../../../topic/topic.service';
+import { CreateTopicDialogComponent } from '../create-topic-dialog/create-topic-dialog.component';
 
 @Component({
-  selector: 'app-create-topic-dialog',
+  selector: 'app-edit-topic-dialog',
   template: `
-    <h3 mat-dialog-title class="mb-1 text-mat-primary" align="center">Create Topic</h3>
+    <h3 mat-dialog-title class="mb-1 text-mat-primary" align="center">Edit Topic</h3>
     <mat-dialog-content>
       <form [formGroup]="form">
         <mat-form-field class="w-100">
@@ -31,36 +32,33 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     </div>
   `,
 })
-export class CreateTopicDialogComponent implements OnInit {
+export class EditTopicDialogComponent implements OnInit {
   form: FormGroup;
 
-  parent: Topic;
+  topic: Topic;
 
   loading = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any,
               private topicService: TopicService,
               private formBuilder: FormBuilder,
-              private dialogRef: MatDialogRef<CreateTopicDialogComponent>) {
+              private dialogRef: MatDialogRef<EditTopicDialogComponent>) {
   }
 
   ngOnInit() {
+    this.topic = this.data;
     this.form = this.formBuilder.group({
-      name: [null, Validators.required],
-      description: [null, Validators.required],
+      name: [this.topic.name, Validators.required],
+      description: [this.topic.description, Validators.required],
     });
-    this.parent = this.data;
   }
 
   onSave() {
     this.loading = true;
-    const topic = new Topic();
-    topic.name = this.form.get('name').value;
-    topic.description = this.form.get('description').value;
-    topic.level = this.parent.level + 1;
-    topic.parentId = this.parent.id;
+    this.topic.name = this.form.get('name').value;
+    this.topic.description = this.form.get('description').value;
 
-    this.topicService.create(topic)
+    this.topicService.edit(this.topic)
       .finally(() => this.loading = false)
       .subscribe(resp => this.dialogRef.close(resp));
   }

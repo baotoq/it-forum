@@ -169,6 +169,20 @@ namespace ItForum.Controllers
         }
 
         [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpPut]
+        public async Task<IActionResult> Edit([FromBody] Topic payload)
+        {
+            var topic = _topicService.FindById(payload.Id);
+            if (topic == null) return BadRequest();
+
+            topic.Name = payload.Name;
+            topic.Description = payload.Description;
+
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

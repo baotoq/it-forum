@@ -60,6 +60,10 @@ export class TopicService {
     return this.httpClient.post(API.TOPIC.URL, topic);
   }
 
+  edit(topic: Topic): Observable<any> {
+    return this.httpClient.put(API.TOPIC.URL, topic);
+  }
+
   delete(id: number): Observable<any> {
     return this.httpClient.delete(`${API.TOPIC.URL}/${id}`);
   }

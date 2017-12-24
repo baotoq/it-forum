@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material';
 import { CreateTopicDialogComponent } from './create-topic-dialog/create-topic-dialog.component';
 import { TopicService } from '../../topic/topic.service';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import { EditTopicDialogComponent } from './edit-topic-dialog/edit-topic-dialog.component';
 
 @Component({
   selector: 'app-manage-topic',
@@ -56,6 +57,18 @@ export class ManageTopicComponent implements OnInit {
                 this.topics.splice(index, 1);
               }
             });
+        }
+      });
+  }
+
+  editTopic(topic: Topic) {
+    this.dialog.open(EditTopicDialogComponent, {
+      data: topic,
+      width: '600px',
+    }).afterClosed()
+      .subscribe(result => {
+        if (result) {
+          topic = result;
         }
       });
   }

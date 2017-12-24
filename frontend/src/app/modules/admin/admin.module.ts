@@ -12,6 +12,7 @@ import { ManageUserComponent } from './manage-user/manage-user.component';
 import { ManageTopicComponent } from './manage-topic/manage-topic.component';
 import { ManageUserSearchInputComponent } from './manage-user/manage-user-search-input/manage-user-search-input.component';
 import { CreateTopicDialogComponent } from './manage-topic/create-topic-dialog/create-topic-dialog.component';
+import { EditTopicDialogComponent } from './manage-topic/edit-topic-dialog/edit-topic-dialog.component';
 
 @NgModule({
   imports: [
@@ -29,9 +30,11 @@ import { CreateTopicDialogComponent } from './manage-topic/create-topic-dialog/c
     ManageTopicComponent,
     ManageUserSearchInputComponent,
     CreateTopicDialogComponent,
+    EditTopicDialogComponent,
   ],
   entryComponents: [
     CreateTopicDialogComponent,
+    EditTopicDialogComponent
   ],
 })
 export class AdminModule {
