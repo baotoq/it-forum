@@ -6,6 +6,7 @@ import { CreateTopicDialogComponent } from './create-topic-dialog/create-topic-d
 import { TopicService } from '../../topic/topic.service';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { EditTopicDialogComponent } from './edit-topic-dialog/edit-topic-dialog.component';
+import { OrderByPipe } from 'ngx-pipes';
 
 @Component({
   selector: 'app-manage-topic',
@@ -17,6 +18,7 @@ export class ManageTopicComponent implements OnInit {
 
   constructor(private loadingService: LoadingService,
               private topicService: TopicService,
+              private orderByPipe: OrderByPipe,
               private dialog: MatDialog) {
   }
 
@@ -25,7 +27,8 @@ export class ManageTopicComponent implements OnInit {
     this.topicService.getAllWithSubTopics(0)
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
-        this.topics = resp;
+        this.topics = this.orderByPipe.transform(resp, 'orderIndex');
+        this.topics.forEach(item => item.subTopics = this.orderByPipe.transform(item.subTopics, 'orderIndex'));
       });
   }
 

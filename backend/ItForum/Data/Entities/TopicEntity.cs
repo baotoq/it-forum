@@ -19,6 +19,8 @@ namespace ItForum.Data.Entities
 
         public int Level { get; set; }
 
+        public int OrderIndex { get; set; }
+
         public int Id { get; set; }
 
         public DateTime? DateCreated { get; set; }

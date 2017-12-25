@@ -189,7 +189,12 @@ namespace ItForum.Data.Seeds
             });
 
             var topics = topicFaker.Generate(4);
-            topics.ForEach(x => x.Level = 0);
+            var order = 0;
+            topics.ForEach(x =>
+            {
+                x.Level = 0;
+                x.OrderIndex = order++;
+            });
 
             topics[0].Name = "C++";
             topics[0].SubTopics = topicFaker.Generate(3).ToList();

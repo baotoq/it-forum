@@ -3,7 +3,7 @@
 </mat-toolbar>
 
 <div class="container-fluid">
-  <div *ngFor="let topic of topics" class="mt-3 shadow-1">
+  <div *ngFor="let topic of topics | orderBy: 'orderIndex'" class="mt-3 shadow-1">
     <div class="card" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0">
       <div class="card-header py-1 px-2 text-white bg-dark">
         <strong>{{topic.name}}</strong>
@@ -14,7 +14,7 @@
     </div>
     <div class="card border-top-0" style="border-top-left-radius: 0; border-top-right-radius: 0">
       <div class="card-body py-1 px-0">
-        <div *ngFor="let subTopic of topic.subTopics">
+        <div *ngFor="let subTopic of topic.subTopics | orderBy: 'orderIndex'">
           <div class="row px-2 py-1">
             <div class="col-12 col-md-8 font-weight-bold">
               <span>

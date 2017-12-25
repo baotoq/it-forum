@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 import { NgbModule, NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
+import {DndModule} from 'ng2-dnd';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -66,6 +67,7 @@ import 'rxjs/add/observable/combineLatest';
     }),
     SnotifyModule.forRoot(),
     NgbModule.forRoot(),
+    DndModule.forRoot(),
     AppRoutingModule,
     AuthModule,
     AdminModule,

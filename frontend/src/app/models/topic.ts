@@ -13,6 +13,7 @@ export class Topic extends Timestamp {
   numberOfNewThreads = 0;
   threads: Thread[];
   level: number;
+  orderIndex: number;
   managements: Management[];
 
   checked = false;

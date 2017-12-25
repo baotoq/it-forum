@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {DndModule} from 'ng2-dnd';
 import { SharedModule } from '../shared/shared.module';
 
 import { AdminRoutingModule } from './admin-routing.module';
@@ -20,6 +21,7 @@ import { EditTopicDialogComponent } from './manage-topic/edit-topic-dialog/edit-
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    DndModule,
     SharedModule,
     AdminRoutingModule,
     DashboardModule,

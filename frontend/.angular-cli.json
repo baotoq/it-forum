@@ -18,10 +18,11 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "assets/scss/styles.scss",
         "../node_modules/froala-editor/css/froala_editor.pkgd.min.css",
         "../node_modules/froala-editor/css/froala_style.min.css",
-        "../node_modules/font-awesome/scss/font-awesome.scss"
+        "../node_modules/font-awesome/scss/font-awesome.scss",
+        "../node_modules/ng2-dnd/bundles/style.css",
+        "assets/scss/styles.scss"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
