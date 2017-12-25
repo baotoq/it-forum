@@ -5,11 +5,11 @@
 <div class="container-fluid mt-3">
   <div>
     <div class="mt-3" *ngFor="let topic of topics; let i = index">
+
       <mat-card class="py-2 bg-dark topic">
         <div class="row no-gutters">
           <div class="col-sm-10">
             <strong class="text-white">{{topic.name}}</strong>
-            {{topic.orderIndex}}
             <span style="font-size: 70%; color: rgba(255, 255, 255, 0.7)">{{topic.description}}</span>
           </div>
           <div class="col-sm-2" align="right">
@@ -17,34 +17,39 @@
               <i class="fa fa-plus fa-fw" (click)="createSub(topic)"></i>
               <i class="fa fa-pencil fa-fw" (click)="editTopic(topic)"></i>
               <i class="fa fa-trash fa-fw" (click)="deleteTopic(topic)"></i>
+              <i class="fa fa-arrows fa-fw" (click)="topic.checked = true; t.open()"></i>
+            </ng-container>
+            <ng-container *ngIf="topic.checked">
+              <i class="fa fa-check fa-fw"
+                 (click)="onSave(topic); t.close()"></i>
+              <i class="fa fa-close fa-fw"
+                 (click)="onCancel(topic); t.close()"></i>
             </ng-container>
           </div>
         </div>
       </mat-card>
-      <div dnd-sortable-container [dropZones]="['sub-zone']" [sortableData]="topic.subTopics">
+
+      <div dnd-sortable-container [dropZones]="[topic.id]" [sortableData]="topic.subTopics"
+           [ngbTooltip]="tipContent" #t="ngbTooltip" triggers="manual">
         <div class="pl-4 mt-2" *ngFor="let sub of topic.subTopics; let j = index"
-             dnd-sortable [sortableIndex]="j" [dragEnabled]="sub.checked">
-          <mat-card class="py-2 sub" [ngStyle]="{ 'border': sub.checked ? '1px black solid' : ''}"
-                    ngbTooltip="Drag me!" triggers="manual" #t="ngbTooltip">
+             dnd-sortable [sortableIndex]="j" [dragEnabled]="topic.checked">
+          <mat-card class="py-2 sub" [ngStyle]="{ 'border': topic.checked ? '1px black solid' : ''}">
             <div class="row no-gutters">
               <div class="col-sm-10">
-                <strong class="text-primary">{{j}} {{sub.name}}</strong>
+                <strong class="text-primary">{{sub.name}}</strong>
                 <span class="text-muted" style="font-size: 70%">{{sub.description}}</span>
               </div>
               <div class="col-sm-2" align="right">
-                <ng-container *ngIf="!sub.checked">
-                  <i class="fa fa-pencil fa-fw" (click)="editTopic(sub)"></i>
-                  <i class="fa fa-trash fa-fw" (click)="deleteTopic(sub)"></i>
-                  <i class="fa fa-arrows fa-fw" (click)="sub.checked = true; t.open()"></i>
-                </ng-container>
-                <ng-container *ngIf="sub.checked">
-                  <i class="fa fa-close fa-fw" (click)="sub.checked = false; t.close()"></i>
-                </ng-container>
+                <i class="fa fa-pencil fa-fw" (click)="editTopic(sub)"></i>
+                <i class="fa fa-trash fa-fw" (click)="deleteTopic(sub)"></i>
               </div>
             </div>
           </mat-card>
         </div>
       </div>
+
     </div>
   </div>
 </div>
+
+<ng-template #tipContent>Drag to order sub topics!</ng-template>

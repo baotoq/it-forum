@@ -3,7 +3,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Topic } from '../../../../models/topic';
 import { TopicService } from '../../../topic/topic.service';
-import { CreateTopicDialogComponent } from '../create-topic-dialog/create-topic-dialog.component';
 
 @Component({
   selector: 'app-edit-topic-dialog',

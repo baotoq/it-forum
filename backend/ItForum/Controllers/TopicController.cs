@@ -192,5 +192,18 @@ namespace ItForum.Controllers
             await _unitOfWork.SaveChangesAsync();
             return Ok();
         }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpPost("re-order")]
+        public async Task<IActionResult> ReOrder([FromBody] Topic topic)
+        {
+            topic.SubTopics.ForEach(s =>
+            {
+                var t = _topicService.FindById(s.Id);
+                t.OrderIndex = s.OrderIndex;
+            });
+            await _unitOfWork.SaveChangesAsync();
+            return Ok(topic);
+        }
     }
 }

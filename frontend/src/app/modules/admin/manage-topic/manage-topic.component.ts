@@ -7,6 +7,7 @@ import { TopicService } from '../../topic/topic.service';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { EditTopicDialogComponent } from './edit-topic-dialog/edit-topic-dialog.component';
 import { OrderByPipe } from 'ngx-pipes';
+import { CoreService } from '../../core/core.service';
 
 @Component({
   selector: 'app-manage-topic',
@@ -17,6 +18,7 @@ export class ManageTopicComponent implements OnInit {
   topics: Topic[];
 
   constructor(private loadingService: LoadingService,
+              private coreService: CoreService,
               private topicService: TopicService,
               private orderByPipe: OrderByPipe,
               private dialog: MatDialog) {
@@ -27,8 +29,8 @@ export class ManageTopicComponent implements OnInit {
     this.topicService.getAllWithSubTopics(0)
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
-        this.topics = this.orderByPipe.transform(resp, 'orderIndex');
-        this.topics.forEach(item => item.subTopics = this.orderByPipe.transform(item.subTopics, 'orderIndex'));
+        this.topics = this.orderByPipe.transform(resp, ['orderIndex', 'name']);
+        this.topics.forEach(item => item.subTopics = this.orderByPipe.transform(item.subTopics, ['orderIndex', 'name']));
       });
   }
 
@@ -74,5 +76,22 @@ export class ManageTopicComponent implements OnInit {
           topic = result;
         }
       });
+  }
+
+  onSave(topic: Topic) {
+    this.loadingService.progressBarStart();
+    let index = 0;
+    topic.subTopics.forEach(item => item.orderIndex = index++);
+    this.topicService.reOrder(topic)
+      .finally(() => this.loadingService.progressBarStop())
+      .subscribe(() => {
+        topic.checked = false;
+        this.coreService.notifySuccess();
+      });
+  }
+
+  onCancel(topic: Topic) {
+    topic.checked = false;
+    topic.subTopics = this.orderByPipe.transform(topic.subTopics, ['orderIndex', 'name']);
   }
 }
