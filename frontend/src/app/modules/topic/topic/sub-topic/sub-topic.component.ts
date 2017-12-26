@@ -41,7 +41,7 @@ export class SubTopicComponent implements OnInit, OnDestroy {
 
   currentUser = this.authService.currentUser();
   authenticated = this.authService.isAuthenticated();
-  management = false;
+  permission = false;
 
   constructor(private route: ActivatedRoute,
               private authService: AuthService,
@@ -91,7 +91,10 @@ export class SubTopicComponent implements OnInit, OnDestroy {
           this.matSort.sort({id: 'lastActivity', start: 'desc', disableClear: true});
         }
 
-        this.management = this.isManagementPipe.transform(this.currentUser, this.subTopic.managements);
+        if (this.authService.isAuthenticated()) {
+          if (this.authService.isAdmin()) this.permission = true;
+          else this.permission = this.isManagementPipe.transform(this.currentUser, this.subTopic.managements);
+        }
       });
   }
 

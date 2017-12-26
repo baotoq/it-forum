@@ -27,7 +27,7 @@ export class ThreadService {
     return this.httpClient.get<Post[]>(`${API.THREAD.URL}/declined-posts/${id}`);
   }
 
-  getApprovedPendingPostsWithReplies(id: number): Observable<Post[]> {
+  getApprovedPendingPosts(id: number): Observable<Post[]> {
     return this.httpClient.get<Post[]>(`${API.THREAD.URL}/approved-pending-posts-replies/${id}`);
   }
 

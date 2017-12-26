@@ -46,6 +46,7 @@ namespace ItForum.Controllers
             return Ok(dto);
         }
 
+        [Authorize]
         [HttpGet("approved-pending-posts-replies/{id}")]
         public IActionResult GetApprovedPendingPostsWithReplies(int id)
         {
@@ -55,22 +56,12 @@ namespace ItForum.Controllers
 
             posts.ForEach(p => p.Replies.RemoveAll(r => r.ApprovalStatus == ApprovalStatus.Declined));
 
-            if (User.Identity.IsAuthenticated)
-            {
-                var user = _userService.FindById(CurrentUserId);
+            var user = _userService.FindById(CurrentUserId);
 
-                if (user.Role == Role.None)
-                {
-                    var predicate = new Predicate<Post>(p =>
-                        p.ApprovalStatus == ApprovalStatus.Pending && p.CreatedById != CurrentUserId);
-
-                    posts.RemoveAll(predicate);
-                    posts.ForEach(p => p.Replies.RemoveAll(predicate));
-                }
-            }
-            else
+            if (user.Role == Role.None)
             {
-                var predicate = new Predicate<Post>(p => p.ApprovalStatus == ApprovalStatus.Pending);
+                var predicate = new Predicate<Post>(p =>
+                    p.ApprovalStatus == ApprovalStatus.Pending && p.CreatedById != CurrentUserId);
 
                 posts.RemoveAll(predicate);
                 posts.ForEach(p => p.Replies.RemoveAll(predicate));

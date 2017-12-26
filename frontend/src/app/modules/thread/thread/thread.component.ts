@@ -54,27 +54,35 @@ export class ThreadComponent implements OnInit, OnDestroy {
       .takeUntil(componentDestroyed(this))
       .subscribe(resp => {
         this.thread = resp;
-        this.checkThreadStatus();
         this.checkPermission();
+        this.getPosts();
         this.setStorage();
+        this.threadService.increaseView(this.thread.id).subscribe();
       });
   }
 
   ngOnDestroy() {
   }
 
-  checkThreadStatus() {
+  getPosts() {
     if (this.thread.approvalStatus === this.approvalStatus.Declined) {
       this.declinedFilter();
     } else if (this.thread.approvalStatus === this.approvalStatus.Pending) {
-      if (this.authenticated && this.currentUser.role !== this.role.None) {
+      if (this.permission) {
         this.pendingFilter();
       } else {
         this.router.navigate(['/']);
       }
     } else {
-      this.defaultFilter();
-      this.threadService.increaseView(this.thread.id).subscribe();
+      if (this.authenticated) {
+        if (this.permission || this.authService.isNone()) {
+          this.defaultFilter();
+        } else if (this.authService.isModerator()) {
+          this.approvedFilter();
+        }
+      } else {
+        this.approvedFilter();
+      }
     }
   }
 
@@ -100,7 +108,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
       .subscribe(resp => {
         this.showEditor = false;
         this.editorContent = '';
-        this.defaultFilter();
+        this.getPosts();
         this.coreService.notifySuccess();
       });
   }
@@ -121,7 +129,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
   }
 
   defaultFilter() {
-    this.filter(this.threadService.getApprovedPendingPostsWithReplies(this.thread.id));
+    this.filter(this.threadService.getApprovedPendingPosts(this.thread.id));
   }
 
   approvedFilter() {

@@ -1,5 +1,5 @@
 <mat-card>
-  <app-post-header [post]="post" [permission]="permission" [threadApprovalStatus]="approveThread"
+  <app-post-header [post]="post" [permission]="permission" [threadApprovalStatus]="threadApprovalStatus"
                    (threadApprovalChange)="threadApprovalChange.emit($event)"></app-post-header>
   <hr class="mt-2">
   <app-post-content [post]="post" [showAction]="post.approvalStatus === approvalStatus.Approved"

@@ -54,8 +54,12 @@ export class AuthService {
     return this.currentUser().role === this.role.Administrator;
   }
 
-  isMod(): boolean {
+  isModerator(): boolean {
     return this.currentUser().role === this.role.Moderator;
+  }
+
+  isNone(): boolean {
+    return this.currentUser().role === this.role.None;
   }
 
   isAuthenticated(): boolean {
