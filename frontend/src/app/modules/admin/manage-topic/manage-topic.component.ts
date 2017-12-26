@@ -8,6 +8,7 @@ import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/c
 import { EditTopicDialogComponent } from './edit-topic-dialog/edit-topic-dialog.component';
 import { OrderByPipe } from 'ngx-pipes';
 import { CoreService } from '../../core/core.service';
+import { MoveDialogComponent } from './move-dialog/move-dialog.component';
 
 @Component({
   selector: 'app-manage-topic',
@@ -74,6 +75,23 @@ export class ManageTopicComponent implements OnInit {
       .subscribe(result => {
         if (result) {
           topic = result;
+        }
+      });
+  }
+
+  moveTopic(topic: Topic) {
+    this.dialog.open(MoveDialogComponent, {
+      data: topic,
+      width: '600px',
+    }).afterClosed()
+      .subscribe(result => {
+        if (result && result !== topic.parentId) {
+          const oldParent = this.topics.find(item => item.id === topic.parentId);
+          oldParent.subTopics.splice(oldParent.subTopics.indexOf(topic), 1);
+
+          topic.parentId = result;
+          const newParent = this.topics.find(item => item.id === topic.parentId);
+          newParent.subTopics.push(topic);
         }
       });
   }

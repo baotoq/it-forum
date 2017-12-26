@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -204,6 +205,18 @@ namespace ItForum.Controllers
             });
             await _unitOfWork.SaveChangesAsync();
             return Ok(topic);
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpPost("move/{id}")]
+        public async Task<IActionResult> Move(int id, int parentId)
+        {
+            var topic = _topicService.FindById(id);
+            if (topic == null) return BadRequest();
+            topic.ParentId = parentId;
+            topic.OrderIndex = int.MaxValue;
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
         }
     }
 }

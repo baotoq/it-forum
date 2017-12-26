@@ -68,6 +68,10 @@ export class TopicService {
     return this.httpClient.delete(`${API.TOPIC.URL}/${id}`);
   }
 
+  move(id: number, parentId): Observable<any> {
+    return this.httpClient.post(`${API.TOPIC.URL}/move/${id}?parentId=${parentId}`, {});
+  }
+
   reOrder(topic: Topic): Observable<any> {
     return this.httpClient.post(`${API.TOPIC.URL}/re-order`, topic);
   }
