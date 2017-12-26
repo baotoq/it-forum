@@ -33,7 +33,7 @@
 
   <div class="shadow-2">
     <app-thread-search-input (searchOut)="onSearchOut($event)"
-                             [showFilter]="authenticated && currentUser.role !== role.None"
+                             [showFilter]="currentUser?.role === role.Administrator || management"
                              (approvedFilter)="approvedFilter()"
                              (declinedFilter)="declinedFilter()"
                              (pendingFilter)="pendingFilter()"></app-thread-search-input>

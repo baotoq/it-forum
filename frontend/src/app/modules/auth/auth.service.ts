@@ -32,6 +32,10 @@ export class AuthService {
     return this.httpClient.post<boolean>(API.USER.EXIST_EMAIL + `?email=${email}`, {});
   }
 
+  forgot(email: string): Observable<boolean> {
+    return this.httpClient.post<boolean>(`${API.USER.URL}/forgot?email=${email}`, {});
+  }
+
   setToken(token: string) {
     localStorage.setItem(Storage.AUTH, token);
   }

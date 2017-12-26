@@ -63,6 +63,23 @@ namespace ItForum.Services
             return encodedToken;
         }
 
+        public string GenerateForgotPasswordJwt(string email)
+        {
+            var claims = new[] { new Claim("email", email) };
+
+            var token = new JwtSecurityToken(
+                Jwt.Issuer,
+                Jwt.Audience,
+                claims,
+                Jwt.NotBefore,
+                Jwt.Expires,
+                Jwt.SigningCredentials);
+
+            var encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return encodedToken;
+        }
+
         public IEnumerable<User> FindModerators(int topicId)
         {
             return Context.Managements.Include(m => m.User)

@@ -14,7 +14,7 @@ namespace ItForum.Common
 
         public static DateTime NotBefore => DateTime.Now;
 
-        public static DateTime Expires => NotBefore.AddMinutes(30);
+        public static DateTime Expires => NotBefore.AddDays(1);
 
         public static SigningCredentials SigningCredentials { get; } =
             new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Secret)),

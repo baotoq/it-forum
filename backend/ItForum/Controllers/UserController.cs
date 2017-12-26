@@ -21,15 +21,17 @@ namespace ItForum.Controllers
         private readonly HelperService _helperService;
         private readonly IMapper _mapper;
         private readonly UnitOfWork _unitOfWork;
+        private readonly EmailSender _emailSender;
         private readonly UserService _userService;
 
         public UserController(UserService userService, UnitOfWork unitOfWork, IMapper mapper,
-            HelperService helperService)
+            HelperService helperService, EmailSender emailSender)
         {
             _userService = userService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _helperService = helperService;
+            _emailSender = emailSender;
         }
 
         public int CurrentUserId => int.Parse(User.FindFirst("id").Value);
@@ -207,6 +209,18 @@ namespace ItForum.Controllers
             });
             var dto = _mapper.Map<List<ThreadDto>>(threads);
             return Ok(dto);
+        }
+
+        [HttpPost("forgot")]
+        public async Task<IActionResult> Forgot(string email)
+        {
+            if (!_userService.IsExistEmail(email.ToLower())) return BadRequest();
+
+            var token = _userService.GenerateForgotPasswordJwt(email);
+
+            await _emailSender.SendEmailAsync(email, "Forgot password", token);
+
+            return Ok();
         }
     }
 }

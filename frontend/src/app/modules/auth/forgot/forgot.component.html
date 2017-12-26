@@ -1,0 +1,41 @@
+<div class="container-fluid">
+  <div class="row pt-3 justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card card-outline-primary shadow-2">
+        <mat-toolbar color="primary">
+          <h2 class="m-auto" *ngIf="!success">Forgot Password</h2>
+          <h2 class="m-auto" *ngIf="success">Check your email</h2>
+        </mat-toolbar>
+        <div class="card-body" *ngIf="success">
+          We've sent an email to <strong>{{emailControl.value}}</strong> click the link in the email to reset your
+          password.
+        </div>
+        <div class="card-body" *ngIf="!success">
+          <div class="text-muted mb-2" style="font-size: 80%" align="center">
+            Please enter your email address to retrieve your password.
+          </div>
+          <mat-form-field class="w-100">
+            <input matInput placeholder="Email" [formControl]="emailControl" required>
+            <mat-error *ngIf="emailControl.errors | hasError: 'required'">
+              Email is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="emailControl.errors | hasError: 'email'">
+              Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="emailControl.errors | hasError: 'notfound'">
+              Cannot found {{emailControl.value}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="card-footer" *ngIf="!success">
+          <button mat-raised-button color="primary" class="float-right"
+                  (click)="onSubmit()"
+                  [disabled]="loading">
+            <app-fa-spinner *ngIf="loading"></app-fa-spinner>
+            <span *ngIf="!loading">Submit</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

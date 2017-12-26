@@ -7,6 +7,7 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthService } from './auth.service';
+import { ForgotComponent } from './forgot/forgot.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { AuthService } from './auth.service';
   declarations: [
     LoginComponent,
     RegisterComponent,
+    ForgotComponent,
   ],
   providers: [
     AuthService,
