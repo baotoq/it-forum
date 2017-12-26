@@ -8,7 +8,7 @@ namespace ItForum.Services
     {
         public async Task SendEmailAsync(string email, string subject, string body)
         {
-            var fromAddress = new MailAddress("bao16090446@gmail.com");
+            var fromAddress = new MailAddress("bao16090446@gmail.com", "TdtGame");
             const string fromPassword = "";
 
             var mailMessage = new MailMessage

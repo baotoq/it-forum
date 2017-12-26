@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -92,15 +91,11 @@ namespace ItForum.Controllers
             var threads = _topicService.FindTopicThreads(id);
 
             if (User.Identity.IsAuthenticated)
-            {
                 threads = threads.Where(p => p.ApprovalStatus == ApprovalStatus.Approved ||
                                              p.ApprovalStatus == ApprovalStatus.Pending &&
-                                              p.CreatedById == CurrentUserId);
-            }
+                                             p.CreatedById == CurrentUserId);
             else
-            {
                 threads = threads.Where(p => p.ApprovalStatus == ApprovalStatus.Approved);
-            }
 
             var dto = _mapper.Map<List<ThreadDto>>(threads.ToList());
 

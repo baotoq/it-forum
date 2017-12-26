@@ -36,17 +36,25 @@ export class AuthService {
     return this.httpClient.post<boolean>(`${API.USER.URL}/forgot?email=${email}`, {});
   }
 
+  validateToken(token: string): Observable<any> {
+    return this.httpClient.post(`${API.USER.URL}/validate-token?token=${token}`, {});
+  }
+
+  resetPassword(id: number, password: string, token: string): Observable<any> {
+    return this.httpClient.post(`${API.USER.URL}/reset-password/${id}?password=${password}&token=${token}`, {});
+  }
+
   setToken(token: string) {
-    localStorage.setItem(Storage.AUTH, token);
+    sessionStorage.setItem(Storage.AUTH, token);
   }
 
   logout() {
-    localStorage.removeItem(Storage.AUTH);
+    sessionStorage.removeItem(Storage.AUTH);
   }
 
   currentUser(): User {
     if (!this.isAuthenticated()) return null;
-    const rawData = this.jwtHelperService.decodeToken(localStorage.getItem(Storage.AUTH));
+    const rawData = this.jwtHelperService.decodeToken(sessionStorage.getItem(Storage.AUTH));
     return new User(rawData);
   }
 

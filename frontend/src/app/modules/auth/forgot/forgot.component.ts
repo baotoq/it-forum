@@ -32,6 +32,8 @@ export class ForgotComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.emailControl.invalid) return;
+
     this.loading = true;
     this.authService.forgot(this.emailControl.value)
       .finally(() => this.loading = false)

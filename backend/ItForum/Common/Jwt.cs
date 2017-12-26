@@ -10,14 +10,27 @@ namespace ItForum.Common
 
         public static string Audience { get; } = "http://localhost:4200";
 
-        public static string Secret { get; } = "Sagittarius@2703";
+        public static string Secret { get; } = "Very super extremely long long long secret";
 
         public static DateTime NotBefore => DateTime.Now;
 
         public static DateTime Expires => NotBefore.AddDays(1);
 
+        public static SymmetricSecurityKey SymmetricSecurityKey { get; } =
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Secret));
+
         public static SigningCredentials SigningCredentials { get; } =
-            new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Secret)),
-                SecurityAlgorithms.HmacSha256);
+            new SigningCredentials(SymmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+
+        public static TokenValidationParameters TokenValidationParameters { get; } = new TokenValidationParameters
+        {
+            ValidIssuer = Issuer,
+            ValidateIssuer = true,
+            ValidAudience = Audience,
+            ValidateAudience = true,
+            IssuerSigningKey = SymmetricSecurityKey,
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true
+        };
     }
 }

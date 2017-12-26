@@ -67,6 +67,8 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.registerForm.invalid) return;
+
     this.loading = true;
     const user = new User({
       name: this.name.value,

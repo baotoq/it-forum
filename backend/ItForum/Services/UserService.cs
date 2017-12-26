@@ -7,12 +7,14 @@ using ItForum.Data;
 using ItForum.Data.Domains;
 using ItForum.Data.Dtos;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ItForum.Services
 {
     public class UserService : Service<User>
     {
         private readonly HelperService _helperService;
+        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
         public UserService(NeptuneContext context, HelperService helperService) : base(context)
         {
@@ -58,26 +60,38 @@ namespace ItForum.Services
                 Jwt.Expires,
                 Jwt.SigningCredentials);
 
-            var encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
+            var encodedToken = _jwtSecurityTokenHandler.WriteToken(token);
 
             return encodedToken;
         }
 
-        public string GenerateForgotPasswordJwt(string email)
+        public string GenerateForgotPasswordJwt(User user)
         {
-            var claims = new[] { new Claim("email", email) };
+            var claims = new[]
+            {
+                new Claim("id", user.Id.ToString()),
+                new Claim("name", user.Name),
+                new Claim("email", user.Email),
+                new Claim("action", "forgot")
+            };
 
             var token = new JwtSecurityToken(
                 Jwt.Issuer,
                 Jwt.Audience,
                 claims,
                 Jwt.NotBefore,
-                Jwt.Expires,
+                Jwt.NotBefore.AddMinutes(10),
                 Jwt.SigningCredentials);
 
-            var encodedToken = new JwtSecurityTokenHandler().WriteToken(token);
+            var encodedToken = _jwtSecurityTokenHandler.WriteToken(token);
 
             return encodedToken;
+        }
+
+        public SecurityToken ValidateToken(string token)
+        {
+            _jwtSecurityTokenHandler.ValidateToken(token, Jwt.TokenValidationParameters, out var validatedToken);
+            return validatedToken;
         }
 
         public IEnumerable<User> FindModerators(int topicId)

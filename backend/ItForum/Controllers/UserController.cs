@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -18,10 +20,10 @@ namespace ItForum.Controllers
     [Produces("application/json")]
     public class UserController : Controller
     {
+        private readonly EmailSender _emailSender;
         private readonly HelperService _helperService;
         private readonly IMapper _mapper;
         private readonly UnitOfWork _unitOfWork;
-        private readonly EmailSender _emailSender;
         private readonly UserService _userService;
 
         public UserController(UserService userService, UnitOfWork unitOfWork, IMapper mapper,
@@ -214,11 +216,48 @@ namespace ItForum.Controllers
         [HttpPost("forgot")]
         public async Task<IActionResult> Forgot(string email)
         {
-            if (!_userService.IsExistEmail(email.ToLower())) return BadRequest();
+            var user = _userService.FindBy(email.ToLower());
 
-            var token = _userService.GenerateForgotPasswordJwt(email);
+            if (user == null) return BadRequest();
 
-            await _emailSender.SendEmailAsync(email, "Forgot password", token);
+            var token = _userService.GenerateForgotPasswordJwt(user);
+            var callbackUrl = $"http://localhost:4200/auth/reset/{token}";
+
+            await _emailSender.SendEmailAsync(email, "Reset Password",
+                $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
+
+            return Ok();
+        }
+
+        [HttpPost("validate-token")]
+        public IActionResult ValidateToken(string token)
+        {
+            try
+            {
+                if (_userService.ValidateToken(token) is JwtSecurityToken decodedToken)
+                {
+                    var claim = decodedToken.Claims.FirstOrDefault(c => c.Type == "action");
+                    if (claim?.Value == "forgot")
+                        return Ok(decodedToken.Payload);
+                }
+
+                return BadRequest();
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("reset-password/{id}")]
+        public async Task<IActionResult> ResetPassword(int id, string password, string token)
+        {
+            if (ValidateToken(token) is BadRequestResult) return BadRequest();
+
+            var user = _userService.FindById(id);
+            user.Salt = _helperService.CreateSalt();
+            user.Password = _helperService.Hash(password, user.Salt);
+            await _unitOfWork.SaveChangesAsync();
 
             return Ok();
         }

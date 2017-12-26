@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Text;
 using AutoMapper;
 using ItForum.Common;
 using ItForum.Data;
@@ -12,7 +11,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -48,16 +46,7 @@ namespace ItForum
                 options.RequireHttpsMetadata = false;
                 options.SaveToken = true;
 
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = Jwt.Issuer,
-                    ValidateIssuer = true,
-                    ValidAudience = Jwt.Audience,
-                    ValidateAudience = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Jwt.Secret)),
-                    ValidateIssuerSigningKey = true,
-                    ValidateLifetime = true
-                };
+                options.TokenValidationParameters = Jwt.TokenValidationParameters;
             });
 
             services.AddAuthorization();

@@ -4,13 +4,13 @@
       <div class="card card-outline-primary shadow-2">
         <mat-toolbar color="primary">
           <h2 class="m-auto" *ngIf="!success">Forgot Password</h2>
-          <h2 class="m-auto" *ngIf="success">Check your email</h2>
+          <h2 class="m-auto" *ngIf="success">Check Your Email</h2>
         </mat-toolbar>
         <div class="card-body" *ngIf="success">
           We've sent an email to <strong>{{emailControl.value}}</strong> click the link in the email to reset your
           password.
         </div>
-        <div class="card-body" *ngIf="!success">
+        <div class="card-body" *ngIf="!success" (keyup.enter)="onSubmit()">
           <div class="text-muted mb-2" style="font-size: 80%" align="center">
             Please enter your email address to retrieve your password.
           </div>
@@ -30,7 +30,7 @@
         <div class="card-footer" *ngIf="!success">
           <button mat-raised-button color="primary" class="float-right"
                   (click)="onSubmit()"
-                  [disabled]="loading">
+                  [disabled]="loading || emailControl.invalid">
             <app-fa-spinner *ngIf="loading"></app-fa-spinner>
             <span *ngIf="!loading">Submit</span>
           </button>

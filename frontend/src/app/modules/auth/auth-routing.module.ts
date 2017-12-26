@@ -22,10 +22,12 @@ const routes: Routes = [
   {
     path: 'forgot',
     component: ForgotComponent,
+    resolve: [AuthGuard],
   },
   {
     path: 'reset/:token',
     component: ResetPasswordComponent,
+    resolve: [AuthGuard],
   },
 ];
 

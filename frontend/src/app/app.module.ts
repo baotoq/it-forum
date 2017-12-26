@@ -61,7 +61,7 @@ import 'rxjs/add/observable/combineLatest';
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {
-          return localStorage.getItem(Storage.AUTH);
+          return sessionStorage.getItem(Storage.AUTH);
         },
         whitelistedDomains: ['localhost:5000', 'tdtgame.azurewebsites.net'],
         skipWhenExpired: true,
