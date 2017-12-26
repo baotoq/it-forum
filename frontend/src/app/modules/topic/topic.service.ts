@@ -32,16 +32,8 @@ export class TopicService {
     return this.httpClient.get<Topic>(`${API.TOPIC.URL}/managements/${id}`);
   }
 
-  getSelectOptions(level: number): Observable<any> {
-    return this.httpClient.get(`${API.TOPIC.URL}/select-options?level=${level}`);
-  }
-
-  getSubOptions(id: number): Observable<any> {
-    return this.httpClient.get(`${API.TOPIC.URL}/sub-options/${id}`);
-  }
-
-  getDefaultThreads(id: number): Observable<Thread[]> {
-    return this.httpClient.get<Thread[]>(`${API.TOPIC.URL}/default-threads/${id}`);
+  getApprovedAndPendingThreads(id: number): Observable<Thread[]> {
+    return this.httpClient.get<Thread[]>(`${API.TOPIC.URL}/approved-pending-threads/${id}`);
   }
 
   getApprovedThreads(id: number): Observable<Thread[]> {

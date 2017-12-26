@@ -11,18 +11,13 @@
         <mat-icon matChipRemove class="text-white" clickStopPropagation>cancel</mat-icon>
       </mat-chip>
     </mat-chip-list>
-    <a [routerLink]="['/thread/create']" mat-raised-button class="ml-auto"
-       color="primary" clickStopPropagation>
-      <i class="fa fa-plus"></i>
-      Thread
-    </a>
+
     <ng-container *ngIf="showFilter">
-      <button mat-icon-button [matMenuTriggerFor]="menu" class="ml-2" clickStopPropagation="">
+      <button mat-icon-button [matMenuTriggerFor]="menu" class="ml-auto" clickStopPropagation="">
         <mat-icon>filter_list</mat-icon>
 
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="defaultFilter.emit()">Default</button>
         <button mat-menu-item (click)="approvedFilter.emit()">Approved</button>
         <button mat-menu-item (click)="pendingFilter.emit()">Pending</button>
         <button mat-menu-item (click)="declinedFilter.emit()">Declined</button>

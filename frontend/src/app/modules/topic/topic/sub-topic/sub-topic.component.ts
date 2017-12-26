@@ -80,7 +80,12 @@ export class SubTopicComponent implements OnInit, OnDestroy {
 
         this.dataSource = new MatTableDataSource([]);
         this.dataSource.paginator = this.paginator;
-        this.defaultFilter();
+
+        if (this.authenticated && this.currentUser.role !== this.role.None) {
+          this.approvedFilter();
+        } else {
+          this.approvedAndPendingFilter();
+        }
 
         if (this.matSort.active !== 'lastActivity') {
           this.matSort.sort({id: 'lastActivity', start: 'desc', disableClear: true});
@@ -152,8 +157,8 @@ export class SubTopicComponent implements OnInit, OnDestroy {
     });
   }
 
-  defaultFilter() {
-    this.filter(this.topicService.getDefaultThreads(this.subTopic.id));
+  approvedAndPendingFilter() {
+    this.filter(this.topicService.getApprovedAndPendingThreads(this.subTopic.id));
   }
 
   approvedFilter() {

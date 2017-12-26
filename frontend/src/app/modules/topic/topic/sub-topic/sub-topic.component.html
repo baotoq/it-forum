@@ -1,4 +1,8 @@
 <mat-toolbar class="mat-toolbar-48 shadow-1" style="background-color: #fafafa">
+  <a [routerLink]="['/thread/create']" mat-button color="primary">
+    <i class="fa fa-plus"></i>
+    Thread
+  </a>
   <a mat-button color="primary" [routerLink]="['/thread/search']">Search</a>
 </mat-toolbar>
 
@@ -30,7 +34,6 @@
   <div class="shadow-2">
     <app-thread-search-input (searchOut)="onSearchOut($event)"
                              [showFilter]="authenticated && currentUser.role !== role.None"
-                             (defaultFilter)="defaultFilter()"
                              (approvedFilter)="approvedFilter()"
                              (declinedFilter)="declinedFilter()"
                              (pendingFilter)="pendingFilter()"></app-thread-search-input>

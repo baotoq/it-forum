@@ -65,18 +65,6 @@ namespace ItForum.Controllers
             return Ok(dto);
         }
 
-        [HttpGet("sub-options/{id}")]
-        public IActionResult GetSubOptions(int id)
-        {
-            var topics = _topicService.FindWithSubTopics(id);
-            return Ok(topics.SubTopics.Select(x => new
-            {
-                value = x.Id,
-                text = x.Name,
-                title = x.Description
-            }));
-        }
-
         [HttpGet("managements/{id}")]
         public IActionResult GetWithManagements(int id)
         {
@@ -85,40 +73,36 @@ namespace ItForum.Controllers
             return Ok(dto);
         }
 
-        [HttpGet("default-threads/{id}")]
-        public IActionResult GetDefaultThreads(int id)
-        {
-            var threads = _topicService.FindTopicThreadsWithPosts(id).ToList();
-
-            threads.RemoveAll(th => th.ApprovalStatus == ApprovalStatus.Declined);
-
-            if (User.Identity.IsAuthenticated)
-            {
-                var user = _userService.FindById(CurrentUserId);
-
-                if (user.Role == Role.None)
-                    threads.RemoveAll(th =>
-                        th.ApprovalStatus == ApprovalStatus.Pending && th.CreatedById != CurrentUserId);
-            }
-            else
-            {
-                threads.RemoveAll(th => th.ApprovalStatus == ApprovalStatus.Pending);
-            }
-
-            var dto = _mapper.Map<List<ThreadDto>>(threads);
-
-            return Ok(dto);
-        }
-
         [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
         [HttpGet("approved-threads/{id}")]
         public IActionResult GetApprovedThreads(int id)
         {
-            var threads = _topicService.FindTopicThreadsWithPosts(id).ToList();
+            var threads = _topicService.FindTopicThreadsWithPosts(id);
 
-            threads = threads.Where(p => p.ApprovalStatus == ApprovalStatus.Approved).ToList();
+            threads = threads.Where(p => p.ApprovalStatus == ApprovalStatus.Approved);
 
-            var dto = _mapper.Map<List<ThreadDto>>(threads);
+            var dto = _mapper.Map<List<ThreadDto>>(threads.ToList());
+
+            return Ok(dto);
+        }
+
+        [HttpGet("approved-pending-threads/{id}")]
+        public IActionResult GetApprovedAndUserPendingThreads(int id)
+        {
+            var threads = _topicService.FindTopicThreads(id);
+
+            if (User.Identity.IsAuthenticated)
+            {
+                threads = threads.Where(p => p.ApprovalStatus == ApprovalStatus.Approved ||
+                                             p.ApprovalStatus == ApprovalStatus.Pending &&
+                                              p.CreatedById == CurrentUserId);
+            }
+            else
+            {
+                threads = threads.Where(p => p.ApprovalStatus == ApprovalStatus.Approved);
+            }
+
+            var dto = _mapper.Map<List<ThreadDto>>(threads.ToList());
 
             return Ok(dto);
         }

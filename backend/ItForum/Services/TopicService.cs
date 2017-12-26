@@ -43,17 +43,17 @@ namespace ItForum.Services
 
         public IEnumerable<Thread> FindTopicThreads(int id)
         {
-            return DbSet.AsNoTracking()
-                .Include(x => x.Threads).ThenInclude(x => x.CreatedBy)
-                .SingleOrDefault(x => x.Id == id)?.Threads;
+            return Context.Threads.AsNoTracking()
+                .Include(x => x.CreatedBy)
+                .Where(x => x.TopicId == id);
         }
 
         public IEnumerable<Thread> FindTopicThreadsWithPosts(int id)
         {
-            return DbSet.AsNoTracking()
-                .Include(x => x.Threads).ThenInclude(x => x.CreatedBy)
-                .Include(x => x.Threads).ThenInclude(x => x.Posts)
-                .SingleOrDefault(x => x.Id == id)?.Threads;
+            return Context.Threads.AsNoTracking()
+                .Include(x => x.CreatedBy)
+                .Include(x => x.Posts)
+                .Where(x => x.TopicId == id);
         }
 
         public void IncreaseNumberOfThreads(int? id)
