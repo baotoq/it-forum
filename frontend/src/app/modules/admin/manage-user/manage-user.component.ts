@@ -1,4 +1,5 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { ManageUserService } from './manage-user.service';
 import { User } from '../../../models/user';
 import { LoadingService } from '../../../components/loading/loading.service';
@@ -14,7 +15,7 @@ import { UserService } from '../../user/user.service';
   styleUrls: ['./manage-user.component.scss'],
   providers: [ManageUserService],
 })
-export class ManageUserComponent implements OnInit {
+export class ManageUserComponent implements OnInit, OnDestroy {
   users: User[];
   displayedColumns;
 
@@ -33,6 +34,7 @@ export class ManageUserComponent implements OnInit {
     this.onResize();
     this.loadingService.spinnerStart();
     this.manageUserService.getApprovedUser()
+      .takeUntil(componentDestroyed(this))
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.users = resp;
@@ -41,6 +43,9 @@ export class ManageUserComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.matSort;
       });
+  }
+
+  ngOnDestroy() {
   }
 
   @HostListener('window:resize')
@@ -62,7 +67,8 @@ export class ManageUserComponent implements OnInit {
       width: '600px',
     });
 
-    dialogRef.afterClosed().flatMap(() => this.userService.get(user.id))
-      .subscribe(resp => user.role = resp.role);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) user.role = result;
+    });
   }
 }

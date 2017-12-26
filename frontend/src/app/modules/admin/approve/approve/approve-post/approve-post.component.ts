@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { ApproveService } from '../../approve.service';
 import { Post } from '../../../../../models/post';
 import { LoadingService } from '../../../../../components/loading/loading.service';
@@ -11,7 +12,7 @@ import { ConfirmDialogComponent } from '../../../../shared/components/confirm-di
   templateUrl: './approve-post.component.html',
   styleUrls: ['./approve-post.component.scss'],
 })
-export class ApprovePostComponent implements OnInit {
+export class ApprovePostComponent implements OnInit, OnDestroy {
   pendingPosts: Post[];
 
   currentPage = 1;
@@ -27,11 +28,15 @@ export class ApprovePostComponent implements OnInit {
   ngOnInit() {
     this.loadingService.spinnerStart();
     this.approveService.getPendingPosts()
+      .takeUntil(componentDestroyed(this))
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.pendingPosts = this.orderByPipe.transform(resp, ['-dateCreated']);
         this.onPageChange();
       });
+  }
+
+  ngOnDestroy() {
   }
 
   approve(post: Post) {

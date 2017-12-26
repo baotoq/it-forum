@@ -1,4 +1,5 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { ActivatedRoute } from '@angular/router';
 import { OrderByPipe } from 'ngx-pipes';
 import { LoadingService } from '../../../../components/loading/loading.service';
@@ -24,7 +25,7 @@ import { debounce } from '../../../shared/common/decorators';
   templateUrl: './sub-topic.component.html',
   styleUrls: ['./sub-topic.component.scss'],
 })
-export class SubTopicComponent implements OnInit {
+export class SubTopicComponent implements OnInit, OnDestroy {
   subTopic: Topic;
   threads = [];
 
@@ -59,15 +60,19 @@ export class SubTopicComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.getSubTopic(params['subTopicId']);
 
-      this.moderators$ = this.userService.getModerators(params['subTopicId']);
+      this.moderators$ = this.userService.getModerators(params['subTopicId']).takeUntil(componentDestroyed(this));
       this.paginator.pageIndex = 0;
     });
-    this.matSort.sortChange.subscribe(() => this.filter());
+    this.matSort.sortChange.subscribe(() => this.search());
+  }
+
+  ngOnDestroy() {
   }
 
   getSubTopic(id: number) {
     this.loadingService.spinnerStart();
     this.topicService.getWithManagements(id)
+      .takeUntil(componentDestroyed(this))
       .subscribe(resp => {
         this.subTopic = resp;
 
@@ -101,10 +106,10 @@ export class SubTopicComponent implements OnInit {
   }
 
   onSearchOut($event) {
-    this.filter($event);
+    this.search($event);
   }
 
-  filter(searchString: string = '') {
+  search(searchString: string = '') {
     const data = this.threads;
     let config = this.matSort.direction === 'asc' ? '+' : '-';
     config += this.matSort.active;
@@ -124,6 +129,7 @@ export class SubTopicComponent implements OnInit {
     this.approveService.approveThread(thread.id)
       .subscribe(() => {
         thread.approvalStatus = ApprovalStatus.Approved;
+        thread.numberOfPendings = 0;
       });
   }
 
@@ -147,45 +153,29 @@ export class SubTopicComponent implements OnInit {
   }
 
   defaultFilter() {
-    this.loadingService.spinnerStart();
-    this.topicService.getDefaultThreads(this.subTopic.id)
-      .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => {
-        this.threads = resp;
-        this.paginator.pageIndex = 0;
-        this.filter();
-      });
+    this.filter(this.topicService.getDefaultThreads(this.subTopic.id));
   }
 
   approvedFilter() {
-    this.loadingService.spinnerStart();
-    this.topicService.getApprovedThreads(this.subTopic.id)
-      .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => {
-        this.threads = resp;
-        this.filter();
-      });
+    this.filter(this.topicService.getApprovedThreads(this.subTopic.id));
   }
 
   pendingFilter() {
-    this.loadingService.spinnerStart();
-    this.topicService.getPendingThreads(this.subTopic.id)
-      .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => {
-        this.threads = resp;
-        this.paginator.pageIndex = 0;
-        this.filter();
-      });
+    this.filter(this.topicService.getPendingThreads(this.subTopic.id));
   }
 
   declinedFilter() {
+    this.filter(this.topicService.getDeclinedThreads(this.subTopic.id));
+  }
+
+  filter(sub) {
     this.loadingService.spinnerStart();
-    this.topicService.getDeclinedThreads(this.subTopic.id)
+    sub.takeUntil(componentDestroyed(this))
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.threads = resp;
         this.paginator.pageIndex = 0;
-        this.filter();
+        this.search();
       });
   }
 }

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import { UserService } from '../../../user/user.service';
 import { TopicService } from '../../../topic/topic.service';
 import { CoreService } from '../../../core/core.service';
@@ -26,7 +26,8 @@ export class UserDetailDialogComponent implements OnInit {
               private snackBar: MatSnackBar,
               private coreService: CoreService,
               private userService: UserService,
-              private topicService: TopicService) {
+              private topicService: TopicService,
+              private dialogRef: MatDialogRef<UserDetailDialogComponent>) {
   }
 
   ngOnInit() {
@@ -63,13 +64,13 @@ export class UserDetailDialogComponent implements OnInit {
       this.userService.editRole(this.user.id, this.user.role)
         .flatMap(() => this.userService.editManagements(this.user.id, selected.map(item => item.id)))
         .subscribe(() => {
-          this.ngOnInit();
+          this.dialogRef.close(this.user.role);
           this.snackBar.open('Success', '', {duration: 2000});
         });
     } else {
       this.userService.editRole(this.user.id, this.user.role)
         .subscribe(() => {
-          this.ngOnInit();
+          this.dialogRef.close(this.user.role);
         });
     }
   }

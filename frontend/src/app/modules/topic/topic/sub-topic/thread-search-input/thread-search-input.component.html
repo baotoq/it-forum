@@ -12,7 +12,6 @@
       </mat-chip>
     </mat-chip-list>
     <a [routerLink]="['/thread/create']" mat-raised-button class="ml-auto"
-       [queryParams]="{topicId: route.snapshot.parent.params['topicId'], subTopicId: route.snapshot.params['subTopicId']}"
        color="primary" clickStopPropagation>
       <i class="fa fa-plus"></i>
       Thread

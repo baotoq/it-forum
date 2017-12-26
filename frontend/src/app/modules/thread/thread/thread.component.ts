@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ThreadService } from '../thread.service';
 import { Thread } from '../../../models/thread';
@@ -17,7 +18,7 @@ import { Role } from '../../../models/role';
   templateUrl: './thread.component.html',
   styleUrls: ['./thread.component.scss'],
 })
-export class ThreadComponent implements OnInit {
+export class ThreadComponent implements OnInit, OnDestroy {
   thread: Thread;
   posts: Post[];
   permission = false;
@@ -50,12 +51,16 @@ export class ThreadComponent implements OnInit {
     this.loadingService.spinnerStart();
     const threadId = this.route.snapshot.params['threadId'];
     this.threadService.getWithCreatedByTagsAndReplies(threadId)
+      .takeUntil(componentDestroyed(this))
       .subscribe(resp => {
         this.thread = resp;
         this.checkThreadStatus();
         this.checkPermission();
         this.setStorage();
       });
+  }
+
+  ngOnDestroy() {
   }
 
   checkThreadStatus() {
@@ -133,7 +138,8 @@ export class ThreadComponent implements OnInit {
 
   filter(sub) {
     this.loadingService.spinnerStart();
-    sub.finally(() => this.loadingService.spinnerStop())
+    sub.takeUntil(componentDestroyed(this))
+      .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.posts = this.orderByPipe.transform(resp, ['dateCreated']);
         this.onPageChange();

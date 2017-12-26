@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { TopicService } from '../topic.service';
 import { Topic } from '../../../models/topic';
 import { LoadingService } from '../../../components/loading/loading.service';
@@ -11,7 +12,6 @@ import { Storage } from '../../shared/common/constant';
 })
 export class TopicListComponent implements OnInit, OnDestroy {
   topics: Topic[];
-  subscription: any;
 
   constructor(private loadingService: LoadingService,
               private topicService: TopicService) {
@@ -22,13 +22,13 @@ export class TopicListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 
   getTopic() {
     this.loadingService.spinnerStart();
-    this.subscription = this.topicService.getAllWithSubTopicsAndThreads(0)
+    this.topicService.getAllWithSubTopicsAndThreads(0)
       .finally(() => this.loadingService.spinnerStop())
+      .takeUntil(componentDestroyed(this))
       .subscribe(resp => {
         this.topics = resp;
 

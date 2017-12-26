@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { FormControl } from '@angular/forms';
 import { Tag } from '../../../models/tag';
 import { Observable } from 'rxjs/Observable';
@@ -12,9 +13,9 @@ import { Topic } from '../../../models/topic';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+  styleUrls: ['./search.component.scss'],
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
   searchString: string;
 
   selectedTopic = '-1';
@@ -30,16 +31,21 @@ export class SearchComponent implements OnInit {
               private topicService: TopicService,
               private tagService: TagService,
               private filterByPipe: FilterByPipe,
-              private orderByPipe: OrderByPipe) { }
+              private orderByPipe: OrderByPipe) {
+  }
 
   ngOnInit() {
     Observable.combineLatest(this.topicService.getAllWithSubTopics(0), this.tagService.getAll())
-      .subscribe( resp => {
+      .takeUntil(componentDestroyed(this))
+      .subscribe(resp => {
         this.topicOptions = resp[0];
         this.tags = resp[1];
         this.filterTags();
         this.loadingService.spinnerStop();
       });
+  }
+
+  ngOnDestroy() {
   }
 
   tagSelected() {

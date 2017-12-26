@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { CoreService } from '../../core/core.service';
 import { ThreadService } from '../thread.service';
@@ -20,12 +21,9 @@ import { MatAutocompleteTrigger } from '@angular/material';
   templateUrl: './thread-create.component.html',
   styleUrls: ['./thread-create.component.scss'],
 })
-export class ThreadCreateComponent implements OnInit {
+export class ThreadCreateComponent implements OnInit, OnDestroy {
   selectedTopic: number;
-  selectedSubTopic: number;
-
   topicOptions = [];
-  subTopicOptions = [];
 
   tagsControl = new FormControl();
   filteredTags: Observable<Tag[]>;
@@ -39,7 +37,6 @@ export class ThreadCreateComponent implements OnInit {
   displayPreview = false;
 
   constructor(private router: Router,
-              private route: ActivatedRoute,
               private loadingService: LoadingService,
               private authService: AuthService,
               private coreService: CoreService,
@@ -51,15 +48,24 @@ export class ThreadCreateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getParentOptions();
-    this.getTags();
+    Observable.combineLatest(this.topicService.getAllWithSubTopics(0), this.tagService.getAll())
+      .takeUntil(componentDestroyed(this))
+      .subscribe(resp => {
+        this.topicOptions = resp[0];
+        this.tags = resp[1];
+        this.filterTags();
+        this.loadingService.spinnerStop();
+      });
+  }
+
+  ngOnDestroy() {
   }
 
   onCreate() {
     this.loading = true;
     const thread = new Thread({
       title: this.title,
-      topicId: this.selectedSubTopic,
+      topicId: this.selectedTopic,
       posts: [{content: this.editorContent}],
       tags: this.selectedTags,
     });
@@ -75,42 +81,11 @@ export class ThreadCreateComponent implements OnInit {
   getPreviewThread(): Thread {
     return new Thread({
       title: this.title,
-      topicId: this.selectedSubTopic,
+      topicId: this.selectedTopic,
       posts: [{content: this.editorContent}],
       createdBy: this.currentUser,
       tags: this.selectedTags,
       createdDate: Date.now(),
-    });
-  }
-
-  getParentOptions() {
-    this.loadingService.spinnerStart();
-    this.topicService.getSelectOptions(0)
-      .flatMap(resp => {
-        this.topicOptions = resp;
-        this.selectedTopic = +this.route.snapshot.queryParams['topicId'] || this.topicOptions[0].value;
-        return this.topicService.getSubOptions(this.selectedTopic);
-      }).subscribe(resp => {
-      this.subTopicOptions = resp;
-      this.selectedSubTopic = +this.route.snapshot.queryParams['subTopicId'] || this.subTopicOptions[0].value;
-      this.loadingService.spinnerStop();
-    });
-  }
-
-  getSubOptions() {
-    this.loadingService.progressBarStart();
-    this.topicService.getSubOptions(this.selectedTopic)
-      .finally(() => this.loadingService.progressBarStop())
-      .subscribe(discussionResp => {
-        this.subTopicOptions = discussionResp;
-        this.selectedSubTopic = this.subTopicOptions[0].value;
-      });
-  }
-
-  getTags() {
-    this.tagService.getAll().subscribe(resp => {
-      this.tags = resp;
-      this.filterTags();
     });
   }
 

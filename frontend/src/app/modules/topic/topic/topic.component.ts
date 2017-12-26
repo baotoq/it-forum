@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { TopicService } from '../topic.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Topic } from '../../../models/topic';
@@ -9,7 +10,7 @@ import { MatTabGroup } from '@angular/material';
   templateUrl: './topic.component.html',
   styleUrls: ['./topic.component.scss'],
 })
-export class TopicComponent implements OnInit {
+export class TopicComponent implements OnInit, OnDestroy {
   topic: Topic;
   tabLinks = [];
 
@@ -22,6 +23,7 @@ export class TopicComponent implements OnInit {
 
   ngOnInit() {
     this.topicService.getWithSubTopics(this.route.snapshot.params['topicId'])
+      .takeUntil(componentDestroyed(this))
       .subscribe(resp => {
         this.topic = resp;
         this.topic.subTopics.forEach(item => this.tabLinks.push(`/topic/${this.topic.id}/sub/${item.id}`));
@@ -32,6 +34,9 @@ export class TopicComponent implements OnInit {
           this.router.navigateByUrl(this.tabLinks[0]);
         }
       });
+  }
+
+  ngOnDestroy() {
   }
 
   focusChange($event) {

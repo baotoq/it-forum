@@ -1,15 +1,17 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { DashboardService } from '../dashboard.service';
 import { LoadingService } from '../../../../components/loading/loading.service';
 import { LineChartComponent } from '../../../shared/components/line-chart/line-chart.component';
 import { ColumnChartComponent } from '../../../shared/components/column-chart/column-chart.component';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   @ViewChildren(LineChartComponent) lineCharts: QueryList<LineChartComponent>;
   @ViewChildren(ColumnChartComponent) columnCharts: QueryList<ColumnChartComponent>;
@@ -26,18 +28,23 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.loadingService.spinnerStart();
-    this.dashboardService.getThreadStatistic()
+    Observable.combineLatest(
+      this.dashboardService.getThreadStatistic(),
+      this.dashboardService.getPostStatistic(),
+      this.dashboardService.getThreadsPerMonthStatistic(),
+      this.dashboardService.getPostsPerMonthStatistic(),
+    )
+      .takeUntil(componentDestroyed(this))
       .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => this.threadsDataTable = this.prepareColumnChart('Number of threads', resp));
-    this.dashboardService.getPostStatistic()
-      .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => this.postsDataTable = this.prepareColumnChart('Number of posts', resp));
-    this.dashboardService.getThreadsPerMonthStatistic()
-      .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => this.threadLifetimeDataTable = this.prepareLineChart('Number of threads', resp));
-    this.dashboardService.getPostsPerMonthStatistic()
-      .finally(() => this.loadingService.spinnerStop())
-      .subscribe(resp => this.postLifetimeDataTable = this.prepareLineChart('Number of posts', resp));
+      .subscribe(resp => {
+        this.threadsDataTable = this.prepareColumnChart('Number of threads', resp[0]);
+        this.postsDataTable = this.prepareColumnChart('Number of posts', resp[1]);
+        this.threadLifetimeDataTable = this.prepareLineChart('Number of threads', resp[2]);
+        this.postLifetimeDataTable = this.prepareLineChart('Number of posts', resp[3]);
+      });
+  }
+
+  ngOnDestroy() {
   }
 
   private prepareColumnChart(title: string, data: any) {

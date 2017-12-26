@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { Thread } from '../../../../../models/thread';
 import { ApproveService } from '../../approve.service';
 import { LoadingService } from '../../../../../components/loading/loading.service';
@@ -11,7 +12,7 @@ import { ConfirmDialogComponent } from '../../../../shared/components/confirm-di
   templateUrl: './approve-thread.component.html',
   styleUrls: ['./approve-thread.component.scss'],
 })
-export class ApproveThreadComponent implements OnInit {
+export class ApproveThreadComponent implements OnInit, OnDestroy {
   pendingThreads: Thread[];
 
   currentPage = 1;
@@ -27,11 +28,15 @@ export class ApproveThreadComponent implements OnInit {
   ngOnInit() {
     this.loadingService.spinnerStart();
     this.approveService.getPendingThreads()
+      .takeUntil(componentDestroyed(this))
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.pendingThreads = this.orderByPipe.transform(resp, ['-dateCreated']);
         this.onPageChange();
       });
+  }
+
+  ngOnDestroy() {
   }
 
   approve(thread: Thread) {

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { Topic } from '../../../models/topic';
 import { LoadingService } from '../../../components/loading/loading.service';
 import { MatDialog } from '@angular/material';
@@ -15,7 +16,7 @@ import { MoveDialogComponent } from './move-dialog/move-dialog.component';
   templateUrl: './manage-topic.component.html',
   styleUrls: ['./manage-topic.component.scss'],
 })
-export class ManageTopicComponent implements OnInit {
+export class ManageTopicComponent implements OnInit, OnDestroy {
   topics: Topic[];
 
   constructor(private loadingService: LoadingService,
@@ -28,11 +29,15 @@ export class ManageTopicComponent implements OnInit {
   ngOnInit() {
     this.loadingService.spinnerStart();
     this.topicService.getAllWithSubTopics(0)
+      .takeUntil(componentDestroyed(this))
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.topics = this.orderByPipe.transform(resp, ['orderIndex', 'name']);
         this.topics.forEach(item => item.subTopics = this.orderByPipe.transform(item.subTopics, ['orderIndex', 'name']));
       });
+  }
+
+  ngOnDestroy() {
   }
 
   createSub(topic: Topic) {

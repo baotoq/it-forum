@@ -1,4 +1,5 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { User } from '../../../../../models/user';
 import { LoadingService } from '../../../../../components/loading/loading.service';
@@ -12,7 +13,7 @@ import { ConfirmDialogComponent } from '../../../../shared/components/confirm-di
   templateUrl: './approve-user.component.html',
   styleUrls: ['./approve-user.component.scss'],
 })
-export class ApproveUserComponent implements OnInit {
+export class ApproveUserComponent implements OnInit, OnDestroy {
   pendingUsers: User[];
 
   displayedColumns;
@@ -32,6 +33,7 @@ export class ApproveUserComponent implements OnInit {
     this.onResize();
     this.loadingService.spinnerStart();
     this.approveService.getPendingUsers()
+      .takeUntil(componentDestroyed(this))
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.pendingUsers = resp;
@@ -39,6 +41,9 @@ export class ApproveUserComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.matSort;
       });
+  }
+
+  ngOnDestroy() {
   }
 
   filter(searchString: string = '') {
