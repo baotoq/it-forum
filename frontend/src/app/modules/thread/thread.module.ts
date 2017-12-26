@@ -14,6 +14,7 @@ import { PostContentComponent } from './thread/post/post-content/post-content.co
 import { PostHeaderComponent } from './thread/post/post-header/post-header.component';
 import { ReplyComponent } from './thread/reply/reply.component';
 import { ThreadPreviewComponent } from './thread-create/thread-preview/thread-preview.component';
+import { SearchComponent } from './search/search.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { ThreadPreviewComponent } from './thread-create/thread-preview/thread-pr
     PostHeaderComponent,
     ReplyComponent,
     ThreadPreviewComponent,
+    SearchComponent,
   ],
   providers: [
     ThreadService,

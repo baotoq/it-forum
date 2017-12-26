@@ -39,7 +39,7 @@ import { MoveDialogComponent } from './manage-topic/move-dialog/move-dialog.comp
   entryComponents: [
     CreateTopicDialogComponent,
     EditTopicDialogComponent,
-    MoveDialogComponent
+    MoveDialogComponent,
   ],
 })
 export class AdminModule {

@@ -65,18 +65,6 @@ namespace ItForum.Controllers
             return Ok(dto);
         }
 
-        [HttpGet("parent-options")]
-        public IActionResult GetParentOptions(int level = 0)
-        {
-            var topics = _topicService.Find(level);
-            return Ok(topics.Select(x => new
-            {
-                value = x.Id,
-                text = x.Name,
-                title = x.Description
-            }));
-        }
-
         [HttpGet("sub-options/{id}")]
         public IActionResult GetSubOptions(int id)
         {

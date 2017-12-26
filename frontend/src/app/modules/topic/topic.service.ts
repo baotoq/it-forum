@@ -32,8 +32,8 @@ export class TopicService {
     return this.httpClient.get<Topic>(`${API.TOPIC.URL}/managements/${id}`);
   }
 
-  getParentOptions(): Observable<any> {
-    return this.httpClient.get(`${API.TOPIC.URL}/parent-options`);
+  getSelectOptions(level: number): Observable<any> {
+    return this.httpClient.get(`${API.TOPIC.URL}/select-options?level=${level}`);
   }
 
   getSubOptions(id: number): Observable<any> {

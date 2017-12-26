@@ -11,7 +11,7 @@ import { LoadingService } from '../../../../components/loading/loading.service';
     <mat-dialog-content>
       <mat-form-field class="w-100">
         <mat-select placeholder="Parent Topic" [(ngModel)]="selected">
-          <mat-option *ngFor="let p of parentTopics" [value]="p.id">
+          <mat-option *ngFor="let p of parentTopics | orderBy:'name'" [value]="p.id">
             {{ p.name }}
           </mat-option>
         </mat-select>

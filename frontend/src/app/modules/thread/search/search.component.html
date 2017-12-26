@@ -1,0 +1,59 @@
+<mat-toolbar color="primary" class="mat-toolbar-48">
+  <span class="m-auto">Search</span>
+</mat-toolbar>
+
+<div class="container mt-3 px-5">
+  <mat-card>
+    <mat-form-field>
+      <input matInput placeholder="Key words" [(ngModel)]="searchString" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Topic" [(ngModel)]="selectedTopic">
+        <mat-option value="-1">Any topic</mat-option>
+        <mat-optgroup *ngFor="let topic of topicOptions | orderBy:'orderIndex'"
+                      [label]="topic.name" [title]="topic.description">
+          <mat-option *ngFor="let sub of topic.subTopics | orderBy:'orderIndex'"
+                      [value]="sub.id" [title]="sub.description">
+            {{ sub.name }}
+          </mat-option>
+        </mat-optgroup>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Time" value="option0">
+        <mat-option value="option0">Any time</mat-option>
+        <mat-option value="option1">Yesterday</mat-option>
+        <mat-option value="option2">Past week</mat-option>
+        <mat-option value="option3">Past month</mat-option>
+        <mat-option value="option3">Past 6 months</mat-option>
+        <mat-option value="option3">Past year</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-chip-list #chipList [selectable]="false">
+        <mat-chip *ngFor="let tag of selectedTags" class="bg-primary text-white" (remove)="tagRemove(tag)">
+          {{tag.name}}
+          <mat-icon matChipRemove class="text-white">cancel</mat-icon>
+        </mat-chip>
+        <input matInput placeholder="Tags" #input [formControl]="tagsControl"
+               [matAutocomplete]="auto" (click)="trigger.openPanel()"
+               [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="[]"/>
+
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="tagSelected(); input.value = ''">
+          <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+            <span>{{tag.name}}</span>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-chip-list>
+    </mat-form-field>
+
+    <div class="clearfix">
+      <div class="float-right">
+        <button mat-button color="primary">Submit</button>
+      </div>
+    </div>
+  </mat-card>
+</div>

@@ -1,11 +1,11 @@
 <mat-card>
   <mat-card-header>
 
-    <a mat-card-avatar [routerLink]="['/']" [style.background-image]="'url(' + thread.createdBy.avatar + ')'"></a>
+    <a mat-card-avatar [style.background-image]="'url(' + thread.createdBy.avatar + ')'"></a>
 
     <mat-card-title class="mb-1">
       <strong>
-        <a href="#">{{thread.createdBy.name}}</a>
+        <a class="text-primary">{{thread.createdBy.name}}</a>
       </strong>
       <app-badge-role [user]="thread.createdBy"></app-badge-role>
     </mat-card-title>

@@ -85,7 +85,7 @@ export class ThreadCreateComponent implements OnInit {
 
   getParentOptions() {
     this.loadingService.spinnerStart();
-    this.topicService.getParentOptions()
+    this.topicService.getSelectOptions(0)
       .flatMap(resp => {
         this.topicOptions = resp;
         this.selectedTopic = +this.route.snapshot.queryParams['topicId'] || this.topicOptions[0].value;

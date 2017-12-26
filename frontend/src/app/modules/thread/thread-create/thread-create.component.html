@@ -25,14 +25,14 @@
   <mat-card class="form-group">
 
     <div>
-      <mat-form-field class="w-100" floatPlaceholder="always">
+      <mat-form-field class="w-100">
         <input matInput placeholder="Title" [(ngModel)]="title" required>
       </mat-form-field>
     </div>
 
     <div class="row">
       <div class="col-md-6">
-        <mat-form-field class="w-100" floatPlaceholder="always">
+        <mat-form-field class="w-100">
           <mat-select placeholder="Topic" [(ngModel)]="selectedTopic" required
                       (change)="getSubOptions()">
             <mat-option *ngFor="let topic of topicOptions"
@@ -43,7 +43,7 @@
         </mat-form-field>
       </div>
       <div class="col-md-6">
-        <mat-form-field class="w-100" floatPlaceholder="always">
+        <mat-form-field class="w-100">
           <mat-select placeholder="Sub Topic" [(ngModel)]="selectedSubTopic" required>
             <mat-option *ngFor="let subTopic of subTopicOptions"
                         [value]="subTopic.value" [title]="subTopic.title">
@@ -55,7 +55,7 @@
     </div>
 
     <div>
-      <mat-form-field class="w-100" floatPlaceholder="always">
+      <mat-form-field class="w-100">
         <mat-chip-list #chipList [selectable]="false">
           <mat-chip *ngFor="let tag of selectedTags" class="bg-primary text-white" (remove)="tagRemove(tag)">
             {{tag.name}}

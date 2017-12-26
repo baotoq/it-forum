@@ -11,7 +11,7 @@ body {
   font-family: Roboto, Helvetica Neue, sans-serif !important;
 }
 
-mat-sidenav-content, code {
+mat-sidenav-content, code, .preview-panel, .editor-panel {
   &::-webkit-scrollbar {
     height: 6px;
     width: 6px;

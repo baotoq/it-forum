@@ -12,7 +12,7 @@ namespace ItForum.Services
         {
         }
 
-        public IEnumerable<Topic> Find(int level)
+        public IEnumerable<Topic> FindByLevel(int level)
         {
             return DbSet.Where(x => x.Level == level);
         }
