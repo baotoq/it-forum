@@ -42,7 +42,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
         if (value !== this.password.value) this.confirmPassword.setErrors({'unmatch': true});
       });
 
-    this.token = this.route.snapshot.params['token'];
+    this.token = this.route.snapshot.queryParams['token'];
     this.authService.validateToken(this.token)
       .takeUntil(componentDestroyed(this))
       .finally(() => this.loadingService.spinnerStop())

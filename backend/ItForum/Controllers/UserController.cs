@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using ItForum.Common;
@@ -229,7 +230,7 @@ namespace ItForum.Controllers
             if (user == null) return BadRequest();
 
             var token = _userService.GenerateForgotPasswordJwt(user);
-            var callbackUrl = $"http://localhost:4200/auth/reset/{token}";
+            var callbackUrl = $"http://tdtgame.azurewebsites.net/auth/reset?token={token}";
 
             await _emailSender.SendEmailAsync(email, "Reset Password",
                 $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");

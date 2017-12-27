@@ -25,7 +25,7 @@ const routes: Routes = [
     resolve: [AuthGuard],
   },
   {
-    path: 'reset/:token',
+    path: 'reset',
     component: ResetPasswordComponent,
     resolve: [AuthGuard],
   },

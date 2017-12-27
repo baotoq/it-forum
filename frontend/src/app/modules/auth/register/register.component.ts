@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
     this.email.valueChanges.debounceTime(200).distinctUntilChanged().startWith()
       .flatMap(value => {
         this.loading = true;
-        if (!value) return Observable.of(null);
+        if (!value || this.email.hasError('email')) return Observable.of(null);
         return this.authService.isExistEmail(value);
       })
       .subscribe(resp => {
