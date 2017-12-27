@@ -22,12 +22,6 @@ namespace ItForum.Data.Entities
 
         public Role Role { get; set; }
 
-        public int AccessFailedCount { get; set; }
-
-        public bool LockoutEnabled { get; set; }
-
-        public DateTime LockoutEnd { get; set; }
-
         public int? ApprovalStatusModifiedById { get; set; }
 
         public ApprovalStatus ApprovalStatus { get; set; }

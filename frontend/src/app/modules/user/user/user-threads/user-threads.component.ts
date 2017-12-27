@@ -24,9 +24,9 @@ export class UserThreadsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadingService.spinnerStart();
+    this.loadingService.progressBarStart();
     this.userService.getUserThreads(this.route.parent.snapshot.params['userId'])
-      .finally(() => this.loadingService.spinnerStop())
+      .finally(() => this.loadingService.progressBarStop())
       .subscribe(resp => {
         this.threads = this.orderByPipe.transform(resp, ['-dateCreated']);
         this.onPageChange();

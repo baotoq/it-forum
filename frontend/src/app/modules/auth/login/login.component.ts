@@ -24,8 +24,8 @@ export class LoginComponent implements OnInit {
 
   private createForm() {
     this.loginForm = this.formBuilder.group({
-      email: ['admin@gmail.com', [Validators.required, Validators.email]],
-      password: ['1', Validators.required],
+      email: [null, [Validators.required, Validators.email]],
+      password: [null, Validators.required],
     });
   }
 
@@ -54,6 +54,7 @@ export class LoginComponent implements OnInit {
         }
       }, resp => {
         if (resp.status === StatusCodes.UNAUTHORIZED) {
+          this.loginForm.reset();
           this.coreService.notifyError(resp.error);
         }
       });

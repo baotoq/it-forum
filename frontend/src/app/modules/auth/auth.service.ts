@@ -44,6 +44,10 @@ export class AuthService {
     return this.httpClient.post(`${API.USER.URL}/reset-password/${id}?password=${password}&token=${token}`, {});
   }
 
+  changePassword(password: string, newPassword: string): Observable<any> {
+    return this.httpClient.post(`${API.USER.URL}/change-password?password=${password}&newPassword=${newPassword}`, {});
+  }
+
   setToken(token: string) {
     sessionStorage.setItem(Storage.AUTH, token);
   }

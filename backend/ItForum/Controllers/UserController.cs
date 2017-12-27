@@ -269,5 +269,23 @@ namespace ItForum.Controllers
 
             return Ok();
         }
+
+        [Authorize]
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword(string password, string newPassword)
+        {
+            if (string.IsNullOrEmpty(newPassword)) return BadRequest();
+
+            var user = _userService.FindById(CurrentUserId);
+            if (user == null || user.Password != _helperService.Hash(password, user.Salt))
+                return StatusCode(StatusCodes.Status401Unauthorized, "Invalid email or password!");
+
+            user.Salt = _helperService.CreateSalt();
+            user.Password = _helperService.Hash(newPassword, user.Salt);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

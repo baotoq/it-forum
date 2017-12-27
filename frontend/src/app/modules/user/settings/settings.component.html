@@ -1,13 +1,26 @@
 <mat-toolbar color="primary" class="mat-toolbar-48">
-  <span class="m-auto">{{currentUser.name}}</span>
+  <span class="m-auto" *ngIf="user">{{user.name}}</span>
 </mat-toolbar>
 
-<div class="container mt-3">
-  <div class="row">
-    <div class="col-md-3">
+<div class="container-fluid mt-3" *ngIf="user">
+  <div class="row no-gutters">
+    <div class="col-md-2 mb-2">
       <div class="card border-bottom-0">
-        <img [src]="currentUser.avatar" alt="">
-        <mat-nav-list class="p-0">
+        <div class="avatar my-1" align="center">
+          <img [src]="user.avatar" [alt]="" class="img-fluid" style="height: 130px; width: 130px">
+          <div class="mt-2" style="font-size: 120%">
+            <span ngbTooltip="Reputations" style="color: #E91E63">
+              <i class="fa fa-star"></i> {{user.reputations}}
+            </span>
+            <span ngbTooltip="Threads" style="color: #2196F3" class="mx-2">
+              <i class="fa fa-comment"></i> {{user.numberOfThreads}}
+            </span>
+            <span ngbTooltip="Posts" style="color: #009688">
+              <i class="fa fa-commenting"></i> {{user.numberOfPosts}}
+            </span>
+          </div>
+        </div>
+        <mat-nav-list class="p-0" style="border-top: 1px solid #e0e0e0;">
           <mat-list-item *ngFor="let navLink of navLinks"
                          [routerLink]="[navLink.link]" routerLinkActive="active">
             <a matLine class="px-1">
@@ -17,8 +30,10 @@
         </mat-nav-list>
       </div>
     </div>
-    <div class="col-md-9">
-      <router-outlet></router-outlet>
+    <div class="col-md-10 pl-md-2">
+      <mat-card>
+        <router-outlet></router-outlet>
+      </mat-card>
     </div>
   </div>
 </div>

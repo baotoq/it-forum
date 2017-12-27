@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
+import { User } from '../../../models/user';
+import { LoadingService } from '../../../components/loading/loading.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-settings',
@@ -12,12 +15,18 @@ export class SettingsComponent implements OnInit {
     {label: 'Account', link: '/user/settings/account', icon: 'key'},
   ];
 
-  currentUser = this.authService.currentUser();
+  user: User;
 
-  constructor(private authService: AuthService) {
+  constructor(private loadingService: LoadingService,
+              private userService: UserService,
+              private authService: AuthService) {
   }
 
   ngOnInit() {
+    this.loadingService.progressBarStart();
+    this.userService.getWithReputations(this.authService.currentUser().id)
+      .subscribe(resp => {
+        this.user = resp;
+      });
   }
-
 }

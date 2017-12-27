@@ -20,9 +20,8 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadingService.spinnerStart();
+    this.loadingService.progressBarStart();
     this.userService.getWithReputations(this.route.snapshot.params['userId'])
-      .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.user = resp;
 

@@ -9,8 +9,7 @@
 
   <div class="ml-auto">
     <ng-container *ngIf="!authenticated">
-      <a mat-raised-button color="primary" [routerLink]="['/auth/register']" routerLinkActive="active"
-         class="d-none d-sm-inline-block">
+      <a mat-raised-button color="primary" [routerLink]="['/auth/register']" routerLinkActive="active">
         Register
       </a>
       <a mat-raised-button color="primary" [routerLink]="['/auth/login']"
@@ -28,6 +27,10 @@
       <button mat-menu-item class="px-4" style="min-width: 200px" (click)="gotoProfile()">
         <mat-icon class="mr-2">account_circle</mat-icon>
         Profile
+      </button>
+      <button mat-menu-item class="px-4" style="min-width: 200px" (click)="gotoSettings()">
+        <mat-icon class="mr-2">settings</mat-icon>
+        Settings
       </button>
       <div class="divider"></div>
       <button mat-menu-item class="px-4" (click)="logout()">

@@ -24,9 +24,9 @@ export class UserPostsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadingService.spinnerStart();
+    this.loadingService.progressBarStart();
     this.userService.getUserPosts(this.route.parent.snapshot.params['userId'])
-      .finally(() => this.loadingService.spinnerStop())
+      .finally(() => this.loadingService.progressBarStop())
       .subscribe(resp => {
         this.posts = this.orderByPipe.transform(resp, ['-dateCreated']);
         this.onPageChange();

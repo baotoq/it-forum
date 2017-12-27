@@ -25,6 +25,10 @@ export class NavbarComponent implements OnInit {
   }
 
   gotoProfile() {
+    this.router.navigate(['/user', this.authService.currentUser().id]);
+  }
+
+  gotoSettings() {
     this.router.navigate(['/user/settings']);
   }
 

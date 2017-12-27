@@ -1,20 +1,35 @@
 <h3>Account</h3>
 <hr>
 
-<div>
+<div [formGroup]="form">
   <mat-form-field class="w-100">
-    <input matInput placeholder="Old password" type="password">
+    <input matInput placeholder="Current password" formControlName="currentPassword" type="password" required>
+    <mat-error *ngIf="currentPassword.errors | hasError: 'required'">
+      Current password is <strong>required</strong>
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field class="w-100">
-    <input matInput placeholder="New password" type="password">
+    <input matInput placeholder="New password" formControlName="newPassword" type="password" required>
+    <mat-error *ngIf="newPassword.errors | hasError: 'required'">
+      New password is <strong>required</strong>
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field class="w-100">
-    <input matInput placeholder="Confirm new password" type="password">
+    <input matInput placeholder="Confirm new password" formControlName="confirmPassword" type="password" required>
+    <mat-error *ngIf="confirmPassword.errors | hasError: 'required'">
+      Confirm password is <strong>required</strong>
+    </mat-error>
+    <mat-error *ngIf="confirmPassword.errors | hasError: 'unmatch'">
+      Password and confirmation password do not match.
+    </mat-error>
   </mat-form-field>
 
-  <button mat-raised-button color="primary">
-    Update password
-  </button>
+  <div class="mt-3">
+    <button mat-raised-button color="primary" [disabled]="loading || form.invalid" (click)="onSubmit()">
+      <app-fa-spinner *ngIf="loading"></app-fa-spinner>
+      <ng-container *ngIf="!loading">Update password</ng-container>
+    </button>
+  </div>
 </div>
