@@ -70,9 +70,9 @@ export class ThreadCreateComponent implements OnInit, OnDestroy {
   onCreate() {
     this.loading = true;
     const thread = new Thread({
-      title: this.form.get('title').value,
-      topicId: this.form.get('selectedTopic').value,
-      posts: [{content: this.form.get('editorContent').value}],
+      title: this.title.value,
+      topicId: this.selectedTopic.value,
+      posts: [{content: this.editorContent.value}],
       tags: this.selectedTags,
     });
 
@@ -86,9 +86,9 @@ export class ThreadCreateComponent implements OnInit, OnDestroy {
 
   getPreviewThread(): Thread {
     return new Thread({
-      title: this.form.get('title').value,
-      topicId: this.form.get('selectedTopic').value,
-      posts: [{content: this.form.get('editorContent').value}],
+      title: this.title.value,
+      topicId: this.selectedTopic.value,
+      posts: [{content: this.editorContent.value}],
       createdBy: this.currentUser,
       tags: this.selectedTags,
       createdDate: Date.now(),
@@ -121,5 +121,17 @@ export class ThreadCreateComponent implements OnInit, OnDestroy {
 
   get currentUser() {
     return this.authService.currentUser();
+  }
+
+  get title() {
+    return this.form.get('title');
+  }
+
+  get selectedTopic() {
+    return this.form.get('selectedTopic');
+  }
+
+  get editorContent() {
+    return this.form.get('editorContent');
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Tag } from '../../../models/tag';
 import { Observable } from 'rxjs/Observable';
 import { MatAutocompleteTrigger } from '@angular/material';
@@ -16,18 +16,19 @@ import { Topic } from '../../../models/topic';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  searchString: string;
+  form: FormGroup;
 
-  selectedTopic = '-1';
   topicOptions: Topic[];
 
-  tagsControl = new FormControl();
   filteredTags: Observable<Tag[]>;
   selectedTags = [];
   tags: Tag[];
   @ViewChild(MatAutocompleteTrigger) trigger;
 
-  constructor(private loadingService: LoadingService,
+  loading = false;
+
+  constructor(private formBuilder: FormBuilder,
+              private loadingService: LoadingService,
               private topicService: TopicService,
               private tagService: TagService,
               private filterByPipe: FilterByPipe,
@@ -35,14 +36,23 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.loadingService.spinnerStart();
     Observable.combineLatest(this.topicService.getAllWithSubTopics(0), this.tagService.getAll())
       .takeUntil(componentDestroyed(this))
+      .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.topicOptions = resp[0];
         this.tags = resp[1];
         this.filterTags();
         this.loadingService.spinnerStop();
       });
+
+    this.form = this.formBuilder.group({
+      searchString: [null, Validators.required],
+      topic: ['-1', Validators.required],
+      time: ['-1', Validators.required],
+      tags: [null],
+    });
   }
 
   ngOnDestroy() {
@@ -70,5 +80,21 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.tags = this.orderByPipe.transform(this.tags, ['name']);
     this.filteredTags = this.tagsControl.valueChanges.startWith(null)
       .map(val => this.filterByPipe.transform(this.tags, ['name'], val));
+  }
+
+  get searchString() {
+    return this.form.get('searchString');
+  }
+
+  get topic() {
+    return this.form.get('topic');
+  }
+
+  get time() {
+    return this.form.get('time');
+  }
+
+  get tagsControl() {
+    return this.form.get('tags');
   }
 }
