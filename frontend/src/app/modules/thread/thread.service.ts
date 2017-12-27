@@ -57,4 +57,8 @@ export class ThreadService {
   pin(id: number, pin: boolean): Observable<any> {
     return this.httpClient.post(`${API.THREAD.PIN}/${id}?pin=${pin}`, {});
   }
+
+  move(id: number, topicId: number): Observable<any> {
+    return this.httpClient.post(`${API.THREAD.URL}/move/${id}?topicId=${topicId}`, {});
+  }
 }

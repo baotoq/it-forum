@@ -2,7 +2,7 @@
   <span class="m-auto">New thread</span>
 </mat-toolbar>
 
-<div class="container-fluid px-5 mt-3">
+<div class="container-fluid px-5 mt-3" [formGroup]="form">
 
   <div class="form-group">
     <div class="clearfix">
@@ -11,7 +11,7 @@
           <i class="fa fa-eye"></i>
           Preview
         </button>
-        <button mat-raised-button color="primary" [disabled]="loading|| !editorContent || !title" (click)="onCreate()">
+        <button mat-raised-button color="primary" [disabled]="loading || form.invalid" (click)="onCreate()">
           <app-fa-spinner *ngIf="loading"></app-fa-spinner>
           <span *ngIf="!loading">
             <i class="fa fa-reply"></i>
@@ -26,14 +26,14 @@
 
     <div>
       <mat-form-field class="w-100">
-        <input matInput placeholder="Title" [(ngModel)]="title" required>
+        <input matInput placeholder="Title" formControlName="title" required>
       </mat-form-field>
     </div>
 
     <div class="row">
       <div class="col-md-12">
         <mat-form-field class="w-100">
-          <mat-select placeholder="Topic" [(ngModel)]="selectedTopic" required>
+          <mat-select placeholder="Topic" formControlName="selectedTopic" required>
             <mat-optgroup *ngFor="let topic of topicOptions | orderBy:'orderIndex'"
                           [label]="topic.name" [title]="topic.description">
               <mat-option *ngFor="let sub of topic.subTopics | orderBy:'orderIndex'"
@@ -53,7 +53,7 @@
             {{tag.name}}
             <mat-icon matChipRemove class="text-white">cancel</mat-icon>
           </mat-chip>
-          <input matInput placeholder="Tags" #input [formControl]="tagsControl"
+          <input matInput placeholder="Tags" #input formControlName="tags"
                  [matAutocomplete]="auto" (click)="trigger.openPanel()"
                  [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="[]"/>
 
@@ -73,7 +73,7 @@
   </div>
 
   <div class="form-group">
-    <md-editor [(ngModel)]="editorContent" required></md-editor>
+    <md-editor formControlName="editorContent" required></md-editor>
   </div>
 
 </div>

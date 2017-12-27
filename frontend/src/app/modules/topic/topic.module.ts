@@ -11,6 +11,7 @@ import { SubTopicComponent } from './topic/sub-topic/sub-topic.component';
 import { ThreadSearchInputComponent } from './topic/sub-topic/thread-search-input/thread-search-input.component';
 
 import { TopicService } from './topic.service';
+import { MoveThreadDialogComponent } from './topic/sub-topic/move-thread-dialog/move-thread-dialog.component';
 
 @NgModule({
   imports: [
@@ -26,6 +27,10 @@ import { TopicService } from './topic.service';
     TopicComponent,
     SubTopicComponent,
     ThreadSearchInputComponent,
+    MoveThreadDialogComponent,
+  ],
+  entryComponents: [
+    MoveThreadDialogComponent,
   ],
   providers: [TopicService],
 })

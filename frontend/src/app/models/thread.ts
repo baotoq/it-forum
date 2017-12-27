@@ -23,6 +23,7 @@ export class Thread extends Timestamp {
   approvalStatus: ApprovalStatus;
   numberOfPendings$: any;
   createdBy$: any;
+  moved = false;
 
   constructor(obj?) {
     super(obj);

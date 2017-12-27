@@ -1,6 +1,6 @@
 import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OrderByPipe } from 'ngx-pipes';
 import { LoadingService } from '../../../../components/loading/loading.service';
 import { Thread } from '../../../../models/thread';
@@ -19,6 +19,7 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
 import { Observable } from 'rxjs/Observable';
 import { ThreadService } from '../../../thread/thread.service';
 import { debounce } from '../../../shared/common/decorators';
+import { MoveThreadDialogComponent } from './move-thread-dialog/move-thread-dialog.component';
 
 @Component({
   selector: 'app-sub-topic',
@@ -43,7 +44,8 @@ export class SubTopicComponent implements OnInit, OnDestroy {
   authenticated = this.authService.isAuthenticated();
   permission = false;
 
-  constructor(private route: ActivatedRoute,
+  constructor(private router: Router,
+              private route: ActivatedRoute,
               private authService: AuthService,
               private topicService: TopicService,
               private threadService: ThreadService,
@@ -185,6 +187,19 @@ export class SubTopicComponent implements OnInit, OnDestroy {
         this.paginator.pageIndex = 0;
         this.search();
         this.highlightRecently();
+      });
+  }
+
+  move(thread: Thread) {
+    this.dialog.open(MoveThreadDialogComponent, {
+      data: thread,
+      width: '600px',
+    }).afterClosed()
+      .subscribe(result => {
+        if (result) {
+          thread.topicId = result;
+          thread.moved = true;
+        }
       });
   }
 }

@@ -8,7 +8,7 @@ import { Thread } from '../../../models/thread';
 import { TopicService } from '../../topic/topic.service';
 import { LoadingService } from '../../../components/loading/loading.service';
 import { TagService } from '../../tag/tag.service';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
 import { Tag } from '../../../models/tag';
@@ -22,21 +22,20 @@ import { MatAutocompleteTrigger } from '@angular/material';
   styleUrls: ['./thread-create.component.scss'],
 })
 export class ThreadCreateComponent implements OnInit, OnDestroy {
-  selectedTopic: number;
+  form: FormGroup;
+
   topicOptions = [];
 
-  tagsControl = new FormControl();
   filteredTags: Observable<Tag[]>;
   selectedTags = [];
   tags: Tag[];
   @ViewChild(MatAutocompleteTrigger) trigger;
 
   loading = false;
-  title: string;
-  editorContent = '';
   displayPreview = false;
 
   constructor(private router: Router,
+              private formBuilder: FormBuilder,
               private loadingService: LoadingService,
               private authService: AuthService,
               private coreService: CoreService,
@@ -56,6 +55,13 @@ export class ThreadCreateComponent implements OnInit, OnDestroy {
         this.filterTags();
         this.loadingService.spinnerStop();
       });
+
+    this.form = this.formBuilder.group({
+      title: [null, Validators.required],
+      editorContent: [null, Validators.required],
+      selectedTopic: [null, Validators.required],
+      tags: [null],
+    });
   }
 
   ngOnDestroy() {
@@ -64,9 +70,9 @@ export class ThreadCreateComponent implements OnInit, OnDestroy {
   onCreate() {
     this.loading = true;
     const thread = new Thread({
-      title: this.title,
-      topicId: this.selectedTopic,
-      posts: [{content: this.editorContent}],
+      title: this.form.get('title').value,
+      topicId: this.form.get('selectedTopic').value,
+      posts: [{content: this.form.get('editorContent').value}],
       tags: this.selectedTags,
     });
 
@@ -80,9 +86,9 @@ export class ThreadCreateComponent implements OnInit, OnDestroy {
 
   getPreviewThread(): Thread {
     return new Thread({
-      title: this.title,
-      topicId: this.selectedTopic,
-      posts: [{content: this.editorContent}],
+      title: this.form.get('title').value,
+      topicId: this.form.get('selectedTopic').value,
+      posts: [{content: this.form.get('editorContent').value}],
       createdBy: this.currentUser,
       tags: this.selectedTags,
       createdDate: Date.now(),
@@ -90,8 +96,8 @@ export class ThreadCreateComponent implements OnInit, OnDestroy {
   }
 
   tagSelected() {
-    const value = this.tagsControl.value;
-    this.tagsControl.setValue('');
+    const value = this.form.get('tags').value;
+    this.form.get('tags').setValue('');
     this.selectedTags.push(value);
 
     const index = this.tags.indexOf(value);
@@ -109,7 +115,7 @@ export class ThreadCreateComponent implements OnInit, OnDestroy {
 
   filterTags() {
     this.tags = this.orderByPipe.transform(this.tags, ['name']);
-    this.filteredTags = this.tagsControl.valueChanges.startWith(null)
+    this.filteredTags = this.form.get('tags').valueChanges.startWith(null)
       .map(val => this.filterByPipe.transform(this.tags, ['name'], val));
   }
 

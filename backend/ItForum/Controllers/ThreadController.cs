@@ -221,5 +221,17 @@ namespace ItForum.Controllers
             await _unitOfWork.SaveChangesAsync();
             return Ok();
         }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpPost("move/{id}")]
+        public async Task<IActionResult> Move(int id, int topicId)
+        {
+            var thread = _threadService.FindById(id);
+
+            thread.TopicId = topicId;
+
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
+        }
     }
 }
