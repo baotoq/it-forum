@@ -1,12 +1,12 @@
 import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { User } from '../../../../../models/user';
-import { LoadingService } from '../../../../../components/loading/loading.service';
+import { User } from '../../../../models/user';
+import { LoadingService } from '../../../../components/loading/loading.service';
 import { ApproveService } from '../../approve.service';
-import { ApprovalStatus } from '../../../../../models/approval-status';
-import { debounce } from '../../../../shared/common/decorators';
-import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ApprovalStatus } from '../../../../models/approval-status';
+import { debounce } from '../../../shared/common/decorators';
 
 @Component({
   selector: 'app-approve-user',

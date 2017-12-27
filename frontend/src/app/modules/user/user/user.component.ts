@@ -21,7 +21,7 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.loadingService.spinnerStart();
-    this.userService.get(this.route.snapshot.params['userId'])
+    this.userService.getWithReputations(this.route.snapshot.params['userId'])
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.user = resp;

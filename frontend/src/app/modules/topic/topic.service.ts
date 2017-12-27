@@ -21,10 +21,6 @@ export class TopicService {
     return this.httpClient.get<Topic[]>(`${API.TOPIC.URL}/subs?level=${level}`);
   }
 
-  getNewestThread(id: number): Observable<Thread> {
-    return this.httpClient.get<Thread>(`${API.THREAD.URL}/newest-created?topicId=${id}`);
-  }
-
   getAllWithSubTopicsAndThreads(level: number): Observable<Topic[]> {
     return this.httpClient.get<Topic[]>(`${API.TOPIC.URL}/sub-threads?level=${level}`);
   }

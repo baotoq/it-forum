@@ -65,7 +65,7 @@ export class UserDetailDialogComponent implements OnInit {
         .flatMap(() => this.userService.editManagements(this.user.id, selected.map(item => item.id)))
         .subscribe(() => {
           this.dialogRef.close(this.user.role);
-          this.snackBar.open('Success', '', {duration: 2000});
+          this.coreService.notifySuccess();
         });
     } else {
       this.userService.editRole(this.user.id, this.user.role)

@@ -1,53 +1,7 @@
 <mat-toolbar color="primary" class="mat-toolbar-48">
-  <span class="m-auto">Manage Users</span>
+  <span class="m-auto">Manage User</span>
 </mat-toolbar>
-
-<div class="container-fluid mt-3">
-  <div class="shadow-2">
-    <app-manage-user-search-input (searchOut)="filter($event)"></app-manage-user-search-input>
-
-    <mat-table #table [dataSource]="dataSource" matSort [matSortDisableClear]="true">
-
-      <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <a [ngbTooltip]="row.name" container="body" clickStopPropagation
-             [routerLink]="['/user', row.id]" target="_blank"
-             class="mr-1 avatar">
-            <img [src]="row.avatar" [alt]="" class="img-fluid">
-          </a>
-          {{row.name}}
-        </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="email">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          {{row.email}}
-        </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="role">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Role</mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <app-badge-role [user]="row" [showNone]="true"></app-badge-role>
-        </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="dateCreated">
-        <mat-header-cell *matHeaderCellDef mat-sort-header start="desc">Join</mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          {{row.dateCreated | date}}
-        </mat-cell>
-      </ng-container>
-
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="viewDetail(row)"></mat-row>
-
-    </mat-table>
-
-    <mat-paginator #paginator
-                   [pageSizeOptions]="[10, 20, 30]">
-    </mat-paginator>
-  </div>
-</div>
+<mat-tab-group (focusChange)="focusChange($event)">
+  <mat-tab *ngFor="let tab of tabs" [label]="tab.label"></mat-tab>
+</mat-tab-group>
+<router-outlet></router-outlet>

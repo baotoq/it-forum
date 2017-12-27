@@ -207,7 +207,7 @@ namespace ItForum.Data.Seeds
             topics[0].SubTopics[2].Description = "Programming C++ for Unix and Linux";
 
             topics[1].Name = "C#";
-            topics[1].Name = "General discussions about C#";
+            topics[1].Description = "General discussions about C#";
             topics[1].SubTopics = topicFaker.Generate(6).ToList();
             topics[1].SubTopics[0].Name = "C# For Beginner";
             topics[1].SubTopics[0].Description = "Discussions about C# programming for beginners";
@@ -226,8 +226,8 @@ namespace ItForum.Data.Seeds
             topics[2].Description = "General discussions about Java";
             topics[2].SubTopics = topicFaker.Generate(2).ToList();
             topics[2].SubTopics[0].Name = "Java For Beginner";
-            topics[2].SubTopics[0].Name = "Discussions about Java programming for beginners";
-            topics[2].SubTopics[1].Description = "Advanced Java";
+            topics[2].SubTopics[0].Description = "Discussions about Java programming for beginners";
+            topics[2].SubTopics[1].Name = "Advanced Java";
             topics[2].SubTopics[1].Description = "Discussions about Java Advanced programming";
 
             topics[3].Name = "Database";

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -65,15 +64,6 @@ namespace ItForum.Controllers
             var dto = _mapper.Map<PostDto>(post);
 
             return StatusCode(StatusCodes.Status201Created, dto);
-        }
-
-        [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
-        [HttpGet("pending")]
-        public IActionResult GetPendingPosts()
-        {
-            var posts = _postService.FindPending().ToList();
-            var dto = _mapper.Map<List<PostDto>>(posts);
-            return Ok(dto);
         }
 
         [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]

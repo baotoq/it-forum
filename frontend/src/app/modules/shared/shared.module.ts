@@ -24,7 +24,6 @@ import { BadgeRoleComponent } from './components/badge-role/badge-role.component
 import { BadgeApprovalStatusComponent } from './components/badge-approval-status/badge-approval-status.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { MarkdownEditorComponent } from './components/md-editor/md-editor.component';
-import { UserDetailDialogComponent } from './components/user-detail-dialog/user-detail-dialog.component';
 
 const COMPONENTS = [
   FontAwesomeSpinnerComponent,
@@ -63,8 +62,8 @@ const MODULES = [
     Ng2GoogleChartsModule,
     MODULES,
   ],
-  declarations: [COMPONENTS, PIPES, DIRECTIVES, ConfirmDialogComponent, UserDetailDialogComponent],
-  entryComponents: [ConfirmDialogComponent, UserDetailDialogComponent],
+  declarations: [COMPONENTS, PIPES, DIRECTIVES, ConfirmDialogComponent],
+  entryComponents: [ConfirmDialogComponent],
   exports: [COMPONENTS, PIPES, DIRECTIVES, MODULES],
   providers: [
     PIPES,

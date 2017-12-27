@@ -46,16 +46,6 @@ namespace ItForum.Controllers
             return Ok(dto);
         }
 
-        [HttpGet("newest-created")]
-        public IActionResult GetNewestByTopicIdWithCreatedBy(int topicId)
-        {
-            var thread = _threadService.FindByNoTracking(x => x.TopicId == topicId && x.ApprovalStatus == ApprovalStatus.Approved, "CreatedBy")
-                .OrderByDescending(x => x.LastActivity).FirstOrDefault();
-
-            var dto = _mapper.Map<ThreadDto>(thread);
-            return Ok(dto);
-        }
-
         [Authorize]
         [HttpGet("approved-pending-posts-replies/{id}")]
         public IActionResult GetApprovedPendingPostsWithReplies(int id)
@@ -102,14 +92,9 @@ namespace ItForum.Controllers
             var user = _userService.FindById(CurrentUserId);
 
             if (user.Role != Role.None)
-            {
-
                 posts = posts.Where(p => p.ApprovalStatus == ApprovalStatus.Pending);
-            }
             else
-            {
                 posts = posts.OrderByDescending(x => x.DateCreated).Take(1);
-            }
 
             var dto = _mapper.Map<List<PostDto>>(posts.ToList());
             return Ok(dto);
@@ -159,15 +144,6 @@ namespace ItForum.Controllers
             await _unitOfWork.SaveChangesAsync();
 
             return StatusCode(StatusCodes.Status201Created, thread);
-        }
-
-        [Authorize(Roles = nameof(Role.Administrator))]
-        [HttpGet("pending")]
-        public IActionResult GetPendingThreads()
-        {
-            var threads = _threadService.FindPending().ToList();
-            var dto = _mapper.Map<List<ThreadDto>>(threads);
-            return Ok(dto);
         }
 
         [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]

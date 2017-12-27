@@ -8,13 +8,17 @@ import { SharedModule } from '../shared/shared.module';
 import { AdminRoutingModule } from './admin-routing.module';
 
 import { DashboardModule } from './dashboard/dashboard.module';
-import { ApproveModule } from './approve/approve.module';
 import { ManageUserComponent } from './manage-user/manage-user.component';
 import { ManageTopicComponent } from './manage-topic/manage-topic.component';
-import { ManageUserSearchInputComponent } from './manage-user/manage-user-search-input/manage-user-search-input.component';
 import { CreateTopicDialogComponent } from './manage-topic/create-topic-dialog/create-topic-dialog.component';
 import { EditTopicDialogComponent } from './manage-topic/edit-topic-dialog/edit-topic-dialog.component';
 import { MoveDialogComponent } from './manage-topic/move-dialog/move-dialog.component';
+import { UserListComponent } from './manage-user/user-list/user-list.component';
+import { UserListSearchInputComponent } from './manage-user/user-list/user-list-search-input/user-list-search-input.component';
+import { ApproveUserComponent } from './manage-user/approve-user/approve-user.component';
+import { ApproveUserSearchInputComponent } from './manage-user/approve-user/approve-user-search-input/approve-user-search-input.component';
+import { UserDetailDialogComponent } from './manage-user/user-detail-dialog/user-detail-dialog.component';
+import { ApproveService } from './approve.service';
 
 @NgModule({
   imports: [
@@ -26,21 +30,26 @@ import { MoveDialogComponent } from './manage-topic/move-dialog/move-dialog.comp
     SharedModule,
     AdminRoutingModule,
     DashboardModule,
-    ApproveModule,
   ],
   declarations: [
     ManageUserComponent,
     ManageTopicComponent,
-    ManageUserSearchInputComponent,
     CreateTopicDialogComponent,
     EditTopicDialogComponent,
     MoveDialogComponent,
+    UserListComponent,
+    UserListSearchInputComponent,
+    ApproveUserComponent,
+    ApproveUserSearchInputComponent,
+    UserDetailDialogComponent,
   ],
   entryComponents: [
     CreateTopicDialogComponent,
     EditTopicDialogComponent,
     MoveDialogComponent,
+    UserDetailDialogComponent,
   ],
+  providers: [ApproveService],
 })
 export class AdminModule {
 }

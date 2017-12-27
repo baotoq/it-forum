@@ -15,7 +15,6 @@ export class Topic extends Timestamp {
   level: number;
   orderIndex: number;
   managements: Management[];
-  newest: any;
 
   checked = false;
 

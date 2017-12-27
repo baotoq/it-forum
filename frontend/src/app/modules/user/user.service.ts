@@ -13,6 +13,10 @@ export class UserService {
   constructor(private httpClient: HttpClient) {
   }
 
+  getWithReputations(id: number): Observable<User> {
+    return this.httpClient.get<User>(`${API.USER.URL}/reputations/${id}`);
+  }
+
   get(id: number): Observable<User> {
     return this.httpClient.get<User>(`${API.USER.URL}/${id}`);
   }

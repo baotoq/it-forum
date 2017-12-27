@@ -80,12 +80,20 @@ namespace ItForum.Controllers
             return StatusCode(StatusCodes.Status201Created, user);
         }
 
+        [HttpGet("reputations/{id}")]
+        public IActionResult GetWithReputations(int id)
+        {
+            var user = _userService.FindById(id);
+            var dto = _mapper.Map<UserDto>(user);
+            _userService.CaculateReputationsNumberOfPostsThreads(user.Id, dto);
+            return Ok(dto);
+        }
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             var user = _userService.FindById(id);
             var dto = _mapper.Map<UserDto>(user);
-            _userService.CaculateReputationsNumberOfPostsThreads(user.Id, dto);
             return Ok(dto);
         }
 

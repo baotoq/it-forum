@@ -11,11 +11,6 @@
   <mat-card *ngIf="subTopic" class="mb-3">
     <div>
       <span class="text-primary" style="font-size: 30px">{{subTopic.name}}</span>
-      <span class="float-right">
-        <button mat-button color="accent">
-          Follow
-        </button>
-      </span>
     </div>
     <div>
       {{subTopic.description}}
@@ -57,7 +52,7 @@
           <ng-container *ngIf="permission">
             <ng-container *ngIf="row.approvalStatus === approvalStatus.Approved">
               <span class="badge badge-secondary" ngbTooltip="Number of pending posts" container="body"
-                    *ngIf="row.numberOfPendings | async as n ">
+                    *ngIf="row.numberOfPendings$ | async as n ">
                 {{n}}
               </span>
             </ng-container>

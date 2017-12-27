@@ -23,8 +23,8 @@
               <a [routerLink]="['/topic', topic.id, 'sub', subTopic.id]">
                 {{subTopic.name}}
               </a>
-              <span *ngIf="subTopic.numberOfNewThreads" class="badge badge-danger badge-line-fix"
-                    style="line-height: 10px">
+              <span *ngIf="subTopic.numberOfNewThreads" ngbTooltip="Unread"
+                    class="badge badge-danger badge-line-fix" style="line-height: 10px">
                 {{subTopic.numberOfNewThreads}}
               </span>
               <div style="font-size: 70%">
@@ -32,20 +32,26 @@
               </div>
             </div>
             <div class="d-none d-md-block col-md-4 mt-1" style="font-size: 70%">
-              <div *ngIf="subTopic.newest | async as newest">
+              <div class="clearfix"
+                   *ngFor="let thread of subTopic.threads | slice:0:1">
                 <div class="float-left">
-                  <a [ngbTooltip]="newest.createdBy.name" placement="right" container="body"
-                     [routerLink]="['/user', newest.createdById]" class="mr-1 avatar">
-                    <img [src]="newest.createdBy.avatar" [alt]="newest.createdBy.name"
-                         class="img-fluid" style="width:35px; height: 35px">
-                  </a>
+                  <div *ngIf="thread.createdBy$ | async as createdBy">
+                    <a [ngbTooltip]="createdBy.name" placement="left" container="body"
+                       [routerLink]="['/user', thread.createdById]" class="mr-1 avatar">
+                      <img [src]="createdBy.avatar" [alt]="createdBy.name"
+                           class="img-fluid" style="width:35px; height: 35px">
+                    </a>
+                  </div>
                 </div>
                 <div class="float-left">
-                  <a [routerLink]="['/thread', newest.id]" [title]="newest.title">
-                    {{newest.title | shorten: 45:'...'}}
+                  <a [routerLink]="['/thread', thread.id]" [title]="thread.title">
+                    {{thread.title | shorten: 45:'...'}}
                   </a>
-                  <div class="text-muted">
-                    {{newest.lastActivity | amTimeAgo}}
+                  <div>
+                    <span ngbTooltip="Posts" style="color: #009688">
+                      <i class="fa fa-commenting"></i> {{thread.numberOfPosts}}
+                    </span>
+                    <span class="text-muted" ngbTooltip="Last activity">{{thread.lastActivity | amTimeAgo}}</span>
                   </div>
                 </div>
               </div>

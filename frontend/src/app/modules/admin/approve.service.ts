@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { API } from '../../shared/common/api';
-import { User } from '../../../models/user';
-import { Post } from '../../../models/post';
-import { Thread } from '../../../models/thread';
-import { ApprovalStatus } from '../../../models/approval-status';
+import { API } from '../shared/common/api';
+import { User } from '../../models/user';
+import { ApprovalStatus } from '../../models/approval-status';
 
 @Injectable()
 export class ApproveService {
@@ -29,20 +27,12 @@ export class ApproveService {
     });
   }
 
-  getPendingPosts(): Observable<Post[]> {
-    return this.httpClient.get<Post[]>(API.POST.PENDING);
-  }
-
   approvePost(id: number): Observable<any> {
     return this.httpClient.post(`${API.POST.URL}/approve/${id}`, {});
   }
 
   declinePost(id: number): Observable<any> {
     return this.httpClient.post(`${API.POST.URL}/decline/${id}`, {});
-  }
-
-  getPendingThreads(): Observable<Thread[]> {
-    return this.httpClient.get<Thread[]>(API.THREAD.PENDING);
   }
 
   approveThread(id: number): Observable<any> {

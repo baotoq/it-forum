@@ -2,11 +2,11 @@ import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '
 import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-manage-user-search-input',
-  templateUrl: './manage-user-search-input.component.html',
-  styleUrls: ['./manage-user-search-input.component.scss'],
+  selector: 'app-user-list-search-input',
+  templateUrl: './user-list-search-input.component.html',
+  styleUrls: ['./user-list-search-input.component.scss'],
 })
-export class ManageUserSearchInputComponent implements OnInit {
+export class UserListSearchInputComponent implements OnInit {
   search = false;
   searchControl = new FormControl();
   @ViewChild('searchInput') searchInput: ElementRef;

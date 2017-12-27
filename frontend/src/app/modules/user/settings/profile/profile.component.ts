@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.loadingService.spinnerStart();
-    this.userService.get(this.authService.currentUser().id)
+    this.userService.getWithReputations(this.authService.currentUser().id)
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.user = resp;

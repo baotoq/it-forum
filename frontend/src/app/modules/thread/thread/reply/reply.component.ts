@@ -3,7 +3,7 @@ import { Post } from '../../../../models/post';
 import { Role } from '../../../../models/role';
 import { ApprovalStatus } from '../../../../models/approval-status';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
-import { ApproveService } from '../../../admin/approve/approve.service';
+import { ApproveService } from '../../../admin/approve.service';
 import { MatDialog } from '@angular/material';
 
 @Component({

@@ -4,6 +4,9 @@ import { TopicService } from '../topic.service';
 import { Topic } from '../../../models/topic';
 import { LoadingService } from '../../../components/loading/loading.service';
 import { Storage } from '../../shared/common/constant';
+import { UserService } from '../../user/user.service';
+import { FilterByPipe, OrderByPipe } from 'ngx-pipes';
+import { ApprovalStatus } from '../../../models/approval-status';
 
 @Component({
   selector: 'app-topic-list',
@@ -14,7 +17,10 @@ export class TopicListComponent implements OnInit, OnDestroy {
   topics: Topic[];
 
   constructor(private loadingService: LoadingService,
-              private topicService: TopicService) {
+              private topicService: TopicService,
+              private userService: UserService,
+              private filterByPipe: FilterByPipe,
+              private orderByPipe: OrderByPipe) {
   }
 
   ngOnInit() {
@@ -45,8 +51,12 @@ export class TopicListComponent implements OnInit, OnDestroy {
 
     this.topics.forEach(t => {
       t.subTopics.forEach(st => {
-        st.newest = this.topicService.getNewestThread(st.id);
         st.numberOfNewThreads = 0;
+        st.threads = this.filterByPipe.transform(st.threads, ['approvalStatus'], ApprovalStatus.Approved);
+        st.threads = this.orderByPipe.transform(st.threads, ['-lastActivity']);
+        if (st.threads.length >= 1) {
+          st.threads[0].createdBy$ = this.userService.get(st.threads[0].createdById);
+        }
         st.threads.forEach(th => {
           const d = new Date(th.dateCreated);
           if (d >= threeDaysAgo && !recentlyThreads.some(id => id === th.id)) {

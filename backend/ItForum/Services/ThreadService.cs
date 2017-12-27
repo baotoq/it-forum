@@ -40,7 +40,8 @@ namespace ItForum.Services
 
         public int CountPendings(int id)
         {
-            return Context.Posts.AsNoTracking().Count(x => x.ThreadId == id && x.ApprovalStatus == ApprovalStatus.Pending);
+            return Context.Posts.AsNoTracking()
+                .Count(x => x.ThreadId == id && x.ApprovalStatus == ApprovalStatus.Pending);
         }
 
         public Thread FindWithPosts(int id)

@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
-import { ApproveComponent } from './approve/approve/approve.component';
-import { ApproveUserComponent } from './approve/approve/approve-user/approve-user.component';
-import { ApproveThreadComponent } from './approve/approve/approve-thread/approve-thread.component';
-import { ApprovePostComponent } from './approve/approve/approve-post/approve-post.component';
 import { ManageTopicComponent } from './manage-topic/manage-topic.component';
 import { ManageUserComponent } from './manage-user/manage-user.component';
+import { UserListComponent } from './manage-user/user-list/user-list.component';
+import { ApproveUserComponent } from './manage-user/approve-user/approve-user.component';
 
 const routes: Routes = [
   {
@@ -19,33 +17,22 @@ const routes: Routes = [
     component: DashboardComponent,
   },
   {
-    path: 'approve',
-    component: ApproveComponent,
-    children: [
-      {
-        path: '', redirectTo: 'user', pathMatch: 'full',
-      },
-      {
-        path: 'user',
-        component: ApproveUserComponent,
-      },
-      {
-        path: 'thread',
-        component: ApproveThreadComponent,
-      },
-      {
-        path: 'post',
-        component: ApprovePostComponent,
-      },
-    ],
-  },
-  {
     path: 'topics',
     component: ManageTopicComponent,
   },
   {
     path: 'users',
     component: ManageUserComponent,
+    children: [
+      {
+        path: 'approve',
+        component: ApproveUserComponent,
+      },
+      {
+        path: '',
+        component: UserListComponent,
+      },
+    ],
   },
 ];
 

@@ -14,7 +14,7 @@ import { ApprovalStatus } from '../../../../models/approval-status';
 import { AuthService } from '../../../auth/auth.service';
 import { Role } from '../../../../models/role';
 import { IsManagementPipe } from '../../../shared/pipes/is-management';
-import { ApproveService } from '../../../admin/approve/approve.service';
+import { ApproveService } from '../../../admin/approve.service';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { Observable } from 'rxjs/Observable';
 import { ThreadService } from '../../../thread/thread.service';
@@ -135,7 +135,6 @@ export class SubTopicComponent implements OnInit, OnDestroy {
     this.approveService.approveThread(thread.id)
       .subscribe(() => {
         thread.approvalStatus = ApprovalStatus.Approved;
-        thread.numberOfPendings = 0;
       });
   }
 
@@ -181,7 +180,7 @@ export class SubTopicComponent implements OnInit, OnDestroy {
       .subscribe(resp => {
         this.threads = resp;
         if (count) {
-          this.threads.forEach(t => t.numberOfPendings = this.threadService.countPendings(t.id));
+          this.threads.forEach(t => t.numberOfPendings$ = this.threadService.countPendings(t.id));
         }
         this.paginator.pageIndex = 0;
         this.search();
