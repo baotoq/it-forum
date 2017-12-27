@@ -68,7 +68,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
     if (this.thread.approvalStatus === this.approvalStatus.Declined) {
       this.declinedFilter();
     } else if (this.thread.approvalStatus === this.approvalStatus.Pending) {
-      if (this.permission) {
+      if (this.permission || this.currentUser.id == this.thread.createdById) {
         this.pendingFilter();
       } else {
         this.router.navigate(['/']);

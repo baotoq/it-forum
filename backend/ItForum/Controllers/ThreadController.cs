@@ -46,6 +46,16 @@ namespace ItForum.Controllers
             return Ok(dto);
         }
 
+        [HttpGet("newest-created")]
+        public IActionResult GetNewestByTopicIdWithCreatedBy(int topicId)
+        {
+            var thread = _threadService.FindByNoTracking(x => x.TopicId == topicId && x.ApprovalStatus == ApprovalStatus.Approved, "CreatedBy")
+                .OrderByDescending(x => x.LastActivity).FirstOrDefault();
+
+            var dto = _mapper.Map<ThreadDto>(thread);
+            return Ok(dto);
+        }
+
         [Authorize]
         [HttpGet("approved-pending-posts-replies/{id}")]
         public IActionResult GetApprovedPendingPostsWithReplies(int id)
@@ -83,13 +93,23 @@ namespace ItForum.Controllers
             return Ok(dto);
         }
 
-        [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
+        [Authorize]
         [HttpGet("pending-posts/{id}")]
         public IActionResult GetPendingPosts(int id)
         {
             var posts = _threadService.FindThreadPosts(id);
 
-            posts = posts.Where(p => p.ApprovalStatus == ApprovalStatus.Pending);
+            var user = _userService.FindById(CurrentUserId);
+
+            if (user.Role != Role.None)
+            {
+
+                posts = posts.Where(p => p.ApprovalStatus == ApprovalStatus.Pending);
+            }
+            else
+            {
+                posts = posts.OrderByDescending(x => x.DateCreated).Take(1);
+            }
 
             var dto = _mapper.Map<List<PostDto>>(posts.ToList());
             return Ok(dto);
@@ -105,6 +125,13 @@ namespace ItForum.Controllers
 
             var dto = _mapper.Map<List<PostDto>>(posts.ToList());
             return Ok(dto);
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
+        [HttpGet("count-pendings/{id}")]
+        public IActionResult CountPendings(int id)
+        {
+            return Ok(_threadService.CountPendings(id));
         }
 
         [Authorize]

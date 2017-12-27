@@ -31,14 +31,23 @@
                 {{subTopic.description}}
               </div>
             </div>
-            <div class="d-none d-md-block col-md-4" style="font-size: 70%">
-              <div *ngFor="let thread of subTopic.threads | orderBy:'-lastActivity' | slice:0:3">
-                <a [routerLink]="['/thread', thread.id]">
-                  {{thread.title | shorten: 45:'...'}}
-                </a>
-                <span class="text-muted">
-                {{thread.lastActivity | amTimeAgo}}
-              </span>
+            <div class="d-none d-md-block col-md-4 mt-1" style="font-size: 70%">
+              <div *ngIf="subTopic.newest | async as newest">
+                <div class="float-left">
+                  <a [ngbTooltip]="newest.createdBy.name" placement="right" container="body"
+                     [routerLink]="['/user', newest.createdById]" class="mr-1 avatar">
+                    <img [src]="newest.createdBy.avatar" [alt]="newest.createdBy.name"
+                         class="img-fluid" style="width:35px; height: 35px">
+                  </a>
+                </div>
+                <div class="float-left">
+                  <a [routerLink]="['/thread', newest.id]" [title]="newest.title">
+                    {{newest.title | shorten: 45:'...'}}
+                  </a>
+                  <div class="text-muted">
+                    {{newest.lastActivity | amTimeAgo}}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

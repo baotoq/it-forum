@@ -45,6 +45,7 @@ export class TopicListComponent implements OnInit, OnDestroy {
 
     this.topics.forEach(t => {
       t.subTopics.forEach(st => {
+        st.newest = this.topicService.getNewestThread(st.id);
         st.numberOfNewThreads = 0;
         st.threads.forEach(th => {
           const d = new Date(th.dateCreated);

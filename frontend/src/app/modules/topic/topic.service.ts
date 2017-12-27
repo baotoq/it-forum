@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { API } from '../shared/common/api';
 import { Topic } from '../../models/topic';
 import { Thread } from '../../models/thread';
+import { ApprovalStatus } from '../../models/approval-status';
 
 
 @Injectable()
@@ -18,6 +19,10 @@ export class TopicService {
 
   getAllWithSubTopics(level: number): Observable<Topic[]> {
     return this.httpClient.get<Topic[]>(`${API.TOPIC.URL}/subs?level=${level}`);
+  }
+
+  getNewestThread(id: number): Observable<Thread> {
+    return this.httpClient.get<Thread>(`${API.THREAD.URL}/newest-created?topicId=${id}`);
   }
 
   getAllWithSubTopicsAndThreads(level: number): Observable<Topic[]> {
@@ -36,16 +41,8 @@ export class TopicService {
     return this.httpClient.get<Thread[]>(`${API.TOPIC.URL}/approved-pending-threads/${id}`);
   }
 
-  getApprovedThreads(id: number): Observable<Thread[]> {
-    return this.httpClient.get<Thread[]>(`${API.TOPIC.URL}/approved-threads/${id}`);
-  }
-
-  getPendingThreads(id: number): Observable<Thread[]> {
-    return this.httpClient.get<Thread[]>(`${API.TOPIC.URL}/pending-threads/${id}`);
-  }
-
-  getDeclinedThreads(id: number): Observable<Thread[]> {
-    return this.httpClient.get<Thread[]>(`${API.TOPIC.URL}/declined-threads/${id}`);
+  getThreads(id: number, approvalStatus: ApprovalStatus): Observable<Thread[]> {
+    return this.httpClient.get<Thread[]>(`${API.TOPIC.URL}/threads/${id}?approvalStatus=${approvalStatus}`);
   }
 
   create(topic: Topic): Observable<any> {

@@ -48,6 +48,13 @@ namespace ItForum.Services
                 .Where(x => x.TopicId == id);
         }
 
+        public IEnumerable<Thread> FindTopicThreads(int id, ApprovalStatus approvalStatus)
+        {
+            return Context.Threads.AsNoTracking()
+                .Include(x => x.CreatedBy)
+                .Where(x => x.TopicId == id && x.ApprovalStatus == approvalStatus);
+        }
+
         public IEnumerable<Thread> FindTopicThreadsWithPosts(int id)
         {
             return Context.Threads.AsNoTracking()

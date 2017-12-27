@@ -14,14 +14,14 @@ export class Thread extends Timestamp {
   highlight = false;
   numberOfPosts = 0;
   lastActivity: Date;
-  userId: number;
+  createdById: number;
   topicId: number;
   createdBy: User;
   posts: Post[];
   tags: Tag[];
   topic: Topic;
   approvalStatus: ApprovalStatus;
-  numberOfPendings = 0;
+  numberOfPendings: any;
 
   constructor(obj?) {
     super(obj);
@@ -32,7 +32,6 @@ export class Thread extends Timestamp {
       this.point = obj.point;
       this.numberOfPosts = obj.numberOfPosts;
       this.lastActivity = obj.lastActivity;
-      this.userId = obj.userId;
       this.topicId = obj.topicId;
       this.createdBy = obj.createdBy;
       this.posts = obj.posts;

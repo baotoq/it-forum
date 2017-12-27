@@ -76,8 +76,6 @@ export class SubTopicComponent implements OnInit, OnDestroy {
       .subscribe(resp => {
         this.subTopic = resp;
 
-        this.highlightRecently();
-
         this.dataSource = new MatTableDataSource([]);
         this.dataSource.paginator = this.paginator;
 
@@ -105,7 +103,7 @@ export class SubTopicComponent implements OnInit, OnDestroy {
     const threeDaysAgo = new Date();
     threeDaysAgo.setDate(new Date().getDate() - 3);
 
-    this.subTopic.threads.forEach(th => {
+    this.threads.forEach(th => {
       const d = new Date(th.dateCreated);
       if (d >= threeDaysAgo && !recentlyThreads.some(id => id === th.id)) {
         th.highlight = true;
@@ -121,7 +119,7 @@ export class SubTopicComponent implements OnInit, OnDestroy {
     const data = this.threads;
     let config = this.matSort.direction === 'asc' ? '+' : '-';
     config += this.matSort.active;
-    this.dataSource.data = this.orderByPipe.transform(data, ['-pin', '-approvalStatus', '-numberOfPendings', config]);
+    this.dataSource.data = this.orderByPipe.transform(data, ['-pin', '-approvalStatus', config]);
     this.dataSource.filter = searchString.trim().toLowerCase();
   }
 
@@ -165,25 +163,29 @@ export class SubTopicComponent implements OnInit, OnDestroy {
   }
 
   approvedFilter() {
-    this.filter(this.topicService.getApprovedThreads(this.subTopic.id));
+    this.filter(this.topicService.getThreads(this.subTopic.id, ApprovalStatus.Approved), true);
   }
 
   pendingFilter() {
-    this.filter(this.topicService.getPendingThreads(this.subTopic.id));
+    this.filter(this.topicService.getThreads(this.subTopic.id, ApprovalStatus.Pending));
   }
 
   declinedFilter() {
-    this.filter(this.topicService.getDeclinedThreads(this.subTopic.id));
+    this.filter(this.topicService.getThreads(this.subTopic.id, ApprovalStatus.Declined));
   }
 
-  filter(sub) {
+  filter(sub, count = false) {
     this.loadingService.spinnerStart();
     sub.takeUntil(componentDestroyed(this))
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.threads = resp;
+        if (count) {
+          this.threads.forEach(t => t.numberOfPendings = this.threadService.countPendings(t.id));
+        }
         this.paginator.pageIndex = 0;
         this.search();
+        this.highlightRecently();
       });
   }
 }

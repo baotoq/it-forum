@@ -18,8 +18,6 @@ namespace ItForum.Data.Dtos
 
         public List<TagDto> Tags { get; set; }
 
-        public int NumberOfPendings { get; set; }
-
         public class PostDto : PostEntity
         {
             public UserDto CreatedBy { get; set; }
@@ -64,8 +62,6 @@ namespace ItForum.Data.Dtos
         public ThreadMapperProfile()
         {
             CreateMap<Thread, ThreadDto>()
-                .ForMember(d => d.NumberOfPendings,
-                    s => s.MapFrom(t => t.Posts.Count(p => p.ApprovalStatus == ApprovalStatus.Pending)))
                 .ForMember(d => d.Tags, s => s.MapFrom(t => t.ThreadTags.Select(tt => tt.Tag)));
             CreateMap<User, ThreadDto.UserDto>()
                 .ForMember(d => d.Password, s => s.Ignore())

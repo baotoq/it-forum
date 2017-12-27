@@ -38,6 +38,11 @@ namespace ItForum.Services
                 .SingleOrDefault(x => x.Id == id)?.Posts;
         }
 
+        public int CountPendings(int id)
+        {
+            return Context.Posts.AsNoTracking().Count(x => x.ThreadId == id && x.ApprovalStatus == ApprovalStatus.Pending);
+        }
+
         public Thread FindWithPosts(int id)
         {
             return DbSet.Include(x => x.Posts).SingleOrDefault(x => x.Id == id);

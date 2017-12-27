@@ -31,6 +31,10 @@ export class ThreadService {
     return this.httpClient.get<Post[]>(`${API.THREAD.URL}/approved-pending-posts-replies/${id}`);
   }
 
+  countPendings(id: number): Observable<number> {
+    return this.httpClient.get<number>(`${API.THREAD.URL}/count-pendings/${id}`);
+  }
+
   create(thread: Thread): Observable<Thread> {
     return this.httpClient.post<Thread>(API.THREAD.URL, thread);
   }

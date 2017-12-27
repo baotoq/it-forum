@@ -197,16 +197,24 @@ namespace ItForum.Data.Seeds
             });
 
             topics[0].Name = "C++";
+            topics[0].Description = "General discussions about C++";
             topics[0].SubTopics = topicFaker.Generate(3).ToList();
             topics[0].SubTopics[0].Name = "C++ For Beginner";
+            topics[0].SubTopics[0].Description = "Discussions about C++ programming for beginners";
             topics[0].SubTopics[1].Name = "Advanced C++";
+            topics[0].SubTopics[1].Description = "Discussions about C++ Advanced programming";
             topics[0].SubTopics[2].Name = "Linux-Unix";
+            topics[0].SubTopics[2].Description = "Programming C++ for Unix and Linux";
 
             topics[1].Name = "C#";
+            topics[1].Name = "General discussions about C#";
             topics[1].SubTopics = topicFaker.Generate(6).ToList();
             topics[1].SubTopics[0].Name = "C# For Beginner";
+            topics[1].SubTopics[0].Description = "Discussions about C# programming for beginners";
             topics[1].SubTopics[1].Name = "Advanced C#";
+            topics[1].SubTopics[1].Description = "Discussions about C++ Advanced programming";
             topics[1].SubTopics[2].Name = "Unity";
+            topics[1].SubTopics[2].Description = "Discussions about Unity and game programing";
             topics[1].SubTopics[3].Name = "Windows Forms";
             topics[1].SubTopics[3].Description = "Discussion related to Winforms application development";
             topics[1].SubTopics[4].Name = "ASP.NET";
@@ -215,11 +223,15 @@ namespace ItForum.Data.Seeds
             topics[1].SubTopics[5].Description = "Web Page Design, Cascading Style Sheets, etc.";
 
             topics[2].Name = "Java";
+            topics[2].Description = "General discussions about Java";
             topics[2].SubTopics = topicFaker.Generate(2).ToList();
             topics[2].SubTopics[0].Name = "Java For Beginner";
-            topics[2].SubTopics[1].Name = "Advanced Java";
+            topics[2].SubTopics[0].Name = "Discussions about Java programming for beginners";
+            topics[2].SubTopics[1].Description = "Advanced Java";
+            topics[2].SubTopics[1].Description = "Discussions about Java Advanced programming";
 
             topics[3].Name = "Database";
+            topics[3].Description = "General discussions about Database";
             topics[3].SubTopics = topicFaker.Generate(2).ToList();
             topics[3].SubTopics[0].Name = "SQL Server";
             topics[3].SubTopics[0].Description = "Discussion related to SQL Server";

@@ -24,12 +24,5 @@ namespace ItForum.Controllers
             await _dataSeeder.InitializeAsync();
             return Ok("done");
         }
-
-        [HttpGet("mail")]
-        public async Task<IActionResult> Mail()
-        {
-            await _emailSender.SendEmailAsync("bao2703@gmail.com", "Subject", "Message");
-            return Ok("done");
-        }
     }
 }
