@@ -12,6 +12,8 @@ import { AuthService } from '../../auth/auth.service';
 import { IsManagementPipe } from '../../shared/pipes/is-management';
 import { ApprovalStatus } from '../../../models/approval-status';
 import { Role } from '../../../models/role';
+import { MoveThreadDialogComponent } from '../../topic/topic/sub-topic/move-thread-dialog/move-thread-dialog.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-thread',
@@ -44,7 +46,8 @@ export class ThreadComponent implements OnInit, OnDestroy {
               private loadingService: LoadingService,
               private threadService: ThreadService,
               private orderByPipe: OrderByPipe,
-              private isManagementPipe: IsManagementPipe) {
+              private isManagementPipe: IsManagementPipe,
+              public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -157,6 +160,30 @@ export class ThreadComponent implements OnInit, OnDestroy {
         this.onPageChange();
         this.currentPage = 1;
       });
+  }
+
+  move() {
+    this.dialog.open(MoveThreadDialogComponent, {
+      data: this.thread,
+      width: '600px',
+    }).afterClosed()
+      .subscribe(result => {
+        if (result) {
+          this.ngOnInit();
+        }
+      });
+  }
+
+  pin(pin: boolean) {
+    this.threadService.pin(this.thread.id, pin).subscribe(resp => {
+      this.thread.pin = pin;
+    });
+  }
+
+  lock(locked: boolean) {
+    this.threadService.lock(this.thread.id, locked).subscribe(() => {
+      this.thread.locked = locked;
+    });
   }
 
   threadApprovalChange($event) {

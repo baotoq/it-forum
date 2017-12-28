@@ -22,7 +22,7 @@
 
   <div class="clearfix">
     <ng-container *ngIf="thread.approvalStatus === approvalStatus.Approved">
-      <button *ngIf="!showEditor" mat-raised-button color="primary" (click)="onPost()">
+      <button *ngIf="!showEditor && !thread.locked" mat-raised-button color="primary" (click)="onPost()">
         <i class="fa fa-plus fa-fw"></i>
         Post
       </button>
@@ -37,9 +37,26 @@
           <button mat-menu-item (click)="pendingFilter()">Pending</button>
           <button mat-menu-item (click)="declinedFilter()">Declined</button>
         </mat-menu>
-        <button mat-raised-button class="bg-success text-white">
+        <button mat-raised-button [matMenuTriggerFor]="menu" class="bg-success text-white">
           Tools
         </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item *ngIf="!thread.locked" (click)="lock(true)">
+            Lock
+          </button>
+          <button mat-menu-item *ngIf="thread.locked" (click)="lock(false)">
+            Unlock
+          </button>
+          <button mat-menu-item *ngIf="!thread.pin" (click)="pin(true)">
+            Pin
+          </button>
+          <button mat-menu-item *ngIf="thread.pin" (click)="pin(false)">
+            Unpin
+          </button>
+          <button mat-menu-item *ngIf="currentUser.role === role.Administrator" (click)="move(row)">
+            Move
+          </button>
+        </mat-menu>
       </ng-container>
       <button *ngIf="showEditor" mat-raised-button color="primary" class="mb-2"
               (click)="onSubmit()" [disabled]="!editorContent || loading">
@@ -64,7 +81,8 @@
   <div class="mb-3">
     <h3 class="thread-title" [title]="thread.title">
       {{thread.title}}
-      <i *ngIf="thread.pin" class="fa fa-thumb-tack text-primary"></i>
+      <i *ngIf="thread.pin" class="fa fa-thumb-tack fa-fw text-primary"></i>
+      <i *ngIf="thread.locked" class="fa fa-lock fa-fw text-danger"></i>
     </h3>
     by <a href="#">{{thread.createdBy.name}}</a> at
     <span class="text-muted">
@@ -73,7 +91,7 @@
   </div>
 
   <div *ngFor="let post of paginatedData" class="mb-3">
-    <app-post [post]="post" [permission]="permission"
+    <app-post [post]="post" [permission]="permission" [locked]="thread.locked"
               [threadApprovalStatus]="thread.approvalStatus"
               (threadApprovalChange)="threadApprovalChange($event)"></app-post>
   </div>

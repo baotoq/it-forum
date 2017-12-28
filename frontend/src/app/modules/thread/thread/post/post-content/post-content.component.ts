@@ -14,6 +14,7 @@ export class PostContentComponent implements OnInit {
   @Input() post: Post;
   @Input() showAction = false;
   @Input() permission = false;
+  @Input() locked = false;
 
   showEditor = false;
   loading = false;

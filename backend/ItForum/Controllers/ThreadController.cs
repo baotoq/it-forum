@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using ItForum.Common;
 using ItForum.Data;
 using ItForum.Data.Domains;
 using ItForum.Data.Dtos;
@@ -136,7 +135,7 @@ namespace ItForum.Controllers
             thread.LastActivity = DateTime.Now;
             thread.NumberOfPosts = 1;
             thread.ThreadTags = new List<ThreadTag>();
-            threadDto.Tags.ForEach(t => thread.ThreadTags.Add(new ThreadTag { TagId = t.Id }));
+            threadDto.Tags.ForEach(t => thread.ThreadTags.Add(new ThreadTag {TagId = t.Id}));
 
             var createdBy = _userService.FindById(CurrentUserId);
             if (createdBy.Role == Role.Administrator || createdBy.Role == Role.Moderator)
@@ -218,6 +217,23 @@ namespace ItForum.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
+        [HttpPost("lock/{id}")]
+        public async Task<IActionResult> Lock(int id, bool locked)
+        {
+            var thread = _threadService.FindById(id);
+            if (thread == null) return BadRequest();
+
+            if (!HasPermission(thread.TopicId.Value))
+                return Forbid();
+
+            thread.Locked = locked;
+
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
+        }
+
+
         [Authorize(Roles = nameof(Role.Administrator))]
         [HttpPost("move/{id}")]
         public async Task<IActionResult> Move(int id, int topicId)
@@ -240,7 +256,6 @@ namespace ItForum.Controllers
             return Ok(dto);
         }
 
-    
 
         private bool HasPermission(int topicId)
         {

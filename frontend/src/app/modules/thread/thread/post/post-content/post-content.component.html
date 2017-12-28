@@ -4,7 +4,7 @@
 
 <div *ngIf="showAction">
   <hr class="mt-0">
-  <button *ngIf="!showEditor" mat-button (click)="onReply()">
+  <button *ngIf="!showEditor && !locked" mat-button (click)="onReply()">
     <i class="fa fa-reply fa-fw"></i>
     Reply
   </button>

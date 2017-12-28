@@ -157,12 +157,6 @@ export class SubTopicComponent implements OnInit, OnDestroy {
     });
   }
 
-  pin(thread: Thread, pin: boolean) {
-    this.threadService.pin(thread.id, pin).subscribe(resp => {
-      thread.pin = pin;
-    });
-  }
-
   approvedAndPendingFilter() {
     this.filter(this.topicService.getApprovedAndPendingThreads(this.subTopic.id));
   }
@@ -203,6 +197,12 @@ export class SubTopicComponent implements OnInit, OnDestroy {
       });
   }
 
+  pin(thread: Thread, pin: boolean) {
+    this.threadService.pin(thread.id, pin).subscribe(resp => {
+      thread.pin = pin;
+    });
+  }
+
   move(thread: Thread) {
     this.dialog.open(MoveThreadDialogComponent, {
       data: thread,
@@ -214,5 +214,11 @@ export class SubTopicComponent implements OnInit, OnDestroy {
           thread.moved = true;
         }
       });
+  }
+
+  lock(thread: Thread, locked: boolean) {
+    this.threadService.lock(thread.id, locked).subscribe(() => {
+      thread.locked = locked;
+    });
   }
 }

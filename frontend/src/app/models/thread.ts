@@ -24,6 +24,7 @@ export class Thread extends Timestamp {
   numberOfPendings = 0;
   createdBy$: any;
   moved = false;
+  locked = false;
 
   constructor(obj?) {
     super(obj);

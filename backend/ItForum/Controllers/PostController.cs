@@ -46,6 +46,7 @@ namespace ItForum.Controllers
             var thread = _threadService.FindById(post.ThreadId);
 
             if (thread.ApprovalStatus != ApprovalStatus.Approved) return BadRequest();
+            if (thread.Locked) return BadRequest();
 
             thread.LastActivity = DateTime.Now;
 

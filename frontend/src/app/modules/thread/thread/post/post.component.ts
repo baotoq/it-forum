@@ -10,6 +10,7 @@ import { ApprovalStatus } from '../../../../models/approval-status';
 export class PostComponent implements OnInit {
   @Input() post: Post;
   @Input() permission = false;
+  @Input() locked = false;
   @Input() threadApprovalStatus: ApprovalStatus;
 
   @Output() threadApprovalChange = new EventEmitter<any>();

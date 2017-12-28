@@ -46,6 +46,7 @@
             <span [class.font-weight-bold]="row.highlight">{{row.title | shorten: 100:'...'}}</span>
           </a>
           <mat-icon *ngIf="row.highlight" class="mat-icon-14">new_releases</mat-icon>
+          <i *ngIf="row.locked" class="fa fa-lock fa-fw text-danger"></i>
           <ng-container *ngIf="permission">
             <ng-container *ngIf="row.approvalStatus === approvalStatus.Approved">
               <span class="badge badge-info badge-line-fix" ngbTooltip="Pending posts" container="body"
@@ -72,6 +73,12 @@
                 </button>
                 <div class="divider"></div>
               </ng-container>
+              <button mat-menu-item *ngIf="!row.locked" (click)="lock(row, true)">
+                Lock
+              </button>
+              <button mat-menu-item *ngIf="row.locked" (click)="lock(row, false)">
+                Unlock
+              </button>
               <button mat-menu-item *ngIf="!row.pin" (click)="pin(row, true)">
                 Pin
               </button>

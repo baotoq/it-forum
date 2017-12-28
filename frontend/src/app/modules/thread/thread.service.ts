@@ -62,6 +62,10 @@ export class ThreadService {
     return this.httpClient.post(`${API.THREAD.URL}/move/${id}?topicId=${topicId}`, {});
   }
 
+  lock(id: number, locked: boolean): Observable<any> {
+    return this.httpClient.post(`${API.THREAD.URL}/lock/${id}?locked=${locked}`, {});
+  }
+
   search(payload): Observable<any> {
     return this.httpClient.post(`${API.THREAD.URL}/search`, payload);
   }
