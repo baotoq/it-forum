@@ -5,9 +5,8 @@ import { User } from '../../../../models/user';
   selector: 'app-user-avatar',
   template: `
     <a [ngbTooltip]="user.name" [placement]="placement" container="body"
-       [routerLink]="['/user', user.id]" class="mr-1 avatar">
-      <img [src]="user.avatar" [alt]="user.name" class="img-fluid"
-           [style.width.px]="size" [style.height.px]="size">
+       [routerLink]="['/user', user.id]" class="mr-1" style="text-decoration: none">
+      <ngx-avatar [name]="user.name" [size]="size" [src]="user.avatar"></ngx-avatar>
     </a>
   `,
 })

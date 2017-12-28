@@ -6,8 +6,8 @@
   <div *ngIf="user" class="row no-gutters">
     <div class="col-md-3 col-lg-2 mb-2" align="center" style="font-size: 90%">
       <mat-card class="p-2">
-        <div class="avatar">
-          <img [src]="user.avatar" [alt]="" class="img-fluid" style="height: 130px; width: 130px">
+        <div>
+          <ngx-avatar [name]="user.name" [size]="130" [src]="user.avatar"></ngx-avatar>
         </div>
         <div class="mt-2" style="font-size: 120%">
           <span ngbTooltip="Reputations" style="color: #E91E63">

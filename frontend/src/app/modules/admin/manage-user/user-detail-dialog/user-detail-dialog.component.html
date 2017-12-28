@@ -4,8 +4,8 @@
 
 <div *ngIf="user">
   <div class="clearfix">
-    <div class="avatar float-left ml-2">
-      <img [src]="user.avatar" [alt]="" class="img-fluid" style="height: 80px; width: 80px">
+    <div class="float-left ml-2">
+      <ngx-avatar [name]="user.name" [size]="80" [src]="user.avatar"></ngx-avatar>
     </div>
     <div class="float-left pl-3">
       <div>
