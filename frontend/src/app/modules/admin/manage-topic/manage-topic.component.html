@@ -14,10 +14,21 @@
           </div>
           <div class="col-sm-2" align="right">
             <ng-container *ngIf="!topic.checked">
-              <i class="fa fa-plus fa-fw" (click)="createSub(topic)" [ngbTooltip]="tipCreate"></i>
-              <i class="fa fa-pencil fa-fw" (click)="editTopic(topic)" [ngbTooltip]="tipEdit"></i>
-              <i class="fa fa-trash fa-fw" (click)="deleteTopic(topic)" [ngbTooltip]="tipDelete"></i>
-              <i class="fa fa-list-ol fa-fw" (click)="topic.checked = true; t.open()" [ngbTooltip]="tipOrder"></i>
+              <i class="fa fa-cogs fa-fw" [matMenuTriggerFor]="menu"></i>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="createSub(topic)">
+                  Add
+                </button>
+                <button mat-menu-item (click)="editTopic(topic)">
+                  Edit
+                </button>
+                <button mat-menu-item (click)="topic.checked = true; t.open()">
+                  Reorder
+                </button>
+                <button mat-menu-item (click)="deleteTopic(topic)">
+                  Delete
+                </button>
+              </mat-menu>
             </ng-container>
             <ng-container *ngIf="topic.checked">
               <i class="fa fa-check fa-fw" [ngbTooltip]="tipSave"
@@ -40,9 +51,18 @@
                 <span class="text-muted" style="font-size: 70%">{{sub.description}}</span>
               </div>
               <div class="col-sm-2" align="right">
-                <i class="fa fa-pencil fa-fw" (click)="editTopic(sub)" [ngbTooltip]="tipEdit"></i>
-                <i class="fa fa-trash fa-fw" (click)="deleteTopic(sub)" [ngbTooltip]="tipDelete"></i>
-                <i class="fa fa-arrows fa-fw" (click)="moveTopic(sub)" [ngbTooltip]="tipMove"></i>
+                <i class="fa fa-cogs fa-fw" [matMenuTriggerFor]="menu"></i>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="editTopic(sub)">
+                    Edit
+                  </button>
+                  <button mat-menu-item (click)="moveTopic(sub)">
+                    Move
+                  </button>
+                  <button mat-menu-item (click)="deleteTopic(sub)">
+                    Delete
+                  </button>
+                </mat-menu>
               </div>
             </div>
           </mat-card>
@@ -54,10 +74,3 @@
 </div>
 
 <ng-template #tipDnd>Drag to order sub topics!</ng-template>
-<ng-template #tipCreate>Create</ng-template>
-<ng-template #tipEdit>Edit</ng-template>
-<ng-template #tipDelete>Delete</ng-template>
-<ng-template #tipMove>Move</ng-template>
-<ng-template #tipOrder>Order</ng-template>
-<ng-template #tipSave>Save</ng-template>
-<ng-template #tipCancel>Cancel</ng-template>

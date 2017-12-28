@@ -231,10 +231,9 @@ namespace ItForum.Controllers
         }
 
         [HttpPost("search")]
-        public async Task<IActionResult> Search([FromBody] SearchModel payload)
+        public async Task<IActionResult> Search([FromBody] SearchPayload payload)
         {
-            
-            var threads = _threadService.FindBy(payload.SearchString, payload.TopicId, payload.Tags, payload.TitleOnly);
+            var threads = await _threadService.FindBy(payload.SearchString, payload.TopicId, payload.Tags);
 
             var dto = _mapper.Map<List<ThreadDto>>(threads.ToList());
 
@@ -252,15 +251,13 @@ namespace ItForum.Controllers
             return true;
         }
 
-        public class SearchModel
+        public class SearchPayload
         {
             public string SearchString { get; set; }
 
-            public int TopicId { get; set; }
+            public int? TopicId { get; set; }
 
             public List<int> Tags { get; set; }
-
-            public bool TitleOnly { get; set; }
         }
     }
 }

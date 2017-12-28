@@ -63,14 +63,17 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
+    if (this.currentUser() === null) return false;
     return this.currentUser().role === this.role.Administrator;
   }
 
   isModerator(): boolean {
+    if (this.currentUser() === null) return false;
     return this.currentUser().role === this.role.Moderator;
   }
 
   isNone(): boolean {
+    if (this.currentUser() === null) return false;
     return this.currentUser().role === this.role.None;
   }
 

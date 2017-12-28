@@ -42,7 +42,9 @@
           <app-badge-role [user]="row.createdBy"></app-badge-role>
           <app-badge-approval-status [status]="row.approvalStatus"></app-badge-approval-status>
           <span *ngIf="row.moved" class="badge badge-info badge-line-fix">Moved</span>
-          <span [class.font-weight-bold]="row.highlight">{{row.title | shorten: 100:'...'}}</span>
+          <a [routerLink]="['/thread', row.id]" style="text-decoration: none; color: black">
+            <span [class.font-weight-bold]="row.highlight">{{row.title | shorten: 100:'...'}}</span>
+          </a>
           <mat-icon *ngIf="row.highlight" class="mat-icon-14">new_releases</mat-icon>
           <ng-container *ngIf="permission">
             <ng-container *ngIf="row.approvalStatus === approvalStatus.Approved">

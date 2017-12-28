@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ItForum.Data;
 using ItForum.Data.Domains;
 using Microsoft.EntityFrameworkCore;
+using MoreLinq;
 
 namespace ItForum.Services
 {
@@ -65,21 +67,18 @@ namespace ItForum.Services
                 .Where(x => x.ApprovalStatus == ApprovalStatus.Pending);
         }
 
-        public IEnumerable<Thread> FindBy(string searchString, int topicId, List<int> tags, bool titleOnly)
+        public async Task<IEnumerable<Thread>> FindBy(string searchString, int? topicId, List<int> tags)
         {
-            IEnumerable<Thread> data;
-            if (tags.Count == 0)
+            var data = DbSet.Include(x => x.ThreadTags).ThenInclude(x => x.Tag)
+                        .Include(x => x.CreatedBy)
+                        .Include(x => x.Topic).Where(x => x.ApprovalStatus == ApprovalStatus.Approved);
+
+            if (tags.Count != 0)
             {
-                data = DbSet.AsNoTracking().Include(x => x.CreatedBy)
-                    .Where(x => x.ApprovalStatus == ApprovalStatus.Approved);
+                data = data.Where(x => x.ThreadTags.Any(tt => tags.Contains(tt.TagId)));
             }
-            else
-            {
-                data = DbSet.AsNoTracking().Include(x => x.CreatedBy)
-                    .Where(x => x.ApprovalStatus == ApprovalStatus.Approved &&
-                                x.ThreadTags.Any(tt => tags.Contains(tt.TagId)));
-            }
-            if (topicId != -1)
+
+            if (topicId != null)
             {
                 data = data.Where(x => x.TopicId == topicId);
             }
@@ -89,9 +88,13 @@ namespace ItForum.Services
                 data = data.Where(x => x.Title.Contains(searchString));
             }
 
+            //var postCount = context.Entry(blog)
+            //    .Collection(b => b.Posts)
+            //    .Query()
+            //    .Count();
+
             return data;
         }
-
 
         public void IncreaseNumberOfPosts(int? id)
         {

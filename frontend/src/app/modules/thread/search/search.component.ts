@@ -62,9 +62,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.matSort.sortChange.subscribe(() => this.sortChange());
 
     this.form = this.formBuilder.group({
-      searchString: [null],
-      topic: ['-1', Validators.required],
-      time: ['-1', Validators.required],
+      searchString: [null, Validators.required],
+      topic: [null],
       tags: [null],
     });
   }
@@ -132,10 +131,6 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   get topic() {
     return this.form.get('topic');
-  }
-
-  get time() {
-    return this.form.get('time');
   }
 
   get tagsControl() {

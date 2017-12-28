@@ -11,13 +11,9 @@
       </mat-error>
     </mat-form-field>
 
-    <div class="my-2">
-      <mat-slide-toggle>Search on <strong>Title</strong> only</mat-slide-toggle>
-    </div>
-
     <mat-form-field>
       <mat-select placeholder="Topic" formControlName="topic">
-        <mat-option value="-1">Any topic</mat-option>
+        <mat-option>Any topic</mat-option>
         <mat-optgroup *ngFor="let topic of topicOptions | orderBy:'orderIndex'"
                       [label]="topic.name" [title]="topic.description">
           <mat-option *ngFor="let sub of topic.subTopics | orderBy:'orderIndex'"
@@ -27,17 +23,6 @@
         </mat-optgroup>
       </mat-select>
     </mat-form-field>
-    <!--
-        <mat-form-field>
-          <mat-select placeholder="Time" formControlName="time">
-            <mat-option value="-1">Any time</mat-option>
-            <mat-option value="1">Yesterday</mat-option>
-            <mat-option value="2">Past week</mat-option>
-            <mat-option value="4">Past month</mat-option>
-            <mat-option value="5">Past 6 months</mat-option>
-            <mat-option value="6">Past year</mat-option>
-          </mat-select>
-        </mat-form-field> -->
 
     <mat-form-field class="w-100">
       <mat-chip-list #chipList [selectable]="false">
@@ -73,12 +58,10 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header start="asc">Title</mat-header-cell>
         <mat-cell *matCellDef="let row" [title]="row.title">
           <app-user-avatar [user]="row.createdBy"></app-user-avatar>
-          <span *ngIf="row.pin" class="badge badge-primary badge-line-fix mr-1">
-            <i class="fa fa-thumb-tack"></i>
-            Pinned
-          </span>
           <app-badge-role [user]="row.createdBy"></app-badge-role>
-          <span>{{row.title | shorten: 100:'...'}}</span>
+          <a [routerLink]="['/thread', row.id]" style="text-decoration: none; color: black">
+            {{row.title | shorten: 100:'...'}}
+          </a>
         </mat-cell>
       </ng-container>
 
