@@ -24,6 +24,8 @@ namespace ItForum.Data.Entities
 
         public ApprovalStatus ApprovalStatus { get; set; }
 
+        public bool Locked { get; set; }
+
         public int Id { get; set; }
 
         public DateTime? DateCreated { get; set; }

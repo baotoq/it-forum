@@ -188,7 +188,7 @@ namespace ItForum.Data.Seeds
                 o.Managements = managements.ToList();
             });
 
-            var topics = topicFaker.Generate(4);
+            var topics = topicFaker.Generate(5);
             var order = 0;
             topics.ForEach(x =>
             {
@@ -237,6 +237,14 @@ namespace ItForum.Data.Seeds
             topics[3].SubTopics[0].Description = "Discussion related to SQL Server";
             topics[3].SubTopics[1].Name = "MySQL Server";
             topics[3].SubTopics[1].Description = "Discussion related to MySQL Server";
+
+            topics[4].Name = "Help";
+            topics[4].Description = "Help";
+            topics[4].SubTopics = topicFaker.Generate(2).ToList();
+            topics[4].SubTopics[0].Name = "FAQs";
+            topics[4].SubTopics[0].Description = "FAQs";
+            topics[4].SubTopics[1].Name = "Questions & Bugs Reports";
+            topics[4].SubTopics[1].Description = "Report bugs here";
 
             topics.ForEach(x =>
             {

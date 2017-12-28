@@ -19,6 +19,8 @@ namespace ItForum.Data.Entities
 
         public int OrderIndex { get; set; }
 
+        public bool Locked { get; set; }
+
         public int Id { get; set; }
 
         public DateTime? DateCreated { get; set; }
