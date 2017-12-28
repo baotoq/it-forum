@@ -24,6 +24,7 @@ import { BadgeRoleComponent } from './components/badge-role/badge-role.component
 import { BadgeApprovalStatusComponent } from './components/badge-approval-status/badge-approval-status.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { MarkdownEditorComponent } from './components/md-editor/md-editor.component';
+import { UserAvatarComponent } from './components/user-avatar/user-avatar.component';
 
 const COMPONENTS = [
   FontAwesomeSpinnerComponent,
@@ -33,6 +34,7 @@ const COMPONENTS = [
   BadgeRoleComponent,
   BadgeApprovalStatusComponent,
   MarkdownEditorComponent,
+  UserAvatarComponent,
 ];
 
 const PIPES = [

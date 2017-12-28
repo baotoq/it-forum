@@ -37,6 +37,9 @@
           <button mat-menu-item (click)="pendingFilter()">Pending</button>
           <button mat-menu-item (click)="declinedFilter()">Declined</button>
         </mat-menu>
+        <button mat-raised-button class="bg-success text-white">
+          Tools
+        </button>
       </ng-container>
       <button *ngIf="showEditor" mat-raised-button color="primary" class="mb-2"
               (click)="onSubmit()" [disabled]="!editorContent || loading">
@@ -61,11 +64,7 @@
   <div class="mb-3">
     <h3 class="thread-title" [title]="thread.title">
       {{thread.title}}
-      <span *ngIf="thread.pin"
-            class="badge badge-primary">
-        <i class="fa fa-thumb-tack"></i>
-        Pinned
-      </span>
+      <i *ngIf="thread.pin" class="fa fa-thumb-tack text-primary"></i>
     </h3>
     by <a href="#">{{thread.createdBy.name}}</a> at
     <span class="text-muted">

@@ -20,7 +20,6 @@ import { Observable } from 'rxjs/Observable';
 import { ThreadService } from '../../../thread/thread.service';
 import { debounce } from '../../../shared/common/decorators';
 import { MoveThreadDialogComponent } from './move-thread-dialog/move-thread-dialog.component';
-import { Promise } from 'q';
 
 @Component({
   selector: 'app-sub-topic',
@@ -92,11 +91,15 @@ export class SubTopicComponent implements OnInit, OnDestroy {
           this.matSort.sort({id: 'lastActivity', start: 'desc', disableClear: true});
         }
 
-        if (this.authService.isAuthenticated()) {
-          if (this.authService.isAdmin()) this.permission = true;
-          else this.permission = this.isManagementPipe.transform(this.currentUser, this.subTopic.managements);
-        }
+        this.checkPermission();
       });
+  }
+
+  checkPermission() {
+    if (this.authService.isAuthenticated()) {
+      if (this.authService.isAdmin()) this.permission = true;
+      else this.permission = this.isManagementPipe.transform(this.currentUser, this.subTopic.managements);
+    }
   }
 
   highlightRecently() {

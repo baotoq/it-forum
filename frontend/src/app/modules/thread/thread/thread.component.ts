@@ -50,7 +50,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadingService.spinnerStart();
     const threadId = this.route.snapshot.params['threadId'];
-    this.threadService.getWithCreatedByTagsAndReplies(threadId)
+    this.threadService.getWithCreatedByTags(threadId)
       .takeUntil(componentDestroyed(this))
       .subscribe(resp => {
         this.thread = resp;
@@ -65,24 +65,28 @@ export class ThreadComponent implements OnInit, OnDestroy {
   }
 
   getPosts() {
-    if (this.thread.approvalStatus === this.approvalStatus.Declined) {
-      this.declinedFilter();
-    } else if (this.thread.approvalStatus === this.approvalStatus.Pending) {
-      if (this.permission || this.currentUser.id == this.thread.createdById) {
-        this.pendingFilter();
-      } else {
-        this.router.navigate(['/']);
-      }
-    } else {
-      if (this.authenticated) {
-        if (this.permission || this.authService.isNone()) {
+    switch (this.thread.approvalStatus) {
+      case ApprovalStatus.Approved:
+        if (this.authenticated && this.permission || this.authService.isNone()) {
           this.defaultFilter();
-        } else if (this.authService.isModerator()) {
+        } else {
           this.approvedFilter();
         }
-      } else {
-        this.approvedFilter();
-      }
+        break;
+      case ApprovalStatus.Pending:
+        if (this.authenticated && this.permission || this.currentUser.id == this.thread.createdById) {
+          this.pendingFilter();
+        } else {
+          this.router.navigate(['/']);
+        }
+        break;
+      case ApprovalStatus.Declined:
+        if (this.authenticated && this.permission || this.currentUser.id == this.thread.createdById) {
+          this.declinedFilter();
+        } else {
+          this.router.navigate(['/']);
+        }
+        break;
     }
   }
 

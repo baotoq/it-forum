@@ -11,7 +11,7 @@ export class ThreadService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getWithCreatedByTagsAndReplies(id: number): Observable<Thread> {
+  getWithCreatedByTags(id: number): Observable<Thread> {
     return this.httpClient.get<Thread>(`${API.THREAD.URL}/created-tags/${id}`);
   }
 
@@ -60,5 +60,9 @@ export class ThreadService {
 
   move(id: number, topicId: number): Observable<any> {
     return this.httpClient.post(`${API.THREAD.URL}/move/${id}?topicId=${topicId}`, {});
+  }
+
+  search(payload): Observable<any> {
+    return this.httpClient.post(`${API.THREAD.URL}/search`, payload);
   }
 }

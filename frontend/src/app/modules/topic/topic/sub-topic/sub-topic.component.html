@@ -1,9 +1,12 @@
 <mat-toolbar class="mat-toolbar-48 shadow-1" style="background-color: #fafafa">
   <a [routerLink]="['/thread/create']" mat-button color="primary">
-    <i class="fa fa-plus"></i>
+    <i class="fa fa-plus mr-2"></i>
     Thread
   </a>
-  <a mat-button color="primary" [routerLink]="['/thread/search']">Search</a>
+  <a mat-button color="primary" [routerLink]="['/thread/search']">
+    <mat-icon>search</mat-icon>
+    Search
+  </a>
 </mat-toolbar>
 
 <div class="container-fluid mt-3">
@@ -17,11 +20,8 @@
     </div>
     <div class="mt-2">
       <span class="badge badge-dark mr-2" *ngIf="(moderators$ | async)?.length">Moderators:</span>
-      <span *ngFor="let mod of moderators$ | async" [ngbTooltip]="mod.name">
-        <a [routerLink]="['/user', mod.id]" class="mr-1 avatar">
-          <img [src]="mod.avatar" [alt]="mod.name" class="img-fluid"
-               style="width:40px; height: 40px">
-        </a>
+      <span *ngFor="let mod of moderators$ | async">
+        <app-user-avatar [user]="mod" [size]="40" [placement]="'top'"></app-user-avatar>
       </span>
     </div>
   </mat-card>
@@ -38,14 +38,7 @@
       <ng-container matColumnDef="title">
         <mat-header-cell *matHeaderCellDef mat-sort-header start="asc">Title</mat-header-cell>
         <mat-cell *matCellDef="let row" [title]="row.title">
-          <a [ngbTooltip]="row.createdBy.name" placement="right" container="body"
-             [routerLink]="['/user', row.createdBy.id]" class="mr-1 avatar">
-            <img [src]="row.createdBy.avatar" [alt]="row.createdBy.name" class="img-fluid">
-          </a>
-          <span *ngIf="row.pin" class="badge badge-primary badge-line-fix mr-1">
-            <i class="fa fa-thumb-tack"></i>
-            Pinned
-          </span>
+          <app-user-avatar [user]="row.createdBy"></app-user-avatar>
           <app-badge-role [user]="row.createdBy"></app-badge-role>
           <app-badge-approval-status [status]="row.approvalStatus"></app-badge-approval-status>
           <span *ngIf="row.moved" class="badge badge-info badge-line-fix">Moved</span>

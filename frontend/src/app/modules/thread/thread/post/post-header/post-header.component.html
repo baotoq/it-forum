@@ -32,16 +32,16 @@
       </button>
     </ng-container>
 
-    <button mat-icon-button [matMenuTriggerFor]="postMenu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #postMenu>
-      <button *ngIf="permission" mat-menu-item>
-        Delete
+    <ng-container *ngIf="permission">
+      <button mat-icon-button [matMenuTriggerFor]="postMenu">
+        <mat-icon>more_vert</mat-icon>
       </button>
-      <button mat-menu-item>
-        Report
-      </button>
-    </mat-menu>
+      <mat-menu #postMenu>
+        <button mat-menu-item>
+          Delete
+        </button>
+      </mat-menu>
+    </ng-container>
+
   </div>
 </mat-card-header>

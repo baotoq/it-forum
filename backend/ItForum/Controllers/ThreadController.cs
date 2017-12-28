@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using ItForum.Common;
 using ItForum.Data;
 using ItForum.Data.Domains;
 using ItForum.Data.Dtos;
@@ -129,12 +130,13 @@ namespace ItForum.Controllers
             if (thread.TopicId == null) return BadRequest();
             if (thread.Posts[0] == null) return BadRequest();
 
+            thread.Title = thread.Title.Trim();
             thread.CreatedById = CurrentUserId;
             thread.Posts[0].CreatedById = CurrentUserId;
             thread.LastActivity = DateTime.Now;
             thread.NumberOfPosts = 1;
             thread.ThreadTags = new List<ThreadTag>();
-            threadDto.Tags.ForEach(t => thread.ThreadTags.Add(new ThreadTag {TagId = t.Id}));
+            threadDto.Tags.ForEach(t => thread.ThreadTags.Add(new ThreadTag { TagId = t.Id }));
 
             var createdBy = _userService.FindById(CurrentUserId);
             if (createdBy.Role == Role.Administrator || createdBy.Role == Role.Moderator)
@@ -155,10 +157,8 @@ namespace ItForum.Controllers
             if (thread == null) return BadRequest();
             if (thread.ApprovalStatus == ApprovalStatus.Approved) return Ok();
 
-            var currentUser = _userService.FindById(CurrentUserId);
-            if (currentUser.Role == Role.Moderator)
-                if (!_userService.IsManagement(thread.TopicId.Value, currentUser.Id))
-                    return Forbid();
+            if (!HasPermission(thread.TopicId.Value))
+                return Forbid();
 
             SetApprovalStatus(thread, ApprovalStatus.Approved);
 
@@ -175,10 +175,8 @@ namespace ItForum.Controllers
             if (thread == null) return BadRequest();
             if (thread.ApprovalStatus == ApprovalStatus.Declined) return Ok();
 
-            var currentUser = _userService.FindById(CurrentUserId);
-            if (currentUser.Role == Role.Moderator)
-                if (!_userService.IsManagement(thread.TopicId.Value, currentUser.Id))
-                    return Forbid();
+            if (!HasPermission(thread.TopicId.Value))
+                return Forbid();
 
             SetApprovalStatus(thread, ApprovalStatus.Declined);
 
@@ -211,10 +209,8 @@ namespace ItForum.Controllers
             var thread = _threadService.FindById(id);
             if (thread == null) return BadRequest();
 
-            var currentUser = _userService.FindById(CurrentUserId);
-            if (currentUser.Role == Role.Moderator)
-                if (!_userService.IsManagement(thread.TopicId.Value, currentUser.Id))
-                    return Forbid();
+            if (!HasPermission(thread.TopicId.Value))
+                return Forbid();
 
             thread.Pin = pin;
 
@@ -232,6 +228,39 @@ namespace ItForum.Controllers
 
             await _unitOfWork.SaveChangesAsync();
             return Ok();
+        }
+
+        [HttpPost("search")]
+        public async Task<IActionResult> Search([FromBody] SearchModel payload)
+        {
+            
+            var threads = _threadService.FindBy(payload.SearchString, payload.TopicId, payload.Tags, payload.TitleOnly);
+
+            var dto = _mapper.Map<List<ThreadDto>>(threads.ToList());
+
+            return Ok(dto);
+        }
+
+    
+
+        private bool HasPermission(int topicId)
+        {
+            var currentUser = _userService.FindById(CurrentUserId);
+            if (currentUser.Role == Role.Moderator)
+                if (!_userService.IsManagement(topicId, currentUser.Id))
+                    return false;
+            return true;
+        }
+
+        public class SearchModel
+        {
+            public string SearchString { get; set; }
+
+            public int TopicId { get; set; }
+
+            public List<int> Tags { get; set; }
+
+            public bool TitleOnly { get; set; }
         }
     }
 }

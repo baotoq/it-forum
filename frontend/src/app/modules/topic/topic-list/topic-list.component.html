@@ -36,11 +36,7 @@
                    *ngFor="let thread of subTopic.threads | slice:0:1">
                 <div class="float-left">
                   <div *ngIf="thread.createdBy$ | async as createdBy">
-                    <a [ngbTooltip]="createdBy.name" placement="left" container="body"
-                       [routerLink]="['/user', thread.createdById]" class="mr-1 avatar">
-                      <img [src]="createdBy.avatar" [alt]="createdBy.name"
-                           class="img-fluid" style="width:35px; height: 35px">
-                    </a>
+                    <app-user-avatar [user]="createdBy" [size]="35" placement="left"></app-user-avatar>
                   </div>
                 </div>
                 <div class="float-left">

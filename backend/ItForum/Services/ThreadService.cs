@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ItForum.Data;
 using ItForum.Data.Domains;
@@ -63,6 +64,34 @@ namespace ItForum.Services
                 .Include(x => x.ThreadTags).ThenInclude(x => x.Tag)
                 .Where(x => x.ApprovalStatus == ApprovalStatus.Pending);
         }
+
+        public IEnumerable<Thread> FindBy(string searchString, int topicId, List<int> tags, bool titleOnly)
+        {
+            IEnumerable<Thread> data;
+            if (tags.Count == 0)
+            {
+                data = DbSet.AsNoTracking().Include(x => x.CreatedBy)
+                    .Where(x => x.ApprovalStatus == ApprovalStatus.Approved);
+            }
+            else
+            {
+                data = DbSet.AsNoTracking().Include(x => x.CreatedBy)
+                    .Where(x => x.ApprovalStatus == ApprovalStatus.Approved &&
+                                x.ThreadTags.Any(tt => tags.Contains(tt.TagId)));
+            }
+            if (topicId != -1)
+            {
+                data = data.Where(x => x.TopicId == topicId);
+            }
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                data = data.Where(x => x.Title.Contains(searchString));
+            }
+
+            return data;
+        }
+
 
         public void IncreaseNumberOfPosts(int? id)
         {
