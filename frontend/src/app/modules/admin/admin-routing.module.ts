@@ -5,6 +5,7 @@ import { ManageTopicComponent } from './manage-topic/manage-topic.component';
 import { ManageUserComponent } from './manage-user/manage-user.component';
 import { UserListComponent } from './manage-user/user-list/user-list.component';
 import { ApproveUserComponent } from './manage-user/approve-user/approve-user.component';
+import { ManageTagsComponent } from './manage-tags/manage-tags.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,10 @@ const routes: Routes = [
   {
     path: 'topics',
     component: ManageTopicComponent,
+  },
+  {
+    path: 'tags',
+    component: ManageTagsComponent,
   },
   {
     path: 'users',

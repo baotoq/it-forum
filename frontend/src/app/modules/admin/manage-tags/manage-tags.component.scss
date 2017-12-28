@@ -1,0 +1,12 @@
+i {
+  cursor: pointer;
+  padding: 5px;
+}
+
+i {
+  color: rgba(0, 0, 0, 0.6);
+
+  &:hover {
+    color: black;
+  }
+}

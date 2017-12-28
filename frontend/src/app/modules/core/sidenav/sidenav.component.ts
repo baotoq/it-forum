@@ -12,6 +12,7 @@ export class SidenavComponent implements OnInit {
     {label: 'Dashboard', link: '/admin/dashboard', icon: 'dashboard'},
     {label: 'Topics', link: '/admin/topics', icon: 'comments'},
     {label: 'Users', link: '/admin/users', icon: 'users'},
+    {label: 'Tags', link: '/admin/tags', icon: 'tags'},
   ];
 
   constructor() {

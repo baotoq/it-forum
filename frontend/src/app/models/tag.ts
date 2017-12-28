@@ -4,6 +4,7 @@ import { Thread } from './thread';
 export class Tag extends Timestamp {
   id: number;
   name: string;
+  usage = 0;
   threads: Thread[];
 
   constructor(obj?) {

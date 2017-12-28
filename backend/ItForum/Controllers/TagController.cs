@@ -1,5 +1,8 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using ItForum.Data;
+using ItForum.Data.Dtos;
 using ItForum.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,8 +26,9 @@ namespace ItForum.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var tags = _tagService.ToList();
-            return Ok(tags);
+            var tags = _tagService.FindAllNoTracking("ThreadTags");
+            var dto = _mapper.Map<List<TagDto>>(tags.ToList());
+            return Ok(dto);
         }
     }
 }
