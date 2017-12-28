@@ -21,7 +21,7 @@ export class Thread extends Timestamp {
   tags: Tag[];
   topic: Topic;
   approvalStatus: ApprovalStatus;
-  numberOfPendings$: any;
+  numberOfPendings = 0;
   createdBy$: any;
   moved = false;
 

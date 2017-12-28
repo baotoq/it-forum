@@ -54,8 +54,8 @@
           <ng-container *ngIf="permission">
             <ng-container *ngIf="row.approvalStatus === approvalStatus.Approved">
               <span class="badge badge-info badge-line-fix" ngbTooltip="Pending posts" container="body"
-                    *ngIf="row.numberOfPendings$ | async as n ">
-                {{n}}
+                    *ngIf="row.numberOfPendings > 0">
+                {{row.numberOfPendings}}
               </span>
             </ng-container>
             <button mat-icon-button clickStopPropagation preventDefault [matMenuTriggerFor]="menu" class="menu d-none">

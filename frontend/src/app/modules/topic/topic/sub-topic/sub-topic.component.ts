@@ -20,6 +20,7 @@ import { Observable } from 'rxjs/Observable';
 import { ThreadService } from '../../../thread/thread.service';
 import { debounce } from '../../../shared/common/decorators';
 import { MoveThreadDialogComponent } from './move-thread-dialog/move-thread-dialog.component';
+import { Promise } from 'q';
 
 @Component({
   selector: 'app-sub-topic',
@@ -121,7 +122,7 @@ export class SubTopicComponent implements OnInit, OnDestroy {
     const data = this.threads;
     let config = this.matSort.direction === 'asc' ? '+' : '-';
     config += this.matSort.active;
-    this.dataSource.data = this.orderByPipe.transform(data, ['-pin', '-approvalStatus', config]);
+    this.dataSource.data = this.orderByPipe.transform(data, ['-pin', '-approvalStatus', '-numberOfPendings', config]);
     this.dataSource.filter = searchString.trim().toLowerCase();
   }
 
@@ -182,10 +183,18 @@ export class SubTopicComponent implements OnInit, OnDestroy {
       .subscribe(resp => {
         this.threads = resp;
         if (count) {
-          this.threads.forEach(t => t.numberOfPendings$ = this.threadService.countPendings(t.id));
+          const ob = [];
+          this.threads.forEach(t => ob.push(this.threadService.countPendings(t.id)));
+          Observable.combineLatest(ob).subscribe(data => {
+            for (let i = 0; i < data.length; i++) {
+              this.threads[i].numberOfPendings = data[i];
+            }
+            this.search();
+          });
+        } else {
+          this.search();
         }
         this.paginator.pageIndex = 0;
-        this.search();
         this.highlightRecently();
       });
   }
