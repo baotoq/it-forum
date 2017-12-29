@@ -26,10 +26,10 @@
 
     <mat-form-field class="w-100">
       <mat-chip-list #chipList [selectable]="false">
-        <mat-chip *ngFor="let tag of selectedTags" class="bg-primary text-white" (remove)="tagRemove(tag)">
+        <mat-basic-chip *ngFor="let tag of selectedTags" class="badge badge-secondary mr-1" (remove)="tagRemove(tag)">
           {{tag.name}}
-          <mat-icon matChipRemove class="text-white">cancel</mat-icon>
-        </mat-chip>
+          <i matChipRemove class="fa fa-close fa-fw ml-0"></i>
+        </mat-basic-chip>
         <input matInput placeholder="Tags" #input formControlName="tags"
                [matAutocomplete]="auto" (click)="trigger.openPanel()"
                [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="[]"/>

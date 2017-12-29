@@ -1,20 +1,48 @@
 <mat-toolbar color="primary" class="mat-toolbar-48">
   <span class="m-auto">Manage Topics</span>
 </mat-toolbar>
+<mat-toolbar class="mat-toolbar-48 shadow-1">
+  <button mat-button (click)="create()" class="mr-1">
+    <i class="fa fa-plus fa-fw mr-1"></i>
+    Topic
+  </button>
+  <ng-container *ngIf="!reorder">
+    <button mat-button [matMenuTriggerFor]="tools">
+      <i class="fa fa-cog fa-fw mr-1"></i>
+      Tools
+    </button>
+    <mat-menu #tools="matMenu">
+      <button mat-menu-item (click)="reorder = true; pt.open()" class="mr-1">
+        Reorder
+      </button>
+    </mat-menu>
+  </ng-container>
+  <ng-container *ngIf="reorder">
+    <button mat-button class="mr-1" (click)="onSaveParent()">
+      <i class="fa fa-check fa-fw"></i>
+      Save
+    </button>
+    <button mat-button (click)="onCancelParent(); pt.close()">
+      <i class="fa fa-close fa-fw"></i>
+      Close
+    </button>
+  </ng-container>
+</mat-toolbar>
 
 <div class="container-fluid mt-3">
-  <div>
-    <div class="mt-3" *ngFor="let topic of topics; let i = index">
-
-      <mat-card class="py-2 bg-dark topic">
+  <div dnd-sortable-container [dropZones]="['parent']" [sortableData]="topics"
+       [ngbTooltip]="tipDnd" #pt="ngbTooltip" triggers="manual">
+    <div class="mt-3" *ngFor="let topic of topics; let i = index"
+         dnd-sortable [sortableIndex]="i" [dragEnabled]="reorder">
+      <mat-card class="py-2 bg-dark topic" [ngStyle]="{ 'border': reorder ? '1px white solid' : ''}">
         <div class="row no-gutters">
           <div class="col-sm-10">
             <strong class="text-white">{{topic.name}}</strong>
             <span style="font-size: 70%; color: rgba(255, 255, 255, 0.7)">{{topic.description}}</span>
           </div>
           <div class="col-sm-2" align="right">
-            <ng-container *ngIf="!topic.checked">
-              <i class="fa fa-cogs fa-fw" [matMenuTriggerFor]="menu"></i>
+            <ng-container *ngIf="!topic.checked && !reorder">
+              <i class="fa fa-cog fa-fw d-none" [matMenuTriggerFor]="menu"></i>
               <mat-menu #menu="matMenu">
                 <button mat-menu-item (click)="createSub(topic)">
                   Add
@@ -31,16 +59,16 @@
               </mat-menu>
             </ng-container>
             <ng-container *ngIf="topic.checked">
-              <i class="fa fa-check fa-fw" [ngbTooltip]="tipSave"
+              <i class="fa fa-check fa-fw"
                  (click)="onSave(topic); t.close()"></i>
-              <i class="fa fa-close fa-fw" [ngbTooltip]="tipCancel"
+              <i class="fa fa-close fa-fw"
                  (click)="onCancel(topic); t.close()"></i>
             </ng-container>
           </div>
         </div>
       </mat-card>
 
-      <div dnd-sortable-container [dropZones]="[topic.id]" [sortableData]="topic.subTopics"
+      <div *ngIf="!reorder" dnd-sortable-container [dropZones]="[topic.id]" [sortableData]="topic.subTopics"
            [ngbTooltip]="tipDnd" #t="ngbTooltip" triggers="manual">
         <div class="pl-4 mt-2" *ngFor="let sub of topic.subTopics; let j = index"
              dnd-sortable [sortableIndex]="j" [dragEnabled]="topic.checked">
@@ -51,7 +79,7 @@
                 <span class="text-muted" style="font-size: 70%">{{sub.description}}</span>
               </div>
               <div class="col-sm-2" align="right">
-                <i class="fa fa-cogs fa-fw" [matMenuTriggerFor]="menu"></i>
+                <i class="fa fa-cog fa-fw d-none" [matMenuTriggerFor]="menu"></i>
                 <mat-menu #menu="matMenu">
                   <button mat-menu-item (click)="editTopic(sub)">
                     Edit
@@ -73,4 +101,4 @@
   </div>
 </div>
 
-<ng-template #tipDnd>Drag to order sub topics!</ng-template>
+<ng-template #tipDnd>Drag to order topics!</ng-template>

@@ -11,6 +11,12 @@ i {
       color: white;
     }
   }
+
+  &:hover {
+    .fa-cog {
+      display: inline-block !important;
+    }
+  }
 }
 
 .sub {
@@ -19,6 +25,12 @@ i {
 
     &:hover {
       color: black;
+    }
+  }
+
+  &:hover {
+    .fa-cog {
+      display: inline-block !important;
     }
   }
 }

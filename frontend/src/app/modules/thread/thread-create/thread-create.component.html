@@ -1,26 +1,21 @@
 <mat-toolbar color="primary" class="mat-toolbar-48">
   <span class="m-auto">New thread</span>
 </mat-toolbar>
+<mat-toolbar class="mat-toolbar-48">
+  <button mat-button color="primary" [disabled]="loading || form.invalid" (click)="onCreate()">
+    <app-fa-spinner *ngIf="loading"></app-fa-spinner>
+    <ng-container *ngIf="!loading">
+      <i class="fa fa-reply"></i>
+      Submit
+    </ng-container>
+  </button>
+  <button mat-button (click)="displayPreview = !displayPreview">
+    <i class="fa fa-eye"></i>
+    Preview
+  </button>
+</mat-toolbar>
 
 <div class="container-fluid mt-3" [formGroup]="form">
-
-  <div class="form-group">
-    <div class="clearfix">
-      <div class="float-right">
-        <button mat-raised-button color="accent" (click)="displayPreview = !displayPreview">
-          <i class="fa fa-eye"></i>
-          Preview
-        </button>
-        <button mat-raised-button color="primary" [disabled]="loading || form.invalid" (click)="onCreate()">
-          <app-fa-spinner *ngIf="loading"></app-fa-spinner>
-          <span *ngIf="!loading">
-            <i class="fa fa-reply"></i>
-            Submit
-          </span>
-        </button>
-      </div>
-    </div>
-  </div>
 
   <mat-card class="form-group">
 
@@ -53,10 +48,10 @@
     <div>
       <mat-form-field class="w-100">
         <mat-chip-list #chipList [selectable]="false">
-          <mat-chip *ngFor="let tag of selectedTags" class="bg-primary text-white" (remove)="tagRemove(tag)">
+          <mat-basic-chip *ngFor="let tag of selectedTags" class="badge badge-secondary mr-1" (remove)="tagRemove(tag)">
             {{tag.name}}
-            <mat-icon matChipRemove class="text-white">cancel</mat-icon>
-          </mat-chip>
+            <i matChipRemove class="ml-0 fa fa-close fa-fw"></i>
+          </mat-basic-chip>
           <input matInput placeholder="Tags" #input formControlName="tags"
                  [matAutocomplete]="auto" (click)="trigger.openPanel()"
                  [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="[]"/>

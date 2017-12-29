@@ -57,8 +57,12 @@ export class CreateTopicDialogComponent implements OnInit {
     const topic = new Topic();
     topic.name = this.form.get('name').value;
     topic.description = this.form.get('description').value;
-    topic.level = this.parent.level + 1;
-    topic.parentId = this.parent.id;
+    topic.level = 0;
+    topic.orderIndex = -1;
+    if (this.parent != null) {
+      topic.level = this.parent.level + 1;
+      topic.parentId = this.parent.id;
+    }
 
     this.topicService.create(topic)
       .finally(() => this.loading = false)

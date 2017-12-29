@@ -27,20 +27,21 @@
         Post
       </button>
       <ng-container *ngIf="!showEditor && permission">
-        <button mat-raised-button color="warn" [matMenuTriggerFor]="menu">
+        <button mat-raised-button color="warn" [matMenuTriggerFor]="filterMenu">
           <mat-icon>filter_list</mat-icon>
           Filter
         </button>
-        <mat-menu #menu="matMenu">
+        <mat-menu #filterMenu="matMenu">
           <button mat-menu-item (click)="defaultFilter()">Default</button>
           <button mat-menu-item (click)="approvedFilter()">Approved</button>
           <button mat-menu-item (click)="pendingFilter()">Pending</button>
           <button mat-menu-item (click)="declinedFilter()">Declined</button>
         </mat-menu>
-        <button mat-raised-button [matMenuTriggerFor]="menu" class="bg-success text-white">
+        <button mat-raised-button [matMenuTriggerFor]="toolsMenu" class="bg-success text-white">
+          <i class="fa fa-cog fa-fw"></i>
           Tools
         </button>
-        <mat-menu #menu="matMenu">
+        <mat-menu #toolsMenu="matMenu">
           <button mat-menu-item *ngIf="!thread.locked" (click)="lock(true)">
             Lock
           </button>
@@ -88,6 +89,9 @@
     <span class="text-muted">
       {{thread.dateCreated | date:'MMM d y, h:mm a'}}
     </span>
+    <span *ngFor="let tag of thread.tags" class="badge badge-secondary badge-line-fix mr-1">
+      {{tag.name}}
+    </span>
   </div>
 
   <div *ngFor="let post of paginatedData" class="mb-3">
@@ -103,14 +107,5 @@
                     [pageSize]="pageSize"
                     (pageChange)="onPageChange()"></ngb-pagination>
   </div>
-
-  <div *ngIf="thread.tags?.length">
-    <mat-card class="px-3 py-2">
-      <mat-chip *ngFor="let tag of thread.tags" class="bg-primary text-white">
-        {{tag.name}}
-      </mat-chip>
-    </mat-card>
-  </div>
-  <mat-chip-list></mat-chip-list>
 
 </div>

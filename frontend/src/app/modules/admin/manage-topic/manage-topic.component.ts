@@ -19,6 +19,8 @@ import { MoveDialogComponent } from './move-dialog/move-dialog.component';
 export class ManageTopicComponent implements OnInit, OnDestroy {
   topics: Topic[];
 
+  reorder = false;
+
   constructor(private loadingService: LoadingService,
               private coreService: CoreService,
               private topicService: TopicService,
@@ -40,6 +42,17 @@ export class ManageTopicComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
+  create() {
+    this.dialog.open(CreateTopicDialogComponent, {
+      width: '600px',
+    }).afterClosed()
+      .subscribe(result => {
+        if (result) {
+          this.topics.unshift(result);
+        }
+      });
+  }
+
   createSub(topic: Topic) {
     this.dialog.open(CreateTopicDialogComponent, {
       data: topic,
@@ -47,7 +60,7 @@ export class ManageTopicComponent implements OnInit, OnDestroy {
     }).afterClosed()
       .subscribe(result => {
         if (result) {
-          topic.subTopics.push(result);
+          topic.subTopics.unshift(result);
         }
       });
   }
@@ -113,8 +126,27 @@ export class ManageTopicComponent implements OnInit, OnDestroy {
       });
   }
 
+  onSaveParent() {
+    this.loadingService.progressBarStart();
+    let index = 0;
+    this.topics.forEach(item => item.orderIndex = index++);
+    const payload = new Topic();
+    payload.subTopics = this.topics;
+    this.topicService.reOrder(payload)
+      .finally(() => this.loadingService.progressBarStop())
+      .subscribe(() => {
+        this.reorder = false;
+        this.coreService.notifySuccess();
+      });
+  }
+
   onCancel(topic: Topic) {
     topic.checked = false;
     topic.subTopics = this.orderByPipe.transform(topic.subTopics, ['orderIndex', 'name']);
+  }
+
+  onCancelParent() {
+    this.reorder = false;
+    this.topics = this.orderByPipe.transform(this.topics, ['orderIndex', 'name']);
   }
 }
