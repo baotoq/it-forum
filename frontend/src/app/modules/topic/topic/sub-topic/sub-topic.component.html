@@ -123,7 +123,7 @@
 
     </mat-table>
 
-    <mat-card *ngIf="!dataSource?.connect().value.length && !loading">
+    <mat-card *ngIf="!dataSource?.connect().value.length">
       <mat-card-content class="justify-content-center d-flex py-5">
         We couldn't find any thread.
       </mat-card-content>

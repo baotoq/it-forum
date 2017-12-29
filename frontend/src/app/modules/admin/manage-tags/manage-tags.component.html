@@ -1,10 +1,16 @@
 <mat-toolbar color="primary" class="mat-toolbar-48">
   <span class="m-auto">Manage Tags</span>
 </mat-toolbar>
+<mat-toolbar class="mat-toolbar-48 shadow-1">
+  <button mat-button (click)="create()" class="mr-1">
+    <i class="fa fa-plus fa-fw mr-1"></i>
+    Tag
+  </button>
+</mat-toolbar>
 
 <div class="container-fluid mt-3">
   <div class="row">
-    <div class="col-sm-4 mb-2" *ngFor="let tag of tags">
+    <div class="col-sm-4 mb-2" *ngFor="let tag of tags | orderByImpure:'name'">
       <div class="float-left">
         <img src="https://viblo.asia/uploads/100x-/fc3aabb1-2541-48ea-b65f-9436f60ee70c.png" alt=""
              style="width: 70px; height: 70px" class="img-fluid">
@@ -13,7 +19,7 @@
         <strong>{{tag.name}}</strong>
         <div class="text-muted" style="font-size: 80%"><strong>{{tag.usage}}</strong> Usages</div>
         <div>
-          <i class="fa fa-pencil fa-fw"></i>
+          <i class="fa fa-pencil fa-fw" (click)="edit(tag)"></i>
         </div>
       </div>
     </div>

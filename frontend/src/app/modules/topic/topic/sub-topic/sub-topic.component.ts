@@ -176,7 +176,6 @@ export class SubTopicComponent implements OnInit, OnDestroy {
   filter(sub, count = false) {
     this.loadingService.spinnerStart();
     sub.takeUntil(componentDestroyed(this))
-      .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.threads = resp;
         if (count) {
@@ -188,9 +187,11 @@ export class SubTopicComponent implements OnInit, OnDestroy {
                 this.threads[i].numberOfPendings = data[i];
               }
               this.search();
+              this.loadingService.spinnerStop();
             });
         } else {
           this.search();
+          this.loadingService.spinnerStop();
         }
         this.paginator.pageIndex = 0;
         this.highlightRecently();

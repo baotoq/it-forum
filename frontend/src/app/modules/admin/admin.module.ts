@@ -20,6 +20,8 @@ import { ApproveUserSearchInputComponent } from './manage-user/approve-user/appr
 import { UserDetailDialogComponent } from './manage-user/user-detail-dialog/user-detail-dialog.component';
 import { ApproveService } from './approve.service';
 import { ManageTagsComponent } from './manage-tags/manage-tags.component';
+import { CreateTagDialogComponent } from './manage-tags/create-tag-dialog/create-tag-dialog.component';
+import { EditTagDialogComponent } from './manage-tags/edit-tag-dialog/edit-tag-dialog.component';
 
 @NgModule({
   imports: [
@@ -44,12 +46,16 @@ import { ManageTagsComponent } from './manage-tags/manage-tags.component';
     ApproveUserSearchInputComponent,
     UserDetailDialogComponent,
     ManageTagsComponent,
+    CreateTagDialogComponent,
+    EditTagDialogComponent,
   ],
   entryComponents: [
     CreateTopicDialogComponent,
     EditTopicDialogComponent,
     MoveDialogComponent,
     UserDetailDialogComponent,
+    CreateTagDialogComponent,
+    EditTagDialogComponent,
   ],
   providers: [ApproveService],
 })

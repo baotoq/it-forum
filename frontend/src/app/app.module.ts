@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
-import { JwtModule } from '@auth0/angular-jwt';
+import { JWT_OPTIONS, JwtModule } from '@auth0/angular-jwt';
 import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 import { NgbModule, NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
 import { DndModule } from 'ng2-dnd';
@@ -46,6 +46,16 @@ import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/observable/combineLatest';
 
+export function jwtOptionsFactory() {
+  return {
+    tokenGetter: () => {
+      return sessionStorage.getItem(Storage.AUTH);
+    },
+    whitelistedDomains: ['localhost:5000', 'tdtgame.azurewebsites.net'],
+    skipWhenExpired: true,
+  };
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,12 +69,9 @@ import 'rxjs/add/observable/combineLatest';
     BrowserAnimationsModule,
     HttpClientModule,
     JwtModule.forRoot({
-      config: {
-        tokenGetter: () => {
-          return sessionStorage.getItem(Storage.AUTH);
-        },
-        whitelistedDomains: ['localhost:5000', 'tdtgame.azurewebsites.net'],
-        skipWhenExpired: true,
+      jwtOptionsProvider: {
+        provide: JWT_OPTIONS,
+        useFactory: jwtOptionsFactory,
       },
     }),
     SnotifyModule.forRoot(),

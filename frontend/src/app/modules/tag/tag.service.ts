@@ -13,4 +13,12 @@ export class TagService {
   getAll(): Observable<Tag[]> {
     return this.httpClient.get<Tag[]>(API.TAG.URL);
   }
+
+  create(tag: Tag): Observable<any> {
+    return this.httpClient.post(API.TAG.URL, tag);
+  }
+
+  edit(tag: Tag): Observable<any> {
+    return this.httpClient.put(API.TAG.URL, tag);
+  }
 }
