@@ -7,25 +7,21 @@
         </mat-toolbar>
         <div class="card-body">
           <form [formGroup]="loginForm" (keyup.enter)="onSubmit()">
-            <div class="row">
-              <mat-form-field class="col-md-12">
-                <input matInput placeholder="Email" formControlName="email" required>
-                <mat-error *ngIf="email.errors | hasError: 'required'">
-                  Email is <strong>required</strong>
-                </mat-error>
-                <mat-error *ngIf="email.errors | hasError: 'email'">
-                  Please enter a valid email address
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <div class="row">
-              <mat-form-field class="col-md-12">
-                <input matInput placeholder="Password" formControlName="password" type="password" required>
-                <mat-error *ngIf="password.errors | hasError: 'required'">
-                  Password is <strong>required</strong>
-                </mat-error>
-              </mat-form-field>
-            </div>
+            <mat-form-field class="w-100">
+              <input matInput placeholder="Email" formControlName="email" required>
+              <mat-error *ngIf="email.errors | hasError: 'required'">
+                Email is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="email.errors | hasError: 'email'">
+                Please enter a valid email address
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="w-100">
+              <input matInput placeholder="Password" formControlName="password" type="password" required>
+              <mat-error *ngIf="password.errors | hasError: 'required'">
+                Password is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
           </form>
         </div>
         <div class="card-footer">

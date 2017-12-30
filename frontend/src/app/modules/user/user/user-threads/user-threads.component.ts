@@ -17,6 +17,8 @@ export class UserThreadsComponent implements OnInit {
   pageSize = 10;
   paginatedData = [];
 
+  user$;
+
   constructor(private route: ActivatedRoute,
               private loadingService: LoadingService,
               private userService: UserService,
@@ -29,6 +31,9 @@ export class UserThreadsComponent implements OnInit {
       .finally(() => this.loadingService.progressBarStop())
       .subscribe(resp => {
         this.threads = this.orderByPipe.transform(resp, ['-dateCreated']);
+        if (this.threads.length > 0) {
+          this.user$ = this.userService.get(this.threads[0].createdById);
+        }
         this.onPageChange();
       });
   }

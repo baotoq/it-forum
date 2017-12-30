@@ -36,10 +36,10 @@
                    *ngFor="let thread of subTopic.threads | slice:0:1">
                 <div class="float-left">
                   <div *ngIf="thread.createdBy$ | async as createdBy">
-                    <app-user-avatar [user]="createdBy" [size]="35" placement="left"></app-user-avatar>
+                    <app-user-avatar [user]="createdBy" [size]="38" placement="left"></app-user-avatar>
                   </div>
                 </div>
-                <div class="float-left">
+                <div style="margin-left: 38px">
                   <a [routerLink]="['/thread', thread.id]" [title]="thread.title">
                     {{thread.title | shorten: 45:'...'}}
                   </a>

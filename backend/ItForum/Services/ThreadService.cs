@@ -65,7 +65,7 @@ namespace ItForum.Services
                 .Where(x => x.ApprovalStatus == ApprovalStatus.Pending);
         }
 
-        public async Task<IEnumerable<Thread>> FindBy(string searchString, int? topicId, List<int> tags)
+        public IEnumerable<Thread> FindBy(string searchString, int? topicId, List<int> tags)
         {
             var data = DbSet.Include(x => x.ThreadTags).ThenInclude(x => x.Tag)
                 .Include(x => x.CreatedBy)

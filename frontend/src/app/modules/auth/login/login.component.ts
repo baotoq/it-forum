@@ -53,10 +53,12 @@ export class LoginComponent implements OnInit {
           this.navigate();
         }
       }, resp => {
-        if (resp.status === StatusCodes.UNAUTHORIZED) {
-          this.loginForm.reset();
+        if (resp.status === StatusCodes.UNAUTHORIZED || resp.status === StatusCodes.BAD_REQUEST) {
           this.coreService.notifyError(resp.error);
+        } else if (resp.status === StatusCodes.FORBIDDEN) {
+          this.coreService.notifyWarning(resp.error);
         }
+        this.password.reset();
       });
   }
 

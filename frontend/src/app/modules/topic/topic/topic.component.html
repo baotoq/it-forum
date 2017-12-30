@@ -2,6 +2,6 @@
   <span class="m-auto">{{topic.name}}</span>
 </mat-toolbar>
 <mat-tab-group (focusChange)="focusChange($event)">
-  <mat-tab *ngFor="let subTopic of topic?.subTopics | orderBy:'orderIndex'" [label]="subTopic.name"></mat-tab>
+  <mat-tab *ngFor="let subTopic of topic?.subTopics" [label]="subTopic.name"></mat-tab>
 </mat-tab-group>
 <router-outlet></router-outlet>

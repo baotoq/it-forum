@@ -54,11 +54,11 @@ namespace ItForum.Controllers
                     var token = _userService.GenerateJwt(innerUser);
                     return Ok(new {token});
                 case ApprovalStatus.Pending:
-                    return StatusCode(StatusCodes.Status401Unauthorized, "You need to be approved by admin!");
+                    return StatusCode(StatusCodes.Status403Forbidden, "You need to be approved by admin!");
                 case ApprovalStatus.Declined:
-                    return Forbid();
+                    return BadRequest("Your registration has been declined!");
                 default:
-                    return BadRequest();
+                    return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -258,13 +258,13 @@ namespace ItForum.Controllers
         }
 
         [HttpPost("reset-password/{id}")]
-        public async Task<IActionResult> ResetPassword(int id, string password, string token)
+        public async Task<IActionResult> ResetPassword(int id, [FromBody] PasswordPayload payload)
         {
-            if (ValidateToken(token) is BadRequestResult) return BadRequest();
+            if (ValidateToken(payload.Token) is BadRequestResult) return BadRequest();
 
             var user = _userService.FindById(id);
             user.Salt = _helperService.CreateSalt();
-            user.Password = _helperService.Hash(password, user.Salt);
+            user.Password = _helperService.Hash(payload.Password, user.Salt);
             await _unitOfWork.SaveChangesAsync();
 
             return Ok();
@@ -272,20 +272,45 @@ namespace ItForum.Controllers
 
         [Authorize]
         [HttpPost("change-password")]
-        public async Task<IActionResult> ChangePassword(string password, string newPassword)
+        public async Task<IActionResult> ChangePassword([FromBody] PasswordPayload payload)
         {
-            if (string.IsNullOrEmpty(newPassword)) return BadRequest();
+            if (string.IsNullOrEmpty(payload.NewPassword)) return BadRequest();
 
             var user = _userService.FindById(CurrentUserId);
-            if (user == null || user.Password != _helperService.Hash(password, user.Salt))
+            if (user == null || user.Password != _helperService.Hash(payload.Password, user.Salt))
                 return StatusCode(StatusCodes.Status401Unauthorized, "Invalid email or password!");
 
             user.Salt = _helperService.CreateSalt();
-            user.Password = _helperService.Hash(newPassword, user.Salt);
+            user.Password = _helperService.Hash(payload.NewPassword, user.Salt);
 
             await _unitOfWork.SaveChangesAsync();
 
             return Ok();
         }
+
+        [Authorize]
+        [HttpPost("update-profile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] User payload)
+        {
+            if (payload == null) return BadRequest();
+
+            var user = _userService.FindById(CurrentUserId);
+            user.Name = payload.Name;
+            user.Phone = payload.Phone;
+            user.Birthdate = payload.Birthdate;
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return Ok();
+        }
+    }
+
+    public class PasswordPayload
+    {
+        public string Token { get; set; }
+
+        public string Password { get; set; }
+
+        public string NewPassword { get; set; }
     }
 }

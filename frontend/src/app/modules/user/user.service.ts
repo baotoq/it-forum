@@ -46,4 +46,8 @@ export class UserService {
       data: managements,
     });
   }
+
+  updateProfile(user: User): Observable<any> {
+    return this.httpClient.post(`${API.USER.URL}/update-profile`, user);
+  }
 }

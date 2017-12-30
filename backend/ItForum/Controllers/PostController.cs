@@ -78,10 +78,8 @@ namespace ItForum.Controllers
 
             if (post.ApprovalStatus == ApprovalStatus.Approved) return Ok();
 
-            var currentUser = _userService.FindById(CurrentUserId);
-            if (currentUser.Role == Role.Moderator)
-                if (!_userService.IsManagement(post.Thread.TopicId.Value, currentUser.Id))
-                    return Forbid();
+            if (!HasPermission(post.Thread.TopicId.Value))
+                return Forbid();
 
             _postService.SetApprovalStatus(CurrentUserId, post, ApprovalStatus.Approved);
             _threadService.IncreaseNumberOfPosts(post.ThreadId);
@@ -100,11 +98,9 @@ namespace ItForum.Controllers
             if (post.Thread.ApprovalStatus != ApprovalStatus.Approved) return BadRequest();
 
             if (post.ApprovalStatus == ApprovalStatus.Declined) return Ok();
-
-            var currentUser = _userService.FindById(CurrentUserId);
-            if (currentUser.Role == Role.Moderator)
-                if (!_userService.IsManagement(post.Thread.TopicId.Value, currentUser.Id))
-                    return Forbid();
+            
+            if (!HasPermission(post.Thread.TopicId.Value))
+                return Forbid();
 
             _postService.SetApprovalStatus(CurrentUserId, post, ApprovalStatus.Declined);
 
@@ -142,6 +138,15 @@ namespace ItForum.Controllers
             await _unitOfWork.SaveChangesAsync();
 
             return Ok(new {message, post.Point});
+        }
+
+        private bool HasPermission(int topicId)
+        {
+            var currentUser = _userService.FindById(CurrentUserId);
+            if (currentUser.Role == Role.Moderator)
+                if (!_userService.IsManagement(topicId, currentUser.Id))
+                    return false;
+            return true;
         }
     }
 }

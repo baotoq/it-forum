@@ -24,4 +24,9 @@ export class CoreService {
     this.snotifyService.clear();
     this.snotifyService.error(message, title, config);
   }
+
+  notifyWarning(message?: string, title = 'Warning', config?: SnotifyToastConfig) {
+    this.snotifyService.clear();
+    this.snotifyService.warning(message, title, config);
+  }
 }

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { AuthService } from '../../auth/auth.service';
 import { User } from '../../../models/user';
 import { LoadingService } from '../../../components/loading/loading.service';
@@ -9,7 +10,7 @@ import { UserService } from '../user.service';
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnDestroy {
   navLinks = [
     {label: 'Profile', link: '/user/settings/profile', icon: 'user'},
     {label: 'Account', link: '/user/settings/account', icon: 'key'},
@@ -23,10 +24,13 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadingService.progressBarStart();
     this.userService.getWithReputations(this.authService.currentUser().id)
+      .takeUntil(componentDestroyed(this))
       .subscribe(resp => {
         this.user = resp;
       });
+  }
+
+  ngOnDestroy() {
   }
 }

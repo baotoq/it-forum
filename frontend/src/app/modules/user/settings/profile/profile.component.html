@@ -1,7 +1,7 @@
 <h3>Profile</h3>
 <hr>
 
-<div *ngIf="user">
+<div *ngIf="user" [formGroup]="form">
 
   <mat-form-field class="w-100">
     <input matInput placeholder="Email" [value]="user.email" [disabled]="true" class="text-primary">
@@ -12,14 +12,22 @@
   </mat-form-field>
 
   <mat-form-field class="w-100">
-    <input matInput placeholder="Name" [value]="user.name">
+    <input matInput placeholder="Name" formControlName="name" required (change)="edit = true">
   </mat-form-field>
 
   <mat-form-field class="w-100">
-    <input matInput placeholder="Phone" [value]="user.phone">
+    <input matInput placeholder="Phone" formControlName="phone" (change)="edit = true">
   </mat-form-field>
 
-  <button mat-raised-button color="primary">
-    Update profile
+  <mat-form-field class="w-100">
+    <input matInput [min]="minDate" [max]="maxDate"
+           [matDatepicker]="picker" placeholder="Brithdate" formControlName="birthdate" (change)="edit = true">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker startView="year" (selectedChanged)="edit = true"></mat-datepicker>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" [disabled]="form.invalid || loading || !edit" (click)="onSubmit()">
+    <app-fa-spinner *ngIf="loading"></app-fa-spinner>
+    <ng-container *ngIf="!loading">Update profile</ng-container>
   </button>
 </div>

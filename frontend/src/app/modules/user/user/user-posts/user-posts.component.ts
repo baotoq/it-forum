@@ -17,6 +17,8 @@ export class UserPostsComponent implements OnInit {
   pageSize = 10;
   paginatedData = [];
 
+  user$;
+
   constructor(private route: ActivatedRoute,
               private loadingService: LoadingService,
               private userService: UserService,
@@ -29,6 +31,9 @@ export class UserPostsComponent implements OnInit {
       .finally(() => this.loadingService.progressBarStop())
       .subscribe(resp => {
         this.posts = this.orderByPipe.transform(resp, ['-dateCreated']);
+        if (this.posts.length > 0) {
+          this.user$ = this.userService.get(this.posts[0].createdById);
+        }
         this.onPageChange();
       });
   }

@@ -4,6 +4,7 @@ import { TopicService } from '../topic.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Topic } from '../../../models/topic';
 import { MatTabGroup } from '@angular/material';
+import { OrderByPipe } from 'ngx-pipes';
 
 @Component({
   selector: 'app-topic',
@@ -18,7 +19,8 @@ export class TopicComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private topicService: TopicService) {
+              private topicService: TopicService,
+              private orderByPipe: OrderByPipe) {
   }
 
   ngOnInit() {
@@ -26,6 +28,7 @@ export class TopicComponent implements OnInit, OnDestroy {
       .takeUntil(componentDestroyed(this))
       .subscribe(resp => {
         this.topic = resp;
+        this.topic.subTopics = this.orderByPipe.transform(this.topic.subTopics, 'orderIndex');
         this.topic.subTopics.forEach(item => this.tabLinks.push(`/topic/${this.topic.id}/sub/${item.id}`));
         if (this.route.firstChild) {
           const subTopicId = +this.route.firstChild.snapshot.params['subTopicId'];

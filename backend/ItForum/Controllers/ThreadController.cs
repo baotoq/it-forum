@@ -247,9 +247,9 @@ namespace ItForum.Controllers
         }
 
         [HttpPost("search")]
-        public async Task<IActionResult> Search([FromBody] SearchPayload payload)
+        public IActionResult Search([FromBody] SearchPayload payload)
         {
-            var threads = await _threadService.FindBy(payload.SearchString, payload.TopicId, payload.Tags);
+            var threads = _threadService.FindBy(payload.SearchString, payload.TopicId, payload.Tags);
 
             var dto = _mapper.Map<List<ThreadDto>>(threads.ToList());
 
