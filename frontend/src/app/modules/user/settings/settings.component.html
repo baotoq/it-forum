@@ -7,7 +7,9 @@
     <div class="col-md-3 mb-2">
       <div class="card border-bottom-0">
         <div class="my-1" align="center">
-          <ngx-avatar [name]="user.name" [size]="130" [src]="user.avatar"></ngx-avatar>
+          <input #fileInput type="file" (change)="onFileChange($event)" hidden/>
+          <ngx-avatar [name]="user.name" [size]="130" [src]="user.avatar" ngbTooltip="Change your avatar"
+                      (click)="onChangeAvatar()"></ngx-avatar>
           <div class="mt-2" style="font-size: 120%">
             <span ngbTooltip="Reputations" style="color: #E91E63">
               <i class="fa fa-star"></i> {{user.reputations}}

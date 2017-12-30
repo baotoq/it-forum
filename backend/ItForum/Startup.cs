@@ -81,17 +81,17 @@ namespace ItForum
 
             app.UseAuthentication();
 
-            app.Use(async (context, next) =>
-            {
-                await next();
-                if (context.Response.StatusCode == StatusCodes.Status404NotFound &&
-                    !Path.HasExtension(context.Request.Path.Value) &&
-                    !context.Request.Path.Value.StartsWith("/api/"))
-                {
-                    context.Request.Path = "/index.html";
-                    await next();
-                }
-            });
+            //app.Use(async (context, next) =>
+            //{
+            //    await next();
+            //    if (context.Response.StatusCode == StatusCodes.Status404NotFound &&
+            //        !Path.HasExtension(context.Request.Path.Value) &&
+            //        !context.Request.Path.Value.StartsWith("/api/"))
+            //    {
+            //        context.Request.Path = "/index.html";
+            //        await next();
+            //    }
+            //});
 
             app.UseMvc();
             app.UseDefaultFiles();

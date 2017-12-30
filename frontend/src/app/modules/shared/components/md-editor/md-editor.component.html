@@ -1,4 +1,4 @@
-<div class="md-editor-container" [class.fullscreen]="isFullScreen">
+<div class="md-editor-container">
   <div class="tool-bar" *ngIf="!hideToolbar && mode != 'preview'">
     <div class="btn-group">
       <button class="btn btn-sm btn-default" type="button" title="Bold" (click)="insertContent('Bold')"
@@ -56,12 +56,6 @@
           <i class="fa fa-info fa-fw"></i>
         </button>
       </a>
-    </div>
-    <div class="btn-group pull-right hide-split">
-      <button class="btn btn-sm btn-default" type="button" [class.active]="isFullScreen" (click)="fullScreen()"
-              *ngIf="!_hideIcons.FullScreen">
-        <i class="fa fa-arrows-alt"></i>
-      </button>
     </div>
   </div>
   <div class="editor-container" style="width: 100%">

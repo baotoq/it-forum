@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { Post } from '../../../../models/post';
 import { UserService } from '../../user.service';
 import { LoadingService } from '../../../../components/loading/loading.service';
@@ -10,7 +11,7 @@ import { OrderByPipe } from 'ngx-pipes';
   templateUrl: './user-posts.component.html',
   styleUrls: ['./user-posts.component.scss'],
 })
-export class UserPostsComponent implements OnInit {
+export class UserPostsComponent implements OnInit, OnDestroy {
   posts: Post[];
 
   currentPage = 1;
@@ -28,6 +29,7 @@ export class UserPostsComponent implements OnInit {
   ngOnInit() {
     this.loadingService.progressBarStart();
     this.userService.getUserPosts(this.route.parent.snapshot.params['userId'])
+      .takeUntil(componentDestroyed(this))
       .finally(() => this.loadingService.progressBarStop())
       .subscribe(resp => {
         this.posts = this.orderByPipe.transform(resp, ['-dateCreated']);
@@ -41,5 +43,8 @@ export class UserPostsComponent implements OnInit {
   onPageChange() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     this.paginatedData = this.posts.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  ngOnDestroy() {
   }
 }

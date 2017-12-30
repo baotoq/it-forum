@@ -50,4 +50,11 @@ export class UserService {
   updateProfile(user: User): Observable<any> {
     return this.httpClient.post(`${API.USER.URL}/update-profile`, user);
   }
+
+  uploadAvatar(file): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+
+    return this.httpClient.post(`${API.USER.URL}/upload`, formData);
+  }
 }

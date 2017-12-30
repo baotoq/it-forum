@@ -117,7 +117,6 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
   editor: any;
 
   showPreviewPanel = true;
-  isFullScreen = false;
 
   _markedOpt: any;
   _previewHtml: any;
@@ -266,12 +265,6 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
   previewPanelClick(event: Event) {
     event.preventDefault();
     event.stopPropagation();
-  }
-
-  fullScreen() {
-    this.isFullScreen = !this.isFullScreen;
-    this._renderer.setElementStyle(document.body, 'overflowY', this.isFullScreen ? 'hidden' : 'auto');
-    this.editorResize();
   }
 
   editorResize(timeOut: number = 100) {

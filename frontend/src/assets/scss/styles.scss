@@ -6,10 +6,6 @@
   @extend .is-invalid;
 }
 
-.fixed-top {
-  z-index: 1;
-}
-
 body {
   background-color: $app-back-ground-color;
   font-family: Roboto, Helvetica Neue, sans-serif !important;

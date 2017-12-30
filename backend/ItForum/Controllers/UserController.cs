@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -303,6 +304,24 @@ namespace ItForum.Controllers
 
             return Ok();
         }
+
+        [Authorize]
+        [HttpPost("upload")]
+        public async Task<IActionResult> Upload([FromForm] IFormFile file)
+        {
+            var user = _userService.FindById(CurrentUserId);
+            var filePath = $"{ConstantPath.Avatar}/{DateTime.Now.ToFileTime()}_{file.FileName}";
+            using (var stream = new FileStream($"{ConstantPath.Root}/{filePath}", FileMode.Create))
+            {
+                var path = $"{ConstantPath.Root}/{user.Avatar}".Replace("http://localhost:5000/", "");
+                if (System.IO.File.Exists(path)) System.IO.File.Delete(path);
+
+                await file.CopyToAsync(stream);
+                user.Avatar = $"http://localhost:5000/{filePath}";
+            }
+            await _unitOfWork.SaveChangesAsync();
+            return Ok(user.Avatar);
+        }
     }
 
     public class PasswordPayload
@@ -312,5 +331,10 @@ namespace ItForum.Controllers
         public string Password { get; set; }
 
         public string NewPassword { get; set; }
+    }
+
+    public class AvartarPayload
+    {
+        public IFormFile File { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { Thread } from '../../../../models/thread';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingService } from '../../../../components/loading/loading.service';
@@ -10,7 +11,7 @@ import { OrderByPipe } from 'ngx-pipes';
   templateUrl: './user-threads.component.html',
   styleUrls: ['./user-threads.component.scss'],
 })
-export class UserThreadsComponent implements OnInit {
+export class UserThreadsComponent implements OnInit, OnDestroy {
   threads: Thread[];
 
   currentPage = 1;
@@ -28,6 +29,7 @@ export class UserThreadsComponent implements OnInit {
   ngOnInit() {
     this.loadingService.progressBarStart();
     this.userService.getUserThreads(this.route.parent.snapshot.params['userId'])
+      .takeUntil(componentDestroyed(this))
       .finally(() => this.loadingService.progressBarStop())
       .subscribe(resp => {
         this.threads = this.orderByPipe.transform(resp, ['-dateCreated']);
@@ -41,5 +43,8 @@ export class UserThreadsComponent implements OnInit {
   onPageChange() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     this.paginatedData = this.threads.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  ngOnDestroy() {
   }
 }
