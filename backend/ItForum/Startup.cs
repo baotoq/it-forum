@@ -28,8 +28,8 @@ namespace ItForum
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<NeptuneContext>(options => options.UseSqlite("Data Source=neptune.db"));
-            services.AddDbContext<NeptuneContext>(options =>
+            //services.AddDbContext<TdtGameContext>(options => options.UseSqlite("Data Source=neptune.db"));
+            services.AddDbContext<TdtGameContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddCors();

@@ -48,7 +48,7 @@
     <div>
       <mat-form-field class="w-100">
         <mat-chip-list #chipList [selectable]="false">
-          <mat-basic-chip *ngFor="let tag of selectedTags" class="badge badge-secondary mr-1" (remove)="tagRemove(tag)">
+          <mat-basic-chip *ngFor="let tag of selectedTags" class="badge tag mr-1" (remove)="tagRemove(tag)">
             {{tag.name}}
             <i matChipRemove class="ml-0 fa fa-close fa-fw"></i>
           </mat-basic-chip>

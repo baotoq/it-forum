@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -30,7 +31,15 @@ namespace ItForum.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var tags = _tagService.FindAllNoTracking("ThreadTags");
+            var tags = _tagService.FindWithThreadTags();
+            var dto = _mapper.Map<List<TagDto>>(tags.ToList());
+            return Ok(dto);
+        }
+
+        [HttpGet("deleted")]
+        public IActionResult GetAllDeleted()
+        {
+            var tags = _tagService.FindDeleted();
             var dto = _mapper.Map<List<TagDto>>(tags.ToList());
             return Ok(dto);
         }
@@ -42,7 +51,7 @@ namespace ItForum.Controllers
             if (tag == null) return BadRequest();
             _tagService.Add(tag);
             await _unitOfWork.SaveChangesAsync();
-            return StatusCode(StatusCodes.Status201Created);
+            return StatusCode(StatusCodes.Status201Created, tag);
         }
 
         [Authorize(Roles = nameof(Role.Administrator))]
@@ -51,10 +60,40 @@ namespace ItForum.Controllers
         {
             var t = _tagService.FindById(tag.Id);
             if (t == null) return BadRequest();
-           
             t.Name = tag.Name;
-            _tagService.Update(t);
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
+        }
 
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> SafeDelete(int id)
+        {
+            var tag = _tagService.FindById(id);
+            if (tag == null) return BadRequest();
+            tag.DateDeleted = DateTime.Now;
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpPost("restore/{id}")]
+        public async Task<IActionResult> Restore(int id)
+        {
+            var tag = _tagService.FindById(id);
+            if (tag == null) return BadRequest();
+            tag.DateDeleted = null;
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpDelete("permanently/{id}")]
+        public async Task<IActionResult> PermanentlyDelete(int id)
+        {
+            var tag = _tagService.FindById(id);
+            if (tag == null) return BadRequest();
+            _tagService.Remove(tag);
             await _unitOfWork.SaveChangesAsync();
             return Ok();
         }

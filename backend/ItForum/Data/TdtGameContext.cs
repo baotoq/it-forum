@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ItForum.Data
 {
-    public class NeptuneContext : DbContext
+    public class TdtGameContext : DbContext
     {
-        public NeptuneContext(DbContextOptions<NeptuneContext> options)
+        public TdtGameContext(DbContextOptions<TdtGameContext> options)
             : base(options)
         {
         }
@@ -31,8 +31,6 @@ namespace ItForum.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasQueryFilter(x => x.DateDeleted == null);
-
-            modelBuilder.Entity<Tag>().HasQueryFilter(x => x.DateDeleted == null);
 
             modelBuilder.Entity<Thread>(e =>
             {
@@ -107,49 +105,6 @@ namespace ItForum.Data
                     .WithMany(x => x.Managements)
                     .HasForeignKey(x => x.UserId);
             });
-        }
-
-        public override int SaveChanges()
-        {
-            OnBeforeSaving();
-            return base.SaveChanges();
-        }
-
-        public async Task<int> SaveChangesAsync()
-        {
-            OnBeforeSaving();
-            return await base.SaveChangesAsync();
-        }
-
-        private void OnBeforeSaving()
-        {
-            foreach (var entry in ChangeTracker.Entries().Where(x => x.Entity is ITimeStampEntity))
-            {
-                var entity = (ITimeStampEntity) entry.Entity;
-                switch (entry.State)
-                {
-                    case EntityState.Added:
-                        if (entity.DateCreated == null)
-                            entity.DateCreated = DateTime.Now;
-                        if (entity.DateModified == null)
-                            entity.DateModified = DateTime.Now;
-                        break;
-                    case EntityState.Modified:
-                        if (entity.DateModified == null)
-                            entity.DateModified = DateTime.Now;
-                        break;
-                    case EntityState.Deleted:
-                        entry.State = EntityState.Modified;
-                        entity.DateDeleted = DateTime.Now;
-                        break;
-                    case EntityState.Detached:
-                        break;
-                    case EntityState.Unchanged:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
         }
     }
 }

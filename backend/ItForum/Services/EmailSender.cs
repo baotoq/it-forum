@@ -9,7 +9,7 @@ namespace ItForum.Services
         public async Task SendEmailAsync(string email, string subject, string body)
         {
             var fromAddress = new MailAddress("bao16090446@gmail.com", "TdtGame");
-            const string fromPassword = "";
+            const string fromPassword = "Sagittarius@2703";
 
             var mailMessage = new MailMessage
             {

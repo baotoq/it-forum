@@ -16,7 +16,7 @@ namespace ItForum.Services
         private readonly HelperService _helperService;
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
-        public UserService(NeptuneContext context, HelperService helperService) : base(context)
+        public UserService(TdtGameContext context, HelperService helperService) : base(context)
         {
             _helperService = helperService;
         }

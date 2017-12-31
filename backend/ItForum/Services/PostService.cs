@@ -8,7 +8,7 @@ namespace ItForum.Services
 {
     public class PostService : Service<Post>
     {
-        public PostService(NeptuneContext context) : base(context)
+        public PostService(TdtGameContext context) : base(context)
         {
         }
 

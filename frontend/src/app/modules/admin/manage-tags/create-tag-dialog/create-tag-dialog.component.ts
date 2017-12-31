@@ -17,7 +17,6 @@ import { TagService } from '../../../tag/tag.service';
     </mat-dialog-content>
     <div class="clearfix">
       <div class="float-right">
-        <button mat-button color="accent" mat-dialog-close>Cancel</button>
         <button mat-button color="primary" (click)="onSave()" [disabled]="loading || form.invalid">
           <app-fa-spinner *ngIf="loading"></app-fa-spinner>
           <ng-container *ngIf="!loading">Save</ng-container>
@@ -49,6 +48,6 @@ export class CreateTagDialogComponent implements OnInit {
 
     this.tagService.create(tag)
       .finally(() => this.loading = false)
-      .subscribe(() => this.dialogRef.close(tag));
+      .subscribe(resp => this.dialogRef.close(resp));
   }
 }

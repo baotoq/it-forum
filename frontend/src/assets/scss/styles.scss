@@ -45,6 +45,12 @@ mat-sidenav-content, code, .preview-panel, .editor-panel {
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.tag {
+  background-color: #dbe3e8;
+  font-size: 15px;
+  cursor: pointer;
+}
+
 .badge-line-fix {
   position: relative;
   top: -1px;

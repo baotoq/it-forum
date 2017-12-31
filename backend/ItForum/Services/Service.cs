@@ -10,9 +10,9 @@ namespace ItForum.Services
 {
     public class Service<TEntity> where TEntity : class
     {
-        protected readonly NeptuneContext Context;
+        protected readonly TdtGameContext Context;
 
-        protected Service(NeptuneContext context)
+        protected Service(TdtGameContext context)
         {
             Context = context;
             DbSet = Context.Set<TEntity>();

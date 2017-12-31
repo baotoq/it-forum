@@ -8,7 +8,7 @@ namespace ItForum.Services
 {
     public class TopicService : Service<Topic>
     {
-        public TopicService(NeptuneContext context) : base(context)
+        public TopicService(TdtGameContext context) : base(context)
         {
         }
 

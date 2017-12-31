@@ -1,12 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using ItForum.Data.Entities.Core;
+using Microsoft.EntityFrameworkCore;
 
 namespace ItForum.Data
 {
     public class UnitOfWork
     {
-        private readonly NeptuneContext _context;
+        private readonly TdtGameContext _context;
 
-        public UnitOfWork(NeptuneContext context)
+        public UnitOfWork(TdtGameContext context)
         {
             _context = context;
         }
@@ -18,12 +22,38 @@ namespace ItForum.Data
 
         public int SaveChanges()
         {
+            OnBeforeSaving();
             return _context.SaveChanges();
         }
 
         public async Task<int> SaveChangesAsync()
         {
+            OnBeforeSaving();
             return await _context.SaveChangesAsync();
+        }
+
+        private void OnBeforeSaving()
+        {
+            foreach (var entry in _context.ChangeTracker.Entries().Where(x => x.Entity is ITimeStampEntity))
+            {
+                var entity = (ITimeStampEntity)entry.Entity;
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entity.DateCreated = DateTime.Now;
+                        entity.DateModified = DateTime.Now;
+                        break;
+                    case EntityState.Modified:
+                        entity.DateModified = DateTime.Now;
+                        break;
+                    case EntityState.Deleted:
+                    case EntityState.Detached:
+                    case EntityState.Unchanged:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
         }
     }
 }

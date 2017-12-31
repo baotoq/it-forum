@@ -10,11 +10,11 @@ namespace ItForum.Data.Seeds
 {
     public class DataSeeder
     {
-        private readonly NeptuneContext _context;
+        private readonly TdtGameContext _context;
         private readonly HelperService _helperService;
         private readonly UserService _userService;
 
-        public DataSeeder(NeptuneContext context, UserService userService, HelperService helperService)
+        public DataSeeder(TdtGameContext context, UserService userService, HelperService helperService)
         {
             _context = context;
             _userService = userService;

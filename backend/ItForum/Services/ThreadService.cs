@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ItForum.Data;
 using ItForum.Data.Domains;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +8,7 @@ namespace ItForum.Services
 {
     public class ThreadService : Service<Thread>
     {
-        public ThreadService(NeptuneContext context) : base(context)
+        public ThreadService(TdtGameContext context) : base(context)
         {
         }
 

@@ -14,6 +14,8 @@ import { EditTagDialogComponent } from './edit-tag-dialog/edit-tag-dialog.compon
 export class ManageTagsComponent implements OnInit {
   tags: Tag[];
 
+  trash = false;
+
   constructor(private loadingService: LoadingService,
               private tagService: TagService,
               private dialog: MatDialog) {
@@ -46,8 +48,24 @@ export class ManageTagsComponent implements OnInit {
     }).afterClosed()
       .subscribe(result => {
         if (result) {
-          tag.name = result.name;
+          const action = result.action;
+          if (action === 'edit') {
+            tag.name = result.data.name;
+          } else if (action === 'delete' || action === 'restore') {
+            const index = this.tags.indexOf(tag);
+            this.tags.splice(index, 1);
+          }
         }
+      });
+  }
+
+  getDeleted() {
+    this.trash = true;
+    this.loadingService.spinnerStart();
+    this.tagService.getAllDeleted()
+      .finally(() => this.loadingService.spinnerStop())
+      .subscribe(resp => {
+        this.tags = resp;
       });
   }
 }
