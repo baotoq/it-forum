@@ -5,6 +5,8 @@ import { TagService } from '../../tag/tag.service';
 import { CreateTagDialogComponent } from './create-tag-dialog/create-tag-dialog.component';
 import { MatDialog } from '@angular/material';
 import { EditTagDialogComponent } from './edit-tag-dialog/edit-tag-dialog.component';
+import { FormControl } from '@angular/forms';
+import { FilterByPipe } from 'ngx-pipes';
 
 @Component({
   selector: 'app-manage-tags',
@@ -13,11 +15,15 @@ import { EditTagDialogComponent } from './edit-tag-dialog/edit-tag-dialog.compon
 })
 export class ManageTagsComponent implements OnInit {
   tags: Tag[];
+  filteredData;
 
   trash = false;
 
+  searchControl = new FormControl();
+
   constructor(private loadingService: LoadingService,
               private tagService: TagService,
+              private filterByPipe: FilterByPipe,
               private dialog: MatDialog) {
   }
 
@@ -27,8 +33,16 @@ export class ManageTagsComponent implements OnInit {
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.tags = resp;
+        this.filter();
+        this.searchControl.reset();
       });
+
+    this.searchControl.valueChanges.subscribe(value => this.filter(value));
   }
+
+  filter(searchString = '') {
+    this.filteredData = this.filterByPipe.transform(this.tags, ['name'], searchString);
+}
 
   create() {
     this.dialog.open(CreateTagDialogComponent, {
@@ -37,6 +51,8 @@ export class ManageTagsComponent implements OnInit {
       .subscribe(result => {
         if (result) {
           this.tags.push(result);
+          this.filter();
+          this.searchControl.reset();
         }
       });
   }
@@ -55,6 +71,8 @@ export class ManageTagsComponent implements OnInit {
             const index = this.tags.indexOf(tag);
             this.tags.splice(index, 1);
           }
+          this.filter();
+          this.searchControl.reset();
         }
       });
   }
@@ -66,6 +84,8 @@ export class ManageTagsComponent implements OnInit {
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.tags = resp;
+        this.filter();
+        this.searchControl.reset();
       });
   }
 }

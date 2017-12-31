@@ -30,12 +30,8 @@ namespace ItForum.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasQueryFilter(x => x.DateDeleted == null);
-
             modelBuilder.Entity<Thread>(e =>
             {
-                e.HasQueryFilter(th => th.DateDeleted == null);
-
                 e.HasOne(p => p.CreatedBy)
                     .WithMany(u => u.Threads)
                     .HasForeignKey(p => p.CreatedById);
@@ -47,8 +43,6 @@ namespace ItForum.Data
 
             modelBuilder.Entity<Post>(e =>
             {
-                e.HasQueryFilter(p => p.DateDeleted == null);
-
                 e.HasOne(p => p.CreatedBy)
                     .WithMany(u => u.Posts)
                     .HasForeignKey(p => p.CreatedById);
@@ -60,8 +54,6 @@ namespace ItForum.Data
 
             modelBuilder.Entity<Topic>(e =>
             {
-                e.HasQueryFilter(x => x.DateDeleted == null);
-
                 e.HasOne(p => p.Parent)
                     .WithMany(s => s.SubTopics)
                     .HasForeignKey(p => p.ParentId);

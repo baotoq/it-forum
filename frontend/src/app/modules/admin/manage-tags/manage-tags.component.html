@@ -18,10 +18,10 @@
 
 <div class="container-fluid mt-3">
   <div class="mb-2">
-    <input class="form-control" placeholder="Search">
+    <input class="form-control" placeholder="Search" [formControl]="searchControl">
   </div>
 
-  <div class="mr-2 d-inline-block mb-2" *ngFor="let tag of tags | orderByImpure:'name'">
+  <div class="mr-2 d-inline-block mb-2" *ngFor="let tag of filteredData | orderByImpure:'name'">
     <div class="badge tag" (click)="edit(tag)">
       <strong>{{tag.name}}</strong>
       <span class="text-muted" style="font-size: 80%">{{tag.usage}} Usages</span>
