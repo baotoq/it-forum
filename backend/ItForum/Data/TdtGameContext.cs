@@ -57,6 +57,11 @@ namespace ItForum.Data
                 e.HasOne(p => p.Parent)
                     .WithMany(s => s.SubTopics)
                     .HasForeignKey(p => p.ParentId);
+
+                e.HasMany(p => p.Threads)
+                    .WithOne(s => s.Topic)
+                    .HasForeignKey(p => p.TopicId)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
 
             modelBuilder.Entity<ThreadTag>(e =>

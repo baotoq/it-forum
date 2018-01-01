@@ -310,14 +310,14 @@ namespace ItForum.Controllers
         public async Task<IActionResult> Upload([FromForm] IFormFile file)
         {
             var user = _userService.FindById(CurrentUserId);
-            var filePath = $"{ConstantPath.Avatar}/{DateTime.Now.ToFileTime()}_{file.FileName}";
-            using (var stream = new FileStream($"{ConstantPath.Root}/{filePath}", FileMode.Create))
+            var filePath = $"/{ConstantPath.Avatar}/{DateTime.Now.ToFileTime()}_{file.FileName}";
+            using (var stream = new FileStream($"{ConstantPath.Root}{filePath}", FileMode.Create))
             {
-                var path = $"{ConstantPath.Root}/{user.Avatar}".Replace("http://localhost:5000/", "");
+                var path = $"{ConstantPath.Root}{user.Avatar}";
                 if (System.IO.File.Exists(path)) System.IO.File.Delete(path);
 
                 await file.CopyToAsync(stream);
-                user.Avatar = $"http://localhost:5000/{filePath}";
+                user.Avatar = $"{filePath}";
             }
             await _unitOfWork.SaveChangesAsync();
             return Ok(user.Avatar);

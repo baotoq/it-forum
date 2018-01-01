@@ -166,8 +166,9 @@ namespace ItForum.Controllers
         [HttpDelete("permanently/{id}")]
         public async Task<IActionResult> PermanentlyDelete(int id)
         {
-            var topic = _topicService.FindById(id);
+            var topic = _topicService.FindDeletedWithSubTopics(id);
             if (topic == null) return BadRequest();
+            topic.SubTopics.ForEach(t => _topicService.Remove(t));
             _topicService.Remove(topic);
             await _unitOfWork.SaveChangesAsync();
             return Ok();

@@ -62,8 +62,6 @@ export class EditTagDialogComponent implements OnInit {
       name: [this.data.name, Validators.required],
     });
     this.deleted = this.data.dateDeleted != null;
-    console.log(this.data.dateDeleted);
-    console.log(this.deleted);
   }
 
   onSave() {

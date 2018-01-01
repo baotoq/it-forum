@@ -1,5 +1,5 @@
-//export const BASE_URL = 'http://tdtgame.azurewebsites.net/api';
-export const BASE_URL = 'http://localhost:5000/api';
+export const BASE_URL = 'http://tdtgame.azurewebsites.net/api';
+//export const BASE_URL = 'http://localhost:5000/api';
 
 export class Storage {
   public static readonly AUTH = 'auth_token';

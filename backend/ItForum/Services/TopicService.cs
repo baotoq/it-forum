@@ -24,6 +24,12 @@ namespace ItForum.Services
                 .SingleOrDefault(x => x.Id == id && x.DateDeleted == null);
         }
 
+        public Topic FindDeletedWithSubTopics(int id)
+        {
+            return DbSet.Include(x => x.SubTopics)
+                .SingleOrDefault(x => x.Id == id && x.DateDeleted != null);
+        }
+
         public Topic FindWithManaments(int id)
         {
             return DbSet.AsNoTracking()
