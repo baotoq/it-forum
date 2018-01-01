@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FileUploadModule } from 'ng2-file-upload';
 import { SharedModule } from '../shared/shared.module';
 
 import { UserRoutingModule } from './user-routing.module';
@@ -21,7 +20,6 @@ import { UserThreadsComponent } from './user/user-threads/user-threads.component
     ReactiveFormsModule,
     NgbModule,
     SharedModule,
-    FileUploadModule,
     UserRoutingModule,
   ],
   declarations: [
