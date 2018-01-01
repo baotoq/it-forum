@@ -192,7 +192,7 @@ export class SubTopicComponent implements OnInit, OnDestroy {
             });
         } else {
           this.search();
-          this.loadingService.spinnerStart();
+          this.loadingService.spinnerStop();
         }
         this.paginator.pageIndex = 0;
         this.highlightRecently();

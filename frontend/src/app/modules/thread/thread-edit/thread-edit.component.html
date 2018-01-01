@@ -1,0 +1,78 @@
+<mat-toolbar color="primary" class="mat-toolbar-48">
+  <span class="m-auto">Edit thread</span>
+</mat-toolbar>
+<mat-toolbar class="mat-toolbar-48">
+  <button mat-button color="primary" [disabled]="loading || form.invalid" (click)="onCreate()">
+    <app-fa-spinner *ngIf="loading"></app-fa-spinner>
+    <ng-container *ngIf="!loading">
+      <i class="fa fa-reply"></i>
+      Submit
+    </ng-container>
+  </button>
+  <button mat-button (click)="displayPreview = !displayPreview">
+    <i class="fa fa-eye"></i>
+    Preview
+  </button>
+</mat-toolbar>
+
+<div class="container-fluid mt-3" [formGroup]="form">
+
+  <mat-card class="form-group">
+
+    <div>
+      <mat-form-field class="w-100">
+        <input matInput placeholder="Title" formControlName="title" required>
+        <mat-error *ngIf="title.errors | hasError: 'required'">
+          Title is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field class="w-100">
+        <mat-select placeholder="Topic" formControlName="selectedTopic" required>
+          <mat-optgroup *ngFor="let topic of topicOptions | orderBy:'orderIndex'"
+                        [label]="topic.name" [title]="topic.description">
+            <mat-option *ngFor="let sub of topic.subTopics | orderBy:'orderIndex'"
+                        [value]="sub.id" [title]="sub.description">
+              {{ sub.name }}
+            </mat-option>
+          </mat-optgroup>
+        </mat-select>
+        <mat-error *ngIf="selectedTopic.errors | hasError: 'required'">
+          Topic is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field class="w-100">
+        <mat-chip-list #chipList [selectable]="false">
+          <mat-basic-chip *ngFor="let tag of selectedTags" class="badge tag mr-1" (remove)="tagRemove(tag)">
+            {{tag.name}}
+            <i matChipRemove class="ml-0 fa fa-close fa-fw"></i>
+          </mat-basic-chip>
+          <input matInput placeholder="Tags" #input formControlName="tags"
+                 [matAutocomplete]="auto" (click)="trigger.openPanel()"
+                 [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="[]"/>
+
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="tagSelected(); input.value = ''">
+            <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+              <span>{{tag.name}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
+
+  </mat-card>
+
+  <div *ngIf="displayPreview" class="form-group">
+    <app-thread-preview [thread]="getPreviewThread()"></app-thread-preview>
+  </div>
+
+  <div class="form-group">
+    <md-editor formControlName="editorContent" required></md-editor>
+  </div>
+
+</div>

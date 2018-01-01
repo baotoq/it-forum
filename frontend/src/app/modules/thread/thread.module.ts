@@ -8,6 +8,7 @@ import { ThreadRoutingModule } from './thread-routing.module';
 import { ThreadComponent } from './thread/thread.component';
 import { PostComponent } from './thread/post/post.component';
 import { ThreadCreateComponent } from './thread-create/thread-create.component';
+import { ThreadEditComponent } from './thread-edit/thread-edit.component';
 
 import { ThreadService } from './thread.service';
 import { PostContentComponent } from './thread/post/post-content/post-content.component';
@@ -29,6 +30,7 @@ import { SearchComponent } from './search/search.component';
   declarations: [
     ThreadComponent,
     ThreadCreateComponent,
+    ThreadEditComponent,
     PostComponent,
     PostContentComponent,
     PostHeaderComponent,

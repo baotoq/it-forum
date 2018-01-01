@@ -42,6 +42,16 @@ namespace ItForum.Controllers
         {
             var thread = _threadService.FindWithCreatedByAndTags(id);
 
+            if (thread.ApprovalStatus == ApprovalStatus.Pending || thread.ApprovalStatus == ApprovalStatus.Declined)
+            {
+                if (!User.Identity.IsAuthenticated) return BadRequest();
+                var user = _userService.FindById(CurrentUserId);
+                if (user.Role == Role.None)
+                {
+                    if (thread.CreatedById != user.Id) return BadRequest();
+                }
+            }
+
             var dto = _mapper.Map<ThreadDto>(thread);
             return Ok(dto);
         }
@@ -87,14 +97,12 @@ namespace ItForum.Controllers
         [HttpGet("pending-posts/{id}")]
         public IActionResult GetPendingPosts(int id)
         {
-            var posts = _threadService.FindThreadPosts(id);
+            var posts = _threadService.FindThreadPosts(id).Where(p => p.ApprovalStatus == ApprovalStatus.Pending);
 
             var user = _userService.FindById(CurrentUserId);
 
-            if (user.Role != Role.None)
-                posts = posts.Where(p => p.ApprovalStatus == ApprovalStatus.Pending);
-            else
-                posts = posts.OrderByDescending(x => x.DateCreated).Take(1);
+            if (user.Role == Role.None)
+                posts = posts.Where(p => p.CreatedById == user.Id);
 
             var dto = _mapper.Map<List<PostDto>>(posts.ToList());
             return Ok(dto);
