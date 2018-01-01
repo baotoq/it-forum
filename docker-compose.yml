@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  neptune-ui:
+    image: it-frontend
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend:/src
+      - /src/node_modules
+    ports:
+      - "4200:4200"
+
+  neptune-backend:
+    image: it-backend
+    build:
+      context: ./backend
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://*:5000"
+    ports:
+      - "5000:5000"
