@@ -26,7 +26,7 @@
         <i class="fa fa-plus fa-fw"></i>
         Post
       </button>
-      <ng-container *ngIf="!showEditor">
+      <ng-container *ngIf="!showEditor && authenticated">
         <ng-container *ngIf="permission">
           <button mat-raised-button color="warn" [matMenuTriggerFor]="filterMenu">
             <mat-icon>filter_list</mat-icon>

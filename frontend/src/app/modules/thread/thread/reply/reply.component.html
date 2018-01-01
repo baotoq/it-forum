@@ -9,24 +9,26 @@
     <span class="text-muted" [ngbTooltip]="reply.dateCreated | date:'MMM d y, h:mm a'">
       {{reply.dateCreated | amTimeAgo}}
     </span>
-    <ng-container *ngIf="permission || currentUser.id == reply.createdById">
-      <ng-container *ngIf="permission">
-        <ng-container *ngIf="reply.approvalStatus === approvalStatus.Pending">
-          <i class="fa fa-check fa-fw px-2 py-1 btn-approve" (click)="approve()"></i>
-          <i class="fa fa-close fa-fw px-2 py-1 ml-1 btn-decline" (click)="decline()"></i>
+    <ng-container *ngIf="authenticated">
+      <ng-container *ngIf="permission || currentUser.id == reply.createdById">
+        <ng-container *ngIf="permission">
+          <ng-container *ngIf="reply.approvalStatus === approvalStatus.Pending">
+            <i class="fa fa-check fa-fw px-2 py-1 btn-approve" (click)="approve()"></i>
+            <i class="fa fa-close fa-fw px-2 py-1 ml-1 btn-decline" (click)="decline()"></i>
+          </ng-container>
         </ng-container>
-      </ng-container>
-      
-      <mat-icon style="display: inline-flex; vertical-align: middle;"
-                class="btn-more ml-1 d-none" [matMenuTriggerFor]="menu">more_horiz</mat-icon>
-      <mat-menu #menu>
-        <button mat-menu-item *ngIf="currentUser.id == reply.createdById" (click)="edit()">
-          Edit
-        </button>
-        <button mat-menu-item *ngIf="permission" (click)="delete()">
-          Delete
-        </button>
-      </mat-menu>
+        
+        <mat-icon style="display: inline-flex; vertical-align: middle;"
+                  class="btn-more ml-1 d-none" [matMenuTriggerFor]="menu">more_horiz</mat-icon>
+        <mat-menu #menu>
+          <button mat-menu-item *ngIf="currentUser.id == reply.createdById" (click)="edit()">
+            Edit
+          </button>
+          <button mat-menu-item *ngIf="permission" (click)="delete()">
+            Delete
+          </button>
+        </mat-menu>
+    </ng-container>
     </ng-container>
   </div>
   <md-editor [(ngModel)]="reply.content" mode="preview" height="100%"></md-editor>

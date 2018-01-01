@@ -48,53 +48,55 @@
           <span *ngIf="row.dateModified" class="text-danger" [ngbTooltip]="row.dateModified | date:'MMM d y, h:mm a'" container="body">[Edited]</span>
           <mat-icon *ngIf="row.highlight" class="mat-icon-14">new_releases</mat-icon>
           <i *ngIf="row.locked" class="fa fa-lock fa-fw text-danger"></i>
-          <ng-container *ngIf="permission || row.createdById == currentUser.id">
-            <ng-container *ngIf="row.approvalStatus === approvalStatus.Approved">
-              <span class="badge badge-info badge-line-fix" ngbTooltip="Pending posts" container="body"
-                    *ngIf="row.numberOfPendings > 0">
-                {{row.numberOfPendings}}
-              </span>
-            </ng-container>
-            <button mat-icon-button clickStopPropagation preventDefault [matMenuTriggerFor]="menu" class="menu d-none">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-              <ng-container *ngIf="row.approvalStatus == approvalStatus.Pending && permission">
-                <button mat-menu-item (click)="approve(row)">
-                  Approve
-                </button>
-                <button mat-menu-item (click)="decline(row)">
-                  Decline
-                </button>
-                <div class="divider"></div>
+          <ng-container *ngIf="authenticated">
+            <ng-container *ngIf="permission || row.createdById == currentUser.id">
+              <ng-container *ngIf="row.approvalStatus === approvalStatus.Approved">
+                <span class="badge badge-info badge-line-fix" ngbTooltip="Pending posts" container="body"
+                      *ngIf="row.numberOfPendings > 0">
+                  {{row.numberOfPendings}}
+                </span>
               </ng-container>
-              <ng-container *ngIf="row.approvalStatus == approvalStatus.Declined">
-                <button mat-menu-item (click)="approve(row)">
-                  Approve
-                </button>
-                <div class="divider"></div>
-              </ng-container>
-              <button mat-menu-item *ngIf="row.createdById == currentUser.id" (click)="gotoEdit(row)">
-                Edit
+              <button mat-icon-button clickStopPropagation preventDefault [matMenuTriggerFor]="menu" class="menu d-none">
+                <mat-icon>more_vert</mat-icon>
               </button>
-              <ng-container *ngIf="permission">
-                <button mat-menu-item *ngIf="!row.locked" (click)="lock(row, true)">
-                  Lock
+              <mat-menu #menu="matMenu">
+                <ng-container *ngIf="row.approvalStatus == approvalStatus.Pending && permission">
+                  <button mat-menu-item (click)="approve(row)">
+                    Approve
+                  </button>
+                  <button mat-menu-item (click)="decline(row)">
+                    Decline
+                  </button>
+                  <div class="divider"></div>
+                </ng-container>
+                <ng-container *ngIf="row.approvalStatus == approvalStatus.Declined">
+                  <button mat-menu-item (click)="approve(row)">
+                    Approve
+                  </button>
+                  <div class="divider"></div>
+                </ng-container>
+                <button mat-menu-item *ngIf="row.createdById == currentUser.id" (click)="gotoEdit(row)">
+                  Edit
                 </button>
-                <button mat-menu-item *ngIf="row.locked" (click)="lock(row, false)">
-                  Unlock
-                </button>
-                <button mat-menu-item *ngIf="!row.pin" (click)="pin(row, true)">
-                  Pin
-                </button>
-                <button mat-menu-item *ngIf="row.pin" (click)="pin(row, false)">
-                  Unpin
-                </button>
-                <button mat-menu-item *ngIf="currentUser.role === role.Administrator" (click)="move(row)">
-                  Move
-                </button>
-              </ng-container>
-            </mat-menu>
+                <ng-container *ngIf="permission">
+                  <button mat-menu-item *ngIf="!row.locked" (click)="lock(row, true)">
+                    Lock
+                  </button>
+                  <button mat-menu-item *ngIf="row.locked" (click)="lock(row, false)">
+                    Unlock
+                  </button>
+                  <button mat-menu-item *ngIf="!row.pin" (click)="pin(row, true)">
+                    Pin
+                  </button>
+                  <button mat-menu-item *ngIf="row.pin" (click)="pin(row, false)">
+                    Unpin
+                  </button>
+                  <button mat-menu-item *ngIf="currentUser.role === role.Administrator" (click)="move(row)">
+                    Move
+                  </button>
+                </ng-container>
+              </mat-menu>
+            </ng-container>
           </ng-container>
 
         </mat-cell>

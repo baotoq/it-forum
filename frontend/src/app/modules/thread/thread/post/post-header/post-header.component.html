@@ -32,18 +32,20 @@
       </button>
     </ng-container>
 
-    <ng-container *ngIf="permission || currentUser.id == post.createdById">
-      <button mat-icon-button [matMenuTriggerFor]="postMenu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #postMenu>
-        <button mat-menu-item *ngIf="currentUser.id == post.createdById" (click)="edit()">
-          Edit
+    <ng-container *ngIf="authenticated">
+      <ng-container *ngIf="permission || currentUser.id == post.createdById">
+        <button mat-icon-button [matMenuTriggerFor]="postMenu">
+          <mat-icon>more_vert</mat-icon>
         </button>
-        <button mat-menu-item *ngIf="permission" (click)="delete()">
-          Delete
-        </button>
-      </mat-menu>
+        <mat-menu #postMenu>
+          <button mat-menu-item *ngIf="currentUser.id == post.createdById" (click)="edit()">
+            Edit
+          </button>
+          <button mat-menu-item *ngIf="permission" (click)="delete()">
+            Delete
+          </button>
+        </mat-menu>
+      </ng-container>
     </ng-container>
 
   </div>

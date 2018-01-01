@@ -55,16 +55,16 @@ export class AuthService {
   }
 
   setToken(token: string) {
-    sessionStorage.setItem(Storage.AUTH, token);
+    localStorage.setItem(Storage.AUTH, token);
   }
 
   logout() {
-    sessionStorage.removeItem(Storage.AUTH);
+    localStorage.removeItem(Storage.AUTH);
   }
 
   currentUser(): User {
     if (!this.isAuthenticated()) return null;
-    const rawData = this.jwtHelperService.decodeToken(sessionStorage.getItem(Storage.AUTH));
+    const rawData = this.jwtHelperService.decodeToken(localStorage.getItem(Storage.AUTH));
     return new User(rawData);
   }
 

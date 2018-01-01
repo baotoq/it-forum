@@ -49,7 +49,7 @@ import 'rxjs/add/observable/combineLatest';
 export function jwtOptionsFactory() {
   return {
     tokenGetter: () => {
-      return sessionStorage.getItem(Storage.AUTH);
+      return localStorage.getItem(Storage.AUTH);
     },
     whitelistedDomains: ['localhost:5000', 'tdtgame.azurewebsites.net'],
     skipWhenExpired: true,

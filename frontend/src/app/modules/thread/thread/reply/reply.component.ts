@@ -20,6 +20,7 @@ export class ReplyComponent implements OnInit {
 
   role = Role;
   currentUser = this.authService.currentUser();
+  authenticated = this.authService.isAuthenticated();
   approvalStatus = ApprovalStatus;
 
   constructor(private authService: AuthService,
