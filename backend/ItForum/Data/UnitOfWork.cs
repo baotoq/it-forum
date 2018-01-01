@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using ItForum.Data.Entities;
 using ItForum.Data.Entities.Core;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,22 +37,23 @@ namespace ItForum.Data
         {
             foreach (var entry in _context.ChangeTracker.Entries().Where(x => x.Entity is ITimeStampEntity))
             {
-                var entity = (ITimeStampEntity)entry.Entity;
+                var entity = (ITimeStampEntity) entry.Entity;
                 switch (entry.State)
                 {
                     case EntityState.Added:
                         entity.DateCreated = DateTime.Now;
-                        entity.DateModified = DateTime.Now;
                         break;
                     case EntityState.Modified:
-                        entity.DateModified = DateTime.Now;
+                        switch (entity)
+                        {
+                            case ThreadEntity t:
+                                t.DateModified = DateTime.Now;
+                                break;
+                            case PostEntity p:
+                                p.DateModified = DateTime.Now;
+                                break;
+                        }
                         break;
-                    case EntityState.Deleted:
-                    case EntityState.Detached:
-                    case EntityState.Unchanged:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
                 }
             }
         }

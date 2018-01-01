@@ -78,7 +78,7 @@ namespace ItForum.Controllers
 
             if (post.ApprovalStatus == ApprovalStatus.Approved) return Ok();
 
-            if (!HasPermission(post.Thread.TopicId.Value))
+            if (!HasPermission(post.Thread.TopicId))
                 return Forbid();
 
             _postService.SetApprovalStatus(CurrentUserId, post, ApprovalStatus.Approved);
@@ -99,10 +99,27 @@ namespace ItForum.Controllers
 
             if (post.ApprovalStatus == ApprovalStatus.Declined) return Ok();
             
-            if (!HasPermission(post.Thread.TopicId.Value))
+            if (!HasPermission(post.Thread.TopicId))
                 return Forbid();
 
             _postService.SetApprovalStatus(CurrentUserId, post, ApprovalStatus.Declined);
+
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> SafeDelete(int id)
+        {
+            var post = _postService.FindWithThread(id);
+
+            if (post == null) return BadRequest();
+
+            if (!HasPermission(post.Thread.TopicId))
+                return Forbid();
+
+            post.DateDeleted = DateTime.Now;
 
             await _unitOfWork.SaveChangesAsync();
             return Ok();
@@ -140,11 +157,13 @@ namespace ItForum.Controllers
             return Ok(new {message, post.Point});
         }
 
-        private bool HasPermission(int topicId)
+        private bool HasPermission(int? topicId)
         {
+            if (topicId == null) return false;
+            
             var currentUser = _userService.FindById(CurrentUserId);
             if (currentUser.Role == Role.Moderator)
-                if (!_userService.IsManagement(topicId, currentUser.Id))
+                if (!_userService.IsManagement(topicId.Value, currentUser.Id))
                     return false;
             return true;
         }

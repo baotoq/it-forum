@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card *ngIf="!post.dateDeleted">
   <app-post-header [post]="post" [permission]="permission" [threadApprovalStatus]="threadApprovalStatus"
                    (threadApprovalChange)="threadApprovalChange.emit($event)"></app-post-header>
   <hr class="mt-2">

@@ -6,8 +6,6 @@ namespace ItForum.Data.Entities.Core
     {
         DateTime? DateCreated { get; set; }
 
-        DateTime? DateModified { get; set; }
-
         DateTime? DateDeleted { get; set; }
     }
 }

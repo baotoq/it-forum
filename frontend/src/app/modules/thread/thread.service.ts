@@ -69,4 +69,8 @@ export class ThreadService {
   search(payload): Observable<any> {
     return this.httpClient.post(`${API.THREAD.URL}/search`, payload);
   }
+
+  deletePost(id: number): Observable<any> {
+    return this.httpClient.delete(`${API.POST.URL}/${id}`);
+  }
 }

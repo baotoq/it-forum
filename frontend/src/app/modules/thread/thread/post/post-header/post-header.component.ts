@@ -6,6 +6,7 @@ import { AuthService } from '../../../../auth/auth.service';
 import { ApproveService } from '../../../../admin/approve.service';
 import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ThreadService } from '../../../thread.service';
 
 @Component({
   selector: 'app-post-header',
@@ -27,6 +28,7 @@ export class PostHeaderComponent implements OnInit {
 
   constructor(private authService: AuthService,
               private approveService: ApproveService,
+              private threadService: ThreadService,
               public dialog: MatDialog) {
   }
 
@@ -57,6 +59,17 @@ export class PostHeaderComponent implements OnInit {
           sub.subscribe(() => {
             this.post.approvalStatus = ApprovalStatus.Declined;
           });
+        }
+      });
+  }
+
+  delete() {
+    this.dialog.open(ConfirmDialogComponent).afterClosed()
+      .subscribe(result => {
+        if (result === true) {
+         this.threadService.deletePost(this.post.id).subscribe(() => {
+            this.post.dateDeleted = new Date();
+         });
         }
       });
   }

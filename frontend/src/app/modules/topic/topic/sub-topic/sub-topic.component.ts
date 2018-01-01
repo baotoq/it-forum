@@ -69,6 +69,7 @@ export class SubTopicComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.loadingService.spinnerStop();
   }
 
   getSubTopic(id: number) {
@@ -191,7 +192,7 @@ export class SubTopicComponent implements OnInit, OnDestroy {
             });
         } else {
           this.search();
-          this.loadingService.spinnerStop();
+          this.loadingService.spinnerStart();
         }
         this.paginator.pageIndex = 0;
         this.highlightRecently();

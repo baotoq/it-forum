@@ -30,7 +30,6 @@ namespace ItForum.Data.Seeds
             {
                 o.Name = f.Name.JobArea();
                 o.DateCreated = f.Date.Past(3);
-                o.DateModified = o.DateCreated;
             });
 
             var tags = tagFaker.Generate(10);
@@ -47,7 +46,6 @@ namespace ItForum.Data.Seeds
                 o.ApprovalStatus = ApprovalStatus.Pending;
                 o.Role = f.PickRandom(o.Role);
                 o.DateCreated = f.Date.Past(4);
-                o.DateModified = o.DateCreated;
             });
 
             var admin = userFaker.Generate();
@@ -175,7 +173,6 @@ namespace ItForum.Data.Seeds
                 o.Description = f.Lorem.Sentences(3);
                 o.CreatedBy = admin;
                 o.DateCreated = f.Date.Past(4);
-                o.DateModified = o.DateCreated;
 
                 var temp = new List<User>(mods);
                 var managements = new List<Management>();

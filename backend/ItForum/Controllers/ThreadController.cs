@@ -156,7 +156,7 @@ namespace ItForum.Controllers
             if (thread == null) return BadRequest();
             if (thread.ApprovalStatus == ApprovalStatus.Approved) return Ok();
 
-            if (!HasPermission(thread.TopicId.Value))
+            if (!HasPermission(thread.TopicId))
                 return Forbid();
 
             SetApprovalStatus(thread, ApprovalStatus.Approved);
@@ -174,7 +174,7 @@ namespace ItForum.Controllers
             if (thread == null) return BadRequest();
             if (thread.ApprovalStatus == ApprovalStatus.Declined) return Ok();
 
-            if (!HasPermission(thread.TopicId.Value))
+            if (!HasPermission(thread.TopicId))
                 return Forbid();
 
             SetApprovalStatus(thread, ApprovalStatus.Declined);
@@ -208,7 +208,7 @@ namespace ItForum.Controllers
             var thread = _threadService.FindById(id);
             if (thread == null) return BadRequest();
 
-            if (!HasPermission(thread.TopicId.Value))
+            if (!HasPermission(thread.TopicId))
                 return Forbid();
 
             thread.Pin = pin;
@@ -224,7 +224,7 @@ namespace ItForum.Controllers
             var thread = _threadService.FindById(id);
             if (thread == null) return BadRequest();
 
-            if (!HasPermission(thread.TopicId.Value))
+            if (!HasPermission(thread.TopicId))
                 return Forbid();
 
             thread.Locked = locked;
@@ -257,11 +257,13 @@ namespace ItForum.Controllers
         }
 
 
-        private bool HasPermission(int topicId)
+        private bool HasPermission(int? topicId)
         {
+            if (topicId == null) return false;
+
             var currentUser = _userService.FindById(CurrentUserId);
             if (currentUser.Role == Role.Moderator)
-                if (!_userService.IsManagement(topicId, currentUser.Id))
+                if (!_userService.IsManagement(topicId.Value, currentUser.Id))
                     return false;
             return true;
         }

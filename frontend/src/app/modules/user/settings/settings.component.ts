@@ -26,10 +26,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loadingService.progressBarStart();
+    this.loadingService.spinnerStart();
     this.userService.getWithReputations(this.authService.currentUser().id)
       .takeUntil(componentDestroyed(this))
-      .finally(() => this.loadingService.progressBarStart())
+      .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.user = resp;
       });

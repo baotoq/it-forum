@@ -21,10 +21,10 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loadingService.progressBarStart();
+    this.loadingService.spinnerStart();
     this.userService.getWithReputations(this.route.snapshot.params['userId'])
       .takeUntil(componentDestroyed(this))
-      .finally(() => this.loadingService.progressBarStop())
+      .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.user = resp;
 
