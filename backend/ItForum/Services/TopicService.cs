@@ -12,26 +12,16 @@ namespace ItForum.Services
         {
         }
 
-        public IEnumerable<Topic> FindByLevel(int level)
-        {
-            return DbSet.Where(x => x.Level == level);
-        }
-
-        public IEnumerable<Topic> FindWithThreads()
-        {
-            return DbSet.Include(x => x.Threads);
-        }
-
         public IEnumerable<Topic> FindWithSubTopicsAndThreads(int level)
         {
             return DbSet.AsNoTracking().Include(x => x.SubTopics).ThenInclude(x => x.Threads)
-                .Where(x => x.Level == level);
+                .Where(x => x.Level == level && x.DateDeleted == null);
         }
 
         public Topic FindWithSubTopics(int id)
         {
             return DbSet.Include(x => x.SubTopics)
-                .SingleOrDefault(x => x.Id == id);
+                .SingleOrDefault(x => x.Id == id && x.DateDeleted == null);
         }
 
         public Topic FindWithManaments(int id)

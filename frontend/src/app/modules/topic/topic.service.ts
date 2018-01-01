@@ -21,6 +21,10 @@ export class TopicService {
     return this.httpClient.get<Topic[]>(`${API.TOPIC.URL}/subs?level=${level}`);
   }
 
+  getAllDeletedWithSubTopics(): Observable<Topic[]> {
+    return this.httpClient.get<Topic[]>(`${API.TOPIC.URL}/deleted/subs`);
+  }
+
   getAllWithSubTopicsAndThreads(level: number): Observable<Topic[]> {
     return this.httpClient.get<Topic[]>(`${API.TOPIC.URL}/sub-threads?level=${level}`);
   }
@@ -57,7 +61,15 @@ export class TopicService {
     return this.httpClient.post(`${API.TOPIC.URL}/move/${id}?parentId=${parentId}`, {});
   }
 
-  reOrder(topic: Topic): Observable<any> {
+  reorder(topic: Topic): Observable<any> {
     return this.httpClient.post(`${API.TOPIC.URL}/re-order`, topic);
+  }
+
+  restore(id: number): Observable<any> {
+    return this.httpClient.post(`${API.TOPIC.URL}/restore/${id}`, {});
+  }
+
+  permanentlyDelete(id: number): Observable<any> {
+    return this.httpClient.delete(`${API.TOPIC.URL}/permanently/${id}`);
   }
 }

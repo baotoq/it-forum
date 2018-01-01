@@ -21,6 +21,8 @@ export class ManageTopicComponent implements OnInit, OnDestroy {
 
   reorder = false;
 
+  trash = false;
+
   constructor(private loadingService: LoadingService,
               private coreService: CoreService,
               private topicService: TopicService,
@@ -34,8 +36,8 @@ export class ManageTopicComponent implements OnInit, OnDestroy {
       .takeUntil(componentDestroyed(this))
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
-        this.topics = this.orderByPipe.transform(resp, ['orderIndex', 'name']);
-        this.topics.forEach(item => item.subTopics = this.orderByPipe.transform(item.subTopics, ['orderIndex', 'name']));
+        this.topics = this.orderByPipe.transform(resp, ['orderIndex', '-dateCreated']);
+        this.topics.forEach(item => item.subTopics = this.orderByPipe.transform(item.subTopics, ['orderIndex', '-dateCreated']));
       });
   }
 
@@ -48,6 +50,7 @@ export class ManageTopicComponent implements OnInit, OnDestroy {
     }).afterClosed()
       .subscribe(result => {
         if (result) {
+          result.subTopics = [];
           this.topics.unshift(result);
         }
       });
@@ -65,7 +68,7 @@ export class ManageTopicComponent implements OnInit, OnDestroy {
       });
   }
 
-  deleteTopic(topic: Topic) {
+  deleteTopic(topic: Topic, parent: Topic = null) {
     this.dialog.open(ConfirmDialogComponent).afterClosed()
       .subscribe(result => {
         if (result === true) {
@@ -73,12 +76,12 @@ export class ManageTopicComponent implements OnInit, OnDestroy {
           this.topicService.delete(topic.id)
             .finally(() => this.loadingService.progressBarStop())
             .subscribe(() => {
-              const index = this.topics.indexOf(topic);
-              if (index === -1) {
-                const t = this.topics.find(item => item.id === topic.parentId);
-                t.subTopics.splice(index, 1);
-              } else {
+              if (parent === null) {
+                const index = this.topics.indexOf(topic);
                 this.topics.splice(index, 1);
+              } else {
+                const index = parent.subTopics.indexOf(topic);
+                parent.subTopics.splice(index, 1);
               }
             });
         }
@@ -118,11 +121,10 @@ export class ManageTopicComponent implements OnInit, OnDestroy {
     this.loadingService.progressBarStart();
     let index = 0;
     topic.subTopics.forEach(item => item.orderIndex = index++);
-    this.topicService.reOrder(topic)
+    this.topicService.reorder(topic)
       .finally(() => this.loadingService.progressBarStop())
       .subscribe(() => {
         topic.checked = false;
-        this.coreService.notifySuccess();
       });
   }
 
@@ -132,21 +134,57 @@ export class ManageTopicComponent implements OnInit, OnDestroy {
     this.topics.forEach(item => item.orderIndex = index++);
     const payload = new Topic();
     payload.subTopics = this.topics;
-    this.topicService.reOrder(payload)
+    this.topicService.reorder(payload)
       .finally(() => this.loadingService.progressBarStop())
       .subscribe(() => {
         this.reorder = false;
-        this.coreService.notifySuccess();
       });
   }
 
   onCancel(topic: Topic) {
     topic.checked = false;
-    topic.subTopics = this.orderByPipe.transform(topic.subTopics, ['orderIndex', 'name']);
+    topic.subTopics = this.orderByPipe.transform(topic.subTopics, ['orderIndex', '-dateCreated']);
   }
 
   onCancelParent() {
     this.reorder = false;
-    this.topics = this.orderByPipe.transform(this.topics, ['orderIndex', 'name']);
+    this.topics = this.orderByPipe.transform(this.topics, ['orderIndex', '-dateCreated']);
+  }
+
+  getDeleted() {
+    this.loadingService.spinnerStart();
+    this.topicService.getAllDeletedWithSubTopics()
+      .takeUntil(componentDestroyed(this))
+      .finally(() => this.loadingService.spinnerStop())
+      .subscribe(resp => {
+        this.trash = true;
+        this.topics = this.orderByPipe.transform(resp, ['-dateDeleted']);
+        this.topics.forEach(item => item.subTopics = this.orderByPipe.transform(item.subTopics, ['dateDeleted']));
+      });
+  }
+
+  restore(topic) {
+    this.loadingService.progressBarStart();
+    this.topicService.restore(topic.id)
+      .finally(() => this.loadingService.progressBarStop())
+      .subscribe(() => {
+        const index = this.topics.indexOf(topic);
+        this.topics.splice(index, 1);
+      });
+  }
+
+  permanentlyDelete(topic) {
+    this.dialog.open(ConfirmDialogComponent).afterClosed()
+      .subscribe(result => {
+        if (result === true) {
+          this.loadingService.progressBarStart();
+          this.topicService.permanentlyDelete(topic.id)
+            .finally(() => this.loadingService.progressBarStop())
+            .subscribe(() => {
+              const index = this.topics.indexOf(topic);
+              this.topics.splice(index, 1);
+            });
+        }
+      });
   }
 }

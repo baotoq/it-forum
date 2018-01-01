@@ -22,7 +22,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     </mat-dialog-content>
     <div class="clearfix">
       <div class="float-right">
-        <button mat-button color="accent" mat-dialog-close>Cancel</button>
         <button mat-button color="primary" (click)="onSave()" [disabled]="loading || form.invalid">
           <app-fa-spinner *ngIf="loading"></app-fa-spinner>
           <ng-container *ngIf="!loading">Save</ng-container>

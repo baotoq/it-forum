@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -36,6 +37,7 @@ namespace ItForum.Controllers
         public IActionResult GetAllWithSubTopicsAndThreads(int level = 0)
         {
             var topics = _topicService.FindWithSubTopicsAndThreads(level).ToList();
+            topics.ForEach(t => t.SubTopics = t.SubTopics.Where(x => x.DateDeleted == null).ToList());
             var dto = _mapper.Map<List<TopicDto>>(topics);
             return Ok(dto);
         }
@@ -43,15 +45,26 @@ namespace ItForum.Controllers
         [HttpGet]
         public IActionResult GetAll(int level = 0)
         {
-            var topics = _topicService.FindByNoTracking(x => x.Level == level).ToList();
-            var dto = _mapper.Map<List<TopicDto>>(topics);
+            var topics = _topicService.FindByNoTracking(x => x.Level == level && x.DateDeleted == null);
+            var dto = _mapper.Map<List<TopicDto>>(topics.ToList());
             return Ok(dto);
         }
 
         [HttpGet("subs")]
         public IActionResult GetAllWithSubTopics(int level = 0)
         {
-            var topics = _topicService.FindByNoTracking(x => x.Level == level, "SubTopics").ToList();
+            var topics = _topicService.FindByNoTracking(x => x.Level == level && x.DateDeleted == null, "SubTopics").ToList();
+            topics.ForEach(t => t.SubTopics = t.SubTopics.Where(x => x.DateDeleted == null).ToList());
+            var dto = _mapper.Map<List<TopicDto>>(topics);
+            return Ok(dto);
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpGet("deleted/subs")]
+        public IActionResult GetAllDeleted()
+        {
+            var topics = _topicService.FindByNoTracking(x => x.DateDeleted != null, "SubTopics").ToList();
+            topics.ForEach(t => t.SubTopics = t.SubTopics.Where(x => x.DateDeleted == null).ToList());
             var dto = _mapper.Map<List<TopicDto>>(topics);
             return Ok(dto);
         }
@@ -60,6 +73,7 @@ namespace ItForum.Controllers
         public IActionResult GetWithSubTopics(int id)
         {
             var topic = _topicService.FindWithSubTopics(id);
+            topic.SubTopics = topic.SubTopics.Where(x => x.DateDeleted == null).ToList();
             var dto = _mapper.Map<TopicDto>(topic);
             return Ok(dto);
         }
@@ -126,8 +140,31 @@ namespace ItForum.Controllers
         }
 
         [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpPost("restore/{id}")]
+        public async Task<IActionResult> Restore(int id)
+        {
+            var topic = _topicService.FindById(id);
+            if (topic == null) return BadRequest();
+            topic.DateDeleted = null;
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator))]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> SafeDelete(int id)
+        {
+            var topic = _topicService.FindById(id);
+            if (topic == null) return BadRequest();
+            topic.DateDeleted = DateTime.Now;
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
+        }
+
+
+        [Authorize(Roles = nameof(Role.Administrator))]
+        [HttpDelete("permanently/{id}")]
+        public async Task<IActionResult> PermanentlyDelete(int id)
         {
             var topic = _topicService.FindById(id);
             if (topic == null) return BadRequest();

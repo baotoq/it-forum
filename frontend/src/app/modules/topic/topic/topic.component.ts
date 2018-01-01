@@ -28,7 +28,7 @@ export class TopicComponent implements OnInit, OnDestroy {
       .takeUntil(componentDestroyed(this))
       .subscribe(resp => {
         this.topic = resp;
-        this.topic.subTopics = this.orderByPipe.transform(this.topic.subTopics, 'orderIndex');
+        this.topic.subTopics = this.orderByPipe.transform(this.topic.subTopics, ['orderIndex', '-dateCreated']);
         this.topic.subTopics.forEach(item => this.tabLinks.push(`/topic/${this.topic.id}/sub/${item.id}`));
         if (this.route.firstChild) {
           const subTopicId = +this.route.firstChild.snapshot.params['subTopicId'];

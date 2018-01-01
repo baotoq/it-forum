@@ -42,7 +42,7 @@ export class ManageTagsComponent implements OnInit {
 
   filter(searchString = '') {
     this.filteredData = this.filterByPipe.transform(this.tags, ['name'], searchString);
-}
+  }
 
   create() {
     this.dialog.open(CreateTagDialogComponent, {
@@ -78,11 +78,11 @@ export class ManageTagsComponent implements OnInit {
   }
 
   getDeleted() {
-    this.trash = true;
     this.loadingService.spinnerStart();
     this.tagService.getAllDeleted()
       .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
+        this.trash = true;
         this.tags = resp;
         this.filter();
         this.searchControl.reset();
