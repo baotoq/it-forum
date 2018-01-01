@@ -14,6 +14,7 @@ import 'rxjs/add/operator/startWith';
 import { Tag } from '../../../models/tag';
 import { FilterByPipe, OrderByPipe } from 'ngx-pipes';
 import { MatAutocompleteTrigger } from '@angular/material';
+import { Post } from '../../../models/post';
 
 @Component({
   selector: 'app-thread-edit',
@@ -23,6 +24,7 @@ import { MatAutocompleteTrigger } from '@angular/material';
 export class ThreadEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   thread: Thread;
+  post: Post;
 
   topicOptions = [];
 
@@ -48,25 +50,40 @@ export class ThreadEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.loadingService.spinnerStart();
     this.form = this.formBuilder.group({
       title: [null, Validators.required],
       editorContent: [null, Validators.required],
       selectedTopic: [null, Validators.required],
       tags: [null],
     });
+    const id = this.route.snapshot.params['threadId'];
     Observable.combineLatest(
-      this.threadService.getWithCreatedByTags(this.route.snapshot.params['threadId']),
+      this.threadService.getWithCreatedByTags(id),
+      this.threadService.getThreadContent(id),
       this.topicService.getAllWithSubTopics(0),
       this.tagService.getAll()
-    ).finally(() => this.loadingService.spinnerStop())
+    )
       .takeUntil(componentDestroyed(this))
+      .finally(() => this.loadingService.spinnerStop())
       .subscribe(resp => {
         this.thread = resp[0];
-        this.topicOptions = resp[1];
-        this.tags = resp[2];
+        if (this.authService.isNone() || this.authService.currentUser().id != this.thread.createdById) {
+          this.router.navigate(['/']);
+          return;
+        }
+        this.post = resp[1];
+        this.topicOptions = resp[2];
+        this.tags = resp[3];
+        this.thread.tags.forEach(item => {
+          this.selectedTags.push(item);
+          const index = this.tags.findIndex(t => t.id === item.id);
+          this.tags.splice(index, 1);
+        });
         this.filterTags();
 
         this.title.setValue(this.thread.title);
+        this.editorContent.setValue(this.post.content);
         this.selectedTopic.setValue(this.thread.topicId);
       });
   }
@@ -74,19 +91,20 @@ export class ThreadEditComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  onCreate() {
+  onEdit() {
     this.loading = true;
     const thread = new Thread({
+      id: this.thread.id,
       title: this.title.value,
       topicId: this.selectedTopic.value,
-      posts: [{content: this.editorContent.value}],
+      posts: [{id: this.post.id, content: this.editorContent.value}],
       tags: this.selectedTags,
     });
 
-    this.threadService.create(thread)
+    this.threadService.edit(thread)
       .finally(() => this.loading = false)
       .subscribe(resp => {
-        this.router.navigate(['/thread', resp.id]);
+        this.router.navigate(['/thread', this.thread.id]);
         this.coreService.notifySuccess();
       });
   }

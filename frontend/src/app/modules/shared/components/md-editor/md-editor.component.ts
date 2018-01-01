@@ -171,7 +171,7 @@ export class MarkdownEditorComponent implements OnInit, AfterViewInit, ControlVa
     this.editor.setOption('showPrintMargin', false);
 
     Observable.fromEvent(this.editor, 'change')
-      .debounceTime(500)
+      .debounceTime(100)
       .subscribe(() => this.markdownValue = this.editor.getValue());
   }
 

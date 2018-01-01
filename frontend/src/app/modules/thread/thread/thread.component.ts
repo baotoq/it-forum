@@ -189,6 +189,10 @@ export class ThreadComponent implements OnInit, OnDestroy {
     });
   }
 
+  gotoEdit() {
+    this.router.navigate(['/thread/edit', this.thread.id]);
+  }
+
   threadApprovalChange($event) {
     this.thread.approvalStatus = $event;
   }

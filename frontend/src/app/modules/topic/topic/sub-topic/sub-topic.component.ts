@@ -179,7 +179,7 @@ export class SubTopicComponent implements OnInit, OnDestroy {
     sub.takeUntil(componentDestroyed(this))
       .subscribe(resp => {
         this.threads = resp;
-        if (count && this.threads.length > 0) {
+        if (count && this.threads.length > 0 && this.permission) {
           const ob = [];
           this.threads.forEach(t => ob.push(this.threadService.countPendings(t.id)));
           Observable.combineLatest(ob).takeUntil(componentDestroyed(this))

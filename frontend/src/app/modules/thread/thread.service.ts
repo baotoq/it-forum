@@ -73,4 +73,12 @@ export class ThreadService {
   deletePost(id: number): Observable<any> {
     return this.httpClient.delete(`${API.POST.URL}/${id}`);
   }
+
+  getThreadContent(id: number): Observable<any> {
+    return this.httpClient.get(`${API.THREAD.URL}/content/${id}`);
+  }
+
+  edit(thread: Thread): Observable<any> {
+    return this.httpClient.post(`${API.THREAD.URL}/edit`, thread);
+  }
 }

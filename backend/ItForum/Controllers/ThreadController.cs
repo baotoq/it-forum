@@ -129,9 +129,9 @@ namespace ItForum.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ThreadDto threadDto)
+        public async Task<IActionResult> Create([FromBody] ThreadDto payload)
         {
-            var thread = _mapper.Map<Thread>(threadDto);
+            var thread = _mapper.Map<Thread>(payload);
 
             if (thread == null) return BadRequest();
             if (thread.TopicId == null) return BadRequest();
@@ -143,7 +143,7 @@ namespace ItForum.Controllers
             thread.LastActivity = DateTime.Now;
             thread.NumberOfPosts = 1;
             thread.ThreadTags = new List<ThreadTag>();
-            threadDto.Tags.ForEach(t => thread.ThreadTags.Add(new ThreadTag {TagId = t.Id}));
+            payload.Tags.ForEach(t => thread.ThreadTags.Add(new ThreadTag {TagId = t.Id}));
 
             var createdBy = _userService.FindById(CurrentUserId);
             if (createdBy.Role == Role.Administrator || createdBy.Role == Role.Moderator)
@@ -220,6 +220,43 @@ namespace ItForum.Controllers
                 return Forbid();
 
             thread.Pin = pin;
+
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
+        [HttpGet("content/{id}")]
+        public IActionResult GetThreadContent(int id)
+        {
+            var thread = _threadService.FindWithPosts(id);
+            if (thread == null) return BadRequest();
+            var dto = _mapper.Map<PostDto>(thread.Posts.OrderBy(x => x.DateCreated).FirstOrDefault());
+            return Ok(dto);
+        }
+
+        [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
+        [HttpPost("edit")]
+        public async Task<IActionResult> Edit([FromBody] ThreadDto payload)
+        {
+            if (payload == null) return BadRequest();
+            if (payload.TopicId == null) return BadRequest();
+            if (payload.Posts[0] == null) return BadRequest();
+
+            var thread = _threadService.FindWithTags(payload.Id);
+            if (thread == null) return BadRequest();
+            if (thread.CreatedById != CurrentUserId) return BadRequest();
+
+            thread.Title = payload.Title;
+            thread.TopicId = payload.TopicId;
+            thread.ThreadTags.Clear();
+
+            var payloadPost = payload.Posts[0];
+            var post = _postService.FindById(payloadPost.Id);
+            post.Content = payloadPost.Content;
+
+            await _unitOfWork.SaveChangesAsync();
+            payload.Tags.ForEach(t => thread.ThreadTags.Add(new ThreadTag {TagId = t.Id}));
 
             await _unitOfWork.SaveChangesAsync();
             return Ok();

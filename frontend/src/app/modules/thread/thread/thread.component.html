@@ -26,38 +26,47 @@
         <i class="fa fa-plus fa-fw"></i>
         Post
       </button>
-      <ng-container *ngIf="!showEditor && permission">
-        <button mat-raised-button color="warn" [matMenuTriggerFor]="filterMenu">
-          <mat-icon>filter_list</mat-icon>
-          Filter
-        </button>
-        <mat-menu #filterMenu="matMenu">
-          <button mat-menu-item (click)="defaultFilter()">Default</button>
-          <button mat-menu-item (click)="approvedFilter()">Approved</button>
-          <button mat-menu-item (click)="pendingFilter()">Pending</button>
-          <button mat-menu-item (click)="declinedFilter()">Declined</button>
-        </mat-menu>
-        <button mat-raised-button [matMenuTriggerFor]="toolsMenu" class="bg-success text-white">
-          <i class="fa fa-cog fa-fw"></i>
-          Tools
-        </button>
-        <mat-menu #toolsMenu="matMenu">
-          <button mat-menu-item *ngIf="!thread.locked" (click)="lock(true)">
-            Lock
+      <ng-container *ngIf="!showEditor">
+        <ng-container *ngIf="permission">
+          <button mat-raised-button color="warn" [matMenuTriggerFor]="filterMenu">
+            <mat-icon>filter_list</mat-icon>
+            Filter
           </button>
-          <button mat-menu-item *ngIf="thread.locked" (click)="lock(false)">
-            Unlock
+          <mat-menu #filterMenu="matMenu">
+            <button mat-menu-item (click)="defaultFilter()">Default</button>
+            <button mat-menu-item (click)="approvedFilter()">Approved</button>
+            <button mat-menu-item (click)="pendingFilter()">Pending</button>
+            <button mat-menu-item (click)="declinedFilter()">Declined</button>
+          </mat-menu>
+        </ng-container>
+        <ng-container *ngIf="permission || thread.createdById == currentUser.id">
+          <button mat-raised-button [matMenuTriggerFor]="toolsMenu" class="bg-success text-white">
+            <i class="fa fa-cog fa-fw"></i>
+            Tools
           </button>
-          <button mat-menu-item *ngIf="!thread.pin" (click)="pin(true)">
-            Pin
-          </button>
-          <button mat-menu-item *ngIf="thread.pin" (click)="pin(false)">
-            Unpin
-          </button>
-          <button mat-menu-item *ngIf="currentUser.role === role.Administrator" (click)="move(row)">
-            Move
-          </button>
-        </mat-menu>
+          <mat-menu #toolsMenu="matMenu">
+            <button mat-menu-item *ngIf="thread.createdById == currentUser.id" (click)="gotoEdit()">
+              Edit
+            </button>
+            <ng-container *ngIf="permission">
+              <button mat-menu-item *ngIf="!thread.locked" (click)="lock(true)">
+                Lock
+              </button>
+              <button mat-menu-item *ngIf="thread.locked" (click)="lock(false)">
+                Unlock
+              </button>
+              <button mat-menu-item *ngIf="!thread.pin" (click)="pin(true)">
+                Pin
+              </button>
+              <button mat-menu-item *ngIf="thread.pin" (click)="pin(false)">
+                Unpin
+              </button>
+              <button mat-menu-item *ngIf="currentUser.role === role.Administrator" (click)="move(row)">
+                Move
+              </button>
+            </ng-container>
+          </mat-menu>
+        </ng-container>
       </ng-container>
       <button *ngIf="showEditor" mat-raised-button color="primary" class="mb-2"
               (click)="onSubmit()" [disabled]="!editorContent || loading">

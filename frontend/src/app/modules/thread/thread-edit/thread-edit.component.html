@@ -1,8 +1,8 @@
 <mat-toolbar color="primary" class="mat-toolbar-48">
-  <span class="m-auto">Edit thread</span>
+  <span class="m-auto">Edit Thread</span>
 </mat-toolbar>
 <mat-toolbar class="mat-toolbar-48">
-  <button mat-button color="primary" [disabled]="loading || form.invalid" (click)="onCreate()">
+  <button mat-button color="primary" [disabled]="loading || form.invalid" (click)="onEdit()">
     <app-fa-spinner *ngIf="loading"></app-fa-spinner>
     <ng-container *ngIf="!loading">
       <i class="fa fa-reply"></i>

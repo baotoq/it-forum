@@ -22,6 +22,12 @@ namespace ItForum.Services
                 .SingleOrDefault(x => x.Id == id);
         }
 
+        public Thread FindWithTags(int id)
+        {
+            return DbSet.Include(x => x.ThreadTags)
+                .SingleOrDefault(x => x.Id == id);
+        }
+
         public IEnumerable<Post> FindThreadPostsWithReplies(int id)
         {
             return DbSet.AsNoTracking().Include(x => x.CreatedBy)
