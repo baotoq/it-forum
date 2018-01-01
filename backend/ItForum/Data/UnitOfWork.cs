@@ -43,17 +43,6 @@ namespace ItForum.Data
                     case EntityState.Added:
                         entity.DateCreated = DateTime.Now;
                         break;
-                    case EntityState.Modified:
-                        switch (entity)
-                        {
-                            case ThreadEntity t:
-                                t.DateModified = DateTime.Now;
-                                break;
-                            case PostEntity p:
-                                p.DateModified = DateTime.Now;
-                                break;
-                        }
-                        break;
                 }
             }
         }

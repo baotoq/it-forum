@@ -108,6 +108,21 @@ namespace ItForum.Controllers
             return Ok();
         }
 
+        [Authorize]
+        [HttpPost("edit")]
+        public async Task<IActionResult> Edit([FromBody] Post payload)
+        {
+            var post = _postService.FindById(payload.Id);
+
+            if (post == null) return BadRequest();
+            if (post.CreatedById != CurrentUserId) return BadRequest();
+
+            post.Content = payload.Content;
+            post.DateModified = DateTime.Now;
+            await _unitOfWork.SaveChangesAsync();
+            return Ok();
+        }
+
         [Authorize(Roles = nameof(Role.Administrator) + "," + nameof(Role.Moderator))]
         [HttpDelete("{id}")]
         public async Task<IActionResult> SafeDelete(int id)

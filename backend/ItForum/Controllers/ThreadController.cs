@@ -247,6 +247,7 @@ namespace ItForum.Controllers
             if (thread.CreatedById != CurrentUserId) return BadRequest();
 
             thread.Title = payload.Title;
+            thread.DateModified = DateTime.Now;
             thread.ThreadTags.Clear();
 
             var payloadPost = payload.Posts[0];

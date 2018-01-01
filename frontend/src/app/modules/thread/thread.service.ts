@@ -81,4 +81,8 @@ export class ThreadService {
   edit(thread: Thread): Observable<any> {
     return this.httpClient.post(`${API.THREAD.URL}/edit`, thread);
   }
+
+  editPost(post: Post): Observable<any> {
+    return this.httpClient.post(`${API.POST.URL}/edit`, post);
+  }
 }

@@ -106,7 +106,6 @@ namespace ItForum.Data.Seeds
                     o.ApprovalStatusModifiedBy = admin;
                 }
                 o.DateCreated = f.Date.Past(3);
-                o.DateModified = o.DateCreated;
 
                 var temp = new List<User>(users);
                 var votes = new List<Vote>();
@@ -138,7 +137,6 @@ namespace ItForum.Data.Seeds
                 var p = o.Posts.OrderBy(x => x.DateCreated).FirstOrDefault();
                 p.CreatedBy = o.CreatedBy;
                 o.DateCreated = p.DateCreated;
-                o.DateModified = o.DateCreated;
                 o.LastActivity = o.Posts.OrderByDescending(x => x.DateCreated).FirstOrDefault().DateCreated.Value;
 
                 if (f.Random.Number(0, 3) != 0)

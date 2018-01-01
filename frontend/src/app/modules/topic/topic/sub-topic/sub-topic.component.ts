@@ -223,4 +223,8 @@ export class SubTopicComponent implements OnInit, OnDestroy {
       thread.locked = locked;
     });
   }
+
+  gotoEdit(thread) {
+    this.router.navigate(['/thread/edit', thread.id]);
+  }
 }

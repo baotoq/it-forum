@@ -6,6 +6,8 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
 import { ApproveService } from '../../../admin/approve.service';
 import { MatDialog } from '@angular/material';
 import { ThreadService } from '../../thread.service';
+import { AuthService } from '../../../auth/auth.service';
+import { EditPostDialogComponent } from '../../edit-post-dialog/edit-post-dialog.component';
 
 @Component({
   selector: 'app-reply',
@@ -17,9 +19,11 @@ export class ReplyComponent implements OnInit {
   @Input() permission = false;
 
   role = Role;
+  currentUser = this.authService.currentUser();
   approvalStatus = ApprovalStatus;
 
-  constructor(private approveService: ApproveService,
+  constructor(private authService: AuthService,
+              private approveService: ApproveService,
               private threadService: ThreadService,
               public dialog: MatDialog) {
   }
@@ -51,6 +55,18 @@ export class ReplyComponent implements OnInit {
          this.threadService.deletePost(this.reply.id).subscribe(() => {
             this.reply.dateDeleted = new Date();
          });
+        }
+      });
+  }
+
+  edit() {
+    this.dialog.open(EditPostDialogComponent, {
+      data: this.reply, width: '800px'
+    }).afterClosed()
+      .subscribe(result => {
+        if (result) {
+          this.reply.content = result.content;
+          this.reply.dateModified = new Date();
         }
       });
   }

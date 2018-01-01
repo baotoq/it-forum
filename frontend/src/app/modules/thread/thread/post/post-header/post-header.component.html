@@ -6,12 +6,12 @@
     <strong>
       <a [routerLink]="['/user', post.createdBy.id]">{{post.createdBy.name}}</a>
     </strong>
-
+    <span *ngIf="post.dateModified" class="text-danger" [ngbTooltip]="post.dateModified | date:'MMM d y, h:mm a'">[Edited]</span>
     <app-badge-role [user]="post.createdBy"></app-badge-role>
     <app-badge-approval-status [status]="post.approvalStatus"></app-badge-approval-status>
   </mat-card-subtitle>
 
-  <mat-card-title class="mb-1 text-muted" [title]="post.dateCreated | date:'MMM d y, h:mm a'">
+  <mat-card-title class="mb-1 text-muted" [ngbTooltip]="post.dateCreated | date:'MMM d y, h:mm a'">
     {{post.dateCreated | amTimeAgo}}
   </mat-card-title>
 
@@ -32,12 +32,15 @@
       </button>
     </ng-container>
 
-    <ng-container *ngIf="permission">
+    <ng-container *ngIf="permission || currentUser.id == post.createdById">
       <button mat-icon-button [matMenuTriggerFor]="postMenu">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #postMenu>
-        <button mat-menu-item (click)="delete()">
+        <button mat-menu-item *ngIf="currentUser.id == post.createdById" (click)="edit()">
+          Edit
+        </button>
+        <button mat-menu-item *ngIf="permission" (click)="delete()">
           Delete
         </button>
       </mat-menu>

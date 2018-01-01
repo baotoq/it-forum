@@ -3,20 +3,27 @@
     <strong>
       <a [routerLink]="['/user', reply.createdBy.id]">{{reply.createdBy.name}}</a>
     </strong>
+    <span class="text-danger" [ngbTooltip]="reply.dateModified | date:'MMM d y, h:mm a'" *ngIf="reply.dateModified">[Edited]</span>
     <app-badge-role [user]="reply.createdBy"></app-badge-role>
     <app-badge-approval-status [status]="reply.approvalStatus"></app-badge-approval-status>
-    <span class="text-muted" [title]="reply.dateCreated | date:'MMM d y, h:mm a'">
+    <span class="text-muted" [ngbTooltip]="reply.dateCreated | date:'MMM d y, h:mm a'">
       {{reply.dateCreated | amTimeAgo}}
     </span>
-    <ng-container *ngIf="permission">
-      <ng-container *ngIf="reply.approvalStatus === approvalStatus.Pending">
-        <i class="fa fa-check fa-fw px-2 py-1 btn-approve" (click)="approve()"></i>
-        <i class="fa fa-close fa-fw px-2 py-1 ml-1 btn-decline" (click)="decline()"></i>
+    <ng-container *ngIf="permission || currentUser.id == reply.createdById">
+      <ng-container *ngIf="permission">
+        <ng-container *ngIf="reply.approvalStatus === approvalStatus.Pending">
+          <i class="fa fa-check fa-fw px-2 py-1 btn-approve" (click)="approve()"></i>
+          <i class="fa fa-close fa-fw px-2 py-1 ml-1 btn-decline" (click)="decline()"></i>
+        </ng-container>
       </ng-container>
-      <mat-icon style="display: inline-flex;
-        vertical-align: middle;" class="btn-more ml-1 d-none" [matMenuTriggerFor]="menu">more_horiz</mat-icon>
+      
+      <mat-icon style="display: inline-flex; vertical-align: middle;"
+                class="btn-more ml-1 d-none" [matMenuTriggerFor]="menu">more_horiz</mat-icon>
       <mat-menu #menu>
-        <button mat-menu-item (click)="delete()">
+        <button mat-menu-item *ngIf="currentUser.id == reply.createdById" (click)="edit()">
+          Edit
+        </button>
+        <button mat-menu-item *ngIf="permission" (click)="delete()">
           Delete
         </button>
       </mat-menu>

@@ -7,6 +7,7 @@ import { ApproveService } from '../../../../admin/approve.service';
 import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ThreadService } from '../../../thread.service';
+import { EditPostDialogComponent } from '../../../edit-post-dialog/edit-post-dialog.component';
 
 @Component({
   selector: 'app-post-header',
@@ -67,9 +68,21 @@ export class PostHeaderComponent implements OnInit {
     this.dialog.open(ConfirmDialogComponent).afterClosed()
       .subscribe(result => {
         if (result === true) {
-         this.threadService.deletePost(this.post.id).subscribe(() => {
+          this.threadService.deletePost(this.post.id).subscribe(() => {
             this.post.dateDeleted = new Date();
-         });
+          });
+        }
+      });
+  }
+
+  edit() {
+    this.dialog.open(EditPostDialogComponent, {
+      data: this.post, width: '800px'
+    }).afterClosed()
+      .subscribe(result => {
+        if (result) {
+          this.post.content = result.content;
+          this.post.dateModified = new Date();
         }
       });
   }

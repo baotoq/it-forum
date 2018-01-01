@@ -16,6 +16,7 @@ import { PostHeaderComponent } from './thread/post/post-header/post-header.compo
 import { ReplyComponent } from './thread/reply/reply.component';
 import { ThreadPreviewComponent } from './thread-create/thread-preview/thread-preview.component';
 import { SearchComponent } from './search/search.component';
+import { EditPostDialogComponent } from './edit-post-dialog/edit-post-dialog.component';
 
 
 @NgModule({
@@ -37,6 +38,10 @@ import { SearchComponent } from './search/search.component';
     ReplyComponent,
     ThreadPreviewComponent,
     SearchComponent,
+    EditPostDialogComponent,
+  ],
+  entryComponents: [
+    EditPostDialogComponent
   ],
   providers: [
     ThreadService,
