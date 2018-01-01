@@ -26,8 +26,6 @@ export class ThreadEditComponent implements OnInit, OnDestroy {
   thread: Thread;
   post: Post;
 
-  topicOptions = [];
-
   filteredTags: Observable<Tag[]>;
   selectedTags = [];
   tags: Tag[];
@@ -54,14 +52,12 @@ export class ThreadEditComponent implements OnInit, OnDestroy {
     this.form = this.formBuilder.group({
       title: [null, Validators.required],
       editorContent: [null, Validators.required],
-      selectedTopic: [null, Validators.required],
       tags: [null],
     });
     const id = this.route.snapshot.params['threadId'];
     Observable.combineLatest(
       this.threadService.getWithCreatedByTags(id),
       this.threadService.getThreadContent(id),
-      this.topicService.getAllWithSubTopics(0),
       this.tagService.getAll()
     )
       .takeUntil(componentDestroyed(this))
@@ -73,8 +69,7 @@ export class ThreadEditComponent implements OnInit, OnDestroy {
           return;
         }
         this.post = resp[1];
-        this.topicOptions = resp[2];
-        this.tags = resp[3];
+        this.tags = resp[2];
         this.thread.tags.forEach(item => {
           this.selectedTags.push(item);
           const index = this.tags.findIndex(t => t.id === item.id);
@@ -84,7 +79,6 @@ export class ThreadEditComponent implements OnInit, OnDestroy {
 
         this.title.setValue(this.thread.title);
         this.editorContent.setValue(this.post.content);
-        this.selectedTopic.setValue(this.thread.topicId);
       });
   }
 
@@ -96,7 +90,6 @@ export class ThreadEditComponent implements OnInit, OnDestroy {
     const thread = new Thread({
       id: this.thread.id,
       title: this.title.value,
-      topicId: this.selectedTopic.value,
       posts: [{id: this.post.id, content: this.editorContent.value}],
       tags: this.selectedTags,
     });
@@ -112,7 +105,6 @@ export class ThreadEditComponent implements OnInit, OnDestroy {
   getPreviewThread(): Thread {
     return new Thread({
       title: this.title.value,
-      topicId: this.selectedTopic.value,
       posts: [{content: this.editorContent.value}],
       createdBy: this.currentUser,
       tags: this.selectedTags,
@@ -150,10 +142,6 @@ export class ThreadEditComponent implements OnInit, OnDestroy {
 
   get title() {
     return this.form.get('title');
-  }
-
-  get selectedTopic() {
-    return this.form.get('selectedTopic');
   }
 
   get editorContent() {

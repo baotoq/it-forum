@@ -30,23 +30,6 @@
 
     <div>
       <mat-form-field class="w-100">
-        <mat-select placeholder="Topic" formControlName="selectedTopic" required>
-          <mat-optgroup *ngFor="let topic of topicOptions | orderBy:'orderIndex'"
-                        [label]="topic.name" [title]="topic.description">
-            <mat-option *ngFor="let sub of topic.subTopics | orderBy:'orderIndex'"
-                        [value]="sub.id" [title]="sub.description">
-              {{ sub.name }}
-            </mat-option>
-          </mat-optgroup>
-        </mat-select>
-        <mat-error *ngIf="selectedTopic.errors | hasError: 'required'">
-          Topic is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
-    </div>
-
-    <div>
-      <mat-form-field class="w-100">
         <mat-chip-list #chipList [selectable]="false">
           <mat-basic-chip *ngFor="let tag of selectedTags" class="badge tag mr-1" (remove)="tagRemove(tag)">
             {{tag.name}}

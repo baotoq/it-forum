@@ -3,3 +3,11 @@
     cursor: pointer;
   }
 }
+
+mat-chip {
+  &:hover {
+    .btn-more {
+      display: inline-block !important;
+    }
+  }
+}

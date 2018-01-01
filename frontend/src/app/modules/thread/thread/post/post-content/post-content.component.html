@@ -30,7 +30,6 @@
   </div>
 </div>
 
-<hr *ngIf="post.replies?.length" class="mb-1">
 <div *ngFor="let reply of post.replies" class="mt-3">
   <app-reply [reply]="reply" [permission]="permission"></app-reply>
 </div>

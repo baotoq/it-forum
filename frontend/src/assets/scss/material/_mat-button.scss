@@ -45,3 +45,11 @@ a[mat-button], a[mat-raised-button],
     color: $red !important;
   }
 }
+
+.btn-more {
+  color: $blur-color !important;
+
+  &:hover {
+    color: black !important;
+  }
+}

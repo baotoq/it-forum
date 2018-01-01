@@ -240,7 +240,6 @@ namespace ItForum.Controllers
         public async Task<IActionResult> Edit([FromBody] ThreadDto payload)
         {
             if (payload == null) return BadRequest();
-            if (payload.TopicId == null) return BadRequest();
             if (payload.Posts[0] == null) return BadRequest();
 
             var thread = _threadService.FindWithTags(payload.Id);
@@ -248,7 +247,6 @@ namespace ItForum.Controllers
             if (thread.CreatedById != CurrentUserId) return BadRequest();
 
             thread.Title = payload.Title;
-            thread.TopicId = payload.TopicId;
             thread.ThreadTags.Clear();
 
             var payloadPost = payload.Posts[0];

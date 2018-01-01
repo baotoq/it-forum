@@ -5,6 +5,7 @@ import { ApprovalStatus } from '../../../../models/approval-status';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { ApproveService } from '../../../admin/approve.service';
 import { MatDialog } from '@angular/material';
+import { ThreadService } from '../../thread.service';
 
 @Component({
   selector: 'app-reply',
@@ -19,6 +20,7 @@ export class ReplyComponent implements OnInit {
   approvalStatus = ApprovalStatus;
 
   constructor(private approveService: ApproveService,
+              private threadService: ThreadService,
               public dialog: MatDialog) {
   }
 
@@ -38,6 +40,17 @@ export class ReplyComponent implements OnInit {
           this.approveService.declinePost(this.reply.id).subscribe(() => {
             this.reply.approvalStatus = ApprovalStatus.Declined;
           });
+        }
+      });
+  }
+
+  delete() {
+    this.dialog.open(ConfirmDialogComponent).afterClosed()
+      .subscribe(result => {
+        if (result === true) {
+         this.threadService.deletePost(this.reply.id).subscribe(() => {
+            this.reply.dateDeleted = new Date();
+         });
         }
       });
   }
